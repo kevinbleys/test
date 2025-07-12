@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Administration - Présences du jour</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; margin: 0; }
+    h1 { color: #2196F3; margin-bottom: 20px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { padding: 10px; border: 1px solid #ddd; text-align: left; }
+    th { background-color: #f0f0f0; font-weight: bold; }
+    tr:nth-child(even) { background-color: #f9f9f9; }
+    .refresh-btn { 
+      background-color: #2196F3; 
+      color: white; 
+      border: none; 
+      padding: 10px 20px; 
+      border-radius: 4px; 
+      cursor: pointer; 
+    }
+    .valider-btn {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-right: 5px;
+    }
+    .annuler-btn {
+      background-color: #F44336;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Administration - Présences du jour</h1>
+  <button onclick="loadPresences()" class="refresh-btn">Actualiser la liste</button>
+  <div id="presences-list">Chargement...</div>
+
+  <script>
+    // Fonction pour charger les présences
+    function loadPresences() {
+      document.getElementById('presences-list').innerHTML = "Chargement...";
+      
+      fetch('/presences')
+        .then(response => response.json())
+        .then(data => {
+          if (!data.presences || data.presences.length === 0) {
+            document.getElementById('presences-list').innerHTML = "<p>Aucune présence enregistrée aujourd'hui.</p>";
+            return;
+          }
+          
+          let html = `
+            <table>
+              <tr>
+                <th>Nom</th>
+                <th>Prénom</th>
+                <th>Montant</th>
+                <th>Statut</th>
+                <th>Date</th>
+                <th>Actions</th>
+              </tr>
+          `;
+          
+          data.presences.forEach(p => {
+            const date = new Date(p.date).toLocaleDateString('fr-FR');
+            
+            html += `
+              <tr>
+                <td>${p.nom}</td>
+                <td>${p.prenom}</td>
+                <td>
+                  <input type="number" id="montant-${p.id}" value="${p.tarif || 10}" style="width: 60px;"> €
+                </td>
+                <td>${p.status}</td>
+                <td>${date}</td>
+                <td>
+                  ${p.status !== 'adherent' ? `
+                    <button onclick="validerPresence('${p.id}')" class="valider-btn">Valider</button>
+                    <button onclick="annulerPresence('${p.id}')" class="annuler-btn">Annuler</button>
+                  ` : ''}
+                </td>
+              </tr>
+            `;
+          });
+          
+          html += `</table>`;
+          document.getElementById('presences-list').innerHTML = html;
+        })
+        .catch(error => {
+          console.error('Erreur:', error);
+          document.getElementById('presences-list').innerHTML = "<p>Erreur lors du chargement des présences.</p>";
+        });
+    }
+    
+    // Fonction pour valider une présence
+    function validerPresence(id) {
+      const montantElement = document.getElementById(`montant-${id}`);
+      const montant = montantElement ? montantElement.value : null;
+      
+      fetch(`/presences/${id}/valider`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ montant })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          loadPresences();
+        } else {
+          alert("Erreur lors de la validation");
+        }
+      })
+      .catch(error => {
+        console.error('Erreur:', error);
+        alert("Erreur de connexion");
+      });
+    }
+    
+    // Fonction pour annuler une présence
+    function annulerPresence(id) {
+      if (confirm("Êtes-vous sûr de vouloir annuler cette présence ?")) {
+        fetch(`/presences/${id}/annuler`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({})
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            loadPresences();
+          } else {
+            alert("Erreur lors de l'annulation");
+          }
+        })
+        .catch(error => {
+          console.error('Erreur:', error);
+          alert("Erreur de connexion");
+        });
+      }
+    }
+    
+    // Chargement initial
+    document.addEventListener('DOMContentLoaded', loadPresences);
+    
+    // Actualisation automatique toutes les 30 secondes
+    setInterval(loadPresences, 30000);
+  </script>
+</body>
+</html>
