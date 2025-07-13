@@ -17799,137 +17799,6 @@ input[type="text"] {
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/dist/cjs.js!./src/components/NonMemberForm.css":
-/*!********************************************************************************!*\
-  !*** ./node_modules/css-loader/dist/cjs.js!./src/components/NonMemberForm.css ***!
-  \********************************************************************************/
-/***/ ((module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../node_modules/css-loader/dist/runtime/sourceMaps.js */ "./node_modules/css-loader/dist/runtime/sourceMaps.js");
-/* harmony import */ var _node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
-/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__);
-// Imports
-
-
-var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
-// Module
-___CSS_LOADER_EXPORT___.push([module.id, `.non-member-form {
-  max-width: 600px;
-  margin: 2rem auto;
-  padding: 2rem;
-  background: white;
-  border-radius: 10px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-}
-
-.non-member-form h2 {
-  text-align: center;
-  margin-bottom: 1.5rem;
-  color: #333;
-}
-
-.form-group {
-  margin-bottom: 1.5rem;
-}
-
-.form-group label {
-  display: block;
-  margin-bottom: 0.5rem;
-  font-weight: bold;
-}
-
-.form-group input[type="text"],
-.form-group input[type="date"] {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  font-size: 16px;
-}
-
-.radio-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  margin-top: 0.5rem;
-}
-
-.radio-group label {
-  display: flex;
-  align-items: center;
-  font-weight: normal;
-  cursor: pointer;
-}
-
-.radio-group input[type="radio"] {
-  margin-right: 10px;
-}
-
-.tarif-display {
-  background-color: #f8f9fa;
-  padding: 1rem;
-  border-radius: 6px;
-  margin-bottom: 1.5rem;
-  text-align: center;
-}
-
-.tarif-display h3 {
-  margin: 0;
-  color: #2196F3;
-}
-
-.buttons-container {
-  display: flex;
-  gap: 1rem;
-  margin-top: 1.5rem;
-}
-
-.back-button, .submit-button {
-  flex: 1;
-  padding: 12px 0;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: bold;
-  font-size: 16px;
-}
-
-.back-button {
-  background: #f1f1f1;
-  color: #333;
-}
-
-.submit-button {
-  background: #4CAF50;
-  color: white;
-}
-
-.submit-button:disabled {
-  background: #a5d6a7;
-  cursor: not-allowed;
-}
-
-.error-message {
-  color: #d32f2f;
-  background: #ffebee;
-  padding: 1rem;
-  margin-top: 1rem;
-  border-radius: 6px;
-  border: 1px solid #ffcdd2;
-}
-`, "",{"version":3,"sources":["webpack://./src/components/NonMemberForm.css"],"names":[],"mappings":"AAAA;EACE,gBAAgB;EAChB,iBAAiB;EACjB,aAAa;EACb,iBAAiB;EACjB,mBAAmB;EACnB,sCAAsC;AACxC;;AAEA;EACE,kBAAkB;EAClB,qBAAqB;EACrB,WAAW;AACb;;AAEA;EACE,qBAAqB;AACvB;;AAEA;EACE,cAAc;EACd,qBAAqB;EACrB,iBAAiB;AACnB;;AAEA;;EAEE,WAAW;EACX,aAAa;EACb,sBAAsB;EACtB,kBAAkB;EAClB,eAAe;AACjB;;AAEA;EACE,aAAa;EACb,sBAAsB;EACtB,WAAW;EACX,kBAAkB;AACpB;;AAEA;EACE,aAAa;EACb,mBAAmB;EACnB,mBAAmB;EACnB,eAAe;AACjB;;AAEA;EACE,kBAAkB;AACpB;;AAEA;EACE,yBAAyB;EACzB,aAAa;EACb,kBAAkB;EAClB,qBAAqB;EACrB,kBAAkB;AACpB;;AAEA;EACE,SAAS;EACT,cAAc;AAChB;;AAEA;EACE,aAAa;EACb,SAAS;EACT,kBAAkB;AACpB;;AAEA;EACE,OAAO;EACP,eAAe;EACf,YAAY;EACZ,kBAAkB;EAClB,eAAe;EACf,iBAAiB;EACjB,eAAe;AACjB;;AAEA;EACE,mBAAmB;EACnB,WAAW;AACb;;AAEA;EACE,mBAAmB;EACnB,YAAY;AACd;;AAEA;EACE,mBAAmB;EACnB,mBAAmB;AACrB;;AAEA;EACE,cAAc;EACd,mBAAmB;EACnB,aAAa;EACb,gBAAgB;EAChB,kBAAkB;EAClB,yBAAyB;AAC3B","sourcesContent":[".non-member-form {\r\n  max-width: 600px;\r\n  margin: 2rem auto;\r\n  padding: 2rem;\r\n  background: white;\r\n  border-radius: 10px;\r\n  box-shadow: 0 2px 10px rgba(0,0,0,0.1);\r\n}\r\n\r\n.non-member-form h2 {\r\n  text-align: center;\r\n  margin-bottom: 1.5rem;\r\n  color: #333;\r\n}\r\n\r\n.form-group {\r\n  margin-bottom: 1.5rem;\r\n}\r\n\r\n.form-group label {\r\n  display: block;\r\n  margin-bottom: 0.5rem;\r\n  font-weight: bold;\r\n}\r\n\r\n.form-group input[type=\"text\"],\r\n.form-group input[type=\"date\"] {\r\n  width: 100%;\r\n  padding: 12px;\r\n  border: 1px solid #ddd;\r\n  border-radius: 6px;\r\n  font-size: 16px;\r\n}\r\n\r\n.radio-group {\r\n  display: flex;\r\n  flex-direction: column;\r\n  gap: 0.5rem;\r\n  margin-top: 0.5rem;\r\n}\r\n\r\n.radio-group label {\r\n  display: flex;\r\n  align-items: center;\r\n  font-weight: normal;\r\n  cursor: pointer;\r\n}\r\n\r\n.radio-group input[type=\"radio\"] {\r\n  margin-right: 10px;\r\n}\r\n\r\n.tarif-display {\r\n  background-color: #f8f9fa;\r\n  padding: 1rem;\r\n  border-radius: 6px;\r\n  margin-bottom: 1.5rem;\r\n  text-align: center;\r\n}\r\n\r\n.tarif-display h3 {\r\n  margin: 0;\r\n  color: #2196F3;\r\n}\r\n\r\n.buttons-container {\r\n  display: flex;\r\n  gap: 1rem;\r\n  margin-top: 1.5rem;\r\n}\r\n\r\n.back-button, .submit-button {\r\n  flex: 1;\r\n  padding: 12px 0;\r\n  border: none;\r\n  border-radius: 6px;\r\n  cursor: pointer;\r\n  font-weight: bold;\r\n  font-size: 16px;\r\n}\r\n\r\n.back-button {\r\n  background: #f1f1f1;\r\n  color: #333;\r\n}\r\n\r\n.submit-button {\r\n  background: #4CAF50;\r\n  color: white;\r\n}\r\n\r\n.submit-button:disabled {\r\n  background: #a5d6a7;\r\n  cursor: not-allowed;\r\n}\r\n\r\n.error-message {\r\n  color: #d32f2f;\r\n  background: #ffebee;\r\n  padding: 1rem;\r\n  margin-top: 1rem;\r\n  border-radius: 6px;\r\n  border: 1px solid #ffcdd2;\r\n}\r\n"],"sourceRoot":""}]);
-// Exports
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
-
-
-/***/ }),
-
 /***/ "./node_modules/css-loader/dist/cjs.js!./src/components/PaymentSelection.css":
 /*!***********************************************************************************!*\
   !*** ./node_modules/css-loader/dist/cjs.js!./src/components/PaymentSelection.css ***!
@@ -54342,14 +54211,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/dist/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! axios */ "./node_modules/axios/lib/axios.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/dist/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! axios */ "./node_modules/axios/lib/axios.js");
+/* harmony import */ var _utils_soundUtils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/soundUtils */ "./src/utils/soundUtils.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ./node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "./node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 /* provided dependency */ var __react_refresh_error_overlay__ = __webpack_require__(/*! ./node_modules/@pmmmwh/react-refresh-webpack-plugin/overlay/index.js */ "./node_modules/@pmmmwh/react-refresh-webpack-plugin/overlay/index.js");
 __webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ./node_modules/react-refresh/runtime.js */ "./node_modules/react-refresh/runtime.js");
 
 var _s = __webpack_require__.$Refresh$.signature();
+
 
 
 
@@ -54360,91 +54231,176 @@ function MemberCheck() {
   const [prenom, setPrenom] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('');
   const [loading, setLoading] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
   const [error, setError] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('');
-  const navigate = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_2__.useNavigate)();
+  const [message, setMessage] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('');
+  const [benevoleCalled, setBenevoleCalled] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
+  const navigate = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_3__.useNavigate)();
+
+  // Pré-charger les sons au chargement du composant
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    (0,_utils_soundUtils__WEBPACK_IMPORTED_MODULE_1__.preloadSounds)();
+  }, []);
   const handleVerification = async e => {
     e.preventDefault();
     setLoading(true);
     setError('');
+    setMessage('');
+    setBenevoleCalled(false);
     try {
       // Étape 1: Vérification de l'adhésion
-      const checkResponse = await axios__WEBPACK_IMPORTED_MODULE_3__["default"].get('http://localhost:4000/members/check', {
+      const checkResponse = await axios__WEBPACK_IMPORTED_MODULE_4__["default"].get('http://localhost:4000/members/check', {
         params: {
           nom,
           prenom
         }
       });
-      if (!checkResponse.data.success) {
-        throw new Error(checkResponse.data.error || "Adhésion non valide");
-      }
+      if (checkResponse.data.success) {
+        // Membre valide et payé
+        setMessage(checkResponse.data.message);
 
-      // Étape 2: Enregistrement de la présence
-      const presenceResponse = await axios__WEBPACK_IMPORTED_MODULE_3__["default"].post('http://localhost:4000/presences', {
-        type: 'adherent',
-        nom,
-        prenom
-      });
-      if (!presenceResponse.data.success) {
-        throw new Error("Erreur lors de l'enregistrement");
-      }
+        // Jouer le son de succès (optionnel)
+        (0,_utils_soundUtils__WEBPACK_IMPORTED_MODULE_1__.playSuccessSound)();
 
-      // Redirection après succès
-      navigate('/confirmation');
+        // Étape 2: Enregistrement de la présence SANS tarif pour les adhérents valides
+        const presenceResponse = await axios__WEBPACK_IMPORTED_MODULE_4__["default"].post('http://localhost:4000/presences', {
+          type: 'adherent',
+          nom,
+          prenom
+          // Pas de tarif spécifié - le membre valide n'a pas besoin de payer
+        });
+        if (presenceResponse.data.success) {
+          // Redirection après succès
+          setTimeout(() => {
+            navigate('/confirmation');
+          }, 2000);
+        } else {
+          setError("Erreur lors de l'enregistrement de la présence");
+          (0,_utils_soundUtils__WEBPACK_IMPORTED_MODULE_1__.playBuzzerSound)(); // Jouer le son d'erreur
+        }
+      } else {
+        // Membre non valide ou non payé - JOUER LE BUZZER
+        const errorMessage = checkResponse.data.error || "Adhésion non valide";
+        setError(errorMessage);
+
+        // Jouer le son buzzer pour les erreurs
+        (0,_utils_soundUtils__WEBPACK_IMPORTED_MODULE_1__.playBuzzerSound)();
+      }
     } catch (error) {
       console.error('Erreur:', error);
-      setError(error.response?.data?.error || error.message);
+      let errorMessage = "Erreur de connexion";
+      if (error.response?.status === 404) {
+        errorMessage = "Aucun membre trouvé avec ce nom et prénom";
+      } else if (error.response?.data?.error) {
+        errorMessage = error.response.data.error;
+      } else if (error.message) {
+        errorMessage = error.message;
+      }
+      setError(errorMessage);
+
+      // Jouer le son buzzer pour toutes les erreurs
+      (0,_utils_soundUtils__WEBPACK_IMPORTED_MODULE_1__.playBuzzerSound)();
     } finally {
       setLoading(false);
     }
   };
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+  const handleAppelerBenevole = () => {
+    // Jouer le son de cloche
+    (0,_utils_soundUtils__WEBPACK_IMPORTED_MODULE_1__.playBellSound)();
+
+    // Marquer que le bénévole a été appelé
+    setBenevoleCalled(true);
+
+    // Afficher un message de confirmation
+    setMessage("Un bénévole va arriver pour vous aider !");
+
+    // Effacer le message après 5 secondes
+    setTimeout(() => {
+      if (benevoleCalled) {
+        setMessage('');
+        setBenevoleCalled(false);
+      }
+    }, 5000);
+  };
+  const handleRetourAccueil = () => {
+    // Effacer les champs et messages avant de revenir à l'accueil
+    setNom('');
+    setPrenom('');
+    setError('');
+    setMessage('');
+    setLoading(false);
+    setBenevoleCalled(false);
+
+    // Naviguer vers la page d'accueil
+    navigate('/');
+  };
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
     className: "member-check",
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("h2", {
-      children: "V\xE9rification d'adh\xE9sion"
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("form", {
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+      className: "header-section",
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("h2", {
+        children: "V\xE9rification d'adh\xE9sion"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+        className: "header-buttons",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
+          type: "button",
+          className: "btn-appeler-benevole",
+          onClick: handleAppelerBenevole,
+          disabled: loading,
+          children: "\uD83D\uDD14 Appeler un b\xE9n\xE9vole"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
+          type: "button",
+          className: "btn-retour-accueil",
+          onClick: handleRetourAccueil,
+          disabled: loading,
+          children: "\u2190 Retour \xE0 l'accueil"
+        })]
+      })]
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("form", {
       onSubmit: handleVerification,
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
         className: "form-group",
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("label", {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("label", {
           children: "Nom"
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("input", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("input", {
           type: "text",
           value: nom,
           onChange: e => setNom(e.target.value),
           required: true,
           disabled: loading
         })]
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
         className: "form-group",
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("label", {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("label", {
           children: "Pr\xE9nom"
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("input", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("input", {
           type: "text",
           value: prenom,
           onChange: e => setPrenom(e.target.value),
           required: true,
           disabled: loading
         })]
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("button", {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
         type: "submit",
         disabled: loading,
-        className: loading ? 'loading-button' : '',
-        children: loading ? 'Vérification en cours...' : 'Vérifier'
-      }), error && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
-        className: "error-message",
-        children: error
+        className: "btn-verify",
+        children: loading ? 'Vérification...' : 'Vérifier'
       })]
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
-      className: "buttons-container",
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("button", {
-        onClick: () => navigate('/'),
-        className: "back-button",
-        children: "Retour \xE0 l'accueil"
-      })
+    }), error && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+      className: "error-message",
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+        className: "error-icon",
+        children: "\u26A0\uFE0F"
+      }), error]
+    }), message && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+      className: benevoleCalled ? "benevole-message" : "success-message",
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+        className: "success-icon",
+        children: benevoleCalled ? "🔔" : "✅"
+      }), message]
     })]
   });
 }
-_s(MemberCheck, "MY9RCvvwWzuuTUQ1ytvLo8C7aGA=", false, function () {
-  return [react_router_dom__WEBPACK_IMPORTED_MODULE_2__.useNavigate];
+_s(MemberCheck, "9HY2u+c5dZvXcM//b17Eu9VXtPs=", false, function () {
+  return [react_router_dom__WEBPACK_IMPORTED_MODULE_3__.useNavigate];
 });
 _c = MemberCheck;
 var _c;
@@ -55005,113 +54961,6 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 
 /***/ }),
 
-/***/ "./src/components/NonMemberForm.css":
-/*!******************************************!*\
-  !*** ./src/components/NonMemberForm.css ***!
-  \******************************************/
-/***/ ((module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
-/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !../../node_modules/style-loader/dist/runtime/styleDomAPI.js */ "./node_modules/style-loader/dist/runtime/styleDomAPI.js");
-/* harmony import */ var _node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../node_modules/style-loader/dist/runtime/insertBySelector.js */ "./node_modules/style-loader/dist/runtime/insertBySelector.js");
-/* harmony import */ var _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! !../../node_modules/style-loader/dist/runtime/setAttributesWithoutAttributes.js */ "./node_modules/style-loader/dist/runtime/setAttributesWithoutAttributes.js");
-/* harmony import */ var _node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! !../../node_modules/style-loader/dist/runtime/insertStyleElement.js */ "./node_modules/style-loader/dist/runtime/insertStyleElement.js");
-/* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! !../../node_modules/style-loader/dist/runtime/styleTagTransform.js */ "./node_modules/style-loader/dist/runtime/styleTagTransform.js");
-/* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _node_modules_css_loader_dist_cjs_js_NonMemberForm_css__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../node_modules/css-loader/dist/cjs.js!./NonMemberForm.css */ "./node_modules/css-loader/dist/cjs.js!./src/components/NonMemberForm.css");
-
-      
-      
-      
-      
-      
-      
-      
-      
-      
-
-var options = {};
-
-options.styleTagTransform = (_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default());
-options.setAttributes = (_node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3___default());
-
-      options.insert = _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2___default().bind(null, "head");
-    
-options.domAPI = (_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default());
-options.insertStyleElement = (_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default());
-
-var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_NonMemberForm_css__WEBPACK_IMPORTED_MODULE_6__["default"], options);
-
-
-if (true) {
-  if (!_node_modules_css_loader_dist_cjs_js_NonMemberForm_css__WEBPACK_IMPORTED_MODULE_6__["default"].locals || module.hot.invalidate) {
-    var isEqualLocals = function isEqualLocals(a, b, isNamedExport) {
-  if (!a && b || a && !b) {
-    return false;
-  }
-  var p;
-  for (p in a) {
-    if (isNamedExport && p === "default") {
-      // eslint-disable-next-line no-continue
-      continue;
-    }
-    if (a[p] !== b[p]) {
-      return false;
-    }
-  }
-  for (p in b) {
-    if (isNamedExport && p === "default") {
-      // eslint-disable-next-line no-continue
-      continue;
-    }
-    if (!a[p]) {
-      return false;
-    }
-  }
-  return true;
-};
-    var isNamedExport = !_node_modules_css_loader_dist_cjs_js_NonMemberForm_css__WEBPACK_IMPORTED_MODULE_6__["default"].locals;
-    var oldLocals = isNamedExport ? _node_modules_css_loader_dist_cjs_js_NonMemberForm_css__WEBPACK_IMPORTED_MODULE_6__ : _node_modules_css_loader_dist_cjs_js_NonMemberForm_css__WEBPACK_IMPORTED_MODULE_6__["default"].locals;
-
-    module.hot.accept(
-      /*! !!../../node_modules/css-loader/dist/cjs.js!./NonMemberForm.css */ "./node_modules/css-loader/dist/cjs.js!./src/components/NonMemberForm.css",
-      __WEBPACK_OUTDATED_DEPENDENCIES__ => { /* harmony import */ _node_modules_css_loader_dist_cjs_js_NonMemberForm_css__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../node_modules/css-loader/dist/cjs.js!./NonMemberForm.css */ "./node_modules/css-loader/dist/cjs.js!./src/components/NonMemberForm.css");
-(function () {
-        if (!isEqualLocals(oldLocals, isNamedExport ? _node_modules_css_loader_dist_cjs_js_NonMemberForm_css__WEBPACK_IMPORTED_MODULE_6__ : _node_modules_css_loader_dist_cjs_js_NonMemberForm_css__WEBPACK_IMPORTED_MODULE_6__["default"].locals, isNamedExport)) {
-                module.hot.invalidate();
-
-                return;
-              }
-
-              oldLocals = isNamedExport ? _node_modules_css_loader_dist_cjs_js_NonMemberForm_css__WEBPACK_IMPORTED_MODULE_6__ : _node_modules_css_loader_dist_cjs_js_NonMemberForm_css__WEBPACK_IMPORTED_MODULE_6__["default"].locals;
-
-              update(_node_modules_css_loader_dist_cjs_js_NonMemberForm_css__WEBPACK_IMPORTED_MODULE_6__["default"]);
-      })(__WEBPACK_OUTDATED_DEPENDENCIES__); }
-    )
-  }
-
-  module.hot.dispose(function() {
-    update();
-  });
-}
-
-
-
-       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_NonMemberForm_css__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_NonMemberForm_css__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_NonMemberForm_css__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
-
-
-/***/ }),
-
 /***/ "./src/components/NonMemberForm.jsx":
 /*!******************************************!*\
   !*** ./src/components/NonMemberForm.jsx ***!
@@ -55126,7 +54975,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/dist/index.js");
-/* harmony import */ var _NonMemberForm_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./NonMemberForm.css */ "./src/components/NonMemberForm.css");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! axios */ "./node_modules/axios/lib/axios.js");
+/* harmony import */ var _utils_soundUtils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/soundUtils */ "./src/utils/soundUtils.js");
 /* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 /* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ./node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "./node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
 /* provided dependency */ var __react_refresh_error_overlay__ = __webpack_require__(/*! ./node_modules/@pmmmwh/react-refresh-webpack-plugin/overlay/index.js */ "./node_modules/@pmmmwh/react-refresh-webpack-plugin/overlay/index.js");
@@ -55137,122 +54987,162 @@ var _s = __webpack_require__.$Refresh$.signature();
 
 
 
+
 function NonMemberForm() {
   _s();
-  const [nom, setNom] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('');
-  const [prenom, setPrenom] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('');
-  const [dateNaissance, setDateNaissance] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('');
-  const [age, setAge] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null);
-  const [tarif, setTarif] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null);
+  const [formData, setFormData] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({
+    nom: '',
+    prenom: '',
+    email: '',
+    telephone: '',
+    dateNaissance: '',
+    adresse: ''
+  });
   const [loading, setLoading] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
   const [error, setError] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('');
   const navigate = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_3__.useNavigate)();
 
-  // Calcul de l'âge et du tarif en fonction de la date de naissance
+  // Pré-charger les sons au chargement du composant
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
-    if (dateNaissance) {
-      const today = new Date();
-      const birthDate = new Date(dateNaissance);
-      const ageCalc = today.getFullYear() - birthDate.getFullYear();
-      const monthDiff = today.getMonth() - birthDate.getMonth();
-
-      // Ajustement si l'anniversaire n'est pas encore passé cette année
-      const adjustedAge = monthDiff < 0 || monthDiff === 0 && today.getDate() < birthDate.getDate() ? ageCalc - 1 : ageCalc;
-      setAge(adjustedAge);
-      if (adjustedAge < 6) {
-        setTarif(0); // Gratuit pour moins de 6 ans
-      } else if (adjustedAge < 18) {
-        setTarif(8); // 8€ pour 6-18 ans
-      } else {
-        setTarif(10); // 10€ pour adultes
-      }
-    } else {
-      setAge(null);
-      setTarif(null);
-    }
-  }, [dateNaissance]);
-  const handleSubmit = e => {
+    (0,_utils_soundUtils__WEBPACK_IMPORTED_MODULE_1__.preloadSounds)();
+  }, []);
+  const handleChange = e => {
+    const {
+      name,
+      value
+    } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+  const handleSubmit = async e => {
     e.preventDefault();
-
-    // Validation des champs requis
-    if (!nom || !prenom || !dateNaissance) {
-      setError("Tous les champs sont obligatoires");
-      return;
-    }
-
-    // Redirection vers la page de sélection de paiement avec les données
-    navigate('/payment-selection', {
-      state: {
-        nom,
-        prenom,
-        dateNaissance,
-        age,
-        tarif
+    setLoading(true);
+    setError('');
+    try {
+      const response = await axios__WEBPACK_IMPORTED_MODULE_4__["default"].post('http://localhost:4000/presences', {
+        type: 'non-adherent',
+        ...formData
+      });
+      if (response.data.success) {
+        // Redirection vers la page de confirmation
+        navigate('/confirmation');
+      } else {
+        setError("Erreur lors de l'enregistrement");
+        (0,_utils_soundUtils__WEBPACK_IMPORTED_MODULE_1__.playBuzzerSound)(); // Jouer le son d'erreur
       }
-    });
+    } catch (error) {
+      console.error('Erreur:', error);
+      setError(error.response?.data?.error || "Erreur lors de l'enregistrement");
+      (0,_utils_soundUtils__WEBPACK_IMPORTED_MODULE_1__.playBuzzerSound)(); // Jouer le son d'erreur
+    } finally {
+      setLoading(false);
+    }
+  };
+  const handleRetourAccueil = () => {
+    navigate('/');
   };
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
     className: "non-member-form",
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("h2", {
-      children: "Formulaire pour Non-Adh\xE9rents"
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+      className: "header-section",
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("h2", {
+        children: "Inscription non-membre"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
+        type: "button",
+        className: "btn-retour-accueil",
+        onClick: handleRetourAccueil,
+        disabled: loading,
+        children: "\u2190 Retour \xE0 l'accueil"
+      })]
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("form", {
       onSubmit: handleSubmit,
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
         className: "form-group",
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("label", {
-          htmlFor: "nom",
-          children: "Nom*"
+          children: "Nom *"
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("input", {
-          id: "nom",
           type: "text",
-          value: nom,
-          onChange: e => setNom(e.target.value),
-          required: true
+          name: "nom",
+          value: formData.nom,
+          onChange: handleChange,
+          required: true,
+          disabled: loading
         })]
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
         className: "form-group",
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("label", {
-          htmlFor: "prenom",
-          children: "Pr\xE9nom*"
+          children: "Pr\xE9nom *"
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("input", {
-          id: "prenom",
           type: "text",
-          value: prenom,
-          onChange: e => setPrenom(e.target.value),
-          required: true
+          name: "prenom",
+          value: formData.prenom,
+          onChange: handleChange,
+          required: true,
+          disabled: loading
         })]
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
         className: "form-group",
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("label", {
-          htmlFor: "dateNaissance",
-          children: "Date de naissance*"
+          children: "Email *"
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("input", {
-          id: "dateNaissance",
+          type: "email",
+          name: "email",
+          value: formData.email,
+          onChange: handleChange,
+          required: true,
+          disabled: loading
+        })]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+        className: "form-group",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("label", {
+          children: "T\xE9l\xE9phone"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("input", {
+          type: "tel",
+          name: "telephone",
+          value: formData.telephone,
+          onChange: handleChange,
+          disabled: loading
+        })]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+        className: "form-group",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("label", {
+          children: "Date de naissance"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("input", {
           type: "date",
-          value: dateNaissance,
-          onChange: e => setDateNaissance(e.target.value),
-          required: true
+          name: "dateNaissance",
+          value: formData.dateNaissance,
+          onChange: handleChange,
+          disabled: loading
         })]
-      }), error && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
-        className: "error-message",
-        children: error
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
-        className: "buttons-container",
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
-          type: "button",
-          className: "back-button",
-          onClick: () => navigate('/'),
-          children: "Retour \xE0 l'accueil"
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
-          type: "submit",
-          className: "submit-button",
-          children: "Continuer"
+        className: "form-group",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("label", {
+          children: "Adresse"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("textarea", {
+          name: "adresse",
+          value: formData.adresse,
+          onChange: handleChange,
+          disabled: loading,
+          rows: "3"
         })]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("button", {
+        type: "submit",
+        disabled: loading,
+        className: "btn-verify",
+        children: loading ? 'Enregistrement...' : 'S\'inscrire'
       })]
+    }), error && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+      className: "error-message",
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+        className: "error-icon",
+        children: "\u26A0\uFE0F"
+      }), error]
     })]
   });
 }
-_s(NonMemberForm, "LTAHxsahD52W/5RTpLLvhHOxSo4=", false, function () {
+_s(NonMemberForm, "aKiVNxv/89TySGz+Rr6mIsczKj0=", false, function () {
   return [react_router_dom__WEBPACK_IMPORTED_MODULE_3__.useNavigate];
 });
 _c = NonMemberForm;
@@ -55726,6 +55616,119 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 	$ReactRefreshModuleRuntime$($ReactRefreshCurrentExports$);
 }
 
+/***/ }),
+
+/***/ "./src/utils/soundUtils.js":
+/*!*********************************!*\
+  !*** ./src/utils/soundUtils.js ***!
+  \*********************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   playBellSound: () => (/* binding */ playBellSound),
+/* harmony export */   playBuzzerSound: () => (/* binding */ playBuzzerSound),
+/* harmony export */   playSound: () => (/* binding */ playSound),
+/* harmony export */   playSuccessSound: () => (/* binding */ playSuccessSound),
+/* harmony export */   preloadSounds: () => (/* binding */ preloadSounds)
+/* harmony export */ });
+/* provided dependency */ var __react_refresh_utils__ = __webpack_require__(/*! ./node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js */ "./node_modules/@pmmmwh/react-refresh-webpack-plugin/lib/runtime/RefreshUtils.js");
+/* provided dependency */ var __react_refresh_error_overlay__ = __webpack_require__(/*! ./node_modules/@pmmmwh/react-refresh-webpack-plugin/overlay/index.js */ "./node_modules/@pmmmwh/react-refresh-webpack-plugin/overlay/index.js");
+__webpack_require__.$Refresh$.runtime = __webpack_require__(/*! ./node_modules/react-refresh/runtime.js */ "./node_modules/react-refresh/runtime.js");
+
+/**
+ * Utilitaire pour jouer des sons dans l'application
+ */
+
+// Fonction pour jouer un son
+const playSound = soundPath => {
+  try {
+    // Créer un nouvel objet Audio
+    const audio = new Audio(soundPath);
+
+    // Définir le volume (0.0 à 1.0)
+    audio.volume = 0.8;
+
+    // Jouer le son
+    audio.play().then(() => {
+      console.log('Son joué avec succès:', soundPath);
+    }).catch(error => {
+      console.error('Erreur lors de la lecture du son:', error);
+    });
+  } catch (error) {
+    console.error('Erreur lors de la création de l\'objet Audio:', error);
+  }
+};
+
+// Fonction spécifique pour le son buzzer
+const playBuzzerSound = () => {
+  // Chemin vers le fichier MP3 buzzer dans le dossier public/assets
+  const buzzerPath = '/assets/buzzer.mp3';
+  playSound(buzzerPath);
+};
+
+// Fonction spécifique pour le son de cloche (bell)
+const playBellSound = () => {
+  // Chemin vers le fichier MP3 bell dans le dossier public/assets
+  const bellPath = '/assets/bell.mp3';
+  playSound(bellPath);
+};
+
+// Fonction pour jouer un son de succès (optionnel)
+const playSuccessSound = () => {
+  // Vous pouvez ajouter un son de succès si disponible
+  const successPath = '/assets/success.mp3';
+  playSound(successPath);
+};
+
+// Fonction pour pré-charger les sons (optionnel mais recommandé)
+const preloadSounds = () => {
+  try {
+    // Pré-charger le son buzzer
+    const buzzerAudio = new Audio('/assets/buzzer.mp3');
+    buzzerAudio.preload = 'auto';
+
+    // Pré-charger le son bell
+    const bellAudio = new Audio('/assets/bell.mp3');
+    bellAudio.preload = 'auto';
+    console.log('Sons pré-chargés');
+  } catch (error) {
+    console.error('Erreur lors du pré-chargement des sons:', error);
+  }
+};
+
+const $ReactRefreshModuleId$ = __webpack_require__.$Refresh$.moduleId;
+const $ReactRefreshCurrentExports$ = __react_refresh_utils__.getModuleExports(
+	$ReactRefreshModuleId$
+);
+
+function $ReactRefreshModuleRuntime$(exports) {
+	if (true) {
+		let errorOverlay;
+		if (typeof __react_refresh_error_overlay__ !== 'undefined') {
+			errorOverlay = __react_refresh_error_overlay__;
+		}
+		let testMode;
+		if (typeof __react_refresh_test__ !== 'undefined') {
+			testMode = __react_refresh_test__;
+		}
+		return __react_refresh_utils__.executeRuntime(
+			exports,
+			$ReactRefreshModuleId$,
+			module.hot,
+			errorOverlay,
+			testMode
+		);
+	}
+}
+
+if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Promise) {
+	$ReactRefreshCurrentExports$.then($ReactRefreshModuleRuntime$);
+} else {
+	$ReactRefreshModuleRuntime$($ReactRefreshCurrentExports$);
+}
+
 /***/ })
 
 /******/ 	});
@@ -55840,7 +55843,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /******/ 	
 /******/ 	/* webpack/runtime/getFullHash */
 /******/ 	(() => {
-/******/ 		__webpack_require__.h = () => ("716a1fa89cb2f4017ad6")
+/******/ 		__webpack_require__.h = () => ("cf177dd583b9f25ec4eb")
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/global */

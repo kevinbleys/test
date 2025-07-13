@@ -29,15 +29,45 @@ initStorage();
 const readPresences = () => JSON.parse(fs.readFileSync(PRESENCES_FILE));
 const writePresences = (data) => fs.writeFileSync(PRESENCES_FILE, JSON.stringify(data, null, 2));
 
-// Routes API
+// Importer les routes des membres
+const membersRoutes = require('./routes/members');
+app.use('/members', membersRoutes);
+
+// Routes API pour les présences
 app.post('/presences', (req, res) => {
   try {
+    const { type, nom, prenom, ...additionalData } = req.body;
+    
     const presence = {
-      ...req.body,
       id: Date.now().toString(),
+      type,
+      nom,
+      prenom,
       date: new Date().toISOString(),
-      status: req.body.type === 'adherent' ? 'adherent' : 'pending'
+      ...additionalData
     };
+
+    // Logique différenciée selon le type
+    if (type === 'adherent') {
+      // Pour les adhérents valides - pas de tarif obligatoire
+      presence.status = 'adherent';
+      // Pas de tarif par défaut pour les adhérents valides
+      // Si un tarif est fourni, on l'utilise, sinon on ne met rien
+      if (req.body.tarif !== undefined) {
+        presence.tarif = req.body.tarif;
+      }
+    } else if (type === 'non-adherent') {
+      // Pour les non-adhérents - tarif obligatoire (défaut 10)
+      presence.status = 'pending';
+      presence.tarif = req.body.tarif || 10;
+      presence.methodePaiement = req.body.methodePaiement || null;
+      
+      // Ajouter les champs spécifiques aux non-adhérents
+      presence.dateNaissance = req.body.dateNaissance;
+      presence.email = req.body.email;
+      presence.telephone = req.body.telephone;
+      presence.adresse = req.body.adresse;
+    }
     
     const presences = readPresences();
     presences.push(presence);
@@ -80,7 +110,7 @@ app.get('/presences/:id', (req, res) => {
   }
 });
 
-// Valider une présence
+// Valider une présence (pour les non-adhérents principalement)
 app.post('/presences/:id/valider', (req, res) => {
   try {
     const { id } = req.params;
@@ -94,7 +124,9 @@ app.post('/presences/:id/valider', (req, res) => {
     }
     
     presences[index].status = 'Payé';
-    presences[index].tarif = montant || presences[index].tarif;
+    if (montant !== undefined) {
+      presences[index].tarif = montant;
+    }
     presences[index].dateValidation = new Date().toISOString();
     
     writePresences(presences);
@@ -102,6 +134,32 @@ app.post('/presences/:id/valider', (req, res) => {
     res.json({ success: true, presence: presences[index] });
   } catch (error) {
     console.error('Erreur validation:', error);
+    res.status(500).json({ success: false, error: 'Erreur serveur' });
+  }
+});
+
+// Ajouter un tarif à un adhérent si nécessaire
+app.post('/presences/:id/ajouter-tarif', (req, res) => {
+  try {
+    const { id } = req.params;
+    const { montant } = req.body;
+    
+    const presences = readPresences();
+    const index = presences.findIndex(p => p.id === id);
+    
+    if (index === -1) {
+      return res.status(404).json({ success: false, error: 'Présence non trouvée' });
+    }
+    
+    // Ajouter ou modifier le tarif
+    presences[index].tarif = montant || 0;
+    presences[index].dateModificationTarif = new Date().toISOString();
+    
+    writePresences(presences);
+    
+    res.json({ success: true, presence: presences[index] });
+  } catch (error) {
+    console.error('Erreur ajout tarif:', error);
     res.status(500).json({ success: false, error: 'Erreur serveur' });
   }
 });
@@ -126,23 +184,6 @@ app.post('/presences/:id/annuler', (req, res) => {
     res.json({ success: true, presence: presences[index] });
   } catch (error) {
     console.error('Erreur annulation:', error);
-    res.status(500).json({ success: false, error: 'Erreur serveur' });
-  }
-});
-
-// Route de vérification membre
-app.get('/members/check', async (req, res) => {
-  try {
-    const { nom, prenom } = req.query;
-    // Simulation de vérification
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    res.json({
-      success: true,
-      isPaid: true,
-      message: "Adhésion valide"
-    });
-  } catch (error) {
-    console.error('Erreur vérification membre:', error);
     res.status(500).json({ success: false, error: 'Erreur serveur' });
   }
 });

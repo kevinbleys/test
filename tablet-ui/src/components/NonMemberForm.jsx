@@ -1,121 +1,160 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './NonMemberForm.css';
+import axios from 'axios';
+import { playBuzzerSound, preloadSounds } from '../utils/soundUtils';
 
 export default function NonMemberForm() {
-  const [nom, setNom] = useState('');
-  const [prenom, setPrenom] = useState('');
-  const [dateNaissance, setDateNaissance] = useState('');
-  const [age, setAge] = useState(null);
-  const [tarif, setTarif] = useState(null);
+  const [formData, setFormData] = useState({
+    nom: '',
+    prenom: '',
+    email: '',
+    telephone: '',
+    dateNaissance: '',
+    adresse: ''
+  });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  // Calcul de l'âge et du tarif en fonction de la date de naissance
+  // Pré-charger les sons au chargement du composant
   useEffect(() => {
-    if (dateNaissance) {
-      const today = new Date();
-      const birthDate = new Date(dateNaissance);
-      const ageCalc = today.getFullYear() - birthDate.getFullYear();
-      const monthDiff = today.getMonth() - birthDate.getMonth();
-      
-      // Ajustement si l'anniversaire n'est pas encore passé cette année
-      const adjustedAge = (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) 
-        ? ageCalc - 1 
-        : ageCalc;
+    preloadSounds();
+  }, []);
 
-      setAge(adjustedAge);
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
 
-      if (adjustedAge < 6) {
-        setTarif(0); // Gratuit pour moins de 6 ans
-      } else if (adjustedAge < 18) {
-        setTarif(8); // 8€ pour 6-18 ans
-      } else {
-        setTarif(10); // 10€ pour adultes
-      }
-    } else {
-      setAge(null);
-      setTarif(null);
-    }
-  }, [dateNaissance]);
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    // Validation des champs requis
-    if (!nom || !prenom || !dateNaissance) {
-      setError("Tous les champs sont obligatoires");
-      return;
-    }
-    
-    // Redirection vers la page de sélection de paiement avec les données
-    navigate('/payment-selection', {
-      state: {
-        nom,
-        prenom,
-        dateNaissance,
-        age,
-        tarif
+    setLoading(true);
+    setError('');
+
+    try {
+      const response = await axios.post('http://localhost:4000/presences', {
+        type: 'non-adherent',
+        ...formData
+      });
+
+      if (response.data.success) {
+        // Redirection vers la page de confirmation
+        navigate('/confirmation');
+      } else {
+        setError("Erreur lors de l'enregistrement");
+        playBuzzerSound(); // Jouer le son d'erreur
       }
-    });
+    } catch (error) {
+      console.error('Erreur:', error);
+      setError(error.response?.data?.error || "Erreur lors de l'enregistrement");
+      playBuzzerSound(); // Jouer le son d'erreur
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleRetourAccueil = () => {
+    navigate('/');
   };
 
   return (
     <div className="non-member-form">
-      <h2>Formulaire pour Non-Adhérents</h2>
+      <div className="header-section">
+        <h2>Inscription non-membre</h2>
+        <button 
+          type="button" 
+          className="btn-retour-accueil"
+          onClick={handleRetourAccueil}
+          disabled={loading}
+        >
+          ← Retour à l'accueil
+        </button>
+      </div>
+      
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label htmlFor="nom">Nom*</label>
+          <label>Nom *</label>
           <input
-            id="nom"
             type="text"
-            value={nom}
-            onChange={(e) => setNom(e.target.value)}
+            name="nom"
+            value={formData.nom}
+            onChange={handleChange}
             required
+            disabled={loading}
           />
         </div>
         
         <div className="form-group">
-          <label htmlFor="prenom">Prénom*</label>
+          <label>Prénom *</label>
           <input
-            id="prenom"
             type="text"
-            value={prenom}
-            onChange={(e) => setPrenom(e.target.value)}
+            name="prenom"
+            value={formData.prenom}
+            onChange={handleChange}
             required
+            disabled={loading}
           />
         </div>
         
         <div className="form-group">
-          <label htmlFor="dateNaissance">Date de naissance*</label>
+          <label>Email *</label>
           <input
-            id="dateNaissance"
+            type="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            required
+            disabled={loading}
+          />
+        </div>
+        
+        <div className="form-group">
+          <label>Téléphone</label>
+          <input
+            type="tel"
+            name="telephone"
+            value={formData.telephone}
+            onChange={handleChange}
+            disabled={loading}
+          />
+        </div>
+        
+        <div className="form-group">
+          <label>Date de naissance</label>
+          <input
             type="date"
-            value={dateNaissance}
-            onChange={(e) => setDateNaissance(e.target.value)}
-            required
+            name="dateNaissance"
+            value={formData.dateNaissance}
+            onChange={handleChange}
+            disabled={loading}
           />
         </div>
         
-        {error && <div className="error-message">{error}</div>}
-        
-        <div className="buttons-container">
-          <button 
-            type="button" 
-            className="back-button"
-            onClick={() => navigate('/')}
-          >
-            Retour à l'accueil
-          </button>
-          <button 
-            type="submit" 
-            className="submit-button"
-          >
-            Continuer
-          </button>
+        <div className="form-group">
+          <label>Adresse</label>
+          <textarea
+            name="adresse"
+            value={formData.adresse}
+            onChange={handleChange}
+            disabled={loading}
+            rows="3"
+          />
         </div>
+        
+        <button type="submit" disabled={loading} className="btn-verify">
+          {loading ? 'Enregistrement...' : 'S\'inscrire'}
+        </button>
       </form>
+      
+      {error && (
+        <div className="error-message">
+          <div className="error-icon">⚠️</div>
+          {error}
+        </div>
+      )}
     </div>
   );
 }

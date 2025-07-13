@@ -1,120 +1,305 @@
-/* Styles pour MemberCheck */
-.member-check {
-  max-width: 500px;
-  margin: 2rem auto;
-  padding: 2rem;
-  background: white;
-  border-radius: 10px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+/* Styles existants... */
+
+/* Styles améliorés pour la section header */
+.header-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #e0e0e0;
 }
 
-.member-check h2 {
-  text-align: center;
-  margin-bottom: 1.5rem;
+.header-section h2 {
+  margin: 0;
+  color: #333;
+  font-size: 28px;
+  font-weight: 600;
+}
+
+.header-buttons {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+/* Styles pour le bouton "Appeler un bénévole" */
+.btn-appeler-benevole {
+  background: linear-gradient(135deg, #ff6b6b 0%, #ff4757 100%);
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(255, 107, 107, 0.3);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.btn-appeler-benevole:hover {
+  background: linear-gradient(135deg, #ff5252 0%, #ff3742 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 107, 107, 0.4);
+}
+
+.btn-appeler-benevole:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(255, 107, 107, 0.3);
+}
+
+.btn-appeler-benevole:disabled {
+  background: #cccccc;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Styles pour le bouton retour à l'accueil */
+.btn-retour-accueil {
+  background: linear-gradient(135deg, #6b73ff 0%, #000dff 100%);
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(107, 115, 255, 0.3);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-retour-accueil:hover {
+  background: linear-gradient(135deg, #5a64e8 0%, #000bcc 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(107, 115, 255, 0.4);
+}
+
+.btn-retour-accueil:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(107, 115, 255, 0.3);
+}
+
+.btn-retour-accueil:disabled {
+  background: #cccccc;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Styles pour le message bénévole */
+.benevole-message {
+  background-color: #fff3cd;
+  color: #856404;
+  padding: 15px 20px;
+  border-radius: 8px;
+  margin-top: 20px;
+  border: 2px solid #ffeaa7;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  animation: bellRing 0.5s ease-in-out;
+}
+
+/* Animation pour le message bénévole */
+@keyframes bellRing {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-3px) rotate(-5deg); }
+  75% { transform: translateX(3px) rotate(5deg); }
+}
+
+/* Styles améliorés pour les messages d'erreur et de succès */
+.error-message {
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 15px 20px;
+  border-radius: 8px;
+  margin-top: 20px;
+  border: 2px solid #f5c6cb;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  animation: shake 0.5s ease-in-out;
+}
+
+.error-icon {
+  font-size: 24px;
+  flex-shrink: 0;
+}
+
+.success-message {
+  background-color: #d1edff;
+  color: #0c5460;
+  padding: 15px 20px;
+  border-radius: 8px;
+  margin-top: 20px;
+  border: 2px solid #b6d4fe;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  animation: slideIn 0.3s ease-in-out;
+}
+
+.success-icon {
+  font-size: 24px;
+  flex-shrink: 0;
+}
+
+/* Animation pour les messages d'erreur */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+  20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+/* Animation pour les messages de succès */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Styles pour le bouton de vérification */
+.btn-verify {
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  color: white;
+  border: none;
+  padding: 15px 30px;
+  border-radius: 8px;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+  margin-top: 20px;
+  box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3);
+}
+
+.btn-verify:hover {
+  background: linear-gradient(135deg, #218838 0%, #1abc9c 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(40, 167, 69, 0.4);
+}
+
+.btn-verify:disabled {
+  background: #6c757d;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Styles pour la section membre-check */
+.member-check {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 30px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
 .form-group {
-  margin-bottom: 1rem;
+  margin-bottom: 20px;
 }
 
 .form-group label {
   display: block;
-  margin-bottom: 0.3rem;
-  font-weight: bold;
-}
-
-.member-check input {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #ddd;
-  border-radius: 6px;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #333;
   font-size: 16px;
 }
 
-.member-check button[type="submit"] {
+.form-group input {
   width: 100%;
-  background: #4CAF50;
-  color: white;
-  padding: 12px 24px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
+  padding: 12px 15px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
   font-size: 16px;
-  margin-top: 1rem;
+  transition: border-color 0.3s ease;
+  box-sizing: border-box;
 }
 
-.loading-button {
-  background: #a5d6a7 !important;
+.form-group input:focus {
+  outline: none;
+  border-color: #6b73ff;
+  box-shadow: 0 0 0 3px rgba(107, 115, 255, 0.1);
+}
+
+.form-group input:disabled {
+  background-color: #f8f9fa;
   cursor: not-allowed;
 }
 
-.error-message {
-  color: #d32f2f;
-  background: #ffebee;
-  padding: 1rem;
-  margin-top: 1rem;
-  border-radius: 6px;
-  border: 1px solid #ffcdd2;
+/* Responsive design pour tablettes */
+@media (max-width: 768px) {
+  .header-section {
+    flex-direction: column;
+    gap: 15px;
+    text-align: center;
+  }
+  
+  .header-buttons {
+    flex-direction: column;
+    width: 100%;
+    gap: 10px;
+  }
+  
+  .btn-appeler-benevole,
+  .btn-retour-accueil {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .member-check {
+    margin: 20px;
+    padding: 20px;
+  }
+  
+  .error-message,
+  .success-message,
+  .benevole-message {
+    flex-direction: column;
+    text-align: center;
+    gap: 8px;
+  }
+  
+  .error-icon,
+  .success-icon {
+    font-size: 20px;
+  }
 }
 
-.buttons-container {
-  display: flex;
-  gap: 10px;
-  margin-top: 1.5rem;
-}
-
-.back-button, .call-button {
-  flex: 1;
-  padding: 12px 0;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: bold;
-  text-align: center;
-}
-
-.back-button {
-  background: #2196F3;
-  color: white;
-}
-
-.call-button {
-  background: #F44336;
-  color: white;
-}
-
-/* Styles pour ConfirmationScreen */
-.confirmation-screen {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 80vh;
-  padding: 2rem;
-}
-
-.confirmation-content {
-  text-align: center;
-  max-width: 600px;
-  padding: 2rem;
-  background: white;
-  border-radius: 10px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-}
-
-.confirmation-content h1 {
-  color: #4CAF50;
-  margin-bottom: 1rem;
-}
-
-.confirmation-content p {
-  font-size: 18px;
-  margin-bottom: 1.5rem;
-}
-
-.confirmation-content .back-button {
-  width: 100%;
-  max-width: 300px;
-  margin: 0 auto;
-  display: block;
+/* Styles pour écrans très petits (smartphones) */
+@media (max-width: 480px) {
+  .header-section h2 {
+    font-size: 24px;
+  }
+  
+  .btn-appeler-benevole,
+  .btn-retour-accueil {
+    font-size: 14px;
+    padding: 10px 16px;
+  }
+  
+  .member-check {
+    margin: 10px;
+    padding: 15px;
+  }
 }
