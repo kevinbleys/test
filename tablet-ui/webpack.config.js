@@ -37,9 +37,23 @@ module.exports = {
     extensions: ['.js', '.jsx']
   },
   devServer: {
-    contentBase: path.join(__dirname, 'public'),
+    // BELANGRIJKE WIJZIGING: contentBase is vervangen door static
+    static: {
+      directory: path.join(__dirname, 'public'),
+      publicPath: '/'
+    },
     port: 3001,
     historyApiFallback: true,
-    hot: true
-  }
+    hot: true,
+    open: false,
+    compress: true,
+    // Toevoegen van CORS headers voor API calls
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': '*',
+      'Access-Control-Allow-Headers': '*'
+    }
+  },
+  mode: 'development',
+  devtool: 'source-map'
 };

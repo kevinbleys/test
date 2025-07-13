@@ -9,30 +9,102 @@ const API_HEADERS = {
   'Accept': 'application/json'
 };
 const DATA_FILE = path.join(__dirname, 'data', 'members.json');
+const LOG_FILE = path.join(__dirname, 'data', 'sync.log');
+
+// Logging functie
+const logMessage = (message) => {
+  const timestamp = new Date().toISOString();
+  const logEntry = `[${timestamp}] ${message}\n`;
+  
+  // Console output
+  console.log(logEntry.trim());
+  
+  // Write to log file
+  try {
+    // Zorg dat data directory bestaat
+    const dataDir = path.dirname(LOG_FILE);
+    if (!fs.existsSync(dataDir)) {
+      fs.mkdirSync(dataDir, { recursive: true });
+    }
+    fs.appendFileSync(LOG_FILE, logEntry);
+  } catch (error) {
+    console.error('Fout bij schrijven naar log:', error);
+  }
+};
 
 async function syncMembers() {
   try {
-    console.log(`[${new Date().toISOString()}] Synchronisation en cours...`);
-    const response = await axios.get(API_URL, { headers: API_HEADERS });
+    logMessage('=== Synchronisation PEPsup démarrée ===');
+    
+    // Test internet verbinding
+    try {
+      const testResponse = await axios.get('https://google.com', { timeout: 5000 });
+      logMessage('Internet verbinding OK');
+    } catch (error) {
+      throw new Error('Geen internet verbinding beschikbaar');
+    }
+    
+    const response = await axios.get(API_URL, { 
+      headers: API_HEADERS,
+      timeout: 30000 // 30 seconden timeout
+    });
+    
     if (!Array.isArray(response.data)) {
       throw new Error(`Réponse API inattendue: ${typeof response.data}`);
     }
+    
     const dir = path.dirname(DATA_FILE);
     if (!fs.existsSync(dir)) {
       fs.mkdirSync(dir, { recursive: true });
+      logMessage(`Data directory aangemaakt: ${dir}`);
     }
+    
+    // Backup van oude data
+    if (fs.existsSync(DATA_FILE)) {
+      const backupFile = DATA_FILE.replace('.json', `_backup_${Date.now()}.json`);
+      fs.copyFileSync(DATA_FILE, backupFile);
+      logMessage(`Backup gemaakt: ${backupFile}`);
+    }
+    
+    // Nieuwe data schrijven
     fs.writeFileSync(DATA_FILE, JSON.stringify(response.data, null, 2));
-    console.log(`Écriture de ${response.data.length} membres dans: ${DATA_FILE}`);
+    
+    logMessage(`Synchronisation réussie: ${response.data.length} membres synchronisés`);
+    logMessage('=== Synchronisation PEPsup terminée ===');
+    
     return response.data.length;
   } catch (error) {
+    let errorMessage = 'Erreur de synchronisation inconnue';
+    
     if (error.response) {
-      throw new Error(`Erreur API ${error.response.status}: ${error.response.data?.message || JSON.stringify(error.response.data)}`);
+      errorMessage = `Erreur API ${error.response.status}: ${error.response.data?.message || JSON.stringify(error.response.data)}`;
     } else if (error.request) {
-      throw new Error("Pas de réponse du serveur PEPsup - Vérifiez votre connexion");
+      errorMessage = "Pas de réponse du serveur PEPsup - Vérifiez votre connexion";
     } else {
-      throw new Error(`Erreur de synchronisation: ${error.message}`);
+      errorMessage = `Erreur de synchronisation: ${error.message}`;
     }
+    
+    logMessage(`ERREUR: ${errorMessage}`);
+    throw new Error(errorMessage);
   }
+}
+
+// Functie voor command line uitvoering
+async function runSync() {
+  try {
+    logMessage('Script gestart vanuit command line');
+    const count = await syncMembers();
+    logMessage(`Script voltooid: ${count} leden gesynchroniseerd`);
+    process.exit(0);
+  } catch (error) {
+    logMessage(`FOUT: ${error.message}`);
+    process.exit(1);
+  }
+}
+
+// Check of dit script direct uitgevoerd wordt
+if (require.main === module) {
+  runSync();
 }
 
 module.exports = {
@@ -40,11 +112,13 @@ module.exports = {
   getMembers: function () {
     try {
       if (!fs.existsSync(DATA_FILE)) {
+        logMessage('Geen members.json bestand gevonden');
         return [];
       }
-      return JSON.parse(fs.readFileSync(DATA_FILE, 'utf8'));
+      const data = JSON.parse(fs.readFileSync(DATA_FILE, 'utf8'));
+      return data;
     } catch (error) {
-      console.error('Erreur lors de la lecture des membres:', error);
+      logMessage(`Fout bij lezen van members: ${error.message}`);
       return [];
     }
   }
