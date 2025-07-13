@@ -6,12 +6,12 @@ const fs = require('fs');
 const app = express();
 const PORT = process.env.PORT || 4000;
 
-// Middleware essentiel
+// Middleware
 app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Bestand van stockage
+// Bestand opslag
 const PRESENCES_FILE = path.join(__dirname, 'data', 'presences.json');
 
 // Initialisation du stockage
@@ -29,51 +29,67 @@ initStorage();
 const readPresences = () => JSON.parse(fs.readFileSync(PRESENCES_FILE));
 const writePresences = (data) => fs.writeFileSync(PRESENCES_FILE, JSON.stringify(data, null, 2));
 
-// Import routes des membres - DIT ONTBRAK!
+// Import routes des membres
 const membersRoutes = require('./routes/members');
 app.use('/members', membersRoutes);
 
-// Routes API pour les présences - AANGEPAST VOOR ADHERENTS
+// Routes API pour les présences - KRITIEKE AANPASSING
 app.post('/presences', (req, res) => {
   try {
     const { type, nom, prenom, ...additionalData } = req.body;
+    
+    // Debug logging
+    console.log('=== PRESENCE REGISTRATION DEBUG ===');
+    console.log('Request body:', req.body);
+    console.log('Type:', type);
+    console.log('Nom:', nom);
+    console.log('Prenom:', prenom);
+    console.log('Additional data:', additionalData);
     
     const presence = {
       id: Date.now().toString(),
       type,
       nom,
       prenom,
-      date: new Date().toISOString(),
-      ...additionalData
+      date: new Date().toISOString()
     };
 
-    // BELANGRIJKE LOGICA - verschillende behandeling voor adherents vs non-adherents
+    // KRITIEKE LOGICA - verschillende behandeling voor adherents vs non-adherents
     if (type === 'adherent') {
-      // Voor adherents: GEEN automatische tarif
+      // Voor adherents: ABSOLUUT GEEN automatische tarif
       presence.status = 'adherent';
-      // Alleen tarif toevoegen als expliciet meegegeven
-      if (req.body.tarif !== undefined && req.body.tarif !== null) {
-        presence.tarif = req.body.tarif;
+      
+      // EXPLICIET: Alleen toevoegen als het in de request zit EN niet null/undefined is
+      if (additionalData.tarif !== undefined && additionalData.tarif !== null) {
+        presence.tarif = additionalData.tarif;
+        console.log('Tarif expliciet toegevoegd voor adherent:', additionalData.tarif);
+      } else {
+        console.log('GEEN tarif toegevoegd aan adherent - zoals het moet zijn');
       }
-      // GEEN standaard tarif van 10 euro voor adherents
+      
+      // Geen andere fields kopiëren voor adherents
     } else if (type === 'non-adherent') {
       // Voor non-adherents: wel standaard tarif
       presence.status = 'pending';
-      presence.tarif = req.body.tarif || 10;
-      presence.methodePaiement = req.body.methodePaiement || null;
+      presence.tarif = additionalData.tarif || 10;
+      presence.methodePaiement = additionalData.methodePaiement || null;
       
-      // Ajouter les champs spécifiques aux non-adhérents
-      presence.dateNaissance = req.body.dateNaissance;
-      presence.email = req.body.email;
-      presence.telephone = req.body.telephone;
-      presence.adresse = req.body.adresse;
+      // Specifieke fields voor non-adherents
+      presence.dateNaissance = additionalData.dateNaissance;
+      presence.email = additionalData.email;
+      presence.telephone = additionalData.telephone;
+      presence.adresse = additionalData.adresse;
+      
+      console.log('Tarif toegevoegd voor non-adherent:', presence.tarif);
     }
+    
+    console.log('Final presence object:', presence);
+    console.log('=== END DEBUG ===');
     
     const presences = readPresences();
     presences.push(presence);
     writePresences(presences);
     
-    console.log('Nieuwe presence geregistreerd:', presence);
     res.status(201).json({ success: true, presence });
   } catch (error) {
     console.error('Fout POST /presences:', error);
@@ -110,7 +126,7 @@ app.get('/presences/:id', (req, res) => {
   }
 });
 
-// Valider une présence (voor non-adherents)
+// Valider une présence
 app.post('/presences/:id/valider', (req, res) => {
   try {
     const { id } = req.params;
@@ -136,7 +152,7 @@ app.post('/presences/:id/valider', (req, res) => {
   }
 });
 
-// Ajouter un tarif à un adhérent indien nodig
+// Ajouter un tarif à un adhérent
 app.post('/presences/:id/ajouter-tarif', (req, res) => {
   try {
     const { id } = req.params;
@@ -149,7 +165,6 @@ app.post('/presences/:id/ajouter-tarif', (req, res) => {
       return res.status(404).json({ success: false, error: 'Présence non trouvée' });
     }
     
-    // Ajouter ou modifier le tarif
     presences[index].tarif = montant || 0;
     presences[index].dateModificationTarif = new Date().toISOString();
     
@@ -185,9 +200,6 @@ app.post('/presences/:id/annuler', (req, res) => {
     res.status(500).json({ success: false, error: 'Server fout' });
   }
 });
-
-// VERWIJDER de simulatie route die altijd true retourneert
-// Deze route wordt nu door routes/members.js afgehandeld
 
 // Route explicite voor admin
 app.get('/admin', (req, res) => {

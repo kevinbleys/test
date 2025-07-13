@@ -12,7 +12,6 @@ export default function MemberCheck() {
   const [benevoleCalled, setBenevoleCalled] = useState(false);
   const navigate = useNavigate();
 
-  // Pré-charger les sons au chargement du composant
   useEffect(() => {
     preloadSounds();
   }, []);
@@ -33,20 +32,23 @@ export default function MemberCheck() {
       if (checkResponse.data.success) {
         // Membre valide et payé
         setMessage(checkResponse.data.message);
-        
-        // Jouer le son de succès (optionnel)
         playSuccessSound();
         
-        // Étape 2: Enregistrement de la présence SANS tarif pour les adhérents valides
-        const presenceResponse = await axios.post('http://localhost:4000/presences', {
+        // Étape 2: Enregistrement de la présence - KRITIEKE AANPASSING
+        // ABSOLUUT GEEN EXTRA PARAMETERS voor adherents
+        const presenceData = {
           type: 'adherent',
-          nom,
-          prenom
-          // BELANGRIJK: Geen tarif parameter voor adherents!
-        });
+          nom: nom.trim(),
+          prenom: prenom.trim()
+          // EXPLICIET: Geen tarif, geen extra fields
+        };
+        
+        console.log('Sending presence data for adherent:', presenceData);
+        
+        const presenceResponse = await axios.post('http://localhost:4000/presences', presenceData);
 
         if (presenceResponse.data.success) {
-          // Redirection après succès
+          console.log('Presence saved successfully:', presenceResponse.data.presence);
           setTimeout(() => {
             navigate('/confirmation');
           }, 2000);
@@ -55,11 +57,8 @@ export default function MemberCheck() {
           playBuzzerSound();
         }
       } else {
-        // Membre non valide ou non payé - JOUER LE BUZZER
-        const errorMessage = checkResponse.data.error || "Adhésion non valide";
-        setError(errorMessage);
-        
-        // Jouer le son buzzer pour les erreurs
+        // Membre non valide ou non payé
+        setError(checkResponse.data.error || "Adhésion non valide");
         playBuzzerSound();
       }
 
@@ -76,8 +75,6 @@ export default function MemberCheck() {
       }
       
       setError(errorMessage);
-      
-      // Jouer le son buzzer pour toutes les erreurs
       playBuzzerSound();
     } finally {
       setLoading(false);
@@ -85,34 +82,23 @@ export default function MemberCheck() {
   };
 
   const handleAppelerBenevole = () => {
-    // Jouer le son de cloche
     playBellSound();
-    
-    // Marquer que le bénévole a été appelé
     setBenevoleCalled(true);
-    
-    // Afficher un message de confirmation
     setMessage("Un bénévole va arriver pour vous aider !");
     
-    // Effacer le message après 5 secondes
     setTimeout(() => {
-      if (benevoleCalled) {
-        setMessage('');
-        setBenevoleCalled(false);
-      }
+      setMessage('');
+      setBenevoleCalled(false);
     }, 5000);
   };
 
   const handleRetourAccueil = () => {
-    // Effacer les champs et messages avant de revenir à l'accueil
     setNom('');
     setPrenom('');
     setError('');
     setMessage('');
     setLoading(false);
     setBenevoleCalled(false);
-    
-    // Naviguer vers la page d'accueil
     navigate('/');
   };
 
