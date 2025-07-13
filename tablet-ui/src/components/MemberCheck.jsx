@@ -42,7 +42,7 @@ export default function MemberCheck() {
           type: 'adherent',
           nom,
           prenom
-          // Pas de tarif spécifié - le membre valide n'a pas besoin de payer
+          // BELANGRIJK: Geen tarif parameter voor adherents!
         });
 
         if (presenceResponse.data.success) {
@@ -52,7 +52,7 @@ export default function MemberCheck() {
           }, 2000);
         } else {
           setError("Erreur lors de l'enregistrement de la présence");
-          playBuzzerSound(); // Jouer le son d'erreur
+          playBuzzerSound();
         }
       } else {
         // Membre non valide ou non payé - JOUER LE BUZZER

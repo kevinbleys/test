@@ -54265,7 +54265,7 @@ function MemberCheck() {
           type: 'adherent',
           nom,
           prenom
-          // Pas de tarif spécifié - le membre valide n'a pas besoin de payer
+          // BELANGRIJK: Geen tarif parameter voor adherents!
         });
         if (presenceResponse.data.success) {
           // Redirection après succès
@@ -54274,7 +54274,7 @@ function MemberCheck() {
           }, 2000);
         } else {
           setError("Erreur lors de l'enregistrement de la présence");
-          (0,_utils_soundUtils__WEBPACK_IMPORTED_MODULE_1__.playBuzzerSound)(); // Jouer le son d'erreur
+          (0,_utils_soundUtils__WEBPACK_IMPORTED_MODULE_1__.playBuzzerSound)();
         }
       } else {
         // Membre non valide ou non payé - JOUER LE BUZZER
@@ -55843,7 +55843,7 @@ if (typeof Promise !== 'undefined' && $ReactRefreshCurrentExports$ instanceof Pr
 /******/ 	
 /******/ 	/* webpack/runtime/getFullHash */
 /******/ 	(() => {
-/******/ 		__webpack_require__.h = () => ("cf177dd583b9f25ec4eb")
+/******/ 		__webpack_require__.h = () => ("ea34d649ba3393566ca2")
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/global */

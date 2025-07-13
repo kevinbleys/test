@@ -11,7 +11,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Fichier de stockage
+// Bestand van stockage
 const PRESENCES_FILE = path.join(__dirname, 'data', 'presences.json');
 
 // Initialisation du stockage
@@ -29,7 +29,7 @@ initStorage();
 const readPresences = () => JSON.parse(fs.readFileSync(PRESENCES_FILE));
 const writePresences = (data) => fs.writeFileSync(PRESENCES_FILE, JSON.stringify(data, null, 2));
 
-// Importer les routes des membres
+// Import routes des membres
 const membersRoutes = require('./routes/members');
 app.use('/members', membersRoutes);
 
@@ -49,13 +49,13 @@ app.post('/presences', (req, res) => {
 
     // Logique différenciée selon le type
     if (type === 'adherent') {
-      // Pour les adhérents valides - pas de tarif obligatoire
+      // Pour les adhérents valides - PAS de tarif par défaut
       presence.status = 'adherent';
-      // Pas de tarif par défaut pour les adhérents valides
-      // Si un tarif est fourni, on l'utilise, sinon on ne met rien
-      if (req.body.tarif !== undefined) {
+      // Alleen toevoegen als expliciet meegegeven
+      if (req.body.tarif !== undefined && req.body.tarif !== null) {
         presence.tarif = req.body.tarif;
       }
+      // Geen automatische tarif van 10 voor adherents
     } else if (type === 'non-adherent') {
       // Pour les non-adhérents - tarif obligatoire (défaut 10)
       presence.status = 'pending';
@@ -73,11 +73,11 @@ app.post('/presences', (req, res) => {
     presences.push(presence);
     writePresences(presences);
     
-    console.log('Nouvelle présence enregistrée:', presence);
+    console.log('Nieuwe presence geregistreerd:', presence);
     res.status(201).json({ success: true, presence });
   } catch (error) {
-    console.error('Erreur POST /presences:', error);
-    res.status(500).json({ success: false, error: 'Erreur serveur' });
+    console.error('Fout POST /presences:', error);
+    res.status(500).json({ success: false, error: 'Server fout' });
   }
 });
 
@@ -87,8 +87,8 @@ app.get('/presences', (req, res) => {
     const presences = readPresences();
     res.json({ success: true, presences });
   } catch (error) {
-    console.error('Erreur GET /presences:', error);
-    res.status(500).json({ success: false, error: 'Erreur serveur' });
+    console.error('Fout GET /presences:', error);
+    res.status(500).json({ success: false, error: 'Server fout' });
   }
 });
 
@@ -105,8 +105,8 @@ app.get('/presences/:id', (req, res) => {
     
     res.json({ success: true, presence });
   } catch (error) {
-    console.error('Erreur GET /presences/:id:', error);
-    res.status(500).json({ success: false, error: 'Erreur serveur' });
+    console.error('Fout GET /presences/:id:', error);
+    res.status(500).json({ success: false, error: 'Server fout' });
   }
 });
 
@@ -133,8 +133,8 @@ app.post('/presences/:id/valider', (req, res) => {
     
     res.json({ success: true, presence: presences[index] });
   } catch (error) {
-    console.error('Erreur validation:', error);
-    res.status(500).json({ success: false, error: 'Erreur serveur' });
+    console.error('Fout validation:', error);
+    res.status(500).json({ success: false, error: 'Server fout' });
   }
 });
 
@@ -159,8 +159,8 @@ app.post('/presences/:id/ajouter-tarif', (req, res) => {
     
     res.json({ success: true, presence: presences[index] });
   } catch (error) {
-    console.error('Erreur ajout tarif:', error);
-    res.status(500).json({ success: false, error: 'Erreur serveur' });
+    console.error('Fout ajout tarif:', error);
+    res.status(500).json({ success: false, error: 'Server fout' });
   }
 });
 
@@ -183,8 +183,8 @@ app.post('/presences/:id/annuler', (req, res) => {
     
     res.json({ success: true, presence: presences[index] });
   } catch (error) {
-    console.error('Erreur annulation:', error);
-    res.status(500).json({ success: false, error: 'Erreur serveur' });
+    console.error('Fout annulation:', error);
+    res.status(500).json({ success: false, error: 'Server fout' });
   }
 });
 
@@ -195,6 +195,6 @@ app.get('/admin', (req, res) => {
 
 // Démarrer le serveur
 app.listen(PORT, () => {
-  console.log(`Serveur backend actif sur http://localhost:${PORT}`);
-  console.log(`Interface admin sur http://localhost:${PORT}/admin`);
+  console.log(`Backend server actief op http://localhost:${PORT}`);
+  console.log(`Admin interface op http://localhost:${PORT}/admin`);
 });
