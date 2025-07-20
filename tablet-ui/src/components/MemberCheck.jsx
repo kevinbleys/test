@@ -24,31 +24,52 @@ export default function MemberCheck() {
     setBenevoleCalled(false);
 
     try {
+      console.log('=== STARTING MEMBER VERIFICATION ===');
+      console.log('Checking member:', nom, prenom);
+      
       // Étape 1: Vérification de l'adhésion
       const checkResponse = await axios.get('http://localhost:4000/members/check', {
         params: { nom, prenom }
       });
+
+      console.log('Member check response:', checkResponse.data);
 
       if (checkResponse.data.success) {
         // Membre valide et payé
         setMessage(checkResponse.data.message);
         playSuccessSound();
         
-        // Étape 2: Enregistrement de la présence - KRITIEKE AANPASSING
-        // ABSOLUUT GEEN EXTRA PARAMETERS voor adherents
+        console.log('=== MEMBER VALIDATED - REGISTERING PRESENCE ===');
+        
+        // Étape 2: KRITIEKE AANPASSING - Minimale data voor adherents
         const presenceData = {
           type: 'adherent',
           nom: nom.trim(),
           prenom: prenom.trim()
-          // EXPLICIET: Geen tarif, geen extra fields
+          // EXPLICIET: Geen andere velden voor adherents
         };
         
-        console.log('Sending presence data for adherent:', presenceData);
+        console.log('Sending presence data:', presenceData);
         
-        const presenceResponse = await axios.post('http://localhost:4000/presences', presenceData);
+        const presenceResponse = await axios.post('http://localhost:4000/presences', presenceData, {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+
+        console.log('Presence response:', presenceResponse.data);
 
         if (presenceResponse.data.success) {
-          console.log('Presence saved successfully:', presenceResponse.data.presence);
+          console.log('=== PRESENCE REGISTERED SUCCESSFULLY ===');
+          console.log('Final presence object:', presenceResponse.data.presence);
+          
+          // Check if tarif was wrongly added
+          if (presenceResponse.data.presence.tarif !== undefined) {
+            console.error('ERROR: Tarif was added to adherent!', presenceResponse.data.presence.tarif);
+          } else {
+            console.log('SUCCESS: No tarif field in adherent presence');
+          }
+          
           setTimeout(() => {
             navigate('/confirmation');
           }, 2000);
@@ -58,12 +79,15 @@ export default function MemberCheck() {
         }
       } else {
         // Membre non valide ou non payé
+        console.log('Member validation failed:', checkResponse.data.error);
         setError(checkResponse.data.error || "Adhésion non valide");
         playBuzzerSound();
       }
 
     } catch (error) {
-      console.error('Erreur:', error);
+      console.error('=== ERROR IN VERIFICATION ===');
+      console.error('Error details:', error);
+      
       let errorMessage = "Erreur de connexion";
       
       if (error.response?.status === 404) {

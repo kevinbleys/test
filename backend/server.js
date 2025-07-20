@@ -36,70 +36,75 @@ app.use('/members', membersRoutes);
 // Routes API pour les présences - DEFINITIEVE OPLOSSING
 app.post('/presences', (req, res) => {
   try {
-    const { type, nom, prenom, email, telephone, dateNaissance, adresse, methodePaiement } = req.body;
+    // EXPLICIETE destructuring - geen spread operator
+    const type = req.body.type;
+    const nom = req.body.nom;
+    const prenom = req.body.prenom;
     
-    // EXPLICIETE debug logging
-    console.log('=== PRESENCE REGISTRATION DEBUG ===');
-    console.log('Request body:', req.body);
+    // DEBUG logging
+    console.log('=== PRESENCE REGISTRATION FIXED ===');
     console.log('Type:', type);
     console.log('Nom:', nom);
     console.log('Prenom:', prenom);
+    console.log('Raw request body:', req.body);
     
+    // Base presence object
     const presence = {
       id: Date.now().toString(),
-      type,
-      nom,
-      prenom,
+      type: type,
+      nom: nom,
+      prenom: prenom,
       date: new Date().toISOString()
     };
 
-    // KRITIEKE LOGICA - EXPLICIETE behandeling
+    // KRITIEKE LOGICA - EXPLICIETE scheiding
     if (type === 'adherent') {
-      // Voor adherents: EXPLICIET GEEN tarif
+      // Voor adherents: ABSOLUUT GEEN tarif veld
       presence.status = 'adherent';
       
-      // EXPLICIET: Controleren of er geen tarif in de request zit
-      if (req.body.hasOwnProperty('tarif')) {
-        console.log('WARNING: Tarif found in adherent request, but will NOT be added');
-      }
-      
-      // EXPLICIET: Geen enkele extra field toevoegen voor adherents
-      console.log('ADHERENT: Geen tarif toegevoegd - correct!');
+      console.log('=== ADHERENT DETECTED ===');
+      console.log('NO TARIF WILL BE ADDED');
+      console.log('Final presence object for adherent:', presence);
       
     } else if (type === 'non-adherent') {
-      // Voor non-adherents: wel tarif en extra fields
+      // Voor non-adherents: wel tarif
       presence.status = 'pending';
       presence.tarif = req.body.tarif || 10;
-      presence.methodePaiement = methodePaiement || null;
       
-      // Extra fields voor non-adherents
-      if (dateNaissance) presence.dateNaissance = dateNaissance;
-      if (email) presence.email = email;
-      if (telephone) presence.telephone = telephone;
-      if (adresse) presence.adresse = adresse;
+      // Extra velden voor non-adherents
+      if (req.body.email) presence.email = req.body.email;
+      if (req.body.telephone) presence.telephone = req.body.telephone;
+      if (req.body.dateNaissance) presence.dateNaissance = req.body.dateNaissance;
+      if (req.body.adresse) presence.adresse = req.body.adresse;
+      if (req.body.methodePaiement) presence.methodePaiement = req.body.methodePaiement;
       
-      console.log('NON-ADHERENT: Tarif toegevoegd:', presence.tarif);
+      console.log('=== NON-ADHERENT DETECTED ===');
+      console.log('Tarif added:', presence.tarif);
+      console.log('Final presence object for non-adherent:', presence);
+      
     } else {
-      // Onbekend type
-      console.log('ERROR: Unknown type:', type);
-      return res.status(400).json({ success: false, error: 'Type inconnu' });
+      console.log('=== UNKNOWN TYPE ===');
+      console.log('Type received:', type);
+      return res.status(400).json({ success: false, error: 'Type inconnu: ' + type });
     }
     
-    console.log('Final presence object:', presence);
-    console.log('=== END DEBUG ===');
+    console.log('=== SAVING TO FILE ===');
     
     const presences = readPresences();
     presences.push(presence);
     writePresences(presences);
     
+    console.log('=== SAVED SUCCESSFULLY ===');
+    
     res.status(201).json({ success: true, presence });
   } catch (error) {
-    console.error('Fout POST /presences:', error);
-    res.status(500).json({ success: false, error: 'Server fout' });
+    console.error('=== ERROR IN /presences ===');
+    console.error('Error details:', error);
+    res.status(500).json({ success: false, error: 'Server fout: ' + error.message });
   }
 });
 
-// Récupérer toutes les présences
+// GET toutes les présences
 app.get('/presences', (req, res) => {
   try {
     const presences = readPresences();
@@ -110,7 +115,7 @@ app.get('/presences', (req, res) => {
   }
 });
 
-// Récupérer une présence spécifique par ID
+// GET présence spécifique par ID
 app.get('/presences/:id', (req, res) => {
   try {
     const { id } = req.params;
@@ -142,7 +147,12 @@ app.post('/presences/:id/valider', (req, res) => {
     }
     
     presences[index].status = 'Payé';
-    presences[index].tarif = montant || presences[index].tarif;
+    
+    // Alleen tarif toevoegen als er een montant is
+    if (montant !== undefined && montant !== null) {
+      presences[index].tarif = montant;
+    }
+    
     presences[index].dateValidation = new Date().toISOString();
     
     writePresences(presences);
@@ -154,7 +164,7 @@ app.post('/presences/:id/valider', (req, res) => {
   }
 });
 
-// Ajouter un tarif à un adhérent
+// Ajouter tarif aan adherent (indien nodig)
 app.post('/presences/:id/ajouter-tarif', (req, res) => {
   try {
     const { id } = req.params;
@@ -179,7 +189,7 @@ app.post('/presences/:id/ajouter-tarif', (req, res) => {
   }
 });
 
-// Annuler une présence
+// Annuler présence
 app.post('/presences/:id/annuler', (req, res) => {
   try {
     const { id } = req.params;
@@ -203,12 +213,12 @@ app.post('/presences/:id/annuler', (req, res) => {
   }
 });
 
-// Route explicite voor admin
+// Admin route
 app.get('/admin', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'admin.html'));
 });
 
-// Démarrer le serveur
+// Server starten
 app.listen(PORT, () => {
   console.log(`Backend server actief op http://localhost:${PORT}`);
   console.log(`Admin interface op http://localhost:${PORT}/admin`);
