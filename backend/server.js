@@ -33,18 +33,17 @@ const writePresences = (data) => fs.writeFileSync(PRESENCES_FILE, JSON.stringify
 const membersRoutes = require('./routes/members');
 app.use('/members', membersRoutes);
 
-// Routes API pour les présences - KRITIEKE AANPASSING
+// Routes API pour les présences - DEFINITIEVE OPLOSSING
 app.post('/presences', (req, res) => {
   try {
-    const { type, nom, prenom, ...additionalData } = req.body;
+    const { type, nom, prenom, email, telephone, dateNaissance, adresse, methodePaiement } = req.body;
     
-    // Debug logging
+    // EXPLICIETE debug logging
     console.log('=== PRESENCE REGISTRATION DEBUG ===');
     console.log('Request body:', req.body);
     console.log('Type:', type);
     console.log('Nom:', nom);
     console.log('Prenom:', prenom);
-    console.log('Additional data:', additionalData);
     
     const presence = {
       id: Date.now().toString(),
@@ -54,33 +53,36 @@ app.post('/presences', (req, res) => {
       date: new Date().toISOString()
     };
 
-    // KRITIEKE LOGICA - verschillende behandeling voor adherents vs non-adherents
+    // KRITIEKE LOGICA - EXPLICIETE behandeling
     if (type === 'adherent') {
-      // Voor adherents: ABSOLUUT GEEN automatische tarif
+      // Voor adherents: EXPLICIET GEEN tarif
       presence.status = 'adherent';
       
-      // EXPLICIET: Alleen toevoegen als het in de request zit EN niet null/undefined is
-      if (additionalData.tarif !== undefined && additionalData.tarif !== null) {
-        presence.tarif = additionalData.tarif;
-        console.log('Tarif expliciet toegevoegd voor adherent:', additionalData.tarif);
-      } else {
-        console.log('GEEN tarif toegevoegd aan adherent - zoals het moet zijn');
+      // EXPLICIET: Controleren of er geen tarif in de request zit
+      if (req.body.hasOwnProperty('tarif')) {
+        console.log('WARNING: Tarif found in adherent request, but will NOT be added');
       }
       
-      // Geen andere fields kopiëren voor adherents
+      // EXPLICIET: Geen enkele extra field toevoegen voor adherents
+      console.log('ADHERENT: Geen tarif toegevoegd - correct!');
+      
     } else if (type === 'non-adherent') {
-      // Voor non-adherents: wel standaard tarif
+      // Voor non-adherents: wel tarif en extra fields
       presence.status = 'pending';
-      presence.tarif = additionalData.tarif || 10;
-      presence.methodePaiement = additionalData.methodePaiement || null;
+      presence.tarif = req.body.tarif || 10;
+      presence.methodePaiement = methodePaiement || null;
       
-      // Specifieke fields voor non-adherents
-      presence.dateNaissance = additionalData.dateNaissance;
-      presence.email = additionalData.email;
-      presence.telephone = additionalData.telephone;
-      presence.adresse = additionalData.adresse;
+      // Extra fields voor non-adherents
+      if (dateNaissance) presence.dateNaissance = dateNaissance;
+      if (email) presence.email = email;
+      if (telephone) presence.telephone = telephone;
+      if (adresse) presence.adresse = adresse;
       
-      console.log('Tarif toegevoegd voor non-adherent:', presence.tarif);
+      console.log('NON-ADHERENT: Tarif toegevoegd:', presence.tarif);
+    } else {
+      // Onbekend type
+      console.log('ERROR: Unknown type:', type);
+      return res.status(400).json({ success: false, error: 'Type inconnu' });
     }
     
     console.log('Final presence object:', presence);

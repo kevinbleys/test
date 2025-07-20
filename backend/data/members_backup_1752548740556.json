@@ -2035,7 +2035,7 @@
   },
   {
     "membreId": 587812,
-    "currentPictureUrl": "https://cdn.pepsup.com/resources/images/MEMBERS/000/058/781/587812/IMAGE/587812_s.png?1752617066851",
+    "currentPictureUrl": "/resources/images/MEMBERS/000/058/781/587812/IMAGE/587812_s.png?1693309556975",
     "firstname": "Julia",
     "lastname": "AUZERAL",
     "dateOfBirth": "19/02/2016",
@@ -2058,7 +2058,7 @@
     "dateLastConnexion": null,
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "À payer",
+    "joinFileStatusLabel": "En cours de paiement",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -2105,7 +2105,7 @@
   },
   {
     "membreId": 587811,
-    "currentPictureUrl": "https://cdn.pepsup.com/resources/images/MEMBERS/000/058/781/587811/IMAGE/587811_s.png?1752617009914",
+    "currentPictureUrl": null,
     "firstname": "Nathan",
     "lastname": "AUZERAL",
     "dateOfBirth": "26/07/2018",
@@ -2125,10 +2125,10 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "15/07/2025, 21:56",
+    "dateLastConnexion": "09/12/2024, 14:21",
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "À payer",
+    "joinFileStatusLabel": "En cours de paiement",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "Gestionnaire de 1 contact : Julia AUZERAL",
@@ -2476,25 +2476,17 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "18/07/2025, 08:24",
-    "emailValid": true,
+    "dateLastConnexion": null,
+    "emailValid": false,
     "notificationActive": true,
     "joinFileStatusLabel": null,
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
-    "childsLabel": "Gestionnaire de 2 contacts : Margot Labadens, Mayline Labadens",
+    "childsLabel": "Gestionnaire de 1 contact : Margot Labadens",
     "childMembers": [
       {
         "membreId": 587766,
         "firstname": "Margot",
-        "lastname": "Labadens",
-        "phoneNumber": null,
-        "mobilePhoneNumber": "+33684528245",
-        "email": "melyssa.b@hotmail.fr"
-      },
-      {
-        "membreId": 1113770,
-        "firstname": "Mayline",
         "lastname": "Labadens",
         "phoneNumber": null,
         "mobilePhoneNumber": "+33684528245",
@@ -2506,7 +2498,7 @@
     "groups": [],
     "categories": [
       {
-        "label": "Parent"
+        "label": "Nouveau contact (adhésion)"
       }
     ],
     "roles": [],
@@ -3477,7 +3469,7 @@
     "dateLastConnexion": null,
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "Payé",
+    "joinFileStatusLabel": "À payer",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -5367,7 +5359,7 @@
     "firstname": "Olivier",
     "lastname": "Brasme",
     "dateOfBirth": "19/07/1981",
-    "age": 44,
+    "age": 43,
     "gender": "homme",
     "address": "90B route de  la Baronniere",
     "additional": null,
@@ -5650,7 +5642,7 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "19/07/2025, 17:37",
+    "dateLastConnexion": "12/07/2025, 12:01",
     "emailValid": true,
     "notificationActive": true,
     "joinFileStatusLabel": null,
@@ -7236,7 +7228,7 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "16/07/2025, 10:16",
+    "dateLastConnexion": "07/07/2025, 07:08",
     "emailValid": true,
     "notificationActive": true,
     "joinFileStatusLabel": "Payé",
@@ -10198,10 +10190,10 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "19/07/2025, 14:19",
+    "dateLastConnexion": "09/07/2025, 10:02",
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "À payer",
+    "joinFileStatusLabel": "En cours de paiement",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "Gestionnaire de 1 contact : augustine cremades",
@@ -10624,10 +10616,10 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "18/07/2025, 13:20",
+    "dateLastConnexion": "06/05/2025, 11:04",
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "À payer",
+    "joinFileStatusLabel": "Payé",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -13257,7 +13249,7 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "20/07/2025, 15:45",
+    "dateLastConnexion": "14/07/2025, 12:37",
     "emailValid": true,
     "notificationActive": true,
     "joinFileStatusLabel": null,
@@ -13555,7 +13547,7 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "20/07/2025, 15:37",
+    "dateLastConnexion": "04/07/2025, 14:15",
     "emailValid": true,
     "notificationActive": true,
     "joinFileStatusLabel": "Payé",
@@ -13578,7 +13570,7 @@
     "customFields": [
       {
         "label": "documents utiles",
-        "value": "https://www.pepsup.com/resources/documents/MEMBERS/000/047/706/477068/MEMBRE_CLUB_CUSTOM_FIELD/4309379.pdf?1752674455000"
+        "value": "https://www.pepsup.com/resources/documents/MEMBERS/000/047/706/477068/MEMBRE_CLUB_CUSTOM_FIELD/4309379.pdf?1720524211000"
       },
       {
         "label": "Ville de naissance",
@@ -16837,7 +16829,7 @@
     "dateLastConnexion": "17/05/2025, 13:29",
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "Payé",
+    "joinFileStatusLabel": "En cours de paiement",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -19470,76 +19462,6 @@
     ]
   },
   {
-    "membreId": 1113770,
-    "currentPictureUrl": "https://cdn.pepsup.com/resources/images/MEMBERS/000/111/377/1113770/IMAGE/1113770_s.png?1752587002497",
-    "firstname": "Mayline",
-    "lastname": "Labadens",
-    "dateOfBirth": "26/01/2016",
-    "age": 9,
-    "gender": "femme",
-    "address": "580 Route D’Espagne",
-    "additional": null,
-    "postalCode": "65410",
-    "town": "Beyrede Jumet",
-    "country": "France",
-    "phoneNumber": null,
-    "mobilePhoneNumber": "+33684528245",
-    "email": "melyssa.b@hotmail.fr",
-    "allergy": null,
-    "personToContact": "Bard Mélissa",
-    "personToContactPhoneNumber": "+33684528245",
-    "corporateName": null,
-    "office": null,
-    "account": false,
-    "dateLastConnexion": null,
-    "emailValid": true,
-    "notificationActive": true,
-    "joinFileStatusLabel": "À payer",
-    "joinFileLastPaymentType": null,
-    "joinFileLastPaymentDate": null,
-    "childsLabel": "",
-    "childMembers": [],
-    "parentsLabel": "Géré par 1 contact : Mélissa Bard",
-    "parentMembers": [
-      {
-        "membreId": 587764,
-        "firstname": "Mélissa",
-        "lastname": "Bard",
-        "phoneNumber": null,
-        "mobilePhoneNumber": null,
-        "email": "melyssa.b@hotmail.fr"
-      }
-    ],
-    "groups": [],
-    "categories": [
-      {
-        "label": "Adhérent"
-      }
-    ],
-    "roles": [],
-    "medicalCertificateUrl": null,
-    "dateMedicalCertificate": null,
-    "licence": null,
-    "customFields": [
-      {
-        "label": "documents utiles",
-        "value": null
-      },
-      {
-        "label": "Ville de naissance",
-        "value": "Tarbes"
-      },
-      {
-        "label": "Pays de naissance",
-        "value": "France"
-      },
-      {
-        "label": "Nationalité",
-        "value": "Française"
-      }
-    ]
-  },
-  {
     "membreId": 505922,
     "currentPictureUrl": null,
     "firstname": "Marion",
@@ -19634,7 +19556,7 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "19/07/2025, 18:48",
+    "dateLastConnexion": "10/07/2025, 15:30",
     "emailValid": true,
     "notificationActive": true,
     "joinFileStatusLabel": null,
@@ -27399,7 +27321,7 @@
     "dateLastConnexion": null,
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "À payer",
+    "joinFileStatusLabel": null,
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -27418,7 +27340,7 @@
     "groups": [],
     "categories": [
       {
-        "label": "Adhérent"
+        "label": "Ancien adhérent"
       }
     ],
     "roles": [],
@@ -27606,10 +27528,10 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "19/07/2025, 23:11",
+    "dateLastConnexion": "22/01/2025, 17:29",
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "À payer",
+    "joinFileStatusLabel": "Payé",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "Gestionnaire de 3 contacts : Manon Neubert, Robin Neubert, Manon Neubert",
@@ -30127,7 +30049,7 @@
     "firstname": "Matéo",
     "lastname": "Poirier",
     "dateOfBirth": "16/07/2016",
-    "age": 9,
+    "age": 8,
     "gender": "homme",
     "address": "Léchan",
     "additional": null,
@@ -30745,7 +30667,7 @@
     "firstname": "Kymani",
     "lastname": "Pouget",
     "dateOfBirth": "16/07/2019",
-    "age": 6,
+    "age": 5,
     "gender": "homme",
     "address": "7 impasse du ferroir",
     "additional": null,
@@ -33380,23 +33302,14 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "20/07/2025, 15:05",
+    "dateLastConnexion": "13/07/2025, 17:08",
     "emailValid": true,
     "notificationActive": true,
     "joinFileStatusLabel": "En cours de paiement",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
-    "childsLabel": "Gestionnaire de 1 contact : Morgane Taillandy",
-    "childMembers": [
-      {
-        "membreId": 599401,
-        "firstname": "Morgane",
-        "lastname": "Taillandy",
-        "phoneNumber": "+33761832568",
-        "mobilePhoneNumber": "+33630942885",
-        "email": "morganetaillandy@yahoo.fr"
-      }
-    ],
+    "childsLabel": "",
+    "childMembers": [],
     "parentsLabel": "",
     "parentMembers": [],
     "groups": [],
@@ -33860,7 +33773,7 @@
     "dateLastConnexion": "14/07/2025, 12:43",
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "À payer",
+    "joinFileStatusLabel": "Payé",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -35228,7 +35141,7 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "20/07/2025, 14:53",
+    "dateLastConnexion": "10/07/2025, 15:55",
     "emailValid": true,
     "notificationActive": true,
     "joinFileStatusLabel": "Payé",
@@ -36063,7 +35976,7 @@
     "firstname": "Flavie",
     "lastname": "soulans",
     "dateOfBirth": "20/07/2016",
-    "age": 9,
+    "age": 8,
     "gender": "femme",
     "address": "village",
     "additional": null,
@@ -37013,20 +36926,20 @@
     "currentPictureUrl": null,
     "firstname": "Morgane",
     "lastname": "Taillandy",
-    "dateOfBirth": "23/11/1977",
-    "age": 47,
+    "dateOfBirth": "19/05/1986",
+    "age": 39,
     "gender": "femme",
-    "address": "Les plos",
-    "additional": "Les plos",
+    "address": "Les Plos",
+    "additional": null,
     "postalCode": "65410",
-    "town": "Ilhet",
+    "town": "ILHET",
     "country": "France",
-    "phoneNumber": "+33761832568",
+    "phoneNumber": null,
     "mobilePhoneNumber": "+33630942885",
     "email": "morganetaillandy@yahoo.fr",
     "allergy": null,
-    "personToContact": "Rousseau emmanuel",
-    "personToContactPhoneNumber": "+33761832568",
+    "personToContact": "Emmanuel Rousseau",
+    "personToContactPhoneNumber": "+33674820684",
     "corporateName": null,
     "office": null,
     "account": true,
@@ -37038,17 +36951,8 @@
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
     "childMembers": [],
-    "parentsLabel": "Géré par 1 contact : Emmanuel Rousseau",
-    "parentMembers": [
-      {
-        "membreId": 599404,
-        "firstname": "Emmanuel",
-        "lastname": "Rousseau",
-        "phoneNumber": null,
-        "mobilePhoneNumber": "+33761832568",
-        "email": "fleursmales@wanadoo.fr"
-      }
-    ],
+    "parentsLabel": "",
+    "parentMembers": [],
     "groups": [],
     "categories": [
       {
@@ -37066,7 +36970,7 @@
       },
       {
         "label": "Ville de naissance",
-        "value": "Nantes"
+        "value": "Paris 14è"
       },
       {
         "label": "Pays de naissance",
@@ -37074,7 +36978,7 @@
       },
       {
         "label": "Nationalité",
-        "value": "Francais"
+        "value": "Française"
       }
     ]
   },
@@ -38511,13 +38415,13 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "19/07/2025, 12:06",
+    "dateLastConnexion": "07/07/2025, 13:45",
     "emailValid": true,
     "notificationActive": true,
     "joinFileStatusLabel": "Payé",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
-    "childsLabel": "Gestionnaire de 4 contacts : Tilan Truong, Liven Truong, Mona Truong, Youen TRUONG",
+    "childsLabel": "Gestionnaire de 4 contacts : Tilan Truong, Liven Truong, Youen TRUONG, Mona Truong",
     "childMembers": [
       {
         "membreId": 484747,
@@ -38536,20 +38440,20 @@
         "email": "truong.thomas@free.fr"
       },
       {
+        "membreId": 503513,
+        "firstname": "Youen",
+        "lastname": "TRUONG",
+        "phoneNumber": null,
+        "mobilePhoneNumber": "+33782917804",
+        "email": "truong.thomas@free.fr"
+      },
+      {
         "membreId": 584965,
         "firstname": "Mona",
         "lastname": "Truong",
         "phoneNumber": "+33562394830",
         "mobilePhoneNumber": "+33678916682",
         "email": "jboing@yahoo.fr"
-      },
-      {
-        "membreId": 503513,
-        "firstname": "Youen",
-        "lastname": "TRUONG",
-        "phoneNumber": null,
-        "mobilePhoneNumber": "+33782917804",
-        "email": "yun.200765@gmail.com"
       }
     ],
     "parentsLabel": "",
@@ -38671,7 +38575,7 @@
     "country": "France",
     "phoneNumber": null,
     "mobilePhoneNumber": "+33782917804",
-    "email": "yun.200765@gmail.com",
+    "email": "truong.thomas@free.fr",
     "allergy": null,
     "personToContact": null,
     "personToContactPhoneNumber": null,
@@ -40919,7 +40823,7 @@
     "dateLastConnexion": null,
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "Payé",
+    "joinFileStatusLabel": "À payer",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",

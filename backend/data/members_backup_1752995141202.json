@@ -10201,7 +10201,7 @@
     "dateLastConnexion": "19/07/2025, 14:19",
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "À payer",
+    "joinFileStatusLabel": "En cours de paiement",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "Gestionnaire de 1 contact : augustine cremades",
@@ -10627,7 +10627,7 @@
     "dateLastConnexion": "18/07/2025, 13:20",
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "À payer",
+    "joinFileStatusLabel": "Payé",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -13257,7 +13257,7 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "20/07/2025, 15:45",
+    "dateLastConnexion": "19/07/2025, 14:17",
     "emailValid": true,
     "notificationActive": true,
     "joinFileStatusLabel": null,
@@ -13555,7 +13555,7 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "20/07/2025, 15:37",
+    "dateLastConnexion": "16/07/2025, 15:59",
     "emailValid": true,
     "notificationActive": true,
     "joinFileStatusLabel": "Payé",
@@ -27399,7 +27399,7 @@
     "dateLastConnexion": null,
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "À payer",
+    "joinFileStatusLabel": null,
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -27418,7 +27418,7 @@
     "groups": [],
     "categories": [
       {
-        "label": "Adhérent"
+        "label": "Ancien adhérent"
       }
     ],
     "roles": [],
@@ -27609,7 +27609,7 @@
     "dateLastConnexion": "19/07/2025, 23:11",
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "À payer",
+    "joinFileStatusLabel": "Payé",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "Gestionnaire de 3 contacts : Manon Neubert, Robin Neubert, Manon Neubert",
@@ -33380,23 +33380,14 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "20/07/2025, 15:05",
+    "dateLastConnexion": "13/07/2025, 17:08",
     "emailValid": true,
     "notificationActive": true,
     "joinFileStatusLabel": "En cours de paiement",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
-    "childsLabel": "Gestionnaire de 1 contact : Morgane Taillandy",
-    "childMembers": [
-      {
-        "membreId": 599401,
-        "firstname": "Morgane",
-        "lastname": "Taillandy",
-        "phoneNumber": "+33761832568",
-        "mobilePhoneNumber": "+33630942885",
-        "email": "morganetaillandy@yahoo.fr"
-      }
-    ],
+    "childsLabel": "",
+    "childMembers": [],
     "parentsLabel": "",
     "parentMembers": [],
     "groups": [],
@@ -35228,7 +35219,7 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "20/07/2025, 14:53",
+    "dateLastConnexion": "10/07/2025, 15:55",
     "emailValid": true,
     "notificationActive": true,
     "joinFileStatusLabel": "Payé",
@@ -37013,20 +37004,20 @@
     "currentPictureUrl": null,
     "firstname": "Morgane",
     "lastname": "Taillandy",
-    "dateOfBirth": "23/11/1977",
-    "age": 47,
+    "dateOfBirth": "19/05/1986",
+    "age": 39,
     "gender": "femme",
-    "address": "Les plos",
-    "additional": "Les plos",
+    "address": "Les Plos",
+    "additional": null,
     "postalCode": "65410",
-    "town": "Ilhet",
+    "town": "ILHET",
     "country": "France",
-    "phoneNumber": "+33761832568",
+    "phoneNumber": null,
     "mobilePhoneNumber": "+33630942885",
     "email": "morganetaillandy@yahoo.fr",
     "allergy": null,
-    "personToContact": "Rousseau emmanuel",
-    "personToContactPhoneNumber": "+33761832568",
+    "personToContact": "Emmanuel Rousseau",
+    "personToContactPhoneNumber": "+33674820684",
     "corporateName": null,
     "office": null,
     "account": true,
@@ -37038,17 +37029,8 @@
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
     "childMembers": [],
-    "parentsLabel": "Géré par 1 contact : Emmanuel Rousseau",
-    "parentMembers": [
-      {
-        "membreId": 599404,
-        "firstname": "Emmanuel",
-        "lastname": "Rousseau",
-        "phoneNumber": null,
-        "mobilePhoneNumber": "+33761832568",
-        "email": "fleursmales@wanadoo.fr"
-      }
-    ],
+    "parentsLabel": "",
+    "parentMembers": [],
     "groups": [],
     "categories": [
       {
@@ -37066,7 +37048,7 @@
       },
       {
         "label": "Ville de naissance",
-        "value": "Nantes"
+        "value": "Paris 14è"
       },
       {
         "label": "Pays de naissance",
@@ -37074,7 +37056,7 @@
       },
       {
         "label": "Nationalité",
-        "value": "Francais"
+        "value": "Française"
       }
     ]
   },
