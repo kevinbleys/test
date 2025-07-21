@@ -13555,7 +13555,7 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "21/07/2025, 14:53",
+    "dateLastConnexion": "20/07/2025, 15:37",
     "emailValid": true,
     "notificationActive": true,
     "joinFileStatusLabel": "Payé",
@@ -13578,7 +13578,7 @@
     "customFields": [
       {
         "label": "documents utiles",
-        "value": "https://www.pepsup.com/resources/documents/MEMBERS/000/047/706/477068/MEMBRE_CLUB_CUSTOM_FIELD/4309379.pdf?1753102464000"
+        "value": "https://www.pepsup.com/resources/documents/MEMBERS/000/047/706/477068/MEMBRE_CLUB_CUSTOM_FIELD/4309379.pdf?1752674455000"
       },
       {
         "label": "Ville de naissance",
