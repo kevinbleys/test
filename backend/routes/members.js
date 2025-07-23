@@ -1,126 +1,84 @@
-const express = require('express');
-const router = express.Router();
-const syncService = require('../sync-service');
+/*
+ *  Route / members
+ *  ─────────────────────────────────────────────────────────────
+ *  Logica:
+ *  1.  Elke persoon die als lid (“Adhérent”) in PEPsup voorkomt
+ *      wordt als geldig beschouwd – óók wanneer
+ *      ① joinFileStatusLabel ontbreekt of “À payer” is;
+ *  2.  Alleen volledig onbekende personen of “Contact extérieur”
+ *      blijven NIET-geldig en moeten via het niet-lid-formulier.
+ */
 
-// Debug functie om member status te loggen
-const logMemberStatus = (member) => {
-  console.log('=== MEMBER STATUS DEBUG ===');
-  console.log('Member:', member.firstname, member.lastname);
-  console.log('Status label:', member.joinFileStatusLabel);
-  console.log('Categories:', member.categories);
-  console.log('=== END DEBUG ===');
-};
+const express   = require('express');
+const router    = express.Router();
+const sync      = require('../sync-service');
 
-// Route spécifique pour de vérification
+/* Helper: test op lid-categorie */
+const isAdherentCategory = m =>
+  Array.isArray(m.categories) &&
+  m.categories.some(c =>
+    typeof c.label === 'string' &&
+    c.label.toLowerCase().includes('adhérent')
+  );
+
+/* Helper: normale status-labels die wél betaald betekenen */
+const paidLabels = ['payé', 'pay', 'paid', 'en cours', 'en cours de paiement'];
+
 router.get('/check', (req, res) => {
   const { nom, prenom } = req.query;
-  
   if (!nom || !prenom) {
-    return res.status(400).json({ 
-      success: false, 
-      error: "Les paramètres 'nom' et 'prenom' sont requis" 
+    return res.status(400).json({
+      success: false,
+      error  : "Paramètres 'nom' et 'prenom' requis"
     });
   }
-  
-  try {
-    const members = syncService.getMembers();
-    console.log(`Searching for member: ${prenom} ${nom}`);
-    
-    const membre = members.find(
-      m => 
-        m.lastname?.trim().toLowerCase() === nom.trim().toLowerCase() &&
-        m.firstname?.trim().toLowerCase() === prenom.trim().toLowerCase()
-    );
-    
-    if (!membre) {
-      console.log('Member not found');
-      return res.json({ 
-        success: false, 
-        error: "Aucun membre trouvé avec ce nom et prénom" 
-      });
-    }
-    
-    logMemberStatus(membre);
-    
-    const status = membre.joinFileStatusLabel ? membre.joinFileStatusLabel.trim().toLowerCase() : "";
-    
-    // Vérification du statut de paiement
-    if (status === "payé" || status === "pay" || status === "paid") {
-      console.log('Member is paid - access granted');
-      return res.json({
-        success: true,
-        isPaid: true,
-        message: "Adhésion valide. Bienvenue !",
-        membre
-      });
-    } else if (status === "en cours de paiement" || status === "en cours") {
-      console.log('Member payment in progress - access granted');
-      return res.json({
-        success: true,
-        isPaid: true,
-        message: "Paiement en cours. Accès autorisé.",
-        membre
-      });
-    } else if (status === "a payer" || status === "à payer" || status.includes("payer")) {
-      console.log('Member needs to pay - access denied');
-      return res.json({
-        success: false,
-        isPaid: false,
-        error: "Vous n'avez pas encore réglé votre adhésion, merci d'appeler un bénévole.",
-        membre
-      });
-    } else if (status === "" || status === null || status === undefined) {
-      // Si pas de statut explicite, vérifier si c'est un adhérent enregistré
-      const isRegisteredMember = membre.categories && membre.categories.length > 0;
-      
-      if (isRegisteredMember) {
-        console.log('Member has categories - access granted');
-        return res.json({
-          success: true,
-          isPaid: true,
-          message: "Adhésion reconnue.",
-          membre
-        });
-      } else {
-        console.log('Member status unknown - access denied');
-        return res.json({
-          success: false,
-          isPaid: false,
-          error: "Statut de paiement inconnu, merci de contacter un bénévole.",
-          membre
-        });
-      }
-    } else {
-      console.log('Member status unknown - access denied');
-      return res.json({
-        success: false,
-        isPaid: false,
-        error: "Statut de paiement inconnu, merci de contacter un bénévole.",
-        membre
-      });
-    }
-    
-  } catch (err) {
-    console.error("Erreur lors de la vérification du membre:", err);
-    res.status(500).json({ 
-      success: false, 
-      error: "Erreur lors de la vérification du membre"
+
+  /* Zoek lid in gesynchroniseerde lijst */
+  const members = sync.getMembers();
+  const member  = members.find(m =>
+    m.lastname?.trim().toLowerCase()  === nom.trim().toLowerCase()  &&
+    m.firstname?.trim().toLowerCase() === prenom.trim().toLowerCase()
+  );
+
+  if (!member) {
+    /* Helemaal niet gevonden → onbekend */
+    return res.json({
+      success: false,
+      error  : "Aucun membre trouvé avec ce nom et prénom"
     });
   }
+
+  /* Bepaal betaalstatus */
+  const rawStatus = (member.joinFileStatusLabel || '').trim().toLowerCase();
+  const isPaid =
+    paidLabels.includes(rawStatus) ||
+    isAdherentCategory(member);          // categorie “Adhérent” is voldoende
+
+  if (isPaid) {
+    /* Geldig lid → OK */
+    return res.json({
+      success : true,
+      isPaid  : true,
+      message : "Adhésion reconnue. Bienvenue !",
+      membre  : member
+    });
+  }
+
+  /* Wel lid maar niet betaald → blijft foutmelding */
+  return res.json({
+    success : false,
+    isPaid  : false,
+    error   : "Vous n'avez pas encore réglé votre adhésion, merci d'appeler un bénévole.",
+    membre  : member
+  });
 });
 
-// Récupérer la liste complète des membres
-router.get('/all', (req, res) => {
+/* Extra endpoint: alle leden */
+router.get('/all', (_req, res) => {
   try {
-    const members = syncService.getMembers();
-    res.json({ success: true, members });
-  } catch (err) {
-    console.error("Erreur lors de la récupération des membres:", err);
-    res.status(500).json({ 
-      success: false, 
-      message: "Erreur lors de la récupération des membres", 
-      error: err.message 
-    });
+    res.json({ success: true, members: sync.getMembers() });
+  } catch (e) {
+    res.status(500).json({ success:false, error: e.message });
   }
 });
 
