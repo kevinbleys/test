@@ -33,7 +33,7 @@ const writePresences = (data) => fs.writeFileSync(PRESENCES_FILE, JSON.stringify
 const membersRoutes = require('./routes/members');
 app.use('/members', membersRoutes);
 
-// Routes API pour les présences - DEFINITIEVE OPLOSSING
+// Routes API pour les présences - BESTAANDE CODE BEHOUDEN
 app.post('/presences', (req, res) => {
   try {
     // EXPLICIETE destructuring - geen spread operator
@@ -189,10 +189,13 @@ app.post('/presences/:id/ajouter-tarif', (req, res) => {
   }
 });
 
-// Annuler présence
+// ===== AANGEPASTE ANNULER ROUTE - ZET TARIEF OP 0 =====
 app.post('/presences/:id/annuler', (req, res) => {
   try {
     const { id } = req.params;
+    
+    console.log('=== ANNULER PRESENCE ===');
+    console.log('ID:', id);
     
     const presences = readPresences();
     const index = presences.findIndex(p => p.id === id);
@@ -201,8 +204,24 @@ app.post('/presences/:id/annuler', (req, res) => {
       return res.status(404).json({ success: false, error: 'Présence non trouvée' });
     }
     
+    const originalPresence = { ...presences[index] };
+    console.log('Original presence:', originalPresence);
+    
+    // Status op annulé zetten
     presences[index].status = 'Annulé';
     presences[index].dateAnnulation = new Date().toISOString();
+    
+    // NIEUWE FUNCTIONALITEIT: Tarief op 0 zetten bij annulering
+    if (presences[index].tarif !== undefined) {
+      console.log('Setting tarif from', presences[index].tarif, 'to 0');
+      presences[index].tarifOriginal = presences[index].tarif; // Bewaar origineel tarief
+      presences[index].tarif = 0;
+    } else {
+      console.log('No tarif field found, adding tarif: 0');
+      presences[index].tarif = 0;
+    }
+    
+    console.log('Updated presence:', presences[index]);
     
     writePresences(presences);
     

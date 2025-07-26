@@ -156,12 +156,14 @@
     "nom": "delfos",
     "prenom": "hanke",
     "dateNaissance": "1972-03-02",
-    "tarif": "10",
+    "tarif": 0,
     "methodePaiement": "CB",
     "id": "1752302784883",
     "date": "2025-07-12T06:46:24.883Z",
-    "status": "Payé",
-    "dateValidation": "2025-07-12T06:48:04.876Z"
+    "status": "Annulé",
+    "dateValidation": "2025-07-12T06:48:04.876Z",
+    "dateAnnulation": "2025-07-24T06:24:19.051Z",
+    "tarifOriginal": "10"
   },
   {
     "type": "adherent",
@@ -286,12 +288,13 @@
     "nom": "test",
     "prenom": "user",
     "date": "2025-07-20T14:18:18.009Z",
-    "status": "Payé",
+    "status": "Annulé",
     "tarif": "10",
     "methodePaiement": null,
     "dateNaissance": "1990-01-01",
     "email": "test@example.com",
-    "dateValidation": "2025-07-20T14:19:34.474Z"
+    "dateValidation": "2025-07-20T14:19:34.474Z",
+    "dateAnnulation": "2025-07-23T06:59:22.215Z"
   },
   {
     "id": "1753021161578",

@@ -1,155 +1,409 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <title>Administration - Présences du jour</title>
-  <style>
-    body { font-family: Arial, sans-serif; padding: 20px; margin: 0; }
-    h1 { color: #2196F3; margin-bottom: 20px; }
-    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-    th, td { padding: 10px; border: 1px solid #ddd; text-align: left; }
-    th { background-color: #f0f0f0; font-weight: bold; }
-    tr:nth-child(even) { background-color: #f9f9f9; }
-    .refresh-btn { 
-      background-color: #2196F3; 
-      color: white; 
-      border: none; 
-      padding: 10px 20px; 
-      border-radius: 4px; 
-      cursor: pointer; 
-    }
-    .valider-btn {
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-      padding: 8px 16px;
-      border-radius: 4px;
-      cursor: pointer;
-      margin-right: 5px;
-    }
-    .annuler-btn {
-      background-color: #F44336;
-      color: white;
-      border: none;
-      padding: 8px 16px;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administration - Présences du jour</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 30px;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+        }
+        .stat-item {
+            text-align: center;
+        }
+        .stat-number {
+            font-size: 24px;
+            font-weight: bold;
+            color: #007bff;
+        }
+        .stat-label {
+            font-size: 14px;
+            color: #666;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f8f9fa;
+            font-weight: bold;
+            position: sticky;
+            top: 0;
+        }
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .status-adherent {
+            background: #d4edda;
+            color: #155724;
+        }
+        .status-paid {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+        .status-cancelled {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        .type-adherent {
+            background: #e2f3ff;
+            color: #0066cc;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 11px;
+        }
+        .type-non-adherent {
+            background: #fff2e6;
+            color: #cc6600;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 11px;
+        }
+        .btn {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            margin: 2px;
+        }
+        .btn-validate {
+            background: #28a745;
+            color: white;
+        }
+        .btn-cancel {
+            background: #dc3545;
+            color: white;
+        }
+        .btn-add-tarif {
+            background: #17a2b8;
+            color: white;
+        }
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .tarif-display {
+            font-weight: bold;
+        }
+        .tarif-free {
+            color: #28a745;
+            font-style: italic;
+        }
+        .tarif-paid {
+            color: #007bff;
+        }
+        .tarif-cancelled {
+            color: #dc3545;
+            text-decoration: line-through;
+        }
+        .refresh-btn {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
 <body>
-  <h1>Administration - Présences du jour</h1>
-  <button onclick="loadPresences()" class="refresh-btn">Actualiser la liste</button>
-  <div id="presences-list">Chargement...</div>
+    <div class="container">
+        <h1>Administration - Présences du jour</h1>
+        
+        <button class="refresh-btn" onclick="loadPresences()">🔄 Actualiser</button>
+        
+        <div class="stats" id="stats">
+            <div class="stat-item">
+                <div class="stat-number" id="totalPresences">0</div>
+                <div class="stat-label">Total présences</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="totalAdherents">0</div>
+                <div class="stat-label">Adhérents</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="totalNonAdherents">0</div>
+                <div class="stat-label">Non-adhérents</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="totalPending">0</div>
+                <div class="stat-label">En attente</div>
+            </div>
+        </div>
+        
+        <div id="loading" class="loading">Chargement...</div>
+        <div id="error" class="error" style="display: none;"></div>
+        
+        <table id="presencesTable" style="display: none;">
+            <thead>
+                <tr>
+                    <th>Date/Heure</th>
+                    <th>Type</th>
+                    <th>Nom</th>
+                    <th>Prénom</th>
+                    <th>Tarif</th>
+                    <th>Statut</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="presencesBody">
+            </tbody>
+        </table>
+    </div>
 
-  <script>
-    // Fonction pour charger les présences
-    function loadPresences() {
-      document.getElementById('presences-list').innerHTML = "Chargement...";
-      
-      fetch('/presences')
-        .then(response => response.json())
-        .then(data => {
-          if (!data.presences || data.presences.length === 0) {
-            document.getElementById('presences-list').innerHTML = "<p>Aucune présence enregistrée aujourd'hui.</p>";
-            return;
-          }
-          
-          let html = `
-            <table>
-              <tr>
-                <th>Nom</th>
-                <th>Prénom</th>
-                <th>Montant</th>
-                <th>Statut</th>
-                <th>Date</th>
-                <th>Actions</th>
-              </tr>
-          `;
-          
-          data.presences.forEach(p => {
-            const date = new Date(p.date).toLocaleDateString('fr-FR');
-            
-            html += `
-              <tr>
-                <td>${p.nom}</td>
-                <td>${p.prenom}</td>
-                <td>
-                  <input type="number" id="montant-${p.id}" value="${p.tarif || 10}" style="width: 60px;"> €
-                </td>
-                <td>${p.status}</td>
-                <td>${date}</td>
-                <td>
-                  ${p.status !== 'adherent' ? `
-                    <button onclick="validerPresence('${p.id}')" class="valider-btn">Valider</button>
-                    <button onclick="annulerPresence('${p.id}')" class="annuler-btn">Annuler</button>
-                  ` : ''}
-                </td>
-              </tr>
-            `;
-          });
-          
-          html += `</table>`;
-          document.getElementById('presences-list').innerHTML = html;
-        })
-        .catch(error => {
-          console.error('Erreur:', error);
-          document.getElementById('presences-list').innerHTML = "<p>Erreur lors du chargement des présences.</p>";
-        });
-    }
-    
-    // Fonction pour valider une présence
-    function validerPresence(id) {
-      const montantElement = document.getElementById(`montant-${id}`);
-      const montant = montantElement ? montantElement.value : null;
-      
-      fetch(`/presences/${id}/valider`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ montant })
-      })
-      .then(response => response.json())
-      .then(data => {
-        if (data.success) {
-          loadPresences();
-        } else {
-          alert("Erreur lors de la validation");
+    <script>
+        // ===== AANGEPASTE TARIEF DISPLAY FUNCTIE =====
+        function getTarifDisplay(presence) {
+            if (presence.status === 'Annulé') {
+                // Voor geannuleerde presenties: toon 0€ met doorstreep styling
+                if (presence.tarifOriginal !== undefined) {
+                    return `<span class="tarif-display tarif-cancelled">0€ (was ${presence.tarifOriginal}€)</span>`;
+                } else {
+                    return '<span class="tarif-display tarif-cancelled">0€</span>';
+                }
+            } else if (presence.type === 'adherent') {
+                // Voor adherents: alleen tonen als er een tarif is
+                if (presence.tarif !== undefined && presence.tarif !== null && presence.tarif !== '' && presence.tarif !== 0) {
+                    return `<span class="tarif-display tarif-paid">${presence.tarif}€</span>`;
+                } else {
+                    // GEEN tarif voor adherents - toon leeg of "Gratuit"
+                    return '<span class="tarif-display tarif-free">-</span>';
+                }
+            } else {
+                // Voor non-adherents: standaard 10€ als geen tarif
+                const tarif = presence.tarif || '10';
+                return `<span class="tarif-display tarif-paid">${tarif}€</span>`;
+            }
         }
-      })
-      .catch(error => {
-        console.error('Erreur:', error);
-        alert("Erreur de connexion");
-      });
-    }
-    
-    // Fonction pour annuler une présence
-    function annulerPresence(id) {
-      if (confirm("Êtes-vous sûr de vouloir annuler cette présence ?")) {
-        fetch(`/presences/${id}/annuler`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({})
-        })
-        .then(response => response.json())
-        .then(data => {
-          if (data.success) {
-            loadPresences();
-          } else {
-            alert("Erreur lors de l'annulation");
-          }
-        })
-        .catch(error => {
-          console.error('Erreur:', error);
-          alert("Erreur de connexion");
-        });
-      }
-    }
-    
-    // Chargement initial
-    document.addEventListener('DOMContentLoaded', loadPresences);
-    
-    // Actualisation automatique toutes les 30 secondes
-    setInterval(loadPresences, 30000);
-  </script>
+
+        function getStatusBadge(presence) {
+            switch (presence.status) {
+                case 'adherent':
+                    return '<span class="status-badge status-adherent">Adhérent validé</span>';
+                case 'Payé':
+                case 'Pay':
+                    return '<span class="status-badge status-paid">Payé</span>';
+                case 'pending':
+                    return '<span class="status-badge status-pending">En attente</span>';
+                case 'Annulé':
+                    return '<span class="status-badge status-cancelled">Annulé</span>';
+                default:
+                    return `<span class="status-badge">${presence.status}</span>`;
+            }
+        }
+
+        function getTypeBadge(presence) {
+            if (presence.type === 'adherent') {
+                return '<span class="type-adherent">Adhérent</span>';
+            } else {
+                return '<span class="type-non-adherent">Non-adhérent</span>';
+            }
+        }
+
+        function formatDate(dateString) {
+            return new Date(dateString).toLocaleString('fr-FR');
+        }
+
+        async function loadPresences() {
+            const loadingDiv = document.getElementById('loading');
+            const errorDiv = document.getElementById('error');
+            const table = document.getElementById('presencesTable');
+            
+            loadingDiv.style.display = 'block';
+            errorDiv.style.display = 'none';
+            table.style.display = 'none';
+
+            try {
+                const response = await fetch('/presences');
+                const data = await response.json();
+
+                if (data.success) {
+                    displayPresences(data.presences);
+                    updateStats(data.presences);
+                } else {
+                    throw new Error('Erreur lors du chargement des données');
+                }
+            } catch (error) {
+                console.error('Erreur:', error);
+                errorDiv.textContent = 'Erreur lors du chargement des présences: ' + error.message;
+                errorDiv.style.display = 'block';
+            } finally {
+                loadingDiv.style.display = 'none';
+            }
+        }
+
+        function displayPresences(presences) {
+            const tbody = document.getElementById('presencesBody');
+            const table = document.getElementById('presencesTable');
+            
+            // Trier par date (plus récent en premier)
+            const sortedPresences = presences.sort((a, b) => new Date(b.date) - new Date(a.date));
+            
+            tbody.innerHTML = '';
+            
+            sortedPresences.forEach(presence => {
+                const row = document.createElement('tr');
+                
+                row.innerHTML = `
+                    <td>${formatDate(presence.date)}</td>
+                    <td>${getTypeBadge(presence)}</td>
+                    <td>${presence.nom}</td>
+                    <td>${presence.prenom}</td>
+                    <td>${getTarifDisplay(presence)}</td>
+                    <td>${getStatusBadge(presence)}</td>
+                    <td>
+                        ${presence.status === 'pending' ? 
+                            `<button class="btn btn-validate" onclick="validerPresence('${presence.id}')">Valider (10€)</button>` : 
+                            ''
+                        }
+                        ${presence.type === 'adherent' && presence.status !== 'Annulé' && (presence.tarif === undefined || presence.tarif === null || presence.tarif === 0) ? 
+                            `<button class="btn btn-add-tarif" onclick="ajouterTarif('${presence.id}')">Ajouter tarif</button>` : 
+                            ''
+                        }
+                        ${presence.status !== 'Annulé' ? 
+                            `<button class="btn btn-cancel" onclick="annulerPresence('${presence.id}')">Annuler</button>` : 
+                            ''
+                        }
+                    </td>
+                `;
+                
+                tbody.appendChild(row);
+            });
+            
+            table.style.display = 'table';
+        }
+
+        function updateStats(presences) {
+            const totalPresences = presences.length;
+            const totalAdherents = presences.filter(p => p.type === 'adherent').length;
+            const totalNonAdherents = presences.filter(p => p.type === 'non-adherent').length;
+            const totalPending = presences.filter(p => p.status === 'pending').length;
+
+            document.getElementById('totalPresences').textContent = totalPresences;
+            document.getElementById('totalAdherents').textContent = totalAdherents;
+            document.getElementById('totalNonAdherents').textContent = totalNonAdherents;
+            document.getElementById('totalPending').textContent = totalPending;
+        }
+
+        async function validerPresence(id) {
+            const montant = prompt('Montant à valider (€):', '10');
+            if (montant !== null) {
+                try {
+                    const response = await fetch(`/presences/${id}/valider`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ montant: parseFloat(montant) })
+                    });
+                    
+                    const data = await response.json();
+                    if (data.success) {
+                        loadPresences(); // Refresh
+                    } else {
+                        alert('Erreur lors de la validation');
+                    }
+                } catch (error) {
+                    alert('Erreur de connexion');
+                }
+            }
+        }
+
+        async function ajouterTarif(id) {
+            const montant = prompt('Montant à ajouter (0 pour gratuit):', '0');
+            if (montant !== null) {
+                try {
+                    const response = await fetch(`/presences/${id}/ajouter-tarif`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ montant: parseFloat(montant) })
+                    });
+                    
+                    const data = await response.json();
+                    if (data.success) {
+                        loadPresences(); // Refresh
+                    } else {
+                        alert('Erreur lors de l\'ajout du tarif');
+                    }
+                } catch (error) {
+                    alert('Erreur de connexion');
+                }
+            }
+        }
+
+        // ===== AANGEPASTE ANNULER FUNCTIE MET BEVESTIGING =====
+        async function annulerPresence(id) {
+            if (confirm('Êtes-vous sûr de vouloir annuler cette présence ?\n\nLe tarif sera automatiquement mis à 0€.')) {
+                try {
+                    const response = await fetch(`/presences/${id}/annuler`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' }
+                    });
+                    
+                    const data = await response.json();
+                    if (data.success) {
+                        console.log('Presence annulée avec succès:', data.presence);
+                        loadPresences(); // Refresh
+                    } else {
+                        alert('Erreur lors de l\'annulation');
+                    }
+                } catch (error) {
+                    console.error('Erreur annulation:', error);
+                    alert('Erreur de connexion');
+                }
+            }
+        }
+
+        // Charger les présences au démarrage
+        document.addEventListener('DOMContentLoaded', loadPresences);
+        
+        // Auto-refresh toutes les 30 secondes
+        setInterval(loadPresences, 30000);
+    </script>
 </body>
 </html>
