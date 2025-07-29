@@ -352,8 +352,10 @@
     "nom": "",
     "prenom": "",
     "date": "2025-07-29T14:16:36.952Z",
-    "status": "pending",
-    "tarif": 10
+    "status": "Annulé",
+    "tarif": 0,
+    "dateAnnulation": "2025-07-29T14:52:48.506Z",
+    "tarifOriginal": 10
   },
   {
     "id": "1753798613623",
@@ -361,7 +363,21 @@
     "nom": "",
     "prenom": "",
     "date": "2025-07-29T14:16:53.623Z",
-    "status": "pending",
-    "tarif": 10
+    "status": "Annulé",
+    "tarif": 0,
+    "dateAnnulation": "2025-07-29T14:52:45.892Z",
+    "tarifOriginal": 10
+  },
+  {
+    "id": "1753800747410",
+    "type": "non-adherent",
+    "nom": "bleys",
+    "prenom": "ellen",
+    "date": "2025-07-29T14:52:27.410Z",
+    "status": "Payé",
+    "tarif": 10,
+    "email": "test@test.com",
+    "dateNaissance": "1983-03-02",
+    "dateValidation": "2025-07-29T14:52:37.685Z"
   }
 ]
