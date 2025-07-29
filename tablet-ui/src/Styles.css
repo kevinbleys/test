@@ -352,3 +352,34 @@
   color: #333;
 }
 
+/* ---------- Confirmation & Payment ---------- */
+.confirmation-page{
+  max-width:460px;margin:60px auto;padding:30px;background:#fff;
+  text-align:center;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,.1)
+}
+.confirmation-page h2{font-size:32px;color:#28a745;margin-bottom:10px}
+.payment-page{max-width:480px;margin:0 auto;padding:30px;background:#fff;
+  border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,.1);text-align:center}
+.payment-page .amount{color:#dc3545;font-size:28px;font-weight:700}
+.btn-group{display:flex;justify-content:center;gap:15px;margin:25px 0}
+.pay-btn,.selected-btn{padding:12px 18px;border:2px solid #007bff;border-radius:8px;
+  background:#fff;font-weight:600;cursor:pointer;transition:.2s all}
+.pay-btn:hover{background:#e7f1ff}
+.selected-btn{background:#007bff;color:#fff}
+.info{margin-top:20px;font-size:15px;color:#333}
+
+.conditions-page{
+  max-width:600px;margin:20px auto;padding:25px;background:#fff;
+  border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,.1)
+}
+.conditions-page h2{margin-bottom:15px}
+.conditions-page label{
+  display:block;margin:8px 0;font-size:15px
+}
+.conditions-page .warning{
+  background:#fff3cd;color:#856404;padding:10px;border-radius:6px;
+  border:1px solid #ffeeba;font-size:14px
+}
+.tiny{font-size:13px;color:#666;margin-top:8px;text-align:center}
+
+

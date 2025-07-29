@@ -32760,146 +32760,6 @@
     ]
   },
   {
-    "membreId": 1125601,
-    "currentPictureUrl": null,
-    "firstname": "Elodie",
-    "lastname": "Retaux",
-    "dateOfBirth": null,
-    "age": null,
-    "gender": null,
-    "address": null,
-    "additional": null,
-    "postalCode": null,
-    "town": null,
-    "country": null,
-    "phoneNumber": null,
-    "mobilePhoneNumber": null,
-    "email": "elodiecoco76@gmail.com",
-    "allergy": null,
-    "personToContact": null,
-    "personToContactPhoneNumber": null,
-    "corporateName": null,
-    "office": null,
-    "account": true,
-    "dateLastConnexion": "29/07/2025, 10:16",
-    "emailValid": true,
-    "notificationActive": true,
-    "joinFileStatusLabel": null,
-    "joinFileLastPaymentType": null,
-    "joinFileLastPaymentDate": null,
-    "childsLabel": "Gestionnaire de 1 contact : Noé Retaux",
-    "childMembers": [
-      {
-        "membreId": 1125602,
-        "firstname": "Noé",
-        "lastname": "Retaux",
-        "phoneNumber": null,
-        "mobilePhoneNumber": "+33778256584",
-        "email": "elodiecoco76@gmail.com"
-      }
-    ],
-    "parentsLabel": "",
-    "parentMembers": [],
-    "groups": [],
-    "categories": [
-      {
-        "label": "Nouveau contact (adhésion)"
-      }
-    ],
-    "roles": [],
-    "medicalCertificateUrl": null,
-    "dateMedicalCertificate": null,
-    "licence": null,
-    "customFields": [
-      {
-        "label": "documents utiles",
-        "value": null
-      },
-      {
-        "label": "Ville de naissance",
-        "value": null
-      },
-      {
-        "label": "Pays de naissance",
-        "value": null
-      },
-      {
-        "label": "Nationalité",
-        "value": null
-      }
-    ]
-  },
-  {
-    "membreId": 1125602,
-    "currentPictureUrl": null,
-    "firstname": "Noé",
-    "lastname": "Retaux",
-    "dateOfBirth": "27/07/2018",
-    "age": 7,
-    "gender": "homme",
-    "address": "7 impasse de la losse",
-    "additional": "Maison 3",
-    "postalCode": "65240",
-    "town": "Cadeac",
-    "country": "France",
-    "phoneNumber": null,
-    "mobilePhoneNumber": "+33778256584",
-    "email": "elodiecoco76@gmail.com",
-    "allergy": null,
-    "personToContact": "Retaux Elodie",
-    "personToContactPhoneNumber": "+33778256584",
-    "corporateName": null,
-    "office": null,
-    "account": false,
-    "dateLastConnexion": null,
-    "emailValid": true,
-    "notificationActive": true,
-    "joinFileStatusLabel": null,
-    "joinFileLastPaymentType": null,
-    "joinFileLastPaymentDate": null,
-    "childsLabel": "",
-    "childMembers": [],
-    "parentsLabel": "Géré par 1 contact : Elodie Retaux",
-    "parentMembers": [
-      {
-        "membreId": 1125601,
-        "firstname": "Elodie",
-        "lastname": "Retaux",
-        "phoneNumber": null,
-        "mobilePhoneNumber": null,
-        "email": "elodiecoco76@gmail.com"
-      }
-    ],
-    "groups": [],
-    "categories": [
-      {
-        "label": "Nouveau contact (adhésion)"
-      }
-    ],
-    "roles": [],
-    "medicalCertificateUrl": null,
-    "dateMedicalCertificate": null,
-    "licence": null,
-    "customFields": [
-      {
-        "label": "documents utiles",
-        "value": null
-      },
-      {
-        "label": "Ville de naissance",
-        "value": "Albi"
-      },
-      {
-        "label": "Pays de naissance",
-        "value": "France"
-      },
-      {
-        "label": "Nationalité",
-        "value": "Français"
-      }
-    ]
-  },
-  {
     "membreId": 646825,
     "currentPictureUrl": null,
     "firstname": "Elodie",
@@ -39043,27 +38903,19 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "29/07/2025, 12:51",
+    "dateLastConnexion": "29/07/2025, 08:29",
     "emailValid": true,
     "notificationActive": true,
     "joinFileStatusLabel": null,
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
-    "childsLabel": "Gestionnaire de 2 contacts : Stan Toussaint Verdier, Leïla Toussaint Verdier",
+    "childsLabel": "Gestionnaire de 1 contact : Stan Toussaint Verdier",
     "childMembers": [
       {
         "membreId": 1125573,
         "firstname": "Stan",
         "lastname": "Toussaint Verdier",
         "phoneNumber": "+33581509638",
-        "mobilePhoneNumber": "+33624340007",
-        "email": "nt.rien@gmail.com"
-      },
-      {
-        "membreId": 1125627,
-        "firstname": "Leïla",
-        "lastname": "Toussaint Verdier",
-        "phoneNumber": "+33624340007",
         "mobilePhoneNumber": "+33624340007",
         "email": "nt.rien@gmail.com"
       }
@@ -39096,76 +38948,6 @@
       {
         "label": "Nationalité",
         "value": null
-      }
-    ]
-  },
-  {
-    "membreId": 1125627,
-    "currentPictureUrl": null,
-    "firstname": "Leïla",
-    "lastname": "Toussaint Verdier",
-    "dateOfBirth": "31/08/2017",
-    "age": 7,
-    "gender": "femme",
-    "address": "98 chemin de las bordes",
-    "additional": null,
-    "postalCode": "65240",
-    "town": "Vielle-Louron",
-    "country": "France",
-    "phoneNumber": "+33624340007",
-    "mobilePhoneNumber": "+33624340007",
-    "email": "nt.rien@gmail.com",
-    "allergy": null,
-    "personToContact": null,
-    "personToContactPhoneNumber": null,
-    "corporateName": null,
-    "office": null,
-    "account": false,
-    "dateLastConnexion": null,
-    "emailValid": true,
-    "notificationActive": true,
-    "joinFileStatusLabel": null,
-    "joinFileLastPaymentType": null,
-    "joinFileLastPaymentDate": null,
-    "childsLabel": "",
-    "childMembers": [],
-    "parentsLabel": "Géré par 1 contact : Nicolas Toussaint",
-    "parentMembers": [
-      {
-        "membreId": 1125572,
-        "firstname": "Nicolas",
-        "lastname": "Toussaint",
-        "phoneNumber": null,
-        "mobilePhoneNumber": null,
-        "email": "nt.rien@gmail.com"
-      }
-    ],
-    "groups": [],
-    "categories": [
-      {
-        "label": "Nouveau contact (adhésion)"
-      }
-    ],
-    "roles": [],
-    "medicalCertificateUrl": null,
-    "dateMedicalCertificate": null,
-    "licence": null,
-    "customFields": [
-      {
-        "label": "documents utiles",
-        "value": null
-      },
-      {
-        "label": "Ville de naissance",
-        "value": "Tarbes"
-      },
-      {
-        "label": "Pays de naissance",
-        "value": "France"
-      },
-      {
-        "label": "Nationalité",
-        "value": "Française"
       }
     ]
   },
@@ -41656,7 +41438,7 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "29/07/2025, 09:06",
+    "dateLastConnexion": "20/07/2025, 17:22",
     "emailValid": true,
     "notificationActive": true,
     "joinFileStatusLabel": null,
@@ -41748,7 +41530,7 @@
     "dateLastConnexion": null,
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "Payé",
+    "joinFileStatusLabel": "À payer",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",

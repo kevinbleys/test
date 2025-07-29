@@ -8617,67 +8617,6 @@
     ]
   },
   {
-    "membreId": 1125565,
-    "currentPictureUrl": null,
-    "firstname": "Alexandre",
-    "lastname": "Charousset",
-    "dateOfBirth": "10/01/1993",
-    "age": 32,
-    "gender": "homme",
-    "address": "239 route des escoumes",
-    "additional": null,
-    "postalCode": "65250",
-    "town": "Hèches",
-    "country": "France",
-    "phoneNumber": null,
-    "mobilePhoneNumber": "+33763300692",
-    "email": "alex.charousset@hotmail.fr",
-    "allergy": null,
-    "personToContact": "Manon Peugnet",
-    "personToContactPhoneNumber": "+33663294829",
-    "corporateName": null,
-    "office": null,
-    "account": true,
-    "dateLastConnexion": "29/07/2025, 08:28",
-    "emailValid": true,
-    "notificationActive": true,
-    "joinFileStatusLabel": null,
-    "joinFileLastPaymentType": null,
-    "joinFileLastPaymentDate": null,
-    "childsLabel": "",
-    "childMembers": [],
-    "parentsLabel": "",
-    "parentMembers": [],
-    "groups": [],
-    "categories": [
-      {
-        "label": "Nouveau contact (adhésion)"
-      }
-    ],
-    "roles": [],
-    "medicalCertificateUrl": null,
-    "dateMedicalCertificate": null,
-    "licence": "1097367",
-    "customFields": [
-      {
-        "label": "documents utiles",
-        "value": null
-      },
-      {
-        "label": "Ville de naissance",
-        "value": "Grasse"
-      },
-      {
-        "label": "Pays de naissance",
-        "value": "France"
-      },
-      {
-        "label": "Nationalité",
-        "value": "Française"
-      }
-    ]
-  },
-  {
     "membreId": 511493,
     "currentPictureUrl": null,
     "firstname": "Amandine",
@@ -13388,7 +13327,7 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "29/07/2025, 08:58",
+    "dateLastConnexion": "28/07/2025, 21:32",
     "emailValid": true,
     "notificationActive": true,
     "joinFileStatusLabel": null,
@@ -13869,7 +13808,7 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "29/07/2025, 08:17",
+    "dateLastConnexion": "28/07/2025, 10:31",
     "emailValid": true,
     "notificationActive": true,
     "joinFileStatusLabel": "Payé",
@@ -23158,7 +23097,7 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "29/07/2025, 08:16",
+    "dateLastConnexion": "30/06/2023, 19:37",
     "emailValid": true,
     "notificationActive": true,
     "joinFileStatusLabel": null,
@@ -32156,29 +32095,20 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "29/07/2025, 08:14",
+    "dateLastConnexion": "05/10/2024, 15:03",
     "emailValid": true,
     "notificationActive": true,
     "joinFileStatusLabel": null,
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
-    "childsLabel": "Gestionnaire de 1 contact : Leo Viard",
-    "childMembers": [
-      {
-        "membreId": 1125569,
-        "firstname": "Leo",
-        "lastname": "Viard",
-        "phoneNumber": null,
-        "mobilePhoneNumber": "+33631555408",
-        "email": "quierzyclaire@hotmail.fr"
-      }
-    ],
+    "childsLabel": "",
+    "childMembers": [],
     "parentsLabel": "",
     "parentMembers": [],
     "groups": [],
     "categories": [
       {
-        "label": "Nouveau contact (adhésion)"
+        "label": "Contact extérieur"
       }
     ],
     "roles": [],
@@ -32756,146 +32686,6 @@
       {
         "label": "Nationalité",
         "value": "Française"
-      }
-    ]
-  },
-  {
-    "membreId": 1125601,
-    "currentPictureUrl": null,
-    "firstname": "Elodie",
-    "lastname": "Retaux",
-    "dateOfBirth": null,
-    "age": null,
-    "gender": null,
-    "address": null,
-    "additional": null,
-    "postalCode": null,
-    "town": null,
-    "country": null,
-    "phoneNumber": null,
-    "mobilePhoneNumber": null,
-    "email": "elodiecoco76@gmail.com",
-    "allergy": null,
-    "personToContact": null,
-    "personToContactPhoneNumber": null,
-    "corporateName": null,
-    "office": null,
-    "account": true,
-    "dateLastConnexion": "29/07/2025, 10:16",
-    "emailValid": true,
-    "notificationActive": true,
-    "joinFileStatusLabel": null,
-    "joinFileLastPaymentType": null,
-    "joinFileLastPaymentDate": null,
-    "childsLabel": "Gestionnaire de 1 contact : Noé Retaux",
-    "childMembers": [
-      {
-        "membreId": 1125602,
-        "firstname": "Noé",
-        "lastname": "Retaux",
-        "phoneNumber": null,
-        "mobilePhoneNumber": "+33778256584",
-        "email": "elodiecoco76@gmail.com"
-      }
-    ],
-    "parentsLabel": "",
-    "parentMembers": [],
-    "groups": [],
-    "categories": [
-      {
-        "label": "Nouveau contact (adhésion)"
-      }
-    ],
-    "roles": [],
-    "medicalCertificateUrl": null,
-    "dateMedicalCertificate": null,
-    "licence": null,
-    "customFields": [
-      {
-        "label": "documents utiles",
-        "value": null
-      },
-      {
-        "label": "Ville de naissance",
-        "value": null
-      },
-      {
-        "label": "Pays de naissance",
-        "value": null
-      },
-      {
-        "label": "Nationalité",
-        "value": null
-      }
-    ]
-  },
-  {
-    "membreId": 1125602,
-    "currentPictureUrl": null,
-    "firstname": "Noé",
-    "lastname": "Retaux",
-    "dateOfBirth": "27/07/2018",
-    "age": 7,
-    "gender": "homme",
-    "address": "7 impasse de la losse",
-    "additional": "Maison 3",
-    "postalCode": "65240",
-    "town": "Cadeac",
-    "country": "France",
-    "phoneNumber": null,
-    "mobilePhoneNumber": "+33778256584",
-    "email": "elodiecoco76@gmail.com",
-    "allergy": null,
-    "personToContact": "Retaux Elodie",
-    "personToContactPhoneNumber": "+33778256584",
-    "corporateName": null,
-    "office": null,
-    "account": false,
-    "dateLastConnexion": null,
-    "emailValid": true,
-    "notificationActive": true,
-    "joinFileStatusLabel": null,
-    "joinFileLastPaymentType": null,
-    "joinFileLastPaymentDate": null,
-    "childsLabel": "",
-    "childMembers": [],
-    "parentsLabel": "Géré par 1 contact : Elodie Retaux",
-    "parentMembers": [
-      {
-        "membreId": 1125601,
-        "firstname": "Elodie",
-        "lastname": "Retaux",
-        "phoneNumber": null,
-        "mobilePhoneNumber": null,
-        "email": "elodiecoco76@gmail.com"
-      }
-    ],
-    "groups": [],
-    "categories": [
-      {
-        "label": "Nouveau contact (adhésion)"
-      }
-    ],
-    "roles": [],
-    "medicalCertificateUrl": null,
-    "dateMedicalCertificate": null,
-    "licence": null,
-    "customFields": [
-      {
-        "label": "documents utiles",
-        "value": null
-      },
-      {
-        "label": "Ville de naissance",
-        "value": "Albi"
-      },
-      {
-        "label": "Pays de naissance",
-        "value": "France"
-      },
-      {
-        "label": "Nationalité",
-        "value": "Français"
       }
     ]
   },
@@ -39022,224 +38812,6 @@
     ]
   },
   {
-    "membreId": 1125572,
-    "currentPictureUrl": null,
-    "firstname": "Nicolas",
-    "lastname": "Toussaint",
-    "dateOfBirth": null,
-    "age": null,
-    "gender": null,
-    "address": null,
-    "additional": null,
-    "postalCode": null,
-    "town": null,
-    "country": null,
-    "phoneNumber": null,
-    "mobilePhoneNumber": null,
-    "email": "nt.rien@gmail.com",
-    "allergy": null,
-    "personToContact": null,
-    "personToContactPhoneNumber": null,
-    "corporateName": null,
-    "office": null,
-    "account": true,
-    "dateLastConnexion": "29/07/2025, 12:51",
-    "emailValid": true,
-    "notificationActive": true,
-    "joinFileStatusLabel": null,
-    "joinFileLastPaymentType": null,
-    "joinFileLastPaymentDate": null,
-    "childsLabel": "Gestionnaire de 2 contacts : Stan Toussaint Verdier, Leïla Toussaint Verdier",
-    "childMembers": [
-      {
-        "membreId": 1125573,
-        "firstname": "Stan",
-        "lastname": "Toussaint Verdier",
-        "phoneNumber": "+33581509638",
-        "mobilePhoneNumber": "+33624340007",
-        "email": "nt.rien@gmail.com"
-      },
-      {
-        "membreId": 1125627,
-        "firstname": "Leïla",
-        "lastname": "Toussaint Verdier",
-        "phoneNumber": "+33624340007",
-        "mobilePhoneNumber": "+33624340007",
-        "email": "nt.rien@gmail.com"
-      }
-    ],
-    "parentsLabel": "",
-    "parentMembers": [],
-    "groups": [],
-    "categories": [
-      {
-        "label": "Nouveau contact (adhésion)"
-      }
-    ],
-    "roles": [],
-    "medicalCertificateUrl": null,
-    "dateMedicalCertificate": null,
-    "licence": null,
-    "customFields": [
-      {
-        "label": "documents utiles",
-        "value": null
-      },
-      {
-        "label": "Ville de naissance",
-        "value": null
-      },
-      {
-        "label": "Pays de naissance",
-        "value": null
-      },
-      {
-        "label": "Nationalité",
-        "value": null
-      }
-    ]
-  },
-  {
-    "membreId": 1125627,
-    "currentPictureUrl": null,
-    "firstname": "Leïla",
-    "lastname": "Toussaint Verdier",
-    "dateOfBirth": "31/08/2017",
-    "age": 7,
-    "gender": "femme",
-    "address": "98 chemin de las bordes",
-    "additional": null,
-    "postalCode": "65240",
-    "town": "Vielle-Louron",
-    "country": "France",
-    "phoneNumber": "+33624340007",
-    "mobilePhoneNumber": "+33624340007",
-    "email": "nt.rien@gmail.com",
-    "allergy": null,
-    "personToContact": null,
-    "personToContactPhoneNumber": null,
-    "corporateName": null,
-    "office": null,
-    "account": false,
-    "dateLastConnexion": null,
-    "emailValid": true,
-    "notificationActive": true,
-    "joinFileStatusLabel": null,
-    "joinFileLastPaymentType": null,
-    "joinFileLastPaymentDate": null,
-    "childsLabel": "",
-    "childMembers": [],
-    "parentsLabel": "Géré par 1 contact : Nicolas Toussaint",
-    "parentMembers": [
-      {
-        "membreId": 1125572,
-        "firstname": "Nicolas",
-        "lastname": "Toussaint",
-        "phoneNumber": null,
-        "mobilePhoneNumber": null,
-        "email": "nt.rien@gmail.com"
-      }
-    ],
-    "groups": [],
-    "categories": [
-      {
-        "label": "Nouveau contact (adhésion)"
-      }
-    ],
-    "roles": [],
-    "medicalCertificateUrl": null,
-    "dateMedicalCertificate": null,
-    "licence": null,
-    "customFields": [
-      {
-        "label": "documents utiles",
-        "value": null
-      },
-      {
-        "label": "Ville de naissance",
-        "value": "Tarbes"
-      },
-      {
-        "label": "Pays de naissance",
-        "value": "France"
-      },
-      {
-        "label": "Nationalité",
-        "value": "Française"
-      }
-    ]
-  },
-  {
-    "membreId": 1125573,
-    "currentPictureUrl": null,
-    "firstname": "Stan",
-    "lastname": "Toussaint Verdier",
-    "dateOfBirth": "22/01/2016",
-    "age": 9,
-    "gender": "homme",
-    "address": "98 chemin de las bordes",
-    "additional": null,
-    "postalCode": "65240",
-    "town": "Vielle-Louron",
-    "country": "France",
-    "phoneNumber": "+33581509638",
-    "mobilePhoneNumber": "+33624340007",
-    "email": "nt.rien@gmail.com",
-    "allergy": null,
-    "personToContact": "Nicolas Toussaint 0624340007",
-    "personToContactPhoneNumber": "+33624340007",
-    "corporateName": null,
-    "office": null,
-    "account": false,
-    "dateLastConnexion": null,
-    "emailValid": true,
-    "notificationActive": true,
-    "joinFileStatusLabel": null,
-    "joinFileLastPaymentType": null,
-    "joinFileLastPaymentDate": null,
-    "childsLabel": "",
-    "childMembers": [],
-    "parentsLabel": "Géré par 1 contact : Nicolas Toussaint",
-    "parentMembers": [
-      {
-        "membreId": 1125572,
-        "firstname": "Nicolas",
-        "lastname": "Toussaint",
-        "phoneNumber": null,
-        "mobilePhoneNumber": null,
-        "email": "nt.rien@gmail.com"
-      }
-    ],
-    "groups": [],
-    "categories": [
-      {
-        "label": "Nouveau contact (adhésion)"
-      }
-    ],
-    "roles": [],
-    "medicalCertificateUrl": null,
-    "dateMedicalCertificate": null,
-    "licence": null,
-    "customFields": [
-      {
-        "label": "documents utiles",
-        "value": null
-      },
-      {
-        "label": "Ville de naissance",
-        "value": "Tarbes"
-      },
-      {
-        "label": "Pays de naissance",
-        "value": "France"
-      },
-      {
-        "label": "Nationalité",
-        "value": "Française"
-      }
-    ]
-  },
-  {
     "membreId": 787087,
     "currentPictureUrl": null,
     "firstname": "la",
@@ -41373,76 +40945,6 @@
     ]
   },
   {
-    "membreId": 1125569,
-    "currentPictureUrl": null,
-    "firstname": "Leo",
-    "lastname": "Viard",
-    "dateOfBirth": "11/03/2021",
-    "age": 4,
-    "gender": "homme",
-    "address": "13 cami du bas houga",
-    "additional": null,
-    "postalCode": "65170",
-    "town": "Aragnouet",
-    "country": "France",
-    "phoneNumber": null,
-    "mobilePhoneNumber": "+33631555408",
-    "email": "quierzyclaire@hotmail.fr",
-    "allergy": null,
-    "personToContact": "Félix viard",
-    "personToContactPhoneNumber": "+33630004104",
-    "corporateName": null,
-    "office": null,
-    "account": false,
-    "dateLastConnexion": null,
-    "emailValid": true,
-    "notificationActive": true,
-    "joinFileStatusLabel": null,
-    "joinFileLastPaymentType": null,
-    "joinFileLastPaymentDate": null,
-    "childsLabel": "",
-    "childMembers": [],
-    "parentsLabel": "Géré par 1 contact : Claire Quierzy",
-    "parentMembers": [
-      {
-        "membreId": 888268,
-        "firstname": "Claire",
-        "lastname": "Quierzy",
-        "phoneNumber": null,
-        "mobilePhoneNumber": null,
-        "email": "quierzyclaire@hotmail.fr"
-      }
-    ],
-    "groups": [],
-    "categories": [
-      {
-        "label": "Nouveau contact (adhésion)"
-      }
-    ],
-    "roles": [],
-    "medicalCertificateUrl": null,
-    "dateMedicalCertificate": null,
-    "licence": null,
-    "customFields": [
-      {
-        "label": "documents utiles",
-        "value": null
-      },
-      {
-        "label": "Ville de naissance",
-        "value": "Lescar"
-      },
-      {
-        "label": "Pays de naissance",
-        "value": "France"
-      },
-      {
-        "label": "Nationalité",
-        "value": "Français"
-      }
-    ]
-  },
-  {
     "membreId": 939531,
     "currentPictureUrl": null,
     "firstname": "Luc",
@@ -41656,7 +41158,7 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "29/07/2025, 09:06",
+    "dateLastConnexion": "20/07/2025, 17:22",
     "emailValid": true,
     "notificationActive": true,
     "joinFileStatusLabel": null,
@@ -41748,7 +41250,7 @@
     "dateLastConnexion": null,
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "Payé",
+    "joinFileStatusLabel": "À payer",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
