@@ -303,3 +303,52 @@
     padding: 15px;
   }
 }
+/* ------ payment page ------ */
+.payment-page {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 30px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,.1);
+  text-align: center;
+}
+
+.payment-page .amount {
+  color: #dc3545;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.btn-group {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin: 25px 0;
+}
+
+.pay-btn, .selected-btn {
+  padding: 12px 18px;
+  border: 2px solid #007bff;
+  border-radius: 8px;
+  background: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: .2s all;
+}
+
+.pay-btn:hover {
+  background: #e7f1ff;
+}
+
+.selected-btn {
+  background: #007bff;
+  color: #fff;
+}
+
+.info {
+  margin-top: 20px;
+  font-size: 15px;
+  color: #333;
+}
+

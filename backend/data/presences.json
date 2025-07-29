@@ -319,5 +319,19 @@
     "prenom": "steven",
     "date": "2025-07-23T06:40:29.605Z",
     "status": "adherent"
+  },
+  {
+    "id": "1753683620223",
+    "type": "non-adherent",
+    "nom": "TRUONG",
+    "prenom": "Youen",
+    "date": "2025-07-28T06:20:20.223Z",
+    "status": "Payé",
+    "tarif": 10,
+    "email": "truong.thomas@free.fr",
+    "telephone": "0782917804",
+    "dateNaissance": "2005-01-16",
+    "adresse": "19 route d'espechere",
+    "dateValidation": "2025-07-28T06:20:38.930Z"
   }
 ]
