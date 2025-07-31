@@ -550,10 +550,10 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "30/07/2025, 09:07",
+    "dateLastConnexion": "06/07/2025, 22:25",
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "Payé",
+    "joinFileStatusLabel": "À payer",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -2486,7 +2486,7 @@
     "dateLastConnexion": "26/07/2025, 18:33",
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "À payer",
+    "joinFileStatusLabel": "Payé",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -3933,7 +3933,7 @@
     "firstname": "Joke",
     "lastname": "Bleys",
     "dateOfBirth": "31/07/1984",
-    "age": 41,
+    "age": 40,
     "gender": "femme",
     "address": "7 chemin de la gardele",
     "additional": null,
@@ -5847,7 +5847,7 @@
     "firstname": "Martin",
     "lastname": "Brouca-Cabarrecq",
     "dateOfBirth": "31/07/2016",
-    "age": 9,
+    "age": 8,
     "gender": "homme",
     "address": "5 impasse du Golf",
     "additional": null,
@@ -8638,10 +8638,10 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "29/07/2025, 20:58",
+    "dateLastConnexion": "29/07/2025, 08:28",
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "En cours de paiement",
+    "joinFileStatusLabel": "À payer",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -10978,7 +10978,7 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "30/07/2025, 13:39",
+    "dateLastConnexion": "27/07/2025, 10:50",
     "emailValid": true,
     "notificationActive": true,
     "joinFileStatusLabel": null,
@@ -11054,7 +11054,7 @@
     "dateLastConnexion": null,
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "En cours de paiement",
+    "joinFileStatusLabel": "Payé",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -11958,67 +11958,6 @@
       {
         "label": "Nationalité",
         "value": null
-      }
-    ]
-  },
-  {
-    "membreId": 1125718,
-    "currentPictureUrl": null,
-    "firstname": "Alain",
-    "lastname": "DILHET",
-    "dateOfBirth": "18/06/1968",
-    "age": 57,
-    "gender": "homme",
-    "address": "Quartier CARRERE",
-    "additional": null,
-    "postalCode": "65240",
-    "town": "Aulon",
-    "country": "FR",
-    "phoneNumber": null,
-    "mobilePhoneNumber": "+33695326431",
-    "email": "adilhet@orange.fr",
-    "allergy": null,
-    "personToContact": null,
-    "personToContactPhoneNumber": null,
-    "corporateName": null,
-    "office": null,
-    "account": true,
-    "dateLastConnexion": "29/07/2025, 20:53",
-    "emailValid": true,
-    "notificationActive": true,
-    "joinFileStatusLabel": null,
-    "joinFileLastPaymentType": null,
-    "joinFileLastPaymentDate": null,
-    "childsLabel": "",
-    "childMembers": [],
-    "parentsLabel": "",
-    "parentMembers": [],
-    "groups": [],
-    "categories": [
-      {
-        "label": "Nouveau contact (adhésion)"
-      }
-    ],
-    "roles": [],
-    "medicalCertificateUrl": null,
-    "dateMedicalCertificate": null,
-    "licence": null,
-    "customFields": [
-      {
-        "label": "documents utiles",
-        "value": null
-      },
-      {
-        "label": "Ville de naissance",
-        "value": "TARBES"
-      },
-      {
-        "label": "Pays de naissance",
-        "value": "France"
-      },
-      {
-        "label": "Nationalité",
-        "value": "Française"
       }
     ]
   },
@@ -13449,7 +13388,7 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "30/07/2025, 18:14",
+    "dateLastConnexion": "29/07/2025, 16:57",
     "emailValid": true,
     "notificationActive": true,
     "joinFileStatusLabel": null,
@@ -13747,7 +13686,7 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "30/07/2025, 10:17",
+    "dateLastConnexion": "27/07/2025, 11:11",
     "emailValid": true,
     "notificationActive": true,
     "joinFileStatusLabel": "À payer",
@@ -15233,7 +15172,7 @@
     "firstname": "Michaella",
     "lastname": "Franchequin",
     "dateOfBirth": "30/07/2008",
-    "age": 17,
+    "age": 16,
     "gender": "femme",
     "address": "13 impasse du 8 mai 1945",
     "additional": null,
@@ -20259,7 +20198,7 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "30/07/2025, 18:11",
+    "dateLastConnexion": "28/07/2025, 20:06",
     "emailValid": true,
     "notificationActive": true,
     "joinFileStatusLabel": "Payé",
@@ -21264,7 +21203,7 @@
     "dateLastConnexion": null,
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "À payer",
+    "joinFileStatusLabel": null,
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -21283,7 +21222,7 @@
     "groups": [],
     "categories": [
       {
-        "label": "Adhérent"
+        "label": "Nouveau contact (adhésion)"
       }
     ],
     "roles": [],
@@ -21334,7 +21273,7 @@
     "dateLastConnexion": null,
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "À payer",
+    "joinFileStatusLabel": null,
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -21353,7 +21292,7 @@
     "groups": [],
     "categories": [
       {
-        "label": "Adhérent"
+        "label": "Nouveau contact (adhésion)"
       }
     ],
     "roles": [],
@@ -21431,7 +21370,7 @@
     "groups": [],
     "categories": [
       {
-        "label": "Parent"
+        "label": "Nouveau contact (adhésion)"
       }
     ],
     "roles": [],
@@ -30370,16 +30309,16 @@
     "currentPictureUrl": null,
     "firstname": "manon",
     "lastname": "peugnet",
-    "dateOfBirth": "22/04/1992",
-    "age": 33,
-    "gender": "femme",
-    "address": "239 Route des escoumes",
+    "dateOfBirth": null,
+    "age": null,
+    "gender": null,
+    "address": null,
     "additional": null,
-    "postalCode": "65250",
-    "town": "Hèches Rebouc",
-    "country": "france",
+    "postalCode": null,
+    "town": null,
+    "country": null,
     "phoneNumber": null,
-    "mobilePhoneNumber": "+33629202745",
+    "mobilePhoneNumber": null,
     "email": "manon.peugnet@gmail.com",
     "allergy": null,
     "personToContact": null,
@@ -30387,8 +30326,8 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "30/07/2025, 08:57",
-    "emailValid": true,
+    "dateLastConnexion": null,
+    "emailValid": false,
     "notificationActive": true,
     "joinFileStatusLabel": null,
     "joinFileLastPaymentType": null,
@@ -30400,7 +30339,7 @@
     "groups": [],
     "categories": [
       {
-        "label": "Nouveau contact (adhésion)"
+        "label": "Contact extérieur"
       }
     ],
     "roles": [],
@@ -30414,15 +30353,15 @@
       },
       {
         "label": "Ville de naissance",
-        "value": "châtellerault"
+        "value": null
       },
       {
         "label": "Pays de naissance",
-        "value": "france"
+        "value": null
       },
       {
         "label": "Nationalité",
-        "value": "france"
+        "value": null
       }
     ]
   },
@@ -30705,7 +30644,7 @@
     "firstname": "Océane",
     "lastname": "Philippe",
     "dateOfBirth": "30/07/2008",
-    "age": 17,
+    "age": 16,
     "gender": "femme",
     "address": "4 route des chapelets",
     "additional": "Appartement 18",
@@ -32221,7 +32160,7 @@
     "dateLastConnexion": "28/07/2025, 16:31",
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "À payer",
+    "joinFileStatusLabel": "Payé",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -32906,7 +32845,7 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "29/07/2025, 17:45",
+    "dateLastConnexion": "29/07/2025, 10:16",
     "emailValid": true,
     "notificationActive": true,
     "joinFileStatusLabel": null,
@@ -32979,7 +32918,7 @@
     "dateLastConnexion": null,
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "En cours de paiement",
+    "joinFileStatusLabel": "À payer",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -34441,12 +34380,12 @@
     "mobilePhoneNumber": "+33612421763",
     "email": "flo.rouquier210@gmail.com",
     "allergy": null,
-    "personToContact": "CRENN Julien",
-    "personToContactPhoneNumber": "+33769474127",
+    "personToContact": null,
+    "personToContactPhoneNumber": null,
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "30/07/2025, 22:09",
+    "dateLastConnexion": "29/09/2024, 16:19",
     "emailValid": true,
     "notificationActive": true,
     "joinFileStatusLabel": "Payé",
@@ -36836,7 +36775,7 @@
     "firstname": "LOUIS",
     "lastname": "SOMPROU",
     "dateOfBirth": "30/07/2014",
-    "age": 11,
+    "age": 10,
     "gender": "homme",
     "address": "10 rue de la piscine",
     "additional": null,
@@ -41634,7 +41573,7 @@
     "firstname": "Damien",
     "lastname": "Vidal",
     "dateOfBirth": "30/07/1997",
-    "age": 28,
+    "age": 27,
     "gender": "homme",
     "address": "7 Place Joseph Plantat",
     "additional": null,
