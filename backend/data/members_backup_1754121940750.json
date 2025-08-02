@@ -17389,7 +17389,7 @@
     "dateLastConnexion": "11/07/2025, 12:43",
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "À payer",
+    "joinFileStatusLabel": null,
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "Gestionnaire de 1 contact : Thoma GOURBEYRE",
@@ -17408,7 +17408,7 @@
     "groups": [],
     "categories": [
       {
-        "label": "Adhérent"
+        "label": "Contact extérieur"
       },
       {
         "label": "Parent"
@@ -17462,7 +17462,7 @@
     "dateLastConnexion": null,
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "À payer",
+    "joinFileStatusLabel": "Payé",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
