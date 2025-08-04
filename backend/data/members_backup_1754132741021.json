@@ -3202,7 +3202,7 @@
     "firstname": "Aurélien",
     "lastname": "Bech",
     "dateOfBirth": "04/08/1987",
-    "age": 38,
+    "age": 37,
     "gender": "homme",
     "address": "rue principale",
     "additional": "village",
@@ -8142,7 +8142,7 @@
     "firstname": "Jean-François",
     "lastname": "Caubet",
     "dateOfBirth": "03/08/2005",
-    "age": 20,
+    "age": 19,
     "gender": "homme",
     "address": "120 chemin de bastinous",
     "additional": null,
@@ -9453,7 +9453,7 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "02/08/2025, 18:03",
+    "dateLastConnexion": "08/07/2025, 10:48",
     "emailValid": true,
     "notificationActive": true,
     "joinFileStatusLabel": "À payer",
@@ -10685,7 +10685,7 @@
     "dateLastConnexion": null,
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "À payer",
+    "joinFileStatusLabel": null,
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -10704,7 +10704,10 @@
     "groups": [],
     "categories": [
       {
-        "label": "Adhérent"
+        "label": "Contact extérieur"
+      },
+      {
+        "label": "Nouveau contact (adhésion)"
       }
     ],
     "roles": [],
@@ -13446,7 +13449,7 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "02/08/2025, 12:59",
+    "dateLastConnexion": "02/08/2025, 08:44",
     "emailValid": true,
     "notificationActive": true,
     "joinFileStatusLabel": null,
@@ -15516,7 +15519,7 @@
     "firstname": "Elyo",
     "lastname": "Gaillabaud -Angellier",
     "dateOfBirth": "04/08/2016",
-    "age": 9,
+    "age": 8,
     "gender": "homme",
     "address": "Chemin des Aubépines Les Granges de Trescazes b",
     "additional": null,
@@ -25028,7 +25031,7 @@
     "groups": [],
     "categories": [
       {
-        "label": "Parent"
+        "label": "Nouveau contact (adhésion)"
       }
     ],
     "roles": [],
@@ -28142,7 +28145,7 @@
     "firstname": "Nora",
     "lastname": "Navarro",
     "dateOfBirth": "04/08/2019",
-    "age": 6,
+    "age": 5,
     "gender": "femme",
     "address": "15 rue saint Martin",
     "additional": null,
@@ -29465,7 +29468,7 @@
     "firstname": "Alice",
     "lastname": "Pailler",
     "dateOfBirth": "03/08/2014",
-    "age": 11,
+    "age": 10,
     "gender": "femme",
     "address": "16 route de luchon",
     "additional": null,
