@@ -29,7 +29,7 @@ export default function ReglementPage() {
         </div>
 
         <div className="reglement-section">
-          <h2>Article 1 : Objet</h2>
+          <h2>ARTICLE 1 : OBJET</h2>
           <p>
             Le présent règlement a pour objet de définir les conditions d'accès et d'utilisation 
             de la salle et notamment des équipements d'escalade.
@@ -84,7 +84,7 @@ export default function ReglementPage() {
         </div>
 
         <div className="reglement-section">
-          <h2>Article 4 : Passeports FFME escalade</h2>
+          <h2>ARTICLE 4 : PASSEPORTS FFME ESCALADE</h2>
           <p>
             Le Passeport FFME Escalade blanc atteste de l'autonomie de niveau 1 définie à l'article 3. 
             Le Passeport FFME Escalade jaune atteste de l'autonomie de niveau 2 définie à l'article 3.
@@ -95,74 +95,65 @@ export default function ReglementPage() {
           </p>
         </div>
 
-        <div className="reglement-section">
-          <h2>Article 5 : Accès aux équipements de la salle BEM</h2>
-          <p>
-            L'autorisation d'accès aux différentes structures dépend de l'âge du pratiquant.
-            La possibilité de grimper en tête ou en moulinette sur la SAE à cordes dépend du degré d'autonomie déclaré.
-          </p>
-          <p>Les principales règles d'accès sont synthétisées dans le tableau ci-dessous :</p>
-          
-          <div className="access-table">
-            <div className="table-section">
-              <h4>Moins de 14 ans</h4>
-              <div className="table-content">
-                <p><strong>Conditions générales :</strong> Uniquement sous la responsabilité d'un adulte. Doit présenter l'autorisation parentale.</p>
-                <p><strong>Accès aux structures :</strong> Même structures et même pratique (moulinette, en tête) que l'adulte responsable.</p>
-              </div>
-            </div>
-            
-            <div className="table-section">
-              <h4>De 14 ans à 18 ans</h4>
-              <div className="table-content">
-                <p><strong>Conditions générales :</strong> Doit présenter l'autorisation parentale dans laquelle le responsable légal certifie le niveau d'autonomie de l'enfant ou la possession d'un Passeport FFME.</p>
-                <div className="autonomy-options">
-                  <div className="autonomy-option">
-                    <span className="autonomy-level">Non autonome</span>
-                    <span className="access-rights">→ Structure Blocs uniquement</span>
-                  </div>
-                  <div className="autonomy-option">
-                    <span className="autonomy-level">Passeport FFME Escalade blanc ou autonome niveau 1</span>
-                    <span className="access-rights">→ Structures Blocs et Cordes en moulinette</span>
-                  </div>
-                  <div className="autonomy-option">
-                    <span className="autonomy-level">Passeport FFME Escalade jaune ou autonome niveau 2</span>
-                    <span className="access-rights">→ Toutes structures et escalade en tête sur le mur à cordes autorisée</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-            <div className="table-section">
-              <h4>18 ans et plus</h4>
-              <div className="table-content">
-                <div className="autonomy-options">
-                  <div className="autonomy-option">
-                    <span className="autonomy-level">Se déclare non autonome</span>
-                    <span className="access-rights">→ Structures Blocs uniquement</span>
-                  </div>
-                  <div className="autonomy-option">
-                    <span className="autonomy-level">Passeport FFME Escalade blanc ou se déclare autonome de niveau 1</span>
-                    <span className="access-rights">→ Structures Blocs et Cordes en moulinette</span>
-                  </div>
-                  <div className="autonomy-option">
-                    <span className="autonomy-level">Passeport FFME Escalade jaune ou se déclare autonome de niveau 2</span>
-                    <span className="access-rights">→ Toutes structures et escalade en tête sur le mur à cordes autorisée</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          <p>
-            En outre, quel que soit son âge, toute personne accompagnée et sous la responsabilité d'un grimpeur majeur 
-            qui s'engage à en être responsable a accès aux mêmes structures et aux mêmes pratiques (moulinette ou en tête) 
-            que le responsable.
-          </p>
-        </div>
+<div className="reglement-section">
+  <h2>Article 5 : Accès aux équipements de la salle BEM</h2>
+  <p>
+    La possibilité de grimper en tête ou en moulinette sur la SAE à cordes dépend du degré d'autonomie déclaré. Les principales règles d'accès sont synthétisées dans le tableau ci-dessous :
+  </p>
+  <div className="table-container">
+    <table className="access-table-full">
+      <thead>
+        <tr>
+          <th>ÂGE</th>
+          <th>CONDITIONS GÉNÉRALES D'ACCÈS</th>
+          <th>AUTONOMIE / PASSEPORT</th>
+          <th>ACCÈS AUX STRUCTURES</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Moins de 14 ans</td>
+          <td>Uniquement sous la responsabilité d'un adulte. Doit présenter l'autorisation parentale.</td>
+          <td></td>
+          <td>Même structures et même pratique (moulinette, en tête) que l'adulte responsable.</td>
+        </tr>
+        <tr>
+          <td rowSpan={3}>De 14 ans à 18 ans</td>
+          <td rowSpan={3}>Doit présenter l'autorisation parentale dans laquelle le responsable légal certifie le niveau d'autonomie de l'enfant ou la possession d'un Passeport FFME.</td>
+          <td>Non autonome</td>
+          <td>Structure Blocs uniquement</td>
+        </tr>
+        <tr>
+          {/* ÂGE and CONDITIONS GÉNÉRALES D'ACCÈS cells zijn deels gespaand */}
+          <td>Passeport FFME Escalade blanc ou autonome niveau 1</td>
+          <td>Structures Blocs et Cordes en moulinette</td>
+        </tr>
+        <tr>
+          <td>Passeport FFME Escalade jaune ou autonome niveau 2</td>
+          <td>Toutes structures et escalade en tête sur le mur à cordes autorisée</td>
+        </tr>
+        <tr>
+          <td rowSpan={3}>18 ans et plus</td>
+          <td rowSpan={3}></td>
+          <td>Se déclare non autonome</td>
+          <td>Structures Blocs uniquement</td>
+        </tr>
+        <tr>
+          {/* tweede en derde rij 18+ */}
+          <td>Passeport FFME Escalade blanc ou se déclare autonome de niveau 1</td>
+          <td>Structures Blocs et Cordes en moulinette</td>
+        </tr>
+        <tr>
+          <td>Passeport FFME Escalade jaune ou se déclare autonome de niveau 2</td>
+          <td>Toutes structures et escalade en tête sur le mur à cordes autorisée</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
 
         <div className="reglement-section">
-          <h2>Article 6 : Accès</h2>
+          <h2>ARTICLE 6 : ACCÈS</h2>
           <p>Les adhérents sont soumis aux règles d'accès du présent règlement.</p>
           <p>Un responsable du club est obligatoirement présent.</p>
           <p>
@@ -196,7 +187,7 @@ export default function ReglementPage() {
         </div>
 
         <div className="reglement-section">
-          <h2>Article 9 : Location de matériel</h2>
+          <h2>ARTICLE 9 : LOCATION DE MATÉRIEL</h2>
           <p>
             La salle BEM prête le matériel de base nécessaire à l'escalade : chaussons, baudrier, système d'assurage. 
             Le dépôt d'une pièce d'identité est demandé.
@@ -207,7 +198,7 @@ export default function ReglementPage() {
           <h2>Article 10 : Obligations des utilisateurs</h2>
           
           <div className="sub-section">
-            <h3>10.1 – Propreté</h3>
+            <h3>10.1 – PROPRETÉ</h3>
             <ul>
               <li>Utiliser des chaussons d'escalade dans la salle d'escalade (les chaussures de ville sont interdites dans la salle)</li>
               <li>Ne pas utiliser de chaussons d'escalade en dehors de la salle d'escalade (vestiaires, couloir, accueil)</li>
