@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const fs = require('fs');
+const cron = require('node-cron');
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -13,6 +14,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Bestand opslag
 const PRESENCES_FILE = path.join(__dirname, 'data', 'presences.json');
+const PRESENCE_HISTORY_FILE = path.join(__dirname, 'data', 'presence-history.json');
 
 // Initialisation du stockage
 const initStorage = () => {
@@ -22,27 +24,64 @@ const initStorage = () => {
   if (!fs.existsSync(PRESENCES_FILE)) {
     fs.writeFileSync(PRESENCES_FILE, '[]');
   }
+  if (!fs.existsSync(PRESENCE_HISTORY_FILE)) {
+    fs.writeFileSync(PRESENCE_HISTORY_FILE, '[]');
+  }
 };
 initStorage();
 
 // Lecture/Écriture des données
 const readPresences = () => JSON.parse(fs.readFileSync(PRESENCES_FILE));
 const writePresences = (data) => fs.writeFileSync(PRESENCES_FILE, JSON.stringify(data, null, 2));
+const readPresenceHistory = () => JSON.parse(fs.readFileSync(PRESENCE_HISTORY_FILE));
+const writePresenceHistory = (data) => fs.writeFileSync(PRESENCE_HISTORY_FILE, JSON.stringify(data, null, 2));
+
+// ===== CRON JOB: DAGELIJKSE RESET OM MIDDERNACHT =====
+cron.schedule('0 0 * * *', () => {
+  try {
+    console.log('=== DAGELIJKSE RESET GESTART ===');
+    const currentPresences = readPresences();
+    
+    if (currentPresences.length > 0) {
+      // Voeg huidige dag toe aan historiek
+      const history = readPresenceHistory();
+      const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD format
+      
+      history.push({
+        date: today,
+        presences: currentPresences
+      });
+      
+      writePresenceHistory(history);
+      console.log(`${currentPresences.length} presences gearchiveerd voor ${today}`);
+      
+      // Reset huidige presences
+      writePresences([]);
+      console.log('Huidige presences gereset voor nieuwe dag');
+    } else {
+      console.log('Geen presences om te archiveren');
+    }
+    
+    console.log('=== DAGELIJKSE RESET VOLTOOID ===');
+  } catch (error) {
+    console.error('Fout bij dagelijkse reset:', error);
+  }
+});
 
 // Import routes des membres
 const membersRoutes = require('./routes/members');
 app.use('/members', membersRoutes);
 
-// Routes API pour les présences - BESTAANDE CODE BEHOUDEN
+// Routes API pour les présences - AANGEPAST VOOR BETALINGSMETHODE
 app.post('/presences', (req, res) => {
   try {
-    // EXPLICIETE destructuring - geen spread operator
+    // EXPLICIETE destructuring
     const type = req.body.type;
     const nom = req.body.nom;
     const prenom = req.body.prenom;
     
     // DEBUG logging
-    console.log('=== PRESENCE REGISTRATION FIXED ===');
+    console.log('=== PRESENCE REGISTRATION WITH PAYMENT METHOD ===');
     console.log('Type:', type);
     console.log('Nom:', nom);
     console.log('Prenom:', prenom);
@@ -67,19 +106,22 @@ app.post('/presences', (req, res) => {
       console.log('Final presence object for adherent:', presence);
       
     } else if (type === 'non-adherent') {
-      // Voor non-adherents: wel tarif
+      // Voor non-adherents: wel tarif EN betalingsmethode
       presence.status = 'pending';
       presence.tarif = req.body.tarif || 10;
+      
+      // **NIEUWE FUNCTIONALITEIT: BETALINGSMETHODE**
+      presence.methodePaiement = req.body.methodePaiement || 'Especes'; // Default naar especes
       
       // Extra velden voor non-adherents
       if (req.body.email) presence.email = req.body.email;
       if (req.body.telephone) presence.telephone = req.body.telephone;
       if (req.body.dateNaissance) presence.dateNaissance = req.body.dateNaissance;
       if (req.body.adresse) presence.adresse = req.body.adresse;
-      if (req.body.methodePaiement) presence.methodePaiement = req.body.methodePaiement;
       
       console.log('=== NON-ADHERENT DETECTED ===');
       console.log('Tarif added:', presence.tarif);
+      console.log('Methode paiement added:', presence.methodePaiement);
       console.log('Final presence object for non-adherent:', presence);
       
     } else {
@@ -104,13 +146,44 @@ app.post('/presences', (req, res) => {
   }
 });
 
-// GET toutes les présences
+// GET toutes les présences (huidige dag)
 app.get('/presences', (req, res) => {
   try {
     const presences = readPresences();
     res.json({ success: true, presences });
   } catch (error) {
     console.error('Fout GET /presences:', error);
+    res.status(500).json({ success: false, error: 'Server fout' });
+  }
+});
+
+// **NIEUWE ROUTE: GET historiek per datum**
+app.get('/presences/history/:date', (req, res) => {
+  try {
+    const { date } = req.params; // YYYY-MM-DD format
+    const history = readPresenceHistory();
+    
+    const dayHistory = history.find(h => h.date === date);
+    
+    if (!dayHistory) {
+      return res.json({ success: true, presences: [] });
+    }
+    
+    res.json({ success: true, presences: dayHistory.presences });
+  } catch (error) {
+    console.error('Fout GET /presences/history/:date:', error);
+    res.status(500).json({ success: false, error: 'Server fout' });
+  }
+});
+
+// **NIEUWE ROUTE: GET alle beschikbare datums**
+app.get('/presences/history', (req, res) => {
+  try {
+    const history = readPresenceHistory();
+    const dates = history.map(h => h.date).sort().reverse(); // Nieuwste eerst
+    res.json({ success: true, dates });
+  } catch (error) {
+    console.error('Fout GET /presences/history:', error);
     res.status(500).json({ success: false, error: 'Server fout' });
   }
 });
@@ -133,11 +206,11 @@ app.get('/presences/:id', (req, res) => {
   }
 });
 
-// Valider une présence
+// Valider une présence - AANGEPAST VOOR BETALINGSMETHODE
 app.post('/presences/:id/valider', (req, res) => {
   try {
     const { id } = req.params;
-    const { montant } = req.body;
+    const { montant, methodePaiement } = req.body;
     
     const presences = readPresences();
     const index = presences.findIndex(p => p.id === id);
@@ -153,6 +226,11 @@ app.post('/presences/:id/valider', (req, res) => {
       presences[index].tarif = montant;
     }
     
+    // **NIEUWE FUNCTIONALITEIT: Update betalingsmethode bij validatie**
+    if (methodePaiement) {
+      presences[index].methodePaiement = methodePaiement;
+    }
+    
     presences[index].dateValidation = new Date().toISOString();
     
     writePresences(presences);
@@ -164,11 +242,11 @@ app.post('/presences/:id/valider', (req, res) => {
   }
 });
 
-// Ajouter tarif aan adherent (indien nodig)
+// Ajouter tarif aan adherent (indien nodig) - AANGEPAST VOOR BETALINGSMETHODE
 app.post('/presences/:id/ajouter-tarif', (req, res) => {
   try {
     const { id } = req.params;
-    const { montant } = req.body;
+    const { montant, methodePaiement } = req.body;
     
     const presences = readPresences();
     const index = presences.findIndex(p => p.id === id);
@@ -178,6 +256,12 @@ app.post('/presences/:id/ajouter-tarif', (req, res) => {
     }
     
     presences[index].tarif = montant || 0;
+    
+    // **NIEUWE FUNCTIONALITEIT: Betalingsmethode voor adherents**
+    if (methodePaiement) {
+      presences[index].methodePaiement = methodePaiement;
+    }
+    
     presences[index].dateModificationTarif = new Date().toISOString();
     
     writePresences(presences);
@@ -232,6 +316,36 @@ app.post('/presences/:id/annuler', (req, res) => {
   }
 });
 
+// **NIEUWE ROUTE: Handmatige archivering** (voor testing)
+app.post('/presences/archive', (req, res) => {
+  try {
+    const currentPresences = readPresences();
+    
+    if (currentPresences.length === 0) {
+      return res.json({ success: false, message: 'Geen presences om te archiveren' });
+    }
+    
+    const history = readPresenceHistory();
+    const today = new Date().toISOString().split('T')[0];
+    
+    history.push({
+      date: today,
+      presences: currentPresences
+    });
+    
+    writePresenceHistory(history);
+    writePresences([]);
+    
+    res.json({ 
+      success: true, 
+      message: `${currentPresences.length} presences gearchiveerd voor ${today}` 
+    });
+  } catch (error) {
+    console.error('Fout handmatige archivering:', error);
+    res.status(500).json({ success: false, error: 'Server fout' });
+  }
+});
+
 // Admin route
 app.get('/admin', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'admin.html'));
@@ -241,4 +355,5 @@ app.get('/admin', (req, res) => {
 app.listen(PORT, () => {
   console.log(`Backend server actief op http://localhost:${PORT}`);
   console.log(`Admin interface op http://localhost:${PORT}/admin`);
+  console.log('Dagelijkse reset om middernacht is geactiveerd');
 });

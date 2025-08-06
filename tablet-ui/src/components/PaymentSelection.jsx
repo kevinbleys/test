@@ -14,7 +14,7 @@ export default function PaymentSelection() {
 
   // Vérifier si des données ont été passées
   if (!nom || !prenom || !dateNaissance) {
-    // Rediriger vers le formulaire si pas de données
+    // Rediriger vers le formulier si pas de données
     navigate('/non-member');
     return null;
   }
@@ -31,18 +31,38 @@ export default function PaymentSelection() {
     setError('');
     
     try {
-      // Enregistrement d'une présence non-adhérent
-      const presenceResponse = await axios.post('http://localhost:4000/presences', {
+      console.log('=== PAYMENT SELECTION FORM SUBMISSION ===');
+      
+      // **AANGEPASTE DATA STRUCTURE MET BETALINGSMETHODE**
+      const presenceData = {
         type: 'non-adherent',
-        nom,
-        prenom,
+        nom: nom.trim(),
+        prenom: prenom.trim(),
         dateNaissance,
         tarif,
-        methodePaiement
+        methodePaiement, // **NIEUWE VELD**
+        // Extra velden uit het originele form
+        email: location.state?.email || '',
+        telephone: location.state?.telephone || '',
+        adresse: location.state?.adresse || ''
+      };
+      
+      console.log('Sending presence data with payment method:', presenceData);
+      
+      // Enregistrement d'une présence non-adhérent
+      const presenceResponse = await axios.post('http://localhost:4000/presences', presenceData, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
       });
+      
+      console.log('Presence response:', presenceResponse.data);
       
       // Si l'enregistrement de présence a fonctionné
       if (presenceResponse.data.success) {
+        console.log('=== PRESENCE WITH PAYMENT METHOD REGISTERED ===');
+        console.log('Final presence object:', presenceResponse.data.presence);
+        
         // Redirection vers la page de confirmation
         navigate('/non-member-confirmation', { 
           state: { 
@@ -54,10 +74,22 @@ export default function PaymentSelection() {
             methodePaiement 
           } 
         });
+      } else {
+        setError("Erreur lors de l'enregistrement");
       }
     } catch (err) {
-      console.error('Erreur:', err);
-      setError("Erreur lors de l'enregistrement. Vérifiez votre connexion au serveur.");
+      console.error('=== ERROR IN PAYMENT SELECTION ===');
+      console.error('Error details:', err);
+      
+      let errorMessage = "Erreur lors de l'enregistrement";
+      
+      if (err.response?.data?.error) {
+        errorMessage = err.response.data.error;
+      } else if (err.message) {
+        errorMessage = "Vérifiez votre connexion au serveur";
+      }
+      
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -65,84 +97,96 @@ export default function PaymentSelection() {
 
   return (
     <div className="payment-selection">
-      <h2>Sélection du tarif et du mode de paiement</h2>
-      
-      <div className="user-info">
-        <p><strong>Nom :</strong> {nom}</p>
-        <p><strong>Prénom :</strong> {prenom}</p>
-        <p><strong>Date de naissance :</strong> {new Date(dateNaissance).toLocaleDateString('fr-FR')}</p>
-        <p><strong>Âge :</strong> {age} ans</p>
+      <div className="payment-header">
+        <h2>Sélection du tarif et du mode de paiement</h2>
       </div>
       
-      <div className="tarif-box">
-        <h3>Tarif applicable</h3>
-        <div className="tarif-amount">
-          {tarif === 0 ? 'Gratuit' : `${tarif}€`}
+      <div className="payment-body">
+        <div className="user-info">
+          <p><strong>Nom :</strong> {nom}</p>
+          <p><strong>Prénom :</strong> {prenom}</p>
+          <p><strong>Date de naissance :</strong> {new Date(dateNaissance).toLocaleDateString('fr-FR')}</p>
+          <p><strong>Âge :</strong> {age} ans</p>
         </div>
-        <p className="tarif-explanation">
-          {tarif === 0 && 'Entrée gratuite pour les enfants de moins de 6 ans.'}
-          {tarif === 8 && 'Tarif réduit pour les mineurs (6-18 ans).'}
-          {tarif === 10 && 'Tarif normal pour les adultes.'}
-        </p>
-      </div>
-      
-      <form onSubmit={handleSubmit}>
-        <div className="payment-methods">
-          <h3>Méthode de paiement</h3>
-          <div className="radio-group">
-            <label>
-              <input
-                type="radio"
-                name="methodePaiement"
-                value="CB"
-                checked={methodePaiement === 'CB'}
-                onChange={() => setMethodePaiement('CB')}
-                required
-              />
-              Carte Bancaire
-            </label>
-            <label>
-              <input
-                type="radio"
-                name="methodePaiement"
-                value="Cheque"
-                checked={methodePaiement === 'Cheque'}
-                onChange={() => setMethodePaiement('Cheque')}
-              />
-              Chèque
-            </label>
-            <label>
-              <input
-                type="radio"
-                name="methodePaiement"
-                value="Especes"
-                checked={methodePaiement === 'Especes'}
-                onChange={() => setMethodePaiement('Especes')}
-              />
-              Espèces
-            </label>
+        
+        <form onSubmit={handleSubmit}>
+          <div className="tarif-section">
+            <h3>Tarif applicable</h3>
+            <div className="tarif-display">
+              {tarif === 0 ? 'Gratuit' : `${tarif}€`}
+            </div>
+            <div className="tarif-info">
+              {tarif === 0 && 'Entrée gratuite pour les enfants de moins de 6 ans.'}
+              {tarif === 8 && 'Tarif réduit pour les mineurs (6-18 ans).'}
+              {tarif === 10 && 'Tarif normal pour les adultes.'}
+            </div>
           </div>
-        </div>
-        
-        {error && <div className="error-message">{error}</div>}
-        
-        <div className="buttons-container">
-          <button 
-            type="button" 
-            className="back-button"
-            onClick={() => navigate('/non-member')}
-          >
-            Retour
-          </button>
-          <button 
-            type="submit" 
-            className="continue-button" 
-            disabled={loading || !methodePaiement}
-          >
-            {loading ? 'Traitement...' : 'Continuer'}
-          </button>
-        </div>
-      </form>
+          
+          <div className="payment-method-section">
+            <h3>Méthode de paiement</h3>
+            
+            <div className="payment-options">
+              <div className="payment-option">
+                <input
+                  type="radio"
+                  id="cb"
+                  name="methodePaiement"
+                  value="CB"
+                  checked={methodePaiement === 'CB'}
+                  onChange={(e) => setMethodePaiement('CB')}
+                  required
+                />
+                <label htmlFor="cb">Carte Bancaire</label>
+              </div>
+              
+              <div className="payment-option">
+                <input
+                  type="radio"
+                  id="cheque"
+                  name="methodePaiement"
+                  value="Cheque"
+                  checked={methodePaiement === 'Cheque'}
+                  onChange={(e) => setMethodePaiement('Cheque')}
+                />
+                <label htmlFor="cheque">Chèque</label>
+              </div>
+              
+              <div className="payment-option">
+                <input
+                  type="radio"
+                  id="especes"
+                  name="methodePaiement"
+                  value="Especes"
+                  checked={methodePaiement === 'Especes'}
+                  onChange={(e) => setMethodePaiement('Especes')}
+                />
+                <label htmlFor="especes">Espèces</label>
+              </div>
+            </div>
+          </div>
+          
+          {error && <div className="error-message">{error}</div>}
+          
+          <div className="form-actions">
+            <button
+              type="button"
+              className="btn-secondary"
+              onClick={() => navigate('/non-member')}
+              disabled={loading}
+            >
+              Retour
+            </button>
+            
+            <button
+              type="submit"
+              className="btn-primary"
+              disabled={loading || !methodePaiement}
+            >
+              {loading ? 'Enregistrement...' : 'Confirmer'}
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }
