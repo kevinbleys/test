@@ -95,62 +95,62 @@ export default function ReglementPage() {
           </p>
         </div>
 
-<div className="reglement-section">
-  <h2>Article 5 : Accès aux équipements de la salle BEM</h2>
-  <p>
-    La possibilité de grimper en tête ou en moulinette sur la SAE à cordes dépend du degré d'autonomie déclaré. Les principales règles d'accès sont synthétisées dans le tableau ci-dessous :
-  </p>
-  <div className="table-container">
-    <table className="access-table-full">
-      <thead>
-        <tr>
-          <th>ÂGE</th>
-          <th>CONDITIONS GÉNÉRALES D'ACCÈS</th>
-          <th>AUTONOMIE / PASSEPORT</th>
-          <th>ACCÈS AUX STRUCTURES</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Moins de 14 ans</td>
-          <td>Uniquement sous la responsabilité d'un adulte. Doit présenter l'autorisation parentale.</td>
-          <td></td>
-          <td>Même structures et même pratique (moulinette, en tête) que l'adulte responsable.</td>
-        </tr>
-        <tr>
-          <td rowSpan={3}>De 14 ans à 18 ans</td>
-          <td rowSpan={3}>Doit présenter l'autorisation parentale dans laquelle le responsable légal certifie le niveau d'autonomie de l'enfant ou la possession d'un Passeport FFME.</td>
-          <td>Non autonome</td>
-          <td>Structure Blocs uniquement</td>
-        </tr>
-        <tr>
-          {/* ÂGE and CONDITIONS GÉNÉRALES D'ACCÈS cells zijn deels gespaand */}
-          <td>Passeport FFME Escalade blanc ou autonome niveau 1</td>
-          <td>Structures Blocs et Cordes en moulinette</td>
-        </tr>
-        <tr>
-          <td>Passeport FFME Escalade jaune ou autonome niveau 2</td>
-          <td>Toutes structures et escalade en tête sur le mur à cordes autorisée</td>
-        </tr>
-        <tr>
-          <td rowSpan={3}>18 ans et plus</td>
-          <td rowSpan={3}></td>
-          <td>Se déclare non autonome</td>
-          <td>Structures Blocs uniquement</td>
-        </tr>
-        <tr>
-          {/* tweede en derde rij 18+ */}
-          <td>Passeport FFME Escalade blanc ou se déclare autonome de niveau 1</td>
-          <td>Structures Blocs et Cordes en moulinette</td>
-        </tr>
-        <tr>
-          <td>Passeport FFME Escalade jaune ou se déclare autonome de niveau 2</td>
-          <td>Toutes structures et escalade en tête sur le mur à cordes autorisée</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
+        <div className="reglement-section">
+          <h2>Article 5 : Accès aux équipements de la salle BEM</h2>
+          <p>
+            La possibilité de grimper en tête ou en moulinette sur la SAE à cordes dépend du degré d'autonomie déclaré. Les principales règles d'accès sont synthétisées dans le tableau ci-dessous :
+          </p>
+          
+          {/* TABEL MET ZICHTBARE LIJNEN */}
+          <div className="table-container">
+            <table className="access-table-full">
+              <thead>
+                <tr>
+                  <th>ÂGE</th>
+                  <th>CONDITIONS GÉNÉRALES D'ACCÈS</th>
+                  <th>AUTONOMIE / PASSEPORT</th>
+                  <th>ACCÈS AUX STRUCTURES</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Moins de 14 ans</td>
+                  <td>Uniquement sous la responsabilité d'un adulte. Doit présenter l'autorisation parentale.</td>
+                  <td></td>
+                  <td>Même structures et même pratique (moulinette, en tête) que l'adulte responsable.</td>
+                </tr>
+                <tr>
+                  <td rowSpan={3}>De 14 ans à 18 ans</td>
+                  <td rowSpan={3}>Doit présenter l'autorisation parentale dans laquelle le responsable légal certifie le niveau d'autonomie de l'enfant ou la possession d'un Passeport FFME.</td>
+                  <td>Non autonome</td>
+                  <td>Structure Blocs uniquement</td>
+                </tr>
+                <tr>
+                  <td>Passeport FFME Escalade blanc ou autonome niveau 1</td>
+                  <td>Structures Blocs et Cordes en moulinette</td>
+                </tr>
+                <tr>
+                  <td>Passeport FFME Escalade jaune ou autonome niveau 2</td>
+                  <td>Toutes structures et escalade en tête sur le mur à cordes autorisée</td>
+                </tr>
+                <tr>
+                  <td rowSpan={3}>18 ans et plus</td>
+                  <td rowSpan={3}></td>
+                  <td>Se déclare non autonome</td>
+                  <td>Structures Blocs uniquement</td>
+                </tr>
+                <tr>
+                  <td>Passeport FFME Escalade blanc ou se déclare autonome de niveau 1</td>
+                  <td>Structures Blocs et Cordes en moulinette</td>
+                </tr>
+                <tr>
+                  <td>Passeport FFME Escalade jaune ou se déclare autonome de niveau 2</td>
+                  <td>Toutes structures et escalade en tête sur le mur à cordes autorisée</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
 
         <div className="reglement-section">
           <h2>ARTICLE 6 : ACCÈS</h2>
