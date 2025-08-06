@@ -250,10 +250,10 @@ export default function PresencesList() {
   const filteredPresences = getFilteredPresences();
 
   return (
-    <div style={{padding: '20px'}}>
+    <div style={{padding: '20px', fontFamily: 'Arial, sans-serif'}}>
       <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px'}}>
-        <h2 style={{margin: 0}}>
-          {isHistoryMode ? `Présences du ${selectedDate}` : 'Liste des présences'} ({filteredPresences.length})
+        <h2 style={{margin: 0, color: '#333'}}>
+          {isHistoryMode ? `Présences du ${selectedDate}` : 'Présences du jour'} ({filteredPresences.length})
         </h2>
         
         {/* **NIEUWE SECTIE: Datum selectie** */}
@@ -261,11 +261,19 @@ export default function PresencesList() {
           <select 
             value={selectedDate} 
             onChange={(e) => setSelectedDate(e.target.value)}
-            style={{padding: '8px 12px', border: '1px solid #ddd', borderRadius: '4px'}}
+            style={{
+              padding: '8px 12px', 
+              border: '1px solid #ddd', 
+              borderRadius: '4px',
+              fontSize: '14px',
+              backgroundColor: '#f8f9fa'
+            }}
           >
             <option value="today">Aujourd'hui</option>
             {availableDates.map(date => (
-              <option key={date} value={date}>{date}</option>
+              <option key={date} value={date}>
+                {new Date(date).toLocaleDateString('fr-FR')}
+              </option>
             ))}
           </select>
           
@@ -278,81 +286,165 @@ export default function PresencesList() {
                 border: 'none',
                 padding: '8px 12px',
                 borderRadius: '4px',
-                cursor: 'pointer'
+                cursor: 'pointer',
+                fontSize: '14px'
               }}
             >
-              Archiver aujourd'hui
+              📁 Archiver
             </button>
           )}
+          
+          <button
+            onClick={() => window.location.reload()}
+            style={{
+              backgroundColor: '#17a2b8',
+              color: 'white',
+              border: 'none',
+              padding: '8px 12px',
+              borderRadius: '4px',
+              cursor: 'pointer',
+              fontSize: '14px'
+            }}
+          >
+            🔄 Actualiser
+          </button>
         </div>
       </div>
 
-      <div style={{marginBottom: '20px'}}>
-        <button onClick={() => setFilter('all')} style={{marginRight: '10px', padding: '8px 16px', backgroundColor: filter === 'all' ? '#007bff' : '#f8f9fa', color: filter === 'all' ? 'white' : 'black', border: '1px solid #ddd', borderRadius: '4px'}}>
-          Tous
+      <div style={{marginBottom: '20px', display: 'flex', gap: '10px', flexWrap: 'wrap'}}>
+        <button 
+          onClick={() => setFilter('all')} 
+          style={{
+            padding: '8px 16px', 
+            backgroundColor: filter === 'all' ? '#007bff' : '#f8f9fa', 
+            color: filter === 'all' ? 'white' : '#333', 
+            border: '1px solid #ddd', 
+            borderRadius: '4px',
+            cursor: 'pointer',
+            fontSize: '14px'
+          }}
+        >
+          Tous ({presences.length})
         </button>
-        <button onClick={() => setFilter('adherent')} style={{marginRight: '10px', padding: '8px 16px', backgroundColor: filter === 'adherent' ? '#28a745' : '#f8f9fa', color: filter === 'adherent' ? 'white' : 'black', border: '1px solid #ddd', borderRadius: '4px'}}>
-          Adhérents
+        <button 
+          onClick={() => setFilter('adherent')} 
+          style={{
+            padding: '8px 16px', 
+            backgroundColor: filter === 'adherent' ? '#28a745' : '#f8f9fa', 
+            color: filter === 'adherent' ? 'white' : '#333', 
+            border: '1px solid #ddd', 
+            borderRadius: '4px',
+            cursor: 'pointer',
+            fontSize: '14px'
+          }}
+        >
+          Adhérents ({presences.filter(p => p.type === 'adherent').length})
         </button>
-        <button onClick={() => setFilter('non-adherent')} style={{marginRight: '10px', padding: '8px 16px', backgroundColor: filter === 'non-adherent' ? '#ffc107' : '#f8f9fa', color: filter === 'non-adherent' ? 'black' : 'black', border: '1px solid #ddd', borderRadius: '4px'}}>
-          Non-adhérents
+        <button 
+          onClick={() => setFilter('non-adherent')} 
+          style={{
+            padding: '8px 16px', 
+            backgroundColor: filter === 'non-adherent' ? '#ffc107' : '#f8f9fa', 
+            color: filter === 'non-adherent' ? 'black' : '#333', 
+            border: '1px solid #ddd', 
+            borderRadius: '4px',
+            cursor: 'pointer',
+            fontSize: '14px'
+          }}
+        >
+          Non-adhérents ({presences.filter(p => p.type === 'non-adherent').length})
         </button>
-        <button onClick={() => setFilter('pending')} style={{padding: '8px 16px', backgroundColor: filter === 'pending' ? '#dc3545' : '#f8f9fa', color: filter === 'pending' ? 'white' : 'black', border: '1px solid #ddd', borderRadius: '4px'}}>
-          En attente
+        <button 
+          onClick={() => setFilter('pending')} 
+          style={{
+            padding: '8px 16px', 
+            backgroundColor: filter === 'pending' ? '#dc3545' : '#f8f9fa', 
+            color: filter === 'pending' ? 'white' : '#333', 
+            border: '1px solid #ddd', 
+            borderRadius: '4px',
+            cursor: 'pointer',
+            fontSize: '14px'
+          }}
+        >
+          En attente ({presences.filter(p => p.status === 'pending').length})
         </button>
       </div>
 
       {filteredPresences.length === 0 ? (
-        <div style={{textAlign: 'center', padding: '40px', color: '#6c757d'}}>
-          {isHistoryMode ? 'Aucune présence trouvée pour cette date' : 'Aucune présence trouvée'}
+        <div style={{
+          textAlign: 'center', 
+          padding: '40px', 
+          color: '#6c757d',
+          backgroundColor: '#f8f9fa',
+          borderRadius: '8px',
+          border: '1px solid #dee2e6'
+        }}>
+          <h3>{isHistoryMode ? 'Aucune présence trouvée pour cette date' : 'Aucune présence pour aujourd\'hui'}</h3>
+          <p>Les présences apparaîtront ici au fur et à mesure des arrivées.</p>
         </div>
       ) : (
-        <div style={{overflowX: 'auto'}}>
-          <table style={{width: '100%', borderCollapse: 'collapse', backgroundColor: 'white', boxShadow: '0 2px 4px rgba(0,0,0,0.1)'}}>
+        <div style={{overflowX: 'auto', backgroundColor: 'white', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)'}}>
+          <table style={{width: '100%', borderCollapse: 'collapse', fontSize: '14px'}}>
             <thead>
-              <tr style={{backgroundColor: '#f8f9fa'}}>
+              <tr style={{backgroundColor: '#343a40', color: 'white'}}>
                 <th style={{padding: '12px', textAlign: 'left', borderBottom: '2px solid #dee2e6'}}>Date/Heure</th>
                 <th style={{padding: '12px', textAlign: 'left', borderBottom: '2px solid #dee2e6'}}>Type</th>
                 <th style={{padding: '12px', textAlign: 'left', borderBottom: '2px solid #dee2e6'}}>Nom</th>
                 <th style={{padding: '12px', textAlign: 'left', borderBottom: '2px solid #dee2e6'}}>Prénom</th>
                 <th style={{padding: '12px', textAlign: 'left', borderBottom: '2px solid #dee2e6'}}>Tarif</th>
-                <th style={{padding: '12px', textAlign: 'left', borderBottom: '2px solid #dee2e6'}}>Paiement</th>
-                <th style={{padding: '12px', textAlign: 'left', borderBottom: '2px solid #dee2e6'}}>Statut</th>
-                {!isHistoryMode && <th style={{padding: '12px', textAlign: 'left', borderBottom: '2px solid #dee2e6'}}>Actions</th>}
+                <th style={{padding: '12px', textAlign: 'center', borderBottom: '2px solid #dee2e6'}}>Paiement</th>
+                <th style={{padding: '12px', textAlign: 'center', borderBottom: '2px solid #dee2e6'}}>Statut</th>
+                {!isHistoryMode && <th style={{padding: '12px', textAlign: 'center', borderBottom: '2px solid #dee2e6'}}>Actions</th>}
               </tr>
             </thead>
             <tbody>
               {filteredPresences.map((presence, index) => (
-                <tr key={presence.id} style={{backgroundColor: index % 2 === 0 ? 'white' : '#f9f9f9'}}>
+                <tr key={presence.id} style={{backgroundColor: index % 2 === 0 ? 'white' : '#f8f9fa'}}>
                   <td style={{padding: '12px', borderBottom: '1px solid #dee2e6'}}>{formatDate(presence.date)}</td>
                   <td style={{padding: '12px', borderBottom: '1px solid #dee2e6'}}>
-                    {presence.type === 'adherent' ? 'Adhérent' : 'Non-adhérent'}
+                    <span style={{
+                      backgroundColor: presence.type === 'adherent' ? '#28a745' : '#ffc107',
+                      color: presence.type === 'adherent' ? 'white' : 'black',
+                      padding: '2px 6px',
+                      borderRadius: '3px',
+                      fontSize: '11px',
+                      fontWeight: 'bold'
+                    }}>
+                      {presence.type === 'adherent' ? 'Adhérent' : 'Non-adhérent'}
+                    </span>
                   </td>
                   <td style={{padding: '12px', borderBottom: '1px solid #dee2e6', fontWeight: 'bold'}}>{presence.nom}</td>
                   <td style={{padding: '12px', borderBottom: '1px solid #dee2e6', fontWeight: 'bold'}}>{presence.prenom}</td>
                   <td style={{padding: '12px', borderBottom: '1px solid #dee2e6'}}>{getTarifDisplay(presence)}</td>
-                  <td style={{padding: '12px', borderBottom: '1px solid #dee2e6'}}>{getMethodePaiementDisplay(presence)}</td>
-                  <td style={{padding: '12px', borderBottom: '1px solid #dee2e6'}}>{getStatusBadge(presence)}</td>
+                  <td style={{padding: '12px', borderBottom: '1px solid #dee2e6', textAlign: 'center'}}>{getMethodePaiementDisplay(presence)}</td>
+                  <td style={{padding: '12px', borderBottom: '1px solid #dee2e6', textAlign: 'center'}}>{getStatusBadge(presence)}</td>
                   {!isHistoryMode && (
                     <td style={{padding: '12px', borderBottom: '1px solid #dee2e6'}}>
-                      <div style={{display: 'flex', gap: '5px', flexWrap: 'wrap'}}>
+                      <div style={{display: 'flex', gap: '5px', flexWrap: 'wrap', justifyContent: 'center'}}>
                         {presence.status === 'pending' && (
-                          <div style={{display: 'flex', gap: '5px', alignItems: 'center'}}>
+                          <div style={{display: 'flex', gap: '5px', alignItems: 'center', flexWrap: 'wrap'}}>
                             <input
                               type="number"
                               placeholder="€"
-                              style={{width: '50px', padding: '4px', border: '1px solid #ddd', borderRadius: '3px'}}
-                              onChange={(e) => {
-                                const value = e.target.value;
-                                const methodePaiement = e.target.parentElement.querySelector('select').value;
-                                if (value) {
-                                  handleValiderPresence(presence.id, parseFloat(value), methodePaiement);
-                                }
+                              defaultValue={presence.tarif || 10}
+                              style={{
+                                width: '50px', 
+                                padding: '4px', 
+                                border: '1px solid #ddd', 
+                                borderRadius: '3px',
+                                fontSize: '12px'
                               }}
+                              id={`amount-${presence.id}`}
                             />
                             <select
-                              style={{padding: '4px', border: '1px solid #ddd', borderRadius: '3px', fontSize: '12px'}}
-                              defaultValue="Especes"
+                              style={{
+                                padding: '4px', 
+                                border: '1px solid #ddd', 
+                                borderRadius: '3px', 
+                                fontSize: '12px'
+                              }}
+                              defaultValue={presence.methodePaiement || 'Especes'}
+                              id={`method-${presence.id}`}
                             >
                               <option value="Especes">Espèces</option>
                               <option value="CB">CB</option>
@@ -360,40 +452,68 @@ export default function PresencesList() {
                             </select>
                             <button
                               onClick={() => {
-                                const input = document.querySelector(`input[placeholder="€"]`);
-                                const select = input.parentElement.querySelector('select');
-                                handleValiderPresence(presence.id, input.value ? parseFloat(input.value) : 10, select.value);
+                                const amount = document.getElementById(`amount-${presence.id}`).value;
+                                const method = document.getElementById(`method-${presence.id}`).value;
+                                handleValiderPresence(presence.id, parseFloat(amount) || 10, method);
                               }}
-                              style={{backgroundColor: '#28a745', color: 'white', border: 'none', padding: '4px 8px', borderRadius: '3px', cursor: 'pointer', fontSize: '12px'}}
+                              style={{
+                                backgroundColor: '#28a745', 
+                                color: 'white', 
+                                border: 'none', 
+                                padding: '4px 8px', 
+                                borderRadius: '3px', 
+                                cursor: 'pointer', 
+                                fontSize: '12px'
+                              }}
                             >
-                              Valider
+                              ✓ Valider
                             </button>
                           </div>
                         )}
                         
                         {presence.type === 'adherent' && (presence.tarif === undefined || presence.tarif === null) && (
-                          <div style={{display: 'flex', gap: '5px', alignItems: 'center'}}>
+                          <div style={{display: 'flex', gap: '5px', alignItems: 'center', flexWrap: 'wrap'}}>
                             <input
                               type="number"
                               placeholder="€"
-                              style={{width: '50px', padding: '4px', border: '1px solid #ddd', borderRadius: '3px'}}
+                              style={{
+                                width: '50px', 
+                                padding: '4px', 
+                                border: '1px solid #ddd', 
+                                borderRadius: '3px',
+                                fontSize: '12px'
+                              }}
+                              id={`tarif-${presence.id}`}
                             />
                             <select
-                              style={{padding: '4px', border: '1px solid #ddd', borderRadius: '3px', fontSize: '12px'}}
+                              style={{
+                                padding: '4px', 
+                                border: '1px solid #ddd', 
+                                borderRadius: '3px', 
+                                fontSize: '12px'
+                              }}
                               defaultValue="Especes"
+                              id={`tarif-method-${presence.id}`}
                             >
                               <option value="Especes">Espèces</option>
                               <option value="CB">CB</option>
                               <option value="Cheque">Chèque</option>
                             </select>
                             <button
-                              onClick={(e) => {
-                                const container = e.target.parentElement;
-                                const input = container.querySelector('input');
-                                const select = container.querySelector('select');
-                                handleAjouterTarif(presence.id, input.value, select.value);
+                              onClick={() => {
+                                const amount = document.getElementById(`tarif-${presence.id}`).value;
+                                const method = document.getElementById(`tarif-method-${presence.id}`).value;
+                                handleAjouterTarif(presence.id, amount, method);
                               }}
-                              style={{backgroundColor: '#ffc107', color: 'black', border: 'none', padding: '4px 8px', borderRadius: '3px', cursor: 'pointer', fontSize: '12px'}}
+                              style={{
+                                backgroundColor: '#ffc107', 
+                                color: 'black', 
+                                border: 'none', 
+                                padding: '4px 8px', 
+                                borderRadius: '3px', 
+                                cursor: 'pointer', 
+                                fontSize: '12px'
+                              }}
                             >
                               + Tarif
                             </button>
@@ -403,9 +523,17 @@ export default function PresencesList() {
                         {presence.status !== 'Annulé' && (
                           <button
                             onClick={() => handleAnnulerPresence(presence.id)}
-                            style={{backgroundColor: '#dc3545', color: 'white', border: 'none', padding: '4px 8px', borderRadius: '3px', cursor: 'pointer', fontSize: '12px'}}
+                            style={{
+                              backgroundColor: '#dc3545', 
+                              color: 'white', 
+                              border: 'none', 
+                              padding: '4px 8px', 
+                              borderRadius: '3px', 
+                              cursor: 'pointer', 
+                              fontSize: '12px'
+                            }}
                           >
-                            Annuler
+                            ✗ Annuler
                           </button>
                         )}
                       </div>
