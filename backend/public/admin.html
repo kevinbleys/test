@@ -38,7 +38,7 @@
             margin-bottom: 10px;
         }
 
-        /* **NIEUWE SECTIE: Datum controls** */
+        /* **NOUVELLE SECTION: Date controls** */
         .date-controls {
             display: flex;
             gap: 15px;
@@ -56,6 +56,7 @@
             border-radius: 4px;
             font-size: 14px;
             background: #f8f9fa;
+            min-width: 150px;
         }
 
         .date-controls button {
@@ -237,7 +238,7 @@
             color: white;
         }
 
-        /* **NIEUWE SECTIE: Betalingsmethode badges** */
+        /* **NOUVELLE SECTION: Badges de méthodes de paiement** */
         .payment-badge {
             padding: 2px 6px;
             border-radius: 3px;
@@ -323,6 +324,17 @@
             border-radius: 8px;
             border: 1px solid #dee2e6;
         }
+
+        /* **AMÉLIORATION: Meilleur affichage pour les modes** */
+        .history-mode-indicator {
+            background: #e3f2fd;
+            border: 1px solid #2196f3;
+            padding: 10px 15px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            color: #1976d2;
+            font-weight: 500;
+        }
     </style>
 </head>
 <body>
@@ -332,14 +344,19 @@
             <p id="page-title">Chargement...</p>
         </div>
 
-        <!-- **NIEUWE SECTIE: Datum controls** -->
+        <!-- **NOUVELLE SECTION: Contrôles de date** -->
         <div class="date-controls">
             <label for="date-select">Sélectionner une date:</label>
             <select id="date-select">
                 <option value="today">Aujourd'hui</option>
             </select>
             <button id="archive-btn" class="btn-archive" onclick="archiveToday()">📁 Archiver aujourd'hui</button>
-            <button class="btn-refresh" onclick="loadPresences()">🔄 Actualiser</button>
+            <button class="btn-refresh" onclick="refreshData()">🔄 Actualiser</button>
+        </div>
+
+        <!-- **INDICATEUR MODE HISTORIQUE** -->
+        <div id="history-indicator" class="history-mode-indicator" style="display: none;">
+            📅 Mode historique - Les données sont en lecture seule
         </div>
 
         <div class="stats-grid">
@@ -392,7 +409,7 @@
         </div>
 
         <div id="empty-state" class="empty-state" style="display: none;">
-            <h3>Aucune présence pour aujourd'hui</h3>
+            <h3 id="empty-message">Aucune présence pour aujourd'hui</h3>
             <p>Les présences apparaîtront ici au fur et à mesure des arrivées.</p>
         </div>
     </div>
@@ -402,79 +419,131 @@
         let currentFilter = 'all';
         let isHistoryMode = false;
         let availableDates = [];
+        let currentSelectedDate = 'today';
 
-        // **NIEUWE FUNCTIE: Load beschikbare datums**
+        // **FONCTION AMÉLIORÉE: Charger les dates disponibles**
         async function loadAvailableDates() {
             try {
+                console.log('🔄 Chargement des dates disponibles...');
                 const response = await fetch('/presences/history');
                 const data = await response.json();
                 
                 if (data.success) {
                     availableDates = data.dates;
+                    console.log('✅ Dates disponibles:', availableDates);
                     updateDateSelect();
+                } else {
+                    console.error('❌ Erreur données dates:', data);
                 }
             } catch (error) {
-                console.error('Fout bij laden datums:', error);
+                console.error('❌ Erreur réseau dates:', error);
             }
         }
 
-        // **NIEUWE FUNCTIE: Update datum select**
+        // **FONCTION AMÉLIORÉE: Mettre à jour le sélecteur de date**
         function updateDateSelect() {
             const select = document.getElementById('date-select');
             
-            // Clear existing options (behalve "Aujourd'hui")
+            // Sauvegarder la sélection actuelle
+            const currentValue = select.value;
+            
+            // Nettoyer les options existantes (sauf "Aujourd'hui")
             while (select.children.length > 1) {
                 select.removeChild(select.lastChild);
             }
             
-            // Voeg beschikbare datums toe
+            // Ajouter les dates disponibles
             availableDates.forEach(date => {
                 const option = document.createElement('option');
                 option.value = date;
                 option.textContent = new Date(date).toLocaleDateString('fr-FR');
                 select.appendChild(option);
             });
+
+            // Restaurer la sélection si elle existe toujours
+            if (currentValue && [...select.options].some(option => option.value === currentValue)) {
+                select.value = currentValue;
+            }
+
+            console.log('📅 Sélecteur de date mis à jour avec', availableDates.length, 'dates');
         }
 
-        // **NIEUWE FUNCTIE: Handle datum change**
+        // **FONCTION AMÉLIORÉE: Gérer le changement de date**
         async function onDateChange() {
             const select = document.getElementById('date-select');
             const selectedDate = select.value;
             
+            console.log('📅 Changement de date:', selectedDate);
+            
+            currentSelectedDate = selectedDate;
+            
+            // Masquer le contenu pendant le chargement
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('content').style.display = 'none';
+            document.getElementById('empty-state').style.display = 'none';
+            
             if (selectedDate === 'today') {
+                console.log('🏠 Mode aujourd\'hui');
                 isHistoryMode = false;
                 document.getElementById('archive-btn').style.display = 'inline-block';
                 document.getElementById('actions-header').textContent = 'Actions';
+                document.getElementById('history-indicator').style.display = 'none';
                 await loadPresences();
                 updatePageTitle('Présences du jour');
             } else {
+                console.log('📖 Mode historique pour:', selectedDate);
                 isHistoryMode = true;
                 document.getElementById('archive-btn').style.display = 'none';
                 document.getElementById('actions-header').textContent = '';
+                document.getElementById('history-indicator').style.display = 'block';
                 await loadPresencesByDate(selectedDate);
                 updatePageTitle(`Présences du ${new Date(selectedDate).toLocaleDateString('fr-FR')}`);
             }
         }
 
-        // **NIEUWE FUNCTIE: Load presences by date**
+        // **FONCTION AMÉLIORÉE: Charger les présences par date**
         async function loadPresencesByDate(date) {
             try {
+                console.log('📖 Chargement historique pour:', date);
                 const response = await fetch(`/presences/history/${date}`);
                 const data = await response.json();
                 
+                console.log('📖 Réponse historique:', data);
+                
                 if (data.success) {
                     allPresences = data.presences.sort((a, b) => new Date(b.date) - new Date(a.date));
-                    updateTable();
+                    console.log('📖 Présences historiques chargées:', allPresences.length);
+                    
+                    // Mettre à jour l'affichage
                     updateStats();
+                    updateTable();
+                    
+                    // Gérer l'affichage du contenu
+                    document.getElementById('loading').style.display = 'none';
+                    
+                    if (allPresences.length === 0) {
+                        document.getElementById('content').style.display = 'none';
+                        document.getElementById('empty-state').style.display = 'block';
+                        document.getElementById('empty-message').textContent = 'Aucune présence trouvée pour cette date';
+                    } else {
+                        document.getElementById('content').style.display = 'block';
+                        document.getElementById('empty-state').style.display = 'none';
+                    }
                 } else {
-                    console.error('Fout bij laden historiek:', data.error);
+                    console.error('❌ Erreur chargement historique:', data.error);
+                    document.getElementById('loading').style.display = 'none';
+                    document.getElementById('empty-state').style.display = 'block';
+                    document.getElementById('empty-message').textContent = 'Erreur lors du chargement des données historiques';
                 }
             } catch (error) {
-                console.error('Fout bij laden historiek:', error);
+                console.error('❌ Erreur réseau historique:', error);
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('empty-state').style.display = 'block';
+                document.getElementById('empty-message').textContent = 'Erreur de connexion';
             }
         }
 
-        // **NIEUWE FUNCTIE: Archiveer vandaag**
+        // **FONCTION AMÉLIORÉE: Archiver aujourd'hui**
         async function archiveToday() {
             if (!confirm('Êtes-vous sûr de vouloir archiver les présences d\'aujourd\'hui ?')) {
                 return;
@@ -490,44 +559,69 @@
                 
                 if (data.success) {
                     alert(data.message);
-                    await loadPresences();
-                    await loadAvailableDates();
+                    await refreshData();
                 } else {
                     alert(data.message || 'Erreur lors de l\'archivage');
                 }
             } catch (error) {
-                console.error('Fout bij archivering:', error);
+                console.error('❌ Erreur archivage:', error);
                 alert('Erreur lors de l\'archivage');
+            }
+        }
+
+        // **NOUVELLE FONCTION: Actualiser toutes les données**
+        async function refreshData() {
+            console.log('🔄 Actualisation complète...');
+            
+            // Recharger les dates disponibles
+            await loadAvailableDates();
+            
+            // Recharger les données actuelles selon le mode
+            if (currentSelectedDate === 'today') {
+                await loadPresences();
+            } else {
+                await loadPresencesByDate(currentSelectedDate);
             }
         }
 
         function updatePageTitle(title) {
             document.getElementById('page-title').textContent = title;
+            console.log('📄 Titre mis à jour:', title);
         }
 
         async function loadPresences() {
             try {
+                console.log('🏠 Chargement présences aujourd\'hui...');
                 const response = await fetch('/presences');
                 const data = await response.json();
                 
+                console.log('🏠 Réponse présences:', data);
+                
                 if (data.success) {
                     allPresences = data.presences.sort((a, b) => new Date(b.date) - new Date(a.date));
-                    updateTable();
+                    console.log('🏠 Présences chargées:', allPresences.length);
+                    
                     updateStats();
+                    updateTable();
                     document.getElementById('loading').style.display = 'none';
                     
                     if (allPresences.length === 0) {
                         document.getElementById('content').style.display = 'none';
                         document.getElementById('empty-state').style.display = 'block';
+                        document.getElementById('empty-message').textContent = 'Aucune présence pour aujourd\'hui';
                     } else {
                         document.getElementById('content').style.display = 'block';
                         document.getElementById('empty-state').style.display = 'none';
                     }
                 } else {
-                    console.error('Fout bij laden presences:', data.error);
+                    console.error('❌ Erreur données présences:', data.error);
+                    document.getElementById('loading').style.display = 'none';
+                    document.getElementById('empty-state').style.display = 'block';
                 }
             } catch (error) {
-                console.error('Netwerkfout:', error);
+                console.error('❌ Erreur réseau présences:', error);
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('empty-state').style.display = 'block';
             }
         }
 
@@ -541,16 +635,30 @@
             document.getElementById('adherent-count').textContent = adherents;
             document.getElementById('non-adherent-count').textContent = nonAdherents;
             document.getElementById('pending-count').textContent = pending;
+
+            console.log('📊 Stats mises à jour:', { total, adherents, nonAdherents, pending });
         }
 
         function filterPresences(type) {
             currentFilter = type;
             
-            // Update active button
+            // Mettre à jour le bouton actif
             document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-            document.querySelector(`.filter-btn${type !== 'all' ? '.' + type : ''}:not(.active)`).classList.add('active');
+            
+            // Trouver le bon bouton à activer
+            let targetBtn;
+            if (type === 'all') {
+                targetBtn = document.querySelector('.filter-btn:not(.adherent):not(.non-adherent):not(.pending)');
+            } else {
+                targetBtn = document.querySelector(`.filter-btn.${type}`);
+            }
+            
+            if (targetBtn) {
+                targetBtn.classList.add('active');
+            }
             
             updateTable();
+            console.log('🔍 Filtre appliqué:', type);
         }
 
         function updateTable() {
@@ -563,6 +671,8 @@
                     currentFilter === 'pending' ? p.status === 'pending' : p.type === currentFilter
                 );
             }
+
+            console.log('📋 Affichage de', filteredPresences.length, 'présences (filtre:', currentFilter, ')');
 
             filteredPresences.forEach((presence, index) => {
                 const row = document.createElement('tr');
@@ -583,14 +693,19 @@
                 tbody.appendChild(row);
             });
 
-            // Update filter button counts
-            document.querySelector('.filter-btn:not(.adherent):not(.non-adherent):not(.pending)').textContent = `Tous (${allPresences.length})`;
-            document.querySelector('.filter-btn.adherent').textContent = `Adhérents (${allPresences.filter(p => p.type === 'adherent').length})`;
-            document.querySelector('.filter-btn.non-adherent').textContent = `Non-adhérents (${allPresences.filter(p => p.type === 'non-adherent').length})`;
-            document.querySelector('.filter-btn.pending').textContent = `En attente (${allPresences.filter(p => p.status === 'pending').length})`;
+            // Mettre à jour les compteurs dans les boutons de filtre
+            const allCount = allPresences.length;
+            const adherentCount = allPresences.filter(p => p.type === 'adherent').length;
+            const nonAdherentCount = allPresences.filter(p => p.type === 'non-adherent').length;
+            const pendingCount = allPresences.filter(p => p.status === 'pending').length;
+
+            document.querySelector('.filter-btn:not(.adherent):not(.non-adherent):not(.pending)').textContent = `Tous (${allCount})`;
+            document.querySelector('.filter-btn.adherent').textContent = `Adhérents (${adherentCount})`;
+            document.querySelector('.filter-btn.non-adherent').textContent = `Non-adhérents (${nonAdherentCount})`;
+            document.querySelector('.filter-btn.pending').textContent = `En attente (${pendingCount})`;
         }
 
-        // **NIEUWE FUNCTIE: Payment display**
+        // **FONCTION AMÉLIORÉE: Affichage du paiement**
         function getPaymentDisplay(presence) {
             if (!presence.methodePaiement) {
                 return '<span class="payment-none">-</span>';
@@ -690,7 +805,7 @@
                     alert('Erreur lors de la validation');
                 }
             } catch (error) {
-                console.error('Fout bij validatie:', error);
+                console.error('❌ Erreur validation:', error);
                 alert('Erreur lors de la validation');
             }
         }
@@ -721,7 +836,7 @@
                     alert('Erreur lors de l\'ajout du tarif');
                 }
             } catch (error) {
-                console.error('Fout bij tarief toevoegen:', error);
+                console.error('❌ Erreur ajout tarif:', error);
                 alert('Erreur lors de l\'ajout du tarif');
             }
         }
@@ -744,7 +859,7 @@
                     alert('Erreur lors de l\'annulation');
                 }
             } catch (error) {
-                console.error('Fout bij annulering:', error);
+                console.error('❌ Erreur annulation:', error);
                 alert('Erreur lors de l\'annulation');
             }
         }
@@ -753,18 +868,24 @@
             return new Date(dateString).toLocaleString('fr-FR');
         }
 
-        // Initialize
+        // **INITIALISATION AMÉLIORÉE**
         document.addEventListener('DOMContentLoaded', async () => {
+            console.log('🚀 Initialisation de l\'application...');
+            
+            // Event listener pour le sélecteur de date
+            document.getElementById('date-select').addEventListener('change', onDateChange);
+            
+            // Chargement initial
             await loadAvailableDates();
             await loadPresences();
             updatePageTitle('Présences du jour');
             
-            // Event listener voor datum selectie
-            document.getElementById('date-select').addEventListener('change', onDateChange);
+            console.log('✅ Application initialisée');
             
-            // Auto refresh elke 30 seconden (alleen voor vandaag)
+            // Auto-actualisation toutes les 30 secondes (uniquement pour aujourd'hui)
             setInterval(() => {
                 if (!isHistoryMode) {
+                    console.log('🔄 Auto-actualisation...');
                     loadPresences();
                 }
             }, 30000);
