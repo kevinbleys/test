@@ -1476,7 +1476,7 @@
     "groups": [],
     "categories": [
       {
-        "label": "Parent"
+        "label": "Nouveau contact (adhésion)"
       }
     ],
     "roles": [],
@@ -10546,10 +10546,10 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "07/08/2025, 14:10",
+    "dateLastConnexion": "10/12/2024, 13:55",
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "En cours de paiement",
+    "joinFileStatusLabel": "Payé",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -13446,7 +13446,7 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "07/08/2025, 08:08",
+    "dateLastConnexion": "05/08/2025, 21:53",
     "emailValid": true,
     "notificationActive": true,
     "joinFileStatusLabel": null,
@@ -13927,10 +13927,10 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "06/08/2025, 20:05",
+    "dateLastConnexion": "29/07/2025, 08:17",
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "En cours de paiement",
+    "joinFileStatusLabel": "À payer",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -20593,7 +20593,7 @@
     "dateLastConnexion": null,
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "À payer",
+    "joinFileStatusLabel": null,
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -20612,7 +20612,7 @@
     "groups": [],
     "categories": [
       {
-        "label": "Adhérent"
+        "label": "Nouveau contact (adhésion)"
       }
     ],
     "roles": [],
@@ -21398,7 +21398,7 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "06/08/2025, 19:19",
+    "dateLastConnexion": "31/07/2025, 10:08",
     "emailValid": true,
     "notificationActive": true,
     "joinFileStatusLabel": null,
@@ -23219,7 +23219,7 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "07/08/2025, 08:09",
+    "dateLastConnexion": "29/07/2025, 08:16",
     "emailValid": true,
     "notificationActive": true,
     "joinFileStatusLabel": null,
@@ -23859,7 +23859,7 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "06/08/2025, 20:19",
+    "dateLastConnexion": "04/08/2025, 18:58",
     "emailValid": true,
     "notificationActive": true,
     "joinFileStatusLabel": null,
@@ -24850,76 +24850,6 @@
       {
         "label": "Nationalité",
         "value": "francaise"
-      }
-    ]
-  },
-  {
-    "membreId": 578086,
-    "currentPictureUrl": null,
-    "firstname": "Karine",
-    "lastname": "MAQUIN",
-    "dateOfBirth": null,
-    "age": null,
-    "gender": null,
-    "address": null,
-    "additional": null,
-    "postalCode": null,
-    "town": null,
-    "country": null,
-    "phoneNumber": null,
-    "mobilePhoneNumber": null,
-    "email": "karine.maquin@free.fr",
-    "allergy": null,
-    "personToContact": null,
-    "personToContactPhoneNumber": null,
-    "corporateName": null,
-    "office": null,
-    "account": true,
-    "dateLastConnexion": "07/08/2025, 07:52",
-    "emailValid": true,
-    "notificationActive": true,
-    "joinFileStatusLabel": null,
-    "joinFileLastPaymentType": null,
-    "joinFileLastPaymentDate": null,
-    "childsLabel": "Gestionnaire de 1 contact : ANTOINE VEINTIMILLA",
-    "childMembers": [
-      {
-        "membreId": 1129892,
-        "firstname": "ANTOINE",
-        "lastname": "VEINTIMILLA",
-        "phoneNumber": "+33650541640",
-        "mobilePhoneNumber": "+33650541640",
-        "email": "karine.maquin@free.fr"
-      }
-    ],
-    "parentsLabel": "",
-    "parentMembers": [],
-    "groups": [],
-    "categories": [
-      {
-        "label": "Parent"
-      }
-    ],
-    "roles": [],
-    "medicalCertificateUrl": null,
-    "dateMedicalCertificate": null,
-    "licence": null,
-    "customFields": [
-      {
-        "label": "documents utiles",
-        "value": null
-      },
-      {
-        "label": "Ville de naissance",
-        "value": null
-      },
-      {
-        "label": "Pays de naissance",
-        "value": null
-      },
-      {
-        "label": "Nationalité",
-        "value": null
       }
     ]
   },
@@ -27869,7 +27799,7 @@
     "firstname": "Felix",
     "lastname": "Moure",
     "dateOfBirth": "07/08/2005",
-    "age": 20,
+    "age": 19,
     "gender": "homme",
     "address": "10 rue d’embarthe",
     "additional": null,
@@ -32409,7 +32339,7 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "06/08/2025, 18:57",
+    "dateLastConnexion": "29/07/2025, 08:14",
     "emailValid": true,
     "notificationActive": true,
     "joinFileStatusLabel": null,
@@ -32613,10 +32543,10 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "06/08/2025, 19:36",
+    "dateLastConnexion": "16/01/2025, 10:58",
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "À payer",
+    "joinFileStatusLabel": "Payé",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -32636,7 +32566,7 @@
     "customFields": [
       {
         "label": "documents utiles",
-        "value": "https://www.pepsup.com/resources/documents/MEMBERS/000/048/892/488921/MEMBRE_CLUB_CUSTOM_FIELD/3866961.pdf?1754501859000"
+        "value": "https://www.pepsup.com/resources/documents/MEMBERS/000/048/892/488921/MEMBRE_CLUB_CUSTOM_FIELD/3866961.pdf?1725281204000"
       },
       {
         "label": "Ville de naissance",
@@ -33034,7 +32964,7 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "06/08/2025, 18:48",
+    "dateLastConnexion": "29/07/2025, 17:45",
     "emailValid": true,
     "notificationActive": true,
     "joinFileStatusLabel": null,
@@ -34637,7 +34567,7 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "06/08/2025, 20:02",
+    "dateLastConnexion": "31/07/2025, 17:38",
     "emailValid": true,
     "notificationActive": true,
     "joinFileStatusLabel": "En cours de paiement",
@@ -40207,7 +40137,7 @@
     "firstname": "Marie-Laure",
     "lastname": "Valadié",
     "dateOfBirth": "07/08/2001",
-    "age": 24,
+    "age": 23,
     "gender": "femme",
     "address": "1Chemin de la Lande",
     "additional": null,
@@ -40923,76 +40853,6 @@
       {
         "label": "Nationalité",
         "value": "Francaise"
-      }
-    ]
-  },
-  {
-    "membreId": 1129892,
-    "currentPictureUrl": null,
-    "firstname": "ANTOINE",
-    "lastname": "VEINTIMILLA",
-    "dateOfBirth": "23/12/2015",
-    "age": 9,
-    "gender": "homme",
-    "address": "730 RUE DES THERMES",
-    "additional": null,
-    "postalCode": "65130",
-    "town": "MAUVEZIN",
-    "country": "France",
-    "phoneNumber": "+33650541640",
-    "mobilePhoneNumber": "+33650541640",
-    "email": "karine.maquin@free.fr",
-    "allergy": null,
-    "personToContact": "VEINTIMILLA KARINE",
-    "personToContactPhoneNumber": "+33650541640",
-    "corporateName": null,
-    "office": null,
-    "account": false,
-    "dateLastConnexion": null,
-    "emailValid": true,
-    "notificationActive": true,
-    "joinFileStatusLabel": "À payer",
-    "joinFileLastPaymentType": null,
-    "joinFileLastPaymentDate": null,
-    "childsLabel": "",
-    "childMembers": [],
-    "parentsLabel": "Géré par 1 contact : Karine MAQUIN",
-    "parentMembers": [
-      {
-        "membreId": 578086,
-        "firstname": "Karine",
-        "lastname": "MAQUIN",
-        "phoneNumber": null,
-        "mobilePhoneNumber": null,
-        "email": "karine.maquin@free.fr"
-      }
-    ],
-    "groups": [],
-    "categories": [
-      {
-        "label": "Adhérent"
-      }
-    ],
-    "roles": [],
-    "medicalCertificateUrl": null,
-    "dateMedicalCertificate": null,
-    "licence": null,
-    "customFields": [
-      {
-        "label": "documents utiles",
-        "value": null
-      },
-      {
-        "label": "Ville de naissance",
-        "value": "AVIGNON"
-      },
-      {
-        "label": "Pays de naissance",
-        "value": "FRANCE"
-      },
-      {
-        "label": "Nationalité",
-        "value": "FRANCAISE"
       }
     ]
   },
@@ -41720,7 +41580,7 @@
     "dateLastConnexion": null,
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "En cours de paiement",
+    "joinFileStatusLabel": "À payer",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",

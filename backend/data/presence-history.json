@@ -1,1 +1,443 @@
-[]
+[
+  {
+    "date": "2025-08-06",
+    "presences": [
+      {
+        "id": "1746264763261",
+        "type": "non-adherent",
+        "nom": "bleys",
+        "prenom": "ellen",
+        "dateNaissance": "1983-03-02",
+        "tarif": 10,
+        "methodePaiement": "CB",
+        "status": "Payé",
+        "date": "2025-05-03T09:32:43.261Z"
+      },
+      {
+        "type": "adherent",
+        "nom": "bleys",
+        "prenom": "kevin",
+        "id": "1746279436397",
+        "date": "2025-05-03T13:37:16.397Z",
+        "status": "Annulé",
+        "dateAnnulation": "2025-05-03T14:29:01.481Z"
+      },
+      {
+        "type": "adherent",
+        "nom": "bleys",
+        "prenom": "kevin",
+        "id": "1746280498465",
+        "date": "2025-05-03T13:54:58.465Z",
+        "status": "adherent"
+      },
+      {
+        "type": "non-adherent",
+        "nom": "bleys",
+        "prenom": "ellen",
+        "dateNaissance": "1986-02-03",
+        "tarif": 10,
+        "methodePaiement": "Cheque",
+        "id": "1746280518557",
+        "date": "2025-05-03T13:55:18.557Z",
+        "status": "Annulé",
+        "dateAnnulation": "2025-05-03T14:28:57.689Z"
+      },
+      {
+        "type": "adherent",
+        "nom": "clarens",
+        "prenom": "isaure",
+        "id": "1746282562740",
+        "date": "2025-05-03T14:29:22.740Z",
+        "status": "adherent"
+      },
+      {
+        "type": "non-adherent",
+        "nom": "cadu",
+        "prenom": "maud",
+        "dateNaissance": "1976-08-04",
+        "tarif": "10",
+        "methodePaiement": "Especes",
+        "id": "1746282588190",
+        "date": "2025-05-03T14:29:48.190Z",
+        "status": "Payé",
+        "dateValidation": "2025-05-03T14:29:53.968Z"
+      },
+      {
+        "type": "non-adherent",
+        "nom": "cadu",
+        "prenom": "maud",
+        "dateNaissance": "2000-02-02",
+        "tarif": "10",
+        "methodePaiement": "CB",
+        "id": "1746283073990",
+        "date": "2025-05-03T14:37:53.990Z",
+        "status": "Payé",
+        "dateValidation": "2025-05-03T14:38:03.401Z"
+      },
+      {
+        "type": "non-adherent",
+        "nom": "cadu",
+        "prenom": "maud",
+        "dateNaissance": "1985-08-07",
+        "tarif": "10",
+        "methodePaiement": "Cheque",
+        "id": "1746284484591",
+        "date": "2025-05-03T15:01:24.591Z",
+        "status": "Payé",
+        "dateValidation": "2025-05-03T15:01:30.849Z"
+      },
+      {
+        "type": "non-adherent",
+        "nom": "cadu",
+        "prenom": "maud",
+        "dateNaissance": "2000-06-05",
+        "tarif": "10",
+        "methodePaiement": "Cheque",
+        "id": "1746285264002",
+        "date": "2025-05-03T15:14:24.002Z",
+        "status": "Annulé",
+        "dateValidation": "2025-05-03T15:15:03.968Z",
+        "dateAnnulation": "2025-05-03T15:15:07.035Z"
+      },
+      {
+        "type": "adherent",
+        "nom": "bleys",
+        "prenom": "kevin",
+        "id": "1746285379195",
+        "date": "2025-05-03T15:16:19.195Z",
+        "status": "Payé",
+        "dateAnnulation": "2025-05-03T15:16:57.692Z",
+        "tarif": "10",
+        "dateValidation": "2025-05-03T15:17:00.472Z"
+      },
+      {
+        "type": "non-adherent",
+        "nom": "Bleys",
+        "prenom": "ellen",
+        "dateNaissance": "1980-08-05",
+        "tarif": "10",
+        "methodePaiement": "CB",
+        "id": "1746285398161",
+        "date": "2025-05-03T15:16:38.161Z",
+        "status": "Payé",
+        "dateValidation": "2025-05-03T15:16:46.980Z"
+      },
+      {
+        "type": "non-adherent",
+        "nom": "bleys",
+        "prenom": "joke",
+        "dateNaissance": "2020-02-02",
+        "tarif": "10",
+        "methodePaiement": "Cheque",
+        "id": "1746285791719",
+        "date": "2025-05-03T15:23:11.719Z",
+        "status": "Payé",
+        "dateValidation": "2025-05-03T15:23:22.787Z"
+      },
+      {
+        "type": "non-adherent",
+        "nom": "cadu",
+        "prenom": "maud",
+        "dateNaissance": "1986-01-01",
+        "tarif": "10",
+        "methodePaiement": "Cheque",
+        "id": "1746356255505",
+        "date": "2025-05-04T10:57:35.505Z",
+        "status": "Payé",
+        "dateValidation": "2025-05-04T10:57:44.021Z"
+      },
+      {
+        "type": "adherent",
+        "nom": "bleys",
+        "prenom": "kevin",
+        "id": "1752302668727",
+        "date": "2025-07-12T06:44:28.727Z",
+        "status": "adherent"
+      },
+      {
+        "type": "non-adherent",
+        "nom": "delfos",
+        "prenom": "hanke",
+        "dateNaissance": "1972-03-02",
+        "tarif": 0,
+        "methodePaiement": "CB",
+        "id": "1752302784883",
+        "date": "2025-07-12T06:46:24.883Z",
+        "status": "Annulé",
+        "dateValidation": "2025-07-12T06:48:04.876Z",
+        "dateAnnulation": "2025-07-24T06:24:19.051Z",
+        "tarifOriginal": "10"
+      },
+      {
+        "type": "adherent",
+        "nom": "claude",
+        "prenom": "maud",
+        "id": "1752303033705",
+        "date": "2025-07-12T06:50:33.705Z",
+        "status": "adherent"
+      },
+      {
+        "type": "adherent",
+        "nom": "cadu",
+        "prenom": "maud",
+        "id": "1752303142324",
+        "date": "2025-07-12T06:52:22.324Z",
+        "status": "adherent"
+      },
+      {
+        "type": "adherent",
+        "nom": "cadu",
+        "prenom": "maud",
+        "id": "1752329371645",
+        "date": "2025-07-12T14:09:31.645Z",
+        "status": "adherent"
+      },
+      {
+        "type": "adherent",
+        "nom": "hanke",
+        "prenom": "delfos",
+        "id": "1752329390001",
+        "date": "2025-07-12T14:09:50.001Z",
+        "status": "adherent"
+      },
+      {
+        "type": "adherent",
+        "nom": "bleys",
+        "prenom": "kevin",
+        "id": "1752332667903",
+        "date": "2025-07-12T15:04:27.903Z",
+        "status": "adherent"
+      },
+      {
+        "type": "adherent",
+        "nom": "bleys",
+        "prenom": "kevin",
+        "id": "1752333626971",
+        "date": "2025-07-12T15:20:26.971Z",
+        "status": "adherent"
+      },
+      {
+        "type": "adherent",
+        "nom": "bleys",
+        "prenom": "kevin",
+        "id": "1752334781485",
+        "date": "2025-07-12T15:39:41.485Z",
+        "status": "adherent"
+      },
+      {
+        "type": "adherent",
+        "nom": "bleys",
+        "prenom": "kevin",
+        "id": "1752387639156",
+        "date": "2025-07-13T06:20:39.157Z",
+        "status": "adherent"
+      },
+      {
+        "type": "adherent",
+        "nom": "bleys",
+        "prenom": "kevin",
+        "id": "1752388215256",
+        "date": "2025-07-13T06:30:15.256Z",
+        "status": "adherent"
+      },
+      {
+        "id": "1752410630226",
+        "type": "adherent",
+        "nom": "bleys",
+        "prenom": "kevin",
+        "date": "2025-07-13T12:43:50.226Z",
+        "status": "adherent"
+      },
+      {
+        "id": "1752410656763",
+        "type": "adherent",
+        "nom": "clarens",
+        "prenom": "isaure",
+        "date": "2025-07-13T12:44:16.763Z",
+        "status": "adherent"
+      },
+      {
+        "id": "1752412489421",
+        "type": "adherent",
+        "nom": "carru",
+        "prenom": "steven",
+        "date": "2025-07-13T13:14:49.421Z",
+        "status": "adherent"
+      },
+      {
+        "id": "1752423278705",
+        "type": "adherent",
+        "nom": "carru",
+        "prenom": "steven",
+        "date": "2025-07-13T16:14:38.705Z",
+        "status": "adherent"
+      },
+      {
+        "id": "1753020908765",
+        "type": "non-adherent",
+        "nom": "test",
+        "prenom": "user",
+        "date": "2025-07-20T14:15:08.765Z",
+        "status": "Payé",
+        "tarif": "10",
+        "methodePaiement": null,
+        "dateNaissance": "1990-01-01",
+        "email": "test@example.com",
+        "dateValidation": "2025-07-20T14:17:53.231Z"
+      },
+      {
+        "id": "1753021098009",
+        "type": "non-adherent",
+        "nom": "test",
+        "prenom": "user",
+        "date": "2025-07-20T14:18:18.009Z",
+        "status": "Annulé",
+        "tarif": "10",
+        "methodePaiement": null,
+        "dateNaissance": "1990-01-01",
+        "email": "test@example.com",
+        "dateValidation": "2025-07-20T14:19:34.474Z",
+        "dateAnnulation": "2025-07-23T06:59:22.215Z"
+      },
+      {
+        "id": "1753021161578",
+        "type": "adherent",
+        "nom": "carru",
+        "prenom": "steven",
+        "date": "2025-07-20T14:19:21.578Z",
+        "status": "adherent"
+      },
+      {
+        "id": "1753105783966",
+        "type": "adherent",
+        "nom": "carru",
+        "prenom": "steven",
+        "date": "2025-07-21T13:49:43.966Z",
+        "status": "adherent"
+      },
+      {
+        "id": "1753252829605",
+        "type": "adherent",
+        "nom": "carru",
+        "prenom": "steven",
+        "date": "2025-07-23T06:40:29.605Z",
+        "status": "adherent"
+      },
+      {
+        "id": "1753683620223",
+        "type": "non-adherent",
+        "nom": "TRUONG",
+        "prenom": "Youen",
+        "date": "2025-07-28T06:20:20.223Z",
+        "status": "Payé",
+        "tarif": 10,
+        "email": "truong.thomas@free.fr",
+        "telephone": "0782917804",
+        "dateNaissance": "2005-01-16",
+        "adresse": "19 route d'espechere",
+        "dateValidation": "2025-07-28T06:20:38.930Z"
+      },
+      {
+        "id": "1753795983365",
+        "type": "non-adherent",
+        "nom": "bleys",
+        "prenom": "ellen",
+        "date": "2025-07-29T13:33:03.365Z",
+        "status": "Payé",
+        "tarif": 10,
+        "email": "test@test.com",
+        "dateNaissance": "2008-06-18",
+        "dateValidation": "2025-07-29T13:33:20.342Z"
+      },
+      {
+        "id": "1753798596952",
+        "type": "non-adherent",
+        "nom": "",
+        "prenom": "",
+        "date": "2025-07-29T14:16:36.952Z",
+        "status": "Annulé",
+        "tarif": 0,
+        "dateAnnulation": "2025-07-29T14:52:48.506Z",
+        "tarifOriginal": 10
+      },
+      {
+        "id": "1753798613623",
+        "type": "non-adherent",
+        "nom": "",
+        "prenom": "",
+        "date": "2025-07-29T14:16:53.623Z",
+        "status": "Annulé",
+        "tarif": 0,
+        "dateAnnulation": "2025-07-29T14:52:45.892Z",
+        "tarifOriginal": 10
+      },
+      {
+        "id": "1753800747410",
+        "type": "non-adherent",
+        "nom": "bleys",
+        "prenom": "ellen",
+        "date": "2025-07-29T14:52:27.410Z",
+        "status": "Payé",
+        "tarif": 10,
+        "email": "test@test.com",
+        "dateNaissance": "1983-03-02",
+        "dateValidation": "2025-07-29T14:52:37.685Z"
+      },
+      {
+        "id": "1753855035276",
+        "type": "non-adherent",
+        "nom": "truong",
+        "prenom": "thomas",
+        "date": "2025-07-30T05:57:15.276Z",
+        "status": "Payé",
+        "tarif": 10,
+        "email": "truong.thomas@free.fr",
+        "telephone": "0782917804",
+        "dateNaissance": "1983-03-02",
+        "dateValidation": "2025-07-30T05:57:26.792Z"
+      },
+      {
+        "id": "1754492008134",
+        "type": "non-adherent",
+        "nom": "TRUONG",
+        "prenom": "Youen",
+        "date": "2025-08-06T14:53:28.134Z",
+        "status": "Payé",
+        "tarif": 10,
+        "methodePaiement": "Especes",
+        "email": "truong.thomas@free.fr",
+        "telephone": "0782917804",
+        "dateNaissance": "1983-03-02",
+        "dateValidation": "2025-08-06T14:53:39.493Z"
+      },
+      {
+        "id": "1754492041775",
+        "type": "non-adherent",
+        "nom": "TRUONG",
+        "prenom": "Youen",
+        "date": "2025-08-06T14:54:01.775Z",
+        "status": "Payé",
+        "tarif": 10,
+        "methodePaiement": "Especes",
+        "email": "truong.thomas@free.fr",
+        "telephone": "0782917804",
+        "dateNaissance": "1983-03-02",
+        "dateValidation": "2025-08-06T14:54:10.584Z"
+      },
+      {
+        "id": "1754492075629",
+        "type": "non-adherent",
+        "nom": "TRUONG",
+        "prenom": "Youen",
+        "date": "2025-08-06T14:54:35.629Z",
+        "status": "Payé",
+        "tarif": 10,
+        "methodePaiement": "Especes",
+        "email": "truong.thomas@free.fr",
+        "telephone": "0782917804",
+        "dateNaissance": "1983-03-02",
+        "dateValidation": "2025-08-06T14:54:41.562Z"
+      }
+    ]
+  }
+]

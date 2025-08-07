@@ -1476,7 +1476,7 @@
     "groups": [],
     "categories": [
       {
-        "label": "Parent"
+        "label": "Nouveau contact (adhésion)"
       }
     ],
     "roles": [],
@@ -10546,10 +10546,10 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "07/08/2025, 14:10",
+    "dateLastConnexion": "06/08/2025, 23:39",
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "En cours de paiement",
+    "joinFileStatusLabel": "Payé",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -13446,7 +13446,7 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "07/08/2025, 08:08",
+    "dateLastConnexion": "06/08/2025, 18:28",
     "emailValid": true,
     "notificationActive": true,
     "joinFileStatusLabel": null,
@@ -20593,7 +20593,7 @@
     "dateLastConnexion": null,
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "À payer",
+    "joinFileStatusLabel": null,
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -20612,7 +20612,7 @@
     "groups": [],
     "categories": [
       {
-        "label": "Adhérent"
+        "label": "Nouveau contact (adhésion)"
       }
     ],
     "roles": [],
@@ -23219,7 +23219,7 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "07/08/2025, 08:09",
+    "dateLastConnexion": "29/07/2025, 08:16",
     "emailValid": true,
     "notificationActive": true,
     "joinFileStatusLabel": null,
@@ -24897,7 +24897,7 @@
     "groups": [],
     "categories": [
       {
-        "label": "Parent"
+        "label": "Nouveau contact (adhésion)"
       }
     ],
     "roles": [],
@@ -32616,7 +32616,7 @@
     "dateLastConnexion": "06/08/2025, 19:36",
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "À payer",
+    "joinFileStatusLabel": "Payé",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -40951,7 +40951,7 @@
     "dateLastConnexion": null,
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "À payer",
+    "joinFileStatusLabel": null,
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -40970,7 +40970,7 @@
     "groups": [],
     "categories": [
       {
-        "label": "Adhérent"
+        "label": "Nouveau contact (adhésion)"
       }
     ],
     "roles": [],
