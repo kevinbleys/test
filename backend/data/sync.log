@@ -3741,3 +3741,62 @@
 [2025-08-07T13:05:40.948Z] Synchronisation réussie: 636 membres synchronisés
 [2025-08-07T13:05:40.951Z] === Synchronisation PEPsup terminée ===
 [2025-08-07T13:05:40.952Z] Script voltooid: 636 leden gesynchroniseerd
+[2025-08-07T14:05:39.788Z] Script gestart vanuit command line
+[2025-08-07T14:05:39.792Z] === Synchronisation PEPsup démarrée ===
+[2025-08-07T14:05:40.116Z] Internet verbinding OK
+[2025-08-07T14:05:41.023Z] Backup gemaakt: C:\Users\kevin\Documents\beyrede_escalade\backend\data\members_backup_1754575541015.json
+[2025-08-07T14:05:41.322Z] Synchronisation réussie: 636 membres synchronisés
+[2025-08-07T14:05:41.324Z] === Synchronisation PEPsup terminée ===
+[2025-08-07T14:05:41.326Z] Script voltooid: 636 leden gesynchroniseerd
+[2025-08-07T15:05:39.746Z] Script gestart vanuit command line
+[2025-08-07T15:05:39.750Z] === Synchronisation PEPsup démarrée ===
+[2025-08-07T15:05:40.080Z] Internet verbinding OK
+[2025-08-07T15:05:40.835Z] Backup gemaakt: C:\Users\kevin\Documents\beyrede_escalade\backend\data\members_backup_1754579140832.json
+[2025-08-07T15:05:41.134Z] Synchronisation réussie: 636 membres synchronisés
+[2025-08-07T15:05:41.137Z] === Synchronisation PEPsup terminée ===
+[2025-08-07T15:05:41.138Z] Script voltooid: 636 leden gesynchroniseerd
+[2025-08-07T16:05:39.756Z] Script gestart vanuit command line
+[2025-08-07T16:05:39.760Z] === Synchronisation PEPsup démarrée ===
+[2025-08-07T16:05:40.081Z] Internet verbinding OK
+[2025-08-07T16:05:40.714Z] Backup gemaakt: C:\Users\kevin\Documents\beyrede_escalade\backend\data\members_backup_1754582740712.json
+[2025-08-07T16:05:41.014Z] Synchronisation réussie: 636 membres synchronisés
+[2025-08-07T16:05:41.017Z] === Synchronisation PEPsup terminée ===
+[2025-08-07T16:05:41.018Z] Script voltooid: 636 leden gesynchroniseerd
+[2025-08-07T17:05:39.774Z] Script gestart vanuit command line
+[2025-08-07T17:05:39.778Z] === Synchronisation PEPsup démarrée ===
+[2025-08-07T17:05:40.205Z] Internet verbinding OK
+[2025-08-07T17:05:41.033Z] Backup gemaakt: C:\Users\kevin\Documents\beyrede_escalade\backend\data\members_backup_1754586341031.json
+[2025-08-07T17:05:41.332Z] Synchronisation réussie: 636 membres synchronisés
+[2025-08-07T17:05:41.334Z] === Synchronisation PEPsup terminée ===
+[2025-08-07T17:05:41.336Z] Script voltooid: 636 leden gesynchroniseerd
+[2025-08-07T18:05:39.807Z] Script gestart vanuit command line
+[2025-08-07T18:05:39.811Z] === Synchronisation PEPsup démarrée ===
+[2025-08-07T18:05:40.211Z] Internet verbinding OK
+[2025-08-07T18:05:41.228Z] Backup gemaakt: C:\Users\kevin\Documents\beyrede_escalade\backend\data\members_backup_1754589941224.json
+[2025-08-07T18:05:41.532Z] Synchronisation réussie: 636 membres synchronisés
+[2025-08-07T18:05:41.534Z] === Synchronisation PEPsup terminée ===
+[2025-08-07T18:05:41.536Z] Script voltooid: 636 leden gesynchroniseerd
+[2025-08-07T19:05:39.776Z] Script gestart vanuit command line
+[2025-08-07T19:05:39.780Z] === Synchronisation PEPsup démarrée ===
+[2025-08-07T19:05:40.121Z] Internet verbinding OK
+[2025-08-07T19:05:41.115Z] Backup gemaakt: C:\Users\kevin\Documents\beyrede_escalade\backend\data\members_backup_1754593541111.json
+[2025-08-07T19:05:41.415Z] Synchronisation réussie: 636 membres synchronisés
+[2025-08-07T19:05:41.417Z] === Synchronisation PEPsup terminée ===
+[2025-08-07T19:05:41.419Z] Script voltooid: 636 leden gesynchroniseerd
+[2025-08-07T20:05:39.826Z] Script gestart vanuit command line
+[2025-08-07T20:05:39.830Z] === Synchronisation PEPsup démarrée ===
+[2025-08-07T20:05:40.406Z] Internet verbinding OK
+[2025-08-07T20:05:41.306Z] Backup gemaakt: C:\Users\kevin\Documents\beyrede_escalade\backend\data\members_backup_1754597141303.json
+[2025-08-07T20:05:41.604Z] Synchronisation réussie: 636 membres synchronisés
+[2025-08-07T20:05:41.608Z] === Synchronisation PEPsup terminée ===
+[2025-08-07T20:05:41.610Z] Script voltooid: 636 leden gesynchroniseerd
+[2025-08-08T13:42:48.784Z] Script gestart vanuit command line
+[2025-08-08T13:42:48.788Z] === Synchronisation PEPsup démarrée ===
+[2025-08-08T13:42:49.114Z] Internet verbinding OK
+[2025-08-08T13:42:49.288Z] ERREUR: Erreur API 503: "no available server\n"
+[2025-08-08T13:42:49.290Z] FOUT: Erreur API 503: "no available server\n"
+[2025-08-08T14:05:39.749Z] Script gestart vanuit command line
+[2025-08-08T14:05:39.753Z] === Synchronisation PEPsup démarrée ===
+[2025-08-08T14:05:40.157Z] Internet verbinding OK
+[2025-08-08T14:05:40.299Z] ERREUR: Erreur API 503: "no available server\n"
+[2025-08-08T14:05:40.301Z] FOUT: Erreur API 503: "no available server\n"

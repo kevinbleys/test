@@ -6,13 +6,13 @@ import './PaymentSelection.css';
 export default function PaymentSelection() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { nom, prenom, dateNaissance, age, tarif } = location.state || {};
+  const { nom, prenom, dateNaissance, age, tarif, tarifDescription, tarifCategory } = location.state || {};
   
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
   // Vérifier si des données ont été passées
-  if (!nom || !prenom || !dateNaissance) {
+  if (!nom || !prenom || !dateNaissance || age === undefined || tarif === undefined) {
     // Rediriger vers le formulaire si pas de données
     navigate('/non-member');
     return null;
@@ -26,14 +26,17 @@ export default function PaymentSelection() {
     
     try {
       console.log('=== PAYMENT CONFIRMATION SUBMISSION ===');
+      console.log('Calculated tarif:', tarif);
+      console.log('Age:', age);
+      console.log('Category:', tarifCategory);
       
-      // **SIMPLIFIED DATA STRUCTURE - PAS DE BETALINGSMETHODE**
+      // **DATA STRUCTURE WITH CALCULATED TARIF**
       const presenceData = {
         type: 'non-adherent',
         nom: nom.trim(),
         prenom: prenom.trim(),
         dateNaissance,
-        tarif,
+        tarif, // **CALCULATED TARIF BASED ON AGE**
         // Pas de methodePaiement - sera défini par l'admin
         // Extra velden uit het originele form
         email: location.state?.email || '',
@@ -41,7 +44,7 @@ export default function PaymentSelection() {
         adresse: location.state?.adresse || ''
       };
       
-      console.log('Sending presence data (no payment method):', presenceData);
+      console.log('Sending presence data with calculated tarif:', presenceData);
       
       // Enregistrement d'une présence non-adhérent
       const presenceResponse = await axios.post('http://localhost:4000/presences', presenceData, {
@@ -54,7 +57,7 @@ export default function PaymentSelection() {
       
       // Si l'enregistrement de présence a fonctionné
       if (presenceResponse.data.success) {
-        console.log('=== PRESENCE REGISTERED (NO PAYMENT METHOD) ===');
+        console.log('=== PRESENCE REGISTERED WITH CALCULATED TARIF ===');
         console.log('Final presence object:', presenceResponse.data.presence);
         
         // Redirection vers la page de confirmation
@@ -64,7 +67,10 @@ export default function PaymentSelection() {
             nom, 
             prenom, 
             dateNaissance, 
-            tarif
+            age,
+            tarif,
+            tarifDescription,
+            tarifCategory
             // Pas de methodePaiement
           } 
         });
@@ -89,6 +95,17 @@ export default function PaymentSelection() {
     }
   };
 
+  const getTarifDisplayColor = () => {
+    switch (tarifCategory) {
+      case 'enfant': return { bg: '#28a745', color: 'white' };
+      case 'mineur': return { bg: '#ffc107', color: 'black' };
+      case 'adulte': return { bg: '#007bff', color: 'white' };
+      default: return { bg: '#6c757d', color: 'white' };
+    }
+  };
+
+  const tarifColors = getTarifDisplayColor();
+
   return (
     <div className="payment-selection">
       <div className="payment-header">
@@ -106,13 +123,42 @@ export default function PaymentSelection() {
         <form onSubmit={handleSubmit}>
           <div className="tarif-section">
             <h3>Tarif applicable</h3>
-            <div className="tarif-display">
-              {tarif === 0 ? 'Gratuit' : `${tarif}€`}
+            <div 
+              className="tarif-display"
+              style={{
+                background: `linear-gradient(135deg, ${tarifColors.bg} 0%, ${tarifColors.bg}dd 100%)`,
+                color: tarifColors.color
+              }}
+            >
+              {tarif === 0 ? 'GRATUIT' : `${tarif}€`}
             </div>
             <div className="tarif-info">
-              {tarif === 0 && 'Entrée gratuite pour les enfants de moins de 6 ans.'}
-              {tarif === 8 && 'Tarif réduit pour les mineurs (6-18 ans).'}
-              {tarif === 10 && 'Tarif normal pour les adultes.'}
+              <strong>{tarifDescription}</strong>
+            </div>
+            
+            {/* **BREAKDOWN DES TARIFS** */}
+            <div style={{
+              background: '#f8f9fa',
+              padding: '15px',
+              borderRadius: '8px',
+              marginTop: '15px',
+              border: '1px solid #dee2e6'
+            }}>
+              <h4 style={{ marginBottom: '10px', color: '#495057' }}>📋 Grille tarifaire:</h4>
+              <div style={{ fontSize: '14px', lineHeight: '1.6' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '5px' }}>
+                  <span>👶 Moins de 8 ans:</span>
+                  <strong style={{ color: '#28a745' }}>GRATUIT</strong>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '5px' }}>
+                  <span>🧑 De 8 à 17 ans:</span>
+                  <strong style={{ color: '#ffc107' }}>8€</strong>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <span>👨 18 ans et plus:</span>
+                  <strong style={{ color: '#007bff' }}>10€</strong>
+                </div>
+              </div>
             </div>
           </div>
           
