@@ -101,6 +101,33 @@
             cursor: not-allowed;
         }
 
+        .btn-warning {
+            background: #f39c12;
+            color: white;
+        }
+
+        .btn-warning:hover {
+            background: #e67e22;
+        }
+
+        .btn-danger {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #c0392b;
+        }
+
+        .btn-success {
+            background: #27ae60;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #229954;
+        }
+
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -317,21 +344,6 @@
             font-size: 12px;
         }
 
-        .btn-success {
-            background: #28a745;
-            color: white;
-        }
-
-        .btn-warning {
-            background: #ffc107;
-            color: black;
-        }
-
-        .btn-danger {
-            background: #dc3545;
-            color: white;
-        }
-
         .loading {
             text-align: center;
             padding: 40px;
@@ -393,6 +405,30 @@
         .status-good { color: #28a745; }
         .status-warning { color: #f39c12; }
         .status-danger { color: #e74c3c; }
+
+        /* Excel export styling */
+        .export-section {
+            background: #fff3cd;
+            border: 1px solid #ffeeba;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .export-section h4 {
+            color: #856404;
+            margin-bottom: 15px;
+        }
+
+        .export-warning {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 10px;
+            font-size: 13px;
+        }
     </style>
 </head>
 <body>
@@ -420,6 +456,26 @@
             <button class="btn-refresh" onclick="checkCleanupStatus()">
                 📊 Cleanup status
             </button>
+        </div>
+
+        <!-- **NOUVELLE SECTION: Excel Export controls** -->
+        <div class="export-section">
+            <h4>📊 Excel Export Jaarlijks</h4>
+            <div class="date-controls" style="background: transparent; padding: 0; box-shadow: none; margin-bottom: 0;">
+                <label for="year-select">Selecteer jaar voor export:</label>
+                <select id="year-select">
+                    <option value="">Selecteer jaar voor export...</option>
+                </select>
+                <button class="btn-warning" onclick="exportYear()">
+                    📊 Excel Export
+                </button>
+                <button class="btn-danger" onclick="exportAndCleanupYear()">
+                    📊🗑️ Export & Cleanup
+                </button>
+            </div>
+            <div class="export-warning">
+                <strong>⚠️ Waarschuwing:</strong> "Export & Cleanup" verwijdert permanent alle data voor het geselecteerde jaar na het maken van de Excel export. Dit kan niet ongedaan gemaakt worden!
+            </div>
         </div>
 
         <!-- Status de cleanup -->
@@ -511,6 +567,109 @@
                 }
             } catch (error) {
                 console.error('❌ Erreur réseau dates:', error);
+            }
+        }
+
+        // **NOUVELLE FONCTION: Charger les années disponibles pour export**
+        async function loadAvailableYearsForExport() {
+            try {
+                console.log('🔄 Chargement des années pour export...');
+                const response = await fetch('/admin/export/years');
+                const data = await response.json();
+                
+                if (data.success) {
+                    const yearSelect = document.getElementById('year-select');
+                    
+                    // Clear existing options (except first)
+                    while (yearSelect.children.length > 1) {
+                        yearSelect.removeChild(yearSelect.lastChild);
+                    }
+                    
+                    // Add available years
+                    data.years.forEach(year => {
+                        const option = document.createElement('option');
+                        option.value = year;
+                        option.textContent = year;
+                        yearSelect.appendChild(option);
+                    });
+                    
+                    console.log('✅ Années chargées pour export:', data.years);
+                } else {
+                    console.error('❌ Erreur données années:', data);
+                }
+            } catch (error) {
+                console.error('❌ Erreur réseau années:', error);
+            }
+        }
+
+        // **NOUVELLE FONCTION: Excel export**
+        async function exportYear() {
+            const yearSelect = document.getElementById('year-select');
+            const selectedYear = yearSelect.value;
+            
+            if (!selectedYear) {
+                alert('Selecteer eerst een jaar om te exporteren');
+                return;
+            }
+            
+            if (!confirm(`Excel export voor jaar ${selectedYear} starten?\n\nDit kan even duren...`)) {
+                return;
+            }
+            
+            try {
+                const response = await fetch(`/admin/export/${selectedYear}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    alert(`✅ Excel export succesvol!\n\nBestand: ${data.filename}\nRecords: ${data.recordCount}\n\nHet bestand is opgeslagen in de exports map.`);
+                } else {
+                    alert('❌ Fout bij Excel export:\n\n' + (data.error || 'Onbekende fout'));
+                }
+            } catch (error) {
+                console.error('Export error:', error);
+                alert('❌ Netwerkfout bij Excel export');
+            }
+        }
+
+        // **NIEUWE FONCTION: Export en cleanup**
+        async function exportAndCleanupYear() {
+            const yearSelect = document.getElementById('year-select');
+            const selectedYear = yearSelect.value;
+            
+            if (!selectedYear) {
+                alert('Selecteer eerst een jaar om te exporteren en op te ruimen');
+                return;
+            }
+            
+            if (!confirm(`WAARSCHUWING: Excel export EN cleanup voor jaar ${selectedYear}?\n\nDit zal:\n1. Een Excel export maken\n2. ALLE data voor ${selectedYear} permanent verwijderen\n\nDit kan NIET ongedaan gemaakt worden!\n\nWeet je het zeker?`)) {
+                return;
+            }
+            
+            try {
+                const response = await fetch(`/admin/export-and-cleanup/${selectedYear}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    alert(`✅ Export en cleanup succesvol!\n\nExport:\n- Bestand: ${data.export.filename}\n- Records: ${data.export.recordCount}\n\nCleanup:\n- Verwijderd: ${data.cleanup.deletedCount} entries\n- Behouden: ${data.cleanup.remainingCount} entries`);
+                    
+                    // Refresh data
+                    await checkCleanupStatus();
+                    await loadAvailableYearsForExport();
+                    await refreshData();
+                } else {
+                    alert('❌ Fout bij export en cleanup:\n\n' + (data.error || 'Onbekende fout'));
+                }
+            } catch (error) {
+                console.error('Export and cleanup error:', error);
+                alert('❌ Netwerkfout bij export en cleanup');
             }
         }
 
@@ -645,7 +804,7 @@
 
         // Cleanup uitvoeren
         async function performCleanup() {
-            if (!confirm('Weet je zeker dat je een cleanup wilt uitvoeren?\n\nDit verwijdert:\n- Oude backup bestanden (behoudt laatste 5)\n- Oude presence historiek (behoudt laatste 30 dagen)\n- Te grote log bestanden')) {
+            if (!confirm('Weet je zeker dat je een cleanup wilt uitvoeren?\n\nDit verwijdert:\n- Oude backup bestanden (behoudt laatste 5)\n- Te grote log bestanden\n\nPresence history wordt NIET verwijderd (gebruik Excel export)')) {
                 return;
             }
 
@@ -695,10 +854,15 @@
                         </div>
                         <div class="status-item">
                             <span>📅 Historiek entries:</span>
-                            <span class="status-value ${data.status.historyEntries > 60 ? 'status-warning' : 'status-good'}">${data.status.historyEntries}</span>
+                            <span class="status-value ${data.status.historyEntries > 365 ? 'status-warning' : 'status-good'}">${data.status.historyEntries}</span>
+                        </div>
+                        <div class="status-item">
+                            <span>📊 Beschikbare jaren voor export:</span>
+                            <span class="status-value status-good">${data.status.availableYears ? data.status.availableYears.join(', ') : 'Geen'}</span>
                         </div>
                         <div style="font-size: 12px; color: #666; margin-top: 10px; padding-top: 10px; border-top: 1px solid #e9ecef;">
-                            <strong>ℹ️ Info:</strong> ${data.status.lastCleanup}
+                            <strong>ℹ️ Info:</strong> ${data.status.lastCleanup}<br>
+                            <strong>📊 Excel Export:</strong> Gebruik de Excel export functie voor jaarlijkse archivering
                         </div>
                     `;
                     
@@ -718,6 +882,7 @@
             
             // Recharger les dates disponibles
             await loadAvailableDates();
+            await loadAvailableYearsForExport();
             
             // Recharger les données actuelles selon le mode
             if (currentSelectedDate === 'today') {
@@ -1015,12 +1180,13 @@
         document.addEventListener('DOMContentLoaded', async () => {
             console.log('🚀 Initialisation de l\'application...');
             
-            // Event listener voor le sélecteur de date
+            // Event listeners
             document.getElementById('date-select').addEventListener('change', onDateChange);
             
             // Chargement initial
             await loadAvailableDates();
             await loadPresences();
+            await loadAvailableYearsForExport(); // **NOUVELLE LIGNE**
             updatePageTitle('Présences du jour');
             
             console.log('✅ Application initialisée');

@@ -4,8 +4,9 @@ const path = require('path');
 const fs = require('fs');
 const cron = require('node-cron');
 
-// **NIEUWE IMPORT: Cleanup service**
+// **NIEUWE IMPORTS**
 const cleanupService = require('./cleanup-service');
+const exportService = require('./export-service');
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -30,6 +31,9 @@ const initStorage = () => {
   if (!fs.existsSync(PRESENCE_HISTORY_FILE)) {
     fs.writeFileSync(PRESENCE_HISTORY_FILE, '[]');
   }
+  
+  // **NIEUWE FUNCTIONALITEIT: Zorg dat exports directory bestaat**
+  exportService.ensureExportsDir();
 };
 initStorage();
 
@@ -71,17 +75,16 @@ cron.schedule('0 0 * * *', () => {
   }
 });
 
-// **NIEUWE CRON JOB: DAGELIJKSE CLEANUP OM 02:00**
+// **AANGEPASTE CRON JOB: Alleen backup/log cleanup, GEEN presence history cleanup**
 cron.schedule('0 2 * * *', () => {
   console.log('=== AUTOMATISCHE CLEANUP GESTART (02:00) ===');
-  cleanupService.performCleanup();
+  cleanupService.performCleanup(); // Nu ZONDER presence history cleanup
   console.log('=== AUTOMATISCHE CLEANUP VOLTOOID ===');
 });
 
-// **NIEUWE CRON JOB: WEKELIJKSE GRONDIGE CLEANUP OP ZONDAG OM 03:00**
 cron.schedule('0 3 * * 0', () => {
   console.log('=== WEKELIJKSE CLEANUP GESTART (ZONDAG 03:00) ===');
-  cleanupService.performCleanup();
+  cleanupService.performCleanup(); // Nu ZONDER presence history cleanup
   console.log('=== WEKELIJKSE CLEANUP VOLTOOID ===');
 });
 
@@ -89,7 +92,117 @@ cron.schedule('0 3 * * 0', () => {
 const membersRoutes = require('./routes/members');
 app.use('/members', membersRoutes);
 
-// **NIEUWE ROUTE: Handmatige cleanup**
+// **NIEUWE ROUTE: Excel export voor een jaar**
+app.post('/admin/export/:year', (req, res) => {
+  try {
+    const { year } = req.params;
+    const yearInt = parseInt(year);
+    
+    if (!yearInt || yearInt < 2020 || yearInt > 2030) {
+      return res.status(400).json({
+        success: false,
+        error: 'Ongeldig jaar (moet tussen 2020 en 2030 zijn)'
+      });
+    }
+    
+    const result = exportService.exportYearToExcel(yearInt);
+    
+    res.json({
+      success: true,
+      message: `Excel export voor ${year} succesvol aangemaakt`,
+      filename: result.filename,
+      recordCount: result.recordCount
+    });
+  } catch (error) {
+    console.error('Excel export error:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Fout bij Excel export: ' + error.message
+    });
+  }
+});
+
+// **NIEUWE ROUTE: Beschikbare jaren voor export**
+app.get('/admin/export/years', (req, res) => {
+  try {
+    const years = exportService.getAvailableYears();
+    res.json({
+      success: true,
+      years
+    });
+  } catch (error) {
+    console.error('Years error:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Fout bij ophalen jaren: ' + error.message
+    });
+  }
+});
+
+// **NIEUWE ROUTE: Excel export EN cleanup**
+app.post('/admin/export-and-cleanup/:year', (req, res) => {
+  try {
+    const { year } = req.params;
+    const yearInt = parseInt(year);
+    
+    if (!yearInt || yearInt < 2020 || yearInt > 2030) {
+      return res.status(400).json({
+        success: false,
+        error: 'Ongeldig jaar (moet tussen 2020 en 2030 zijn)'
+      });
+    }
+    
+    // Eerst exporteren
+    const exportResult = exportService.exportYearToExcel(yearInt);
+    
+    // Dan opruimen
+    const cleanupResult = exportService.cleanupYearAfterExport(yearInt);
+    
+    res.json({
+      success: true,
+      message: `Jaar ${year} geëxporteerd en opgeruimd`,
+      export: {
+        filename: exportResult.filename,
+        recordCount: exportResult.recordCount
+      },
+      cleanup: {
+        deletedCount: cleanupResult.deletedCount,
+        remainingCount: cleanupResult.remainingCount
+      }
+    });
+  } catch (error) {
+    console.error('Export and cleanup error:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Fout bij export en cleanup: ' + error.message
+    });
+  }
+});
+
+// **NIEUWE ROUTE: Download Excel bestand**
+app.get('/admin/download/:filename', (req, res) => {
+  try {
+    const { filename } = req.params;
+    const filepath = path.join(__dirname, 'data', 'exports', filename);
+    
+    if (!fs.existsSync(filepath)) {
+      return res.status(404).json({
+        success: false,
+        error: 'Bestand niet gevonden'
+      });
+    }
+    
+    res.download(filepath, filename);
+  } catch (error) {
+    console.error('Download error:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Fout bij download: ' + error.message
+    });
+  }
+});
+
+// **BESTAANDE ROUTES: Handmatige cleanup (aangepast)**
 app.post('/admin/cleanup', (req, res) => {
   try {
     const result = cleanupService.manualCleanup();
@@ -102,7 +215,7 @@ app.post('/admin/cleanup', (req, res) => {
   }
 });
 
-// **NIEUWE ROUTE: Cleanup status**
+// **BESTAANDE ROUTE: Cleanup status (aangepast)**
 app.get('/admin/cleanup/status', (req, res) => {
   try {
     const dataDir = path.join(__dirname, 'data');
@@ -112,9 +225,11 @@ app.get('/admin/cleanup/status', (req, res) => {
     const historyFile = path.join(dataDir, 'presence-history.json');
     
     let historyEntries = 0;
+    let availableYears = [];
     if (fs.existsSync(historyFile)) {
       const history = JSON.parse(fs.readFileSync(historyFile, 'utf8'));
       historyEntries = Array.isArray(history) ? history.length : 0;
+      availableYears = exportService.getAvailableYears();
     }
 
     res.json({
@@ -122,6 +237,7 @@ app.get('/admin/cleanup/status', (req, res) => {
       status: {
         backupFiles: backupFiles.length,
         historyEntries: historyEntries,
+        availableYears: availableYears,
         lastCleanup: 'Bekijk cleanup.log voor details'
       }
     });
@@ -133,7 +249,7 @@ app.get('/admin/cleanup/status', (req, res) => {
   }
 });
 
-// Routes API pour les présences - AANGEPAST VOOR BETALINGSMETHODE
+// Routes API pour les présences - AANGEPAST VOOR BETALINGSMETHODE EN EXTRA VELDEN
 app.post('/presences', (req, res) => {
   try {
     // EXPLICIETE destructuring
@@ -174,11 +290,17 @@ app.post('/presences', (req, res) => {
       // **NIEUWE FUNCTIONALITEIT: BETALINGSMETHODE**
       presence.methodePaiement = req.body.methodePaiement || 'Especes'; // Default naar especes
       
-      // Extra velden voor non-adherents
+      // **NIEUWE FUNCTIONALITEIT: Extra velden voor Excel export**
       if (req.body.email) presence.email = req.body.email;
       if (req.body.telephone) presence.telephone = req.body.telephone;
       if (req.body.dateNaissance) presence.dateNaissance = req.body.dateNaissance;
       if (req.body.adresse) presence.adresse = req.body.adresse;
+      if (req.body.niveau !== undefined) presence.niveau = req.body.niveau;
+      
+      // **Assurance informatie (voor Excel export)**
+      if (req.body.assuranceAccepted !== undefined) {
+        presence.assuranceAccepted = req.body.assuranceAccepted;
+      }
       
       console.log('=== NON-ADHERENT DETECTED ===');
       console.log('Tarif added:', presence.tarif);
@@ -207,6 +329,7 @@ app.post('/presences', (req, res) => {
   }
 });
 
+// **BESTAANDE ROUTES BLIJVEN HETZELFDE**
 // GET toutes les présences (huidige dag)
 app.get('/presences', (req, res) => {
   try {
@@ -218,7 +341,7 @@ app.get('/presences', (req, res) => {
   }
 });
 
-// **NIEUWE ROUTE: GET historiek per datum**
+// GET historiek per datum
 app.get('/presences/history/:date', (req, res) => {
   try {
     const { date } = req.params; // YYYY-MM-DD format
@@ -237,7 +360,7 @@ app.get('/presences/history/:date', (req, res) => {
   }
 });
 
-// **NIEUWE ROUTE: GET alle beschikbare datums**
+// GET alle beschikbare datums
 app.get('/presences/history', (req, res) => {
   try {
     const history = readPresenceHistory();
@@ -287,7 +410,7 @@ app.post('/presences/:id/valider', (req, res) => {
       presences[index].tarif = montant;
     }
     
-    // **NIEUWE FUNCTIONALITEIT: Update betalingsmethode bij validatie**
+    // Update betalingsmethode bij validatie
     if (methodePaiement) {
       presences[index].methodePaiement = methodePaiement;
     }
@@ -318,7 +441,7 @@ app.post('/presences/:id/ajouter-tarif', (req, res) => {
     
     presences[index].tarif = montant || 0;
     
-    // **NIEUWE FUNCTIONALITEIT: Betalingsmethode voor adherents**
+    // Betalingsmethode voor adherents
     if (methodePaiement) {
       presences[index].methodePaiement = methodePaiement;
     }
@@ -334,7 +457,7 @@ app.post('/presences/:id/ajouter-tarif', (req, res) => {
   }
 });
 
-// ===== AANGEPASTE ANNULER ROUTE - ZET TARIEF OP 0 =====
+// AANGEPASTE ANNULER ROUTE - ZET TARIEF OP 0
 app.post('/presences/:id/annuler', (req, res) => {
   try {
     const { id } = req.params;
@@ -356,7 +479,7 @@ app.post('/presences/:id/annuler', (req, res) => {
     presences[index].status = 'Annulé';
     presences[index].dateAnnulation = new Date().toISOString();
     
-    // NIEUWE FUNCTIONALITEIT: Tarief op 0 zetten bij annulering
+    // Tarief op 0 zetten bij annulering
     if (presences[index].tarif !== undefined) {
       console.log('Setting tarif from', presences[index].tarif, 'to 0');
       presences[index].tarifOriginal = presences[index].tarif; // Bewaar origineel tarief
@@ -377,7 +500,7 @@ app.post('/presences/:id/annuler', (req, res) => {
   }
 });
 
-// **NIEUWE ROUTE: Handmatige archivering** (voor testing)
+// Handmatige archivering (voor testing)
 app.post('/presences/archive', (req, res) => {
   try {
     const currentPresences = readPresences();
@@ -417,6 +540,7 @@ app.listen(PORT, () => {
   console.log(`Backend server actief op http://localhost:${PORT}`);
   console.log(`Admin interface op http://localhost:${PORT}/admin`);
   console.log('Dagelijkse reset om middernacht is geactiveerd');
-  console.log('Dagelijkse cleanup om 02:00 is geactiveerd');
+  console.log('Dagelijkse cleanup om 02:00 is geactiveerd (ZONDER presence history cleanup)');
   console.log('Wekelijkse cleanup op zondag om 03:00 is geactiveerd');
+  console.log('Excel export functionaliteit beschikbaar via admin interface');
 });

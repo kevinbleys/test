@@ -5,12 +5,13 @@
     "nom": "TRUONG",
     "prenom": "Youen",
     "date": "2025-08-09T08:08:21.487Z",
-    "status": "pending",
+    "status": "Payé",
     "tarif": 8,
     "methodePaiement": "Especes",
     "email": "truong.thomas@free.fr",
     "telephone": "0782917804",
-    "dateNaissance": "2009-10-10"
+    "dateNaissance": "2009-10-10",
+    "dateValidation": "2025-08-09T12:25:51.901Z"
   },
   {
     "id": "1754726955048",

@@ -39,15 +39,17 @@ export default function AssurancePage() {
       console.log('=== ASSURANCE PAGE SUBMISSION ===');
       console.log('State data:', state);
       
-      // **IMPORTANTE: Utiliser le tarif calculé basé sur l'âge**
+      // **IMPORTANTE: Utiliser le tarif calculé basé sur l'âge ET assurance status**
       const registrationData = {
         type: 'non-adherent',
         ...state.form,
         tarif: state.tarif, // **UTILISE LE TARIF CALCULÉ**
-        niveau: state.niveau
+        niveau: state.niveau,
+        // **NOUVELLE LIJN: Assurance status voor Excel export**
+        assuranceAccepted: true  // Gebruiker heeft alle checkboxes aangevinkt
       };
       
-      console.log('Submitting with calculated tarif:', registrationData);
+      console.log('Submitting with calculated tarif and assurance:', registrationData);
 
       const response = await axios.post('http://localhost:4000/presences', registrationData);
 

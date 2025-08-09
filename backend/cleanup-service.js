@@ -87,50 +87,14 @@ const cleanupBackupFiles = () => {
   }
 };
 
-// **FUNCTIE: Oude presence history opruimen**
+// **AANGEPASTE FUNCTIE: Presence history NIET meer automatisch opruimen**
 const cleanupPresenceHistory = () => {
-  try {
-    logMessage('=== CLEANUP PRESENCE HISTORIEK GESTART ===');
-    
-    const HISTORY_FILE = path.join(DATA_DIR, 'presence-history.json');
-    
-    if (!fs.existsSync(HISTORY_FILE)) {
-      logMessage('Geen presence-history.json bestand gevonden');
-      return;
-    }
-
-    const historyData = JSON.parse(fs.readFileSync(HISTORY_FILE, 'utf8'));
-    
-    if (!Array.isArray(historyData) || historyData.length === 0) {
-      logMessage('Presence historiek is leeg of ongeldig');
-      return;
-    }
-
-    // **BEHOUD ALLEEN DE LAATSTE 30 DAGEN**
-    const KEEP_DAYS = 30;
-    const cutoffDate = new Date();
-    cutoffDate.setDate(cutoffDate.getDate() - KEEP_DAYS);
-    const cutoffDateString = cutoffDate.toISOString().split('T')[0];
-
-    const originalCount = historyData.length;
-    const filteredHistory = historyData.filter(entry => entry.date >= cutoffDateString);
-    const deletedCount = originalCount - filteredHistory.length;
-
-    if (deletedCount === 0) {
-      logMessage(`Alle ${originalCount} historiek entries worden behouden (≤ ${KEEP_DAYS} dagen)`);
-      return;
-    }
-
-    // Schrijf gefilterde data terug
-    fs.writeFileSync(HISTORY_FILE, JSON.stringify(filteredHistory, null, 2));
-
-    logMessage(`Behouden: ${filteredHistory.length} entries (laatste ${KEEP_DAYS} dagen)`);
-    logMessage(`Verwijderd: ${deletedCount} entries (ouder dan ${cutoffDateString})`);
-    logMessage('=== CLEANUP PRESENCE HISTORIEK BEËINDIGD ===');
-
-  } catch (error) {
-    logMessage(`FOUT BIJ PRESENCE HISTORIEK CLEANUP: ${error.message}`);
-  }
+  logMessage('=== PRESENCE HISTORY CLEANUP OVERGESLAGEN ===');
+  logMessage('Presence history wordt alleen handmatig opgeruimd na jaarlijkse Excel export');
+  logMessage('Gebruik de Excel export functie voor jaarlijkse archivering');
+  logMessage('=== PRESENCE HISTORY CLEANUP BEËINDIGD ===');
+  
+  // Geen automatische cleanup meer - alleen handmatig via Excel export
 };
 
 // **FUNCTIE: Log bestanden opruimen**
@@ -138,7 +102,7 @@ const cleanupLogFiles = () => {
   try {
     logMessage('=== CLEANUP LOG BESTANDEN GESTART ===');
     
-    const logFiles = ['sync.log', 'cleanup.log'];
+    const logFiles = ['sync.log', 'cleanup.log', 'export.log'];
     const MAX_LOG_SIZE = 5 * 1024 * 1024; // 5MB
 
     logFiles.forEach(logFileName => {
@@ -176,7 +140,7 @@ const performCleanup = () => {
   logMessage('🧹 DAGELIJKSE CLEANUP GESTART');
   
   cleanupBackupFiles();
-  cleanupPresenceHistory();
+  cleanupPresenceHistory(); // Nu alleen een log bericht
   cleanupLogFiles();
   
   logMessage('🧹 DAGELIJKSE CLEANUP VOLTOOID');
