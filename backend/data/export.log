@@ -22,3 +22,9 @@
 [2025-08-09T15:59:32.706Z] EXPORT: Totaal 47 records geëxporteerd
 [2025-08-09T15:59:32.708Z] EXPORT: Bestand opgeslagen: C:\Users\kevin\Documents\beyrede_escalade\backend\data\exports\presences-2025-export-2025-08-09T15-59.xlsx
 [2025-08-09T15:59:32.710Z] EXPORT: === JAARLIJKSE EXCEL EXPORT VOLTOOID (2025) ===
+[2025-08-09T16:09:30.808Z] EXPORT: === GET AVAILABLE YEARS GESTART ===
+[2025-08-09T16:09:30.812Z] EXPORT: Gelezen history data: 2 entries
+[2025-08-09T16:09:30.814Z] EXPORT: Entry datum: 2025-08-06 -> jaar: 2025
+[2025-08-09T16:09:30.816Z] EXPORT: Entry datum: 2025-08-08 -> jaar: 2025
+[2025-08-09T16:09:30.818Z] EXPORT: Beschikbare jaren gevonden: [2025]
+[2025-08-09T16:09:30.819Z] EXPORT: === GET AVAILABLE YEARS VOLTOOID ===
