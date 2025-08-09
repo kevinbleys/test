@@ -110,6 +110,11 @@
             background: #e67e22;
         }
 
+        .btn-warning:disabled {
+            background: #95a5a6;
+            cursor: not-allowed;
+        }
+
         .btn-danger {
             background: #e74c3c;
             color: white;
@@ -117,6 +122,11 @@
 
         .btn-danger:hover {
             background: #c0392b;
+        }
+
+        .btn-danger:disabled {
+            background: #95a5a6;
+            cursor: not-allowed;
         }
 
         .btn-success {
@@ -429,6 +439,18 @@
             margin-top: 10px;
             font-size: 13px;
         }
+
+        /* Debug info styling */
+        .debug-info {
+            background: #e7f3ff;
+            border: 1px solid #b3d4fc;
+            border-radius: 6px;
+            padding: 10px;
+            margin-bottom: 15px;
+            font-size: 12px;
+            font-family: monospace;
+            color: #004085;
+        }
     </style>
 </head>
 <body>
@@ -436,6 +458,12 @@
         <div class="header">
             <h1>Administration - Présences du jour</h1>
             <p id="page-title">Chargement...</p>
+        </div>
+
+        <!-- DEBUG INFO -->
+        <div id="debug-info" class="debug-info" style="display: none;">
+            <strong>🔧 Debug Info:</strong>
+            <div id="debug-content"></div>
         </div>
 
         <!-- Contrôles de date -->
@@ -456,9 +484,12 @@
             <button class="btn-refresh" onclick="checkCleanupStatus()">
                 📊 Statut des données
             </button>
+            <button class="btn-success" onclick="toggleDebug()">
+                🔧 Debug Info
+            </button>
         </div>
 
-        <!-- **SECTION EXCEL EXPORT EN FRANÇAIS** -->
+        <!-- SECTION EXCEL EXPORT EN FRANÇAIS -->
         <div class="export-section">
             <h4>📊 Export Excel Annuel</h4>
             <div class="date-controls" style="background: transparent; padding: 0; box-shadow: none; margin-bottom: 0;">
@@ -466,11 +497,14 @@
                 <select id="year-select">
                     <option value="">Sélectionner une année pour l'export...</option>
                 </select>
-                <button class="btn-warning" onclick="exportYear()">
+                <button id="export-btn" class="btn-warning" onclick="exportYear()">
                     📊 Export Excel
                 </button>
-                <button class="btn-danger" onclick="exportAndCleanupYear()">
+                <button id="export-cleanup-btn" class="btn-danger" onclick="exportAndCleanupYear()">
                     📊🗑️ Export & Nettoyage
+                </button>
+                <button class="btn-success" onclick="forceCreateTestData()">
+                    🔄 Créer données test
                 </button>
             </div>
             <div class="export-warning">
@@ -550,85 +584,162 @@
         let isHistoryMode = false;
         let availableDates = [];
         let currentSelectedDate = 'today';
+        let debugMode = false;
 
-// **FUNCTIE VERBETERD: Charger les années disponibles pour export**
-async function loadAvailableYearsForExport() {
-    try {
-        console.log('🔄 Chargement des années pour export...');
-        
-        // Eerst een test call om te zien of de service werkt
-        const response = await fetch('/admin/export/years');
-        console.log('Raw response status:', response.status);
-        console.log('Raw response ok:', response.ok);
-        
-        const data = await response.json();
-        console.log('Full response data:', data);
-        
-        if (data.success) {
-            const yearSelect = document.getElementById('year-select');
-            
-            if (!yearSelect) {
-                console.error('❌ Element year-select non trouvé dans DOM');
-                return;
+        // **DEBUG FUNCTIE**
+        function addDebugLog(message) {
+            const timestamp = new Date().toLocaleTimeString();
+            const debugContent = document.getElementById('debug-content');
+            if (debugContent) {
+                debugContent.innerHTML += `<div>[${timestamp}] ${message}</div>`;
+                if (debugMode) {
+                    console.log(`[DEBUG] ${message}`);
+                }
             }
-            
-            // Clear existing options (except first placeholder)
-            while (yearSelect.children.length > 1) {
-                yearSelect.removeChild(yearSelect.lastChild);
-            }
-            
-            // Check if we have years
-            console.log('Années reçues:', data.years);
-            
-            if (data.years && Array.isArray(data.years) && data.years.length > 0) {
-                data.years.forEach((year, index) => {
-                    console.log(`Ajout année ${index}: ${year}`);
-                    const option = document.createElement('option');
-                    option.value = year;
-                    option.textContent = year;
-                    yearSelect.appendChild(option);
-                });
-                console.log('✅ Années chargées pour export:', data.years);
-                
-                // Update placeholder text to show we have data
-                yearSelect.children[0].textContent = `Sélectionner une année (${data.years.length} disponibles)...`;
-                
+        }
+
+        function toggleDebug() {
+            debugMode = !debugMode;
+            const debugDiv = document.getElementById('debug-info');
+            if (debugMode) {
+                debugDiv.style.display = 'block';
+                addDebugLog('Debug mode activé');
             } else {
-                console.log('⚠️ Aucune année disponible pour export');
-                const option = document.createElement('option');
-                option.value = '';
-                option.textContent = 'Aucune année disponible';
-                option.disabled = true;
-                yearSelect.appendChild(option);
-            }
-        } else {
-            console.error('❌ Erreur données années:', data.error);
-            const yearSelect = document.getElementById('year-select');
-            if (yearSelect) {
-                const option = document.createElement('option');
-                option.value = '';
-                option.textContent = `Erreur: ${data.error || 'Erreur de chargement'}`;
-                option.disabled = true;
-                yearSelect.appendChild(option);
+                debugDiv.style.display = 'none';
             }
         }
-    } catch (error) {
-        console.error('❌ Erreur réseau années:', error);
-        const yearSelect = document.getElementById('year-select');
-        if (yearSelect) {
-            const option = document.createElement('option');
-            option.value = '';
-            option.textContent = 'Erreur de connexion';
-            option.disabled = true;
-            yearSelect.appendChild(option);
-        }
-    }
-}
 
-        // **NOUVELLE FONCTION: Excel export**
+        // **FUNCTIE: Force create test data**
+        async function forceCreateTestData() {
+            try {
+                addDebugLog('Création forcée de données de test...');
+                const response = await fetch('/admin/create-test-data', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+                
+                const data = await response.json();
+                addDebugLog(`Réponse création test data: ${JSON.stringify(data)}`);
+                
+                if (data.success) {
+                    alert('✅ Données de test créées avec succès !');
+                    await loadAvailableYearsForExport();
+                } else {
+                    alert('❌ Erreur: ' + (data.error || 'Erreur inconnue'));
+                }
+            } catch (error) {
+                addDebugLog(`Erreur création test data: ${error.message}`);
+                alert('❌ Erreur réseau: ' + error.message);
+            }
+        }
+
+        // **FONCTION AMÉLIORÉE: Charger les dates disponibles**
+        async function loadAvailableDates() {
+            try {
+                addDebugLog('🔄 Chargement des dates disponibles...');
+                const response = await fetch('/presences/history');
+                const data = await response.json();
+                
+                addDebugLog(`Réponse dates: ${JSON.stringify(data)}`);
+                
+                if (data.success) {
+                    availableDates = data.dates;
+                    addDebugLog(`✅ Dates disponibles: ${availableDates}`);
+                    updateDateSelect();
+                } else {
+                    addDebugLog(`❌ Erreur données dates: ${JSON.stringify(data)}`);
+                }
+            } catch (error) {
+                addDebugLog(`❌ Erreur réseau dates: ${error.message}`);
+            }
+        }
+
+        // **FONCTION CRITIQUE: Charger les années disponibles pour export**
+        async function loadAvailableYearsForExport() {
+            try {
+                addDebugLog('🔄 Chargement des années pour export...');
+                
+                const response = await fetch('/admin/export/years');
+                addDebugLog(`Status réponse: ${response.status}, OK: ${response.ok}`);
+                
+                const data = await response.json();
+                addDebugLog(`Données années reçues: ${JSON.stringify(data)}`);
+                
+                if (data.success) {
+                    const yearSelect = document.getElementById('year-select');
+                    const exportBtn = document.getElementById('export-btn');
+                    const exportCleanupBtn = document.getElementById('export-cleanup-btn');
+                    
+                    if (!yearSelect) {
+                        addDebugLog('❌ Element year-select non trouvé dans DOM');
+                        return;
+                    }
+                    
+                    // Clear existing options (except first placeholder)
+                    while (yearSelect.children.length > 1) {
+                        yearSelect.removeChild(yearSelect.lastChild);
+                    }
+                    
+                    if (data.years && Array.isArray(data.years) && data.years.length > 0) {
+                        data.years.forEach((year, index) => {
+                            addDebugLog(`Ajout année ${index}: ${year}`);
+                            const option = document.createElement('option');
+                            option.value = year;
+                            option.textContent = year;
+                            yearSelect.appendChild(option);
+                        });
+                        
+                        addDebugLog(`✅ ${data.years.length} années chargées pour export`);
+                        
+                        // Update placeholder text
+                        yearSelect.children[0].textContent = `Sélectionner une année (${data.years.length} disponibles)...`;
+                        
+                        // Enable buttons
+                        if (exportBtn) exportBtn.disabled = false;
+                        if (exportCleanupBtn) exportCleanupBtn.disabled = false;
+                        
+                    } else {
+                        addDebugLog('⚠️ Aucune année disponible pour export');
+                        const option = document.createElement('option');
+                        option.value = '';
+                        option.textContent = 'Aucune année disponible';
+                        option.disabled = true;
+                        yearSelect.appendChild(option);
+                        
+                        // Disable buttons
+                        if (exportBtn) exportBtn.disabled = true;
+                        if (exportCleanupBtn) exportCleanupBtn.disabled = true;
+                    }
+                } else {
+                    addDebugLog(`❌ Erreur données années: ${data.error}`);
+                    const yearSelect = document.getElementById('year-select');
+                    if (yearSelect) {
+                        const option = document.createElement('option');
+                        option.value = '';
+                        option.textContent = `Erreur: ${data.error || 'Erreur de chargement'}`;
+                        option.disabled = true;
+                        yearSelect.appendChild(option);
+                    }
+                }
+            } catch (error) {
+                addDebugLog(`❌ Erreur réseau années: ${error.message}`);
+                const yearSelect = document.getElementById('year-select');
+                if (yearSelect) {
+                    const option = document.createElement('option');
+                    option.value = '';
+                    option.textContent = 'Erreur de connexion';
+                    option.disabled = true;
+                    yearSelect.appendChild(option);
+                }
+            }
+        }
+
+        // **NOUVELLE FONCTION: Excel export avec debug**
         async function exportYear() {
             const yearSelect = document.getElementById('year-select');
             const selectedYear = yearSelect.value;
+            
+            addDebugLog(`Tentative export pour année: ${selectedYear}`);
             
             if (!selectedYear) {
                 alert('Veuillez sélectionner une année à exporter');
@@ -639,13 +750,24 @@ async function loadAvailableYearsForExport() {
                 return;
             }
             
+            const exportBtn = document.getElementById('export-btn');
+            const originalText = exportBtn.textContent;
+            
             try {
+                exportBtn.textContent = '📊 Export en cours...';
+                exportBtn.disabled = true;
+                
+                addDebugLog(`Envoi requête export vers /admin/export/${selectedYear}`);
+                
                 const response = await fetch(`/admin/export/${selectedYear}`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' }
                 });
                 
+                addDebugLog(`Réponse export - Status: ${response.status}`);
+                
                 const data = await response.json();
+                addDebugLog(`Données export: ${JSON.stringify(data)}`);
                 
                 if (data.success) {
                     alert(`✅ Export Excel réussi !\n\nFichier : ${data.filename}\nEnregistrements : ${data.recordCount}\n\nLe fichier est sauvegardé dans le dossier exports.`);
@@ -653,15 +775,20 @@ async function loadAvailableYearsForExport() {
                     alert('❌ Erreur lors de l\'export Excel :\n\n' + (data.error || 'Erreur inconnue'));
                 }
             } catch (error) {
-                console.error('Export error:', error);
-                alert('❌ Erreur réseau lors de l\'export Excel');
+                addDebugLog(`Erreur export: ${error.message}`);
+                alert('❌ Erreur réseau lors de l\'export Excel: ' + error.message);
+            } finally {
+                exportBtn.textContent = originalText;
+                exportBtn.disabled = false;
             }
         }
 
-        // **NOUVELLE FONCTION: Export et nettoyage**
+        // **NOUVELLE FONCTION: Export et nettoyage avec debug**
         async function exportAndCleanupYear() {
             const yearSelect = document.getElementById('year-select');
             const selectedYear = yearSelect.value;
+            
+            addDebugLog(`Tentative export+cleanup pour année: ${selectedYear}`);
             
             if (!selectedYear) {
                 alert('Veuillez sélectionner une année à exporter et nettoyer');
@@ -672,13 +799,24 @@ async function loadAvailableYearsForExport() {
                 return;
             }
             
+            const exportCleanupBtn = document.getElementById('export-cleanup-btn');
+            const originalText = exportCleanupBtn.textContent;
+            
             try {
+                exportCleanupBtn.textContent = '📊🗑️ Export & nettoyage...';
+                exportCleanupBtn.disabled = true;
+                
+                addDebugLog(`Envoi requête export+cleanup vers /admin/export-and-cleanup/${selectedYear}`);
+                
                 const response = await fetch(`/admin/export-and-cleanup/${selectedYear}`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' }
                 });
                 
+                addDebugLog(`Réponse export+cleanup - Status: ${response.status}`);
+                
                 const data = await response.json();
+                addDebugLog(`Données export+cleanup: ${JSON.stringify(data)}`);
                 
                 if (data.success) {
                     alert(`✅ Export et nettoyage réussis !\n\nExport :\n- Fichier : ${data.export.filename}\n- Enregistrements : ${data.export.recordCount}\n\nNettoyage :\n- Supprimés : ${data.cleanup.deletedCount} entrées\n- Conservés : ${data.cleanup.remainingCount} entrées`);
@@ -691,24 +829,24 @@ async function loadAvailableYearsForExport() {
                     alert('❌ Erreur lors de l\'export et nettoyage :\n\n' + (data.error || 'Erreur inconnue'));
                 }
             } catch (error) {
-                console.error('Export and cleanup error:', error);
-                alert('❌ Erreur réseau lors de l\'export et nettoyage');
+                addDebugLog(`Erreur export+cleanup: ${error.message}`);
+                alert('❌ Erreur réseau lors de l\'export et nettoyage: ' + error.message);
+            } finally {
+                exportCleanupBtn.textContent = originalText;
+                exportCleanupBtn.disabled = false;
             }
         }
 
-        // **FONCTION AMÉLIORÉE: Mettre à jour le sélecteur de date**
+        // **REST VAN DE FUNCTIES BLIJFT HETZELFDE**
         function updateDateSelect() {
             const select = document.getElementById('date-select');
             
-            // Sauvegarder la sélection actuelle
             const currentValue = select.value;
             
-            // Nettoyer les options existantes (sauf "Aujourd'hui")
             while (select.children.length > 1) {
                 select.removeChild(select.lastChild);
             }
             
-            // Ajouter les dates disponibles
             availableDates.forEach(date => {
                 const option = document.createElement('option');
                 option.value = date;
@@ -716,30 +854,26 @@ async function loadAvailableYearsForExport() {
                 select.appendChild(option);
             });
 
-            // Restaurer la sélection si elle existe toujours
             if (currentValue && [...select.options].some(option => option.value === currentValue)) {
                 select.value = currentValue;
             }
 
-            console.log('📅 Sélecteur de date mis à jour avec', availableDates.length, 'dates');
+            addDebugLog(`📅 Sélecteur de date mis à jour avec ${availableDates.length} dates`);
         }
 
-        // **FONCTION AMÉLIORÉE: Gérer le changement de date**
         async function onDateChange() {
             const select = document.getElementById('date-select');
             const selectedDate = select.value;
             
-            console.log('📅 Changement de date:', selectedDate);
+            addDebugLog(`📅 Changement de date: ${selectedDate}`);
             
             currentSelectedDate = selectedDate;
             
-            // Masquer le contenu pendant le chargement
             document.getElementById('loading').style.display = 'block';
             document.getElementById('content').style.display = 'none';
             document.getElementById('empty-state').style.display = 'none';
             
             if (selectedDate === 'today') {
-                console.log('🏠 Mode aujourd\'hui');
                 isHistoryMode = false;
                 document.getElementById('archive-btn').style.display = 'inline-block';
                 document.getElementById('actions-header').textContent = 'Actions';
@@ -747,7 +881,6 @@ async function loadAvailableYearsForExport() {
                 await loadPresences();
                 updatePageTitle('Présences du jour');
             } else {
-                console.log('📖 Mode historique pour:', selectedDate);
                 isHistoryMode = true;
                 document.getElementById('archive-btn').style.display = 'none';
                 document.getElementById('actions-header').textContent = '';
@@ -757,24 +890,19 @@ async function loadAvailableYearsForExport() {
             }
         }
 
-        // **FONCTION AMÉLIORÉE: Charger les présences par date**
         async function loadPresencesByDate(date) {
             try {
-                console.log('📖 Chargement historique pour:', date);
+                addDebugLog(`📖 Chargement historique pour: ${date}`);
                 const response = await fetch(`/presences/history/${date}`);
                 const data = await response.json();
                 
-                console.log('📖 Réponse historique:', data);
-                
                 if (data.success) {
                     allPresences = data.presences.sort((a, b) => new Date(b.date) - new Date(a.date));
-                    console.log('📖 Présences historiques chargées:', allPresences.length);
+                    addDebugLog(`📖 Présences historiques chargées: ${allPresences.length}`);
                     
-                    // Mettre à jour l'affichage
                     updateStats();
                     updateTable();
                     
-                    // Gérer l'affichage du contenu
                     document.getElementById('loading').style.display = 'none';
                     
                     if (allPresences.length === 0) {
@@ -786,20 +914,19 @@ async function loadAvailableYearsForExport() {
                         document.getElementById('empty-state').style.display = 'none';
                     }
                 } else {
-                    console.error('❌ Erreur chargement historique:', data.error);
+                    addDebugLog(`❌ Erreur chargement historique: ${data.error}`);
                     document.getElementById('loading').style.display = 'none';
                     document.getElementById('empty-state').style.display = 'block';
                     document.getElementById('empty-message').textContent = 'Erreur lors du chargement des données historiques';
                 }
             } catch (error) {
-                console.error('❌ Erreur réseau historique:', error);
+                addDebugLog(`❌ Erreur réseau historique: ${error.message}`);
                 document.getElementById('loading').style.display = 'none';
                 document.getElementById('empty-state').style.display = 'block';
                 document.getElementById('empty-message').textContent = 'Erreur de connexion';
             }
         }
 
-        // **FONCTION AMÉLIORÉE: Archiver aujourd'hui**
         async function archiveToday() {
             if (!confirm('Êtes-vous sûr de vouloir archiver les présences d\'aujourd\'hui ?')) {
                 return;
@@ -820,12 +947,11 @@ async function loadAvailableYearsForExport() {
                     alert(data.message || 'Erreur lors de l\'archivage');
                 }
             } catch (error) {
-                console.error('❌ Erreur archivage:', error);
+                addDebugLog(`❌ Erreur archivage: ${error.message}`);
                 alert('Erreur lors de l\'archivage');
             }
         }
 
-        // **FONCTION AMÉLIORÉE: Nettoyage**
         async function performCleanup() {
             if (!confirm('Êtes-vous sûr de vouloir effectuer un nettoyage ?\n\nCeci supprimera :\n- Les anciens fichiers de sauvegarde (garde les 5 derniers)\n- Les gros fichiers de logs\n\nL\'historique des présences ne sera PAS supprimé (utilisez l\'export Excel)')) {
                 return;
@@ -847,12 +973,12 @@ async function loadAvailableYearsForExport() {
                 
                 if (data.success) {
                     alert('✅ Nettoyage effectué avec succès !\n\n' + data.message);
-                    await checkCleanupStatus(); // Mettre à jour le statut
+                    await checkCleanupStatus();
                 } else {
                     alert('❌ Erreur lors du nettoyage :\n\n' + (data.error || 'Erreur inconnue'));
                 }
             } catch (error) {
-                console.error('❌ Cleanup error:', error);
+                addDebugLog(`❌ Cleanup error: ${error.message}`);
                 alert('❌ Erreur réseau lors du nettoyage');
             } finally {
                 cleanupBtn.textContent = originalText;
@@ -860,7 +986,6 @@ async function loadAvailableYearsForExport() {
             }
         }
 
-        // **FONCTION AMÉLIORÉE: Statut du nettoyage**
         async function checkCleanupStatus() {
             try {
                 const response = await fetch('/admin/cleanup/status');
@@ -894,20 +1019,17 @@ async function loadAvailableYearsForExport() {
                     alert('Erreur lors de la récupération du statut : ' + (data.error || 'Erreur inconnue'));
                 }
             } catch (error) {
-                console.error('Status error:', error);
+                addDebugLog(`Status error: ${error.message}`);
                 alert('Erreur réseau lors de la récupération du statut');
             }
         }
 
-        // **FONCTION AMÉLIORÉE: Actualiser toutes les données**
         async function refreshData() {
-            console.log('🔄 Actualisation complète...');
+            addDebugLog('🔄 Actualisation complète...');
             
-            // Recharger les dates disponibles
             await loadAvailableDates();
             await loadAvailableYearsForExport();
             
-            // Recharger les données actuelles selon le mode
             if (currentSelectedDate === 'today') {
                 await loadPresences();
             } else {
@@ -917,20 +1039,18 @@ async function loadAvailableYearsForExport() {
 
         function updatePageTitle(title) {
             document.getElementById('page-title').textContent = title;
-            console.log('📄 Titre mis à jour:', title);
+            addDebugLog(`📄 Titre mis à jour: ${title}`);
         }
 
         async function loadPresences() {
             try {
-                console.log('🏠 Chargement présences aujourd\'hui...');
+                addDebugLog('🏠 Chargement présences aujourd\'hui...');
                 const response = await fetch('/presences');
                 const data = await response.json();
                 
-                console.log('🏠 Réponse présences:', data);
-                
                 if (data.success) {
                     allPresences = data.presences.sort((a, b) => new Date(b.date) - new Date(a.date));
-                    console.log('🏠 Présences chargées:', allPresences.length);
+                    addDebugLog(`🏠 Présences chargées: ${allPresences.length}`);
                     
                     updateStats();
                     updateTable();
@@ -945,12 +1065,12 @@ async function loadAvailableYearsForExport() {
                         document.getElementById('empty-state').style.display = 'none';
                     }
                 } else {
-                    console.error('❌ Erreur données présences:', data.error);
+                    addDebugLog(`❌ Erreur données présences: ${data.error}`);
                     document.getElementById('loading').style.display = 'none';
                     document.getElementById('empty-state').style.display = 'block';
                 }
             } catch (error) {
-                console.error('❌ Erreur réseau présences:', error);
+                addDebugLog(`❌ Erreur réseau présences: ${error.message}`);
                 document.getElementById('loading').style.display = 'none';
                 document.getElementById('empty-state').style.display = 'block';
             }
@@ -967,16 +1087,14 @@ async function loadAvailableYearsForExport() {
             document.getElementById('non-adherent-count').textContent = nonAdherents;
             document.getElementById('pending-count').textContent = pending;
 
-            console.log('📊 Stats mises à jour:', { total, adherents, nonAdherents, pending });
+            addDebugLog(`📊 Stats mises à jour: total=${total}, adherents=${adherents}, nonAdherents=${nonAdherents}, pending=${pending}`);
         }
 
         function filterPresences(type) {
             currentFilter = type;
             
-            // Mettre à jour le bouton actif
             document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
             
-            // Trouver le bon bouton à activer
             let targetBtn;
             if (type === 'all') {
                 targetBtn = document.querySelector('.filter-btn:not(.adherent):not(.non-adherent):not(.pending)');
@@ -989,7 +1107,7 @@ async function loadAvailableYearsForExport() {
             }
             
             updateTable();
-            console.log('🔍 Filtre appliqué:', type);
+            addDebugLog(`🔍 Filtre appliqué: ${type}`);
         }
 
         function updateTable() {
@@ -1003,7 +1121,7 @@ async function loadAvailableYearsForExport() {
                 );
             }
 
-            console.log('📋 Affichage de', filteredPresences.length, 'présences (filtre:', currentFilter, ')');
+            addDebugLog(`📋 Affichage de ${filteredPresences.length} présences (filtre: ${currentFilter})`);
 
             filteredPresences.forEach((presence, index) => {
                 const row = document.createElement('tr');
@@ -1024,7 +1142,6 @@ async function loadAvailableYearsForExport() {
                 tbody.appendChild(row);
             });
 
-            // Mettre à jour les compteurs dans les boutons de filtre
             const allCount = allPresences.length;
             const adherentCount = allPresences.filter(p => p.type === 'adherent').length;
             const nonAdherentCount = allPresences.filter(p => p.type === 'non-adherent').length;
@@ -1036,7 +1153,6 @@ async function loadAvailableYearsForExport() {
             document.querySelector('.filter-btn.pending').textContent = `En attente (${pendingCount})`;
         }
 
-        // **FONCTION AMÉLIORÉE: Affichage du paiement**
         function getPaymentDisplay(presence) {
             if (!presence.methodePaiement) {
                 return '<span class="payment-none">-</span>';
@@ -1136,7 +1252,7 @@ async function loadAvailableYearsForExport() {
                     alert('Erreur lors de la validation');
                 }
             } catch (error) {
-                console.error('❌ Erreur validation:', error);
+                addDebugLog(`❌ Erreur validation: ${error.message}`);
                 alert('Erreur lors de la validation');
             }
         }
@@ -1167,7 +1283,7 @@ async function loadAvailableYearsForExport() {
                     alert('Erreur lors de l\'ajout du tarif');
                 }
             } catch (error) {
-                console.error('❌ Erreur ajout tarif:', error);
+                addDebugLog(`❌ Erreur ajout tarif: ${error.message}`);
                 alert('Erreur lors de l\'ajout du tarif');
             }
         }
@@ -1190,7 +1306,7 @@ async function loadAvailableYearsForExport() {
                     alert('Erreur lors de l\'annulation');
                 }
             } catch (error) {
-                console.error('❌ Erreur annulation:', error);
+                addDebugLog(`❌ Erreur annulation: ${error.message}`);
                 alert('Erreur lors de l\'annulation');
             }
         }
@@ -1199,35 +1315,34 @@ async function loadAvailableYearsForExport() {
             return new Date(dateString).toLocaleString('fr-FR');
         }
 
-        // **INITIALISATION AMÉLIORÉE**
+        // **INITIALISATION CRITIQUE**
         document.addEventListener('DOMContentLoaded', async () => {
-            console.log('🚀 Initialisation de l\'application...');
+            addDebugLog('🚀 Initialisation de l\'application...');
             
             // Event listeners
             document.getElementById('date-select').addEventListener('change', onDateChange);
             
-            // Chargement initial - ORDRE IMPORTANT
             try {
-                console.log('📅 Chargement des dates...');
+                addDebugLog('📅 Chargement des dates...');
                 await loadAvailableDates();
                 
-                console.log('🏠 Chargement des présences...');
+                addDebugLog('🏠 Chargement des présences...');
                 await loadPresences();
                 
-                console.log('📊 Chargement des années pour export...');
+                addDebugLog('📊 Chargement des années pour export...');
                 await loadAvailableYearsForExport();
                 
                 updatePageTitle('Présences du jour');
                 
-                console.log('✅ Application initialisée avec succès');
+                addDebugLog('✅ Application initialisée avec succès');
             } catch (error) {
-                console.error('❌ Erreur lors de l\'initialisation:', error);
+                addDebugLog(`❌ Erreur lors de l\'initialisation: ${error.message}`);
             }
             
             // Auto-actualisation toutes les 30 secondes (uniquement pour aujourd'hui)
             setInterval(() => {
                 if (!isHistoryMode) {
-                    console.log('🔄 Auto-actualisation...');
+                    addDebugLog('🔄 Auto-actualisation...');
                     loadPresences();
                 }
             }, 30000);

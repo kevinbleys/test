@@ -5,3 +5,20 @@
 [2025-08-09T13:04:00.341Z] EXPORT: Beschikbare jaren gevonden: [2025]
 [2025-08-09T13:04:00.342Z] EXPORT: === GET AVAILABLE YEARS VOLTOOID ===
 [2025-08-09T14:34:01.635Z] EXPORT: Exports directory aangemaakt: C:\Users\kevin\Documents\beyrede_escalade\backend\data\exports
+[2025-08-09T15:53:01.295Z] EXPORT: === GET AVAILABLE YEARS GESTART ===
+[2025-08-09T15:53:01.300Z] EXPORT: Gelezen history data: 2 entries
+[2025-08-09T15:53:01.301Z] EXPORT: Entry datum: 2025-08-06 -> jaar: 2025
+[2025-08-09T15:53:01.303Z] EXPORT: Entry datum: 2025-08-08 -> jaar: 2025
+[2025-08-09T15:53:01.304Z] EXPORT: Beschikbare jaren gevonden: [2025]
+[2025-08-09T15:53:01.305Z] EXPORT: === GET AVAILABLE YEARS VOLTOOID ===
+[2025-08-09T15:59:18.494Z] EXPORT: === GET AVAILABLE YEARS GESTART ===
+[2025-08-09T15:59:18.497Z] EXPORT: Gelezen history data: 2 entries
+[2025-08-09T15:59:18.499Z] EXPORT: Entry datum: 2025-08-06 -> jaar: 2025
+[2025-08-09T15:59:18.502Z] EXPORT: Entry datum: 2025-08-08 -> jaar: 2025
+[2025-08-09T15:59:18.504Z] EXPORT: Beschikbare jaren gevonden: [2025]
+[2025-08-09T15:59:18.506Z] EXPORT: === GET AVAILABLE YEARS VOLTOOID ===
+[2025-08-09T15:59:32.665Z] EXPORT: === JAARLIJKSE EXCEL EXPORT GESTART (2025) ===
+[2025-08-09T15:59:32.704Z] EXPORT: Excel export succesvol: presences-2025-export-2025-08-09T15-59.xlsx
+[2025-08-09T15:59:32.706Z] EXPORT: Totaal 47 records geëxporteerd
+[2025-08-09T15:59:32.708Z] EXPORT: Bestand opgeslagen: C:\Users\kevin\Documents\beyrede_escalade\backend\data\exports\presences-2025-export-2025-08-09T15-59.xlsx
+[2025-08-09T15:59:32.710Z] EXPORT: === JAARLIJKSE EXCEL EXPORT VOLTOOID (2025) ===

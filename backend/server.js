@@ -46,6 +46,24 @@ const writePresences = (data) => fs.writeFileSync(PRESENCES_FILE, JSON.stringify
 const readPresenceHistory = () => JSON.parse(fs.readFileSync(PRESENCE_HISTORY_FILE));
 const writePresenceHistory = (data) => fs.writeFileSync(PRESENCE_HISTORY_FILE, JSON.stringify(data, null, 2));
 
+// **NIEUWE ROUTE: Force create test data**
+app.post('/admin/create-test-data', (req, res) => {
+  try {
+    exportService.createTestDataIfNeeded();
+    res.json({
+      success: true,
+      message: 'Test data created successfully'
+    });
+  } catch (error) {
+    console.error('Create test data error:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Fout bij aanmaken test data: ' + error.message
+    });
+  }
+});
+
+
 // ===== CRON JOB: DAGELIJKSE RESET OM MIDDERNACHT =====
 cron.schedule('0 0 * * *', () => {
   try {
