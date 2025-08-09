@@ -439,5 +439,80 @@
         "dateValidation": "2025-08-06T14:54:41.562Z"
       }
     ]
+  },
+  {
+    "date": "2025-08-08",
+    "presences": [
+      {
+        "id": "1754572728611",
+        "type": "non-adherent",
+        "nom": "TRUONG",
+        "prenom": "Youen",
+        "date": "2025-08-07T13:18:48.611Z",
+        "status": "Payé",
+        "tarif": 10,
+        "methodePaiement": "Cheque",
+        "email": "truong.thomas@free.fr",
+        "telephone": "0782917804",
+        "dateNaissance": "2010-10-25",
+        "dateValidation": "2025-08-07T13:19:21.357Z"
+      },
+      {
+        "id": "1754574930428",
+        "type": "non-adherent",
+        "nom": "TRUONG",
+        "prenom": "Youen",
+        "date": "2025-08-07T13:55:30.428Z",
+        "status": "Payé",
+        "tarif": 10,
+        "methodePaiement": "CB",
+        "email": "truong.thomas@free.fr",
+        "telephone": "0782917804",
+        "dateNaissance": "2020-10-10",
+        "dateValidation": "2025-08-07T13:56:33.760Z"
+      },
+      {
+        "id": "1754574986878",
+        "type": "non-adherent",
+        "nom": "TRUONG",
+        "prenom": "Youen",
+        "date": "2025-08-07T13:56:26.878Z",
+        "status": "Payé",
+        "tarif": 10,
+        "methodePaiement": "Especes",
+        "email": "truong.thomas@free.fr",
+        "telephone": "0782917804",
+        "dateNaissance": "2020-10-10",
+        "dateValidation": "2025-08-07T13:56:36.314Z"
+      },
+      {
+        "id": "1754575730434",
+        "type": "non-adherent",
+        "nom": "TRUONG",
+        "prenom": "Youen",
+        "date": "2025-08-07T14:08:50.434Z",
+        "status": "Payé",
+        "tarif": 10,
+        "methodePaiement": "Cheque",
+        "email": "truong.thomas@free.fr",
+        "telephone": "0782917804",
+        "dateNaissance": "2020-10-10",
+        "dateValidation": "2025-08-07T14:09:14.748Z"
+      },
+      {
+        "id": "1754663400192",
+        "type": "non-adherent",
+        "nom": "TRUONG",
+        "prenom": "Youen",
+        "date": "2025-08-08T14:30:00.192Z",
+        "status": "Payé",
+        "tarif": 8,
+        "methodePaiement": "Especes",
+        "email": "truong.thomas@free.fr",
+        "telephone": "0782917804",
+        "dateNaissance": "2015-05-16",
+        "dateValidation": "2025-08-08T14:30:06.709Z"
+      }
+    ]
   }
 ]

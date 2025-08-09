@@ -19,7 +19,7 @@ export default function NonMemberForm() {
     const { name, value } = e.target;
     setForm({ ...form, [name]: value });
 
-    // **NOUVELLE FONCTIONNALITÉ: Preview du tarif en temps réel**
+    // **NIEUWE FUNCTIONALITEIT: Preview du tarif en temps réel**
     if (name === 'dateNaissance' && value) {
       try {
         const { age, tarif, description } = calculateAgeAndTarif(value);

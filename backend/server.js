@@ -4,6 +4,9 @@ const path = require('path');
 const fs = require('fs');
 const cron = require('node-cron');
 
+// **NIEUWE IMPORT: Cleanup service**
+const cleanupService = require('./cleanup-service');
+
 const app = express();
 const PORT = process.env.PORT || 4000;
 
@@ -68,9 +71,67 @@ cron.schedule('0 0 * * *', () => {
   }
 });
 
+// **NIEUWE CRON JOB: DAGELIJKSE CLEANUP OM 02:00**
+cron.schedule('0 2 * * *', () => {
+  console.log('=== AUTOMATISCHE CLEANUP GESTART (02:00) ===');
+  cleanupService.performCleanup();
+  console.log('=== AUTOMATISCHE CLEANUP VOLTOOID ===');
+});
+
+// **NIEUWE CRON JOB: WEKELIJKSE GRONDIGE CLEANUP OP ZONDAG OM 03:00**
+cron.schedule('0 3 * * 0', () => {
+  console.log('=== WEKELIJKSE CLEANUP GESTART (ZONDAG 03:00) ===');
+  cleanupService.performCleanup();
+  console.log('=== WEKELIJKSE CLEANUP VOLTOOID ===');
+});
+
 // Import routes des membres
 const membersRoutes = require('./routes/members');
 app.use('/members', membersRoutes);
+
+// **NIEUWE ROUTE: Handmatige cleanup**
+app.post('/admin/cleanup', (req, res) => {
+  try {
+    const result = cleanupService.manualCleanup();
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: 'Fout bij cleanup: ' + error.message
+    });
+  }
+});
+
+// **NIEUWE ROUTE: Cleanup status**
+app.get('/admin/cleanup/status', (req, res) => {
+  try {
+    const dataDir = path.join(__dirname, 'data');
+    const files = fs.readdirSync(dataDir);
+    
+    const backupFiles = files.filter(file => file.includes('_backup_') && file.endsWith('.json'));
+    const historyFile = path.join(dataDir, 'presence-history.json');
+    
+    let historyEntries = 0;
+    if (fs.existsSync(historyFile)) {
+      const history = JSON.parse(fs.readFileSync(historyFile, 'utf8'));
+      historyEntries = Array.isArray(history) ? history.length : 0;
+    }
+
+    res.json({
+      success: true,
+      status: {
+        backupFiles: backupFiles.length,
+        historyEntries: historyEntries,
+        lastCleanup: 'Bekijk cleanup.log voor details'
+      }
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: 'Fout bij ophalen cleanup status: ' + error.message
+    });
+  }
+});
 
 // Routes API pour les présences - AANGEPAST VOOR BETALINGSMETHODE
 app.post('/presences', (req, res) => {
@@ -356,4 +417,6 @@ app.listen(PORT, () => {
   console.log(`Backend server actief op http://localhost:${PORT}`);
   console.log(`Admin interface op http://localhost:${PORT}/admin`);
   console.log('Dagelijkse reset om middernacht is geactiveerd');
+  console.log('Dagelijkse cleanup om 02:00 is geactiveerd');
+  console.log('Wekelijkse cleanup op zondag om 03:00 is geactiveerd');
 });

@@ -3800,3 +3800,122 @@
 [2025-08-08T14:05:40.157Z] Internet verbinding OK
 [2025-08-08T14:05:40.299Z] ERREUR: Erreur API 503: "no available server\n"
 [2025-08-08T14:05:40.301Z] FOUT: Erreur API 503: "no available server\n"
+[2025-08-08T15:05:39.800Z] Script gestart vanuit command line
+[2025-08-08T15:05:39.804Z] === Synchronisation PEPsup démarrée ===
+[2025-08-08T15:05:40.165Z] Internet verbinding OK
+[2025-08-08T15:05:43.085Z] Backup gemaakt: C:\Users\kevin\Documents\beyrede_escalade\backend\data\members_backup_1754665543077.json
+[2025-08-08T15:05:43.388Z] Synchronisation réussie: 636 membres synchronisés
+[2025-08-08T15:05:43.390Z] === Synchronisation PEPsup terminée ===
+[2025-08-08T15:05:43.392Z] Script voltooid: 636 leden gesynchroniseerd
+[2025-08-08T16:05:39.760Z] Script gestart vanuit command line
+[2025-08-08T16:05:39.764Z] === Synchronisation PEPsup démarrée ===
+[2025-08-08T16:05:40.093Z] Internet verbinding OK
+[2025-08-08T16:05:42.330Z] Backup gemaakt: C:\Users\kevin\Documents\beyrede_escalade\backend\data\members_backup_1754669142325.json
+[2025-08-08T16:05:42.658Z] Synchronisation réussie: 636 membres synchronisés
+[2025-08-08T16:05:42.660Z] === Synchronisation PEPsup terminée ===
+[2025-08-08T16:05:42.663Z] Script voltooid: 636 leden gesynchroniseerd
+[2025-08-08T17:05:39.764Z] Script gestart vanuit command line
+[2025-08-08T17:05:39.767Z] === Synchronisation PEPsup démarrée ===
+[2025-08-08T17:05:40.401Z] Internet verbinding OK
+[2025-08-08T17:05:42.360Z] Backup gemaakt: C:\Users\kevin\Documents\beyrede_escalade\backend\data\members_backup_1754672742357.json
+[2025-08-08T17:05:42.669Z] Synchronisation réussie: 636 membres synchronisés
+[2025-08-08T17:05:42.672Z] === Synchronisation PEPsup terminée ===
+[2025-08-08T17:05:42.673Z] Script voltooid: 636 leden gesynchroniseerd
+[2025-08-08T18:05:39.810Z] Script gestart vanuit command line
+[2025-08-08T18:05:39.814Z] === Synchronisation PEPsup démarrée ===
+[2025-08-08T18:05:40.398Z] Internet verbinding OK
+[2025-08-08T18:05:42.412Z] Backup gemaakt: C:\Users\kevin\Documents\beyrede_escalade\backend\data\members_backup_1754676342407.json
+[2025-08-08T18:05:42.712Z] Synchronisation réussie: 636 membres synchronisés
+[2025-08-08T18:05:42.714Z] === Synchronisation PEPsup terminée ===
+[2025-08-08T18:05:42.716Z] Script voltooid: 636 leden gesynchroniseerd
+[2025-08-08T19:05:39.783Z] Script gestart vanuit command line
+[2025-08-08T19:05:39.787Z] === Synchronisation PEPsup démarrée ===
+[2025-08-08T19:05:40.380Z] Internet verbinding OK
+[2025-08-08T19:05:42.589Z] Backup gemaakt: C:\Users\kevin\Documents\beyrede_escalade\backend\data\members_backup_1754679942585.json
+[2025-08-08T19:05:42.896Z] Synchronisation réussie: 636 membres synchronisés
+[2025-08-08T19:05:42.898Z] === Synchronisation PEPsup terminée ===
+[2025-08-08T19:05:42.900Z] Script voltooid: 636 leden gesynchroniseerd
+[2025-08-08T20:05:39.799Z] Script gestart vanuit command line
+[2025-08-08T20:05:39.803Z] === Synchronisation PEPsup démarrée ===
+[2025-08-08T20:05:40.434Z] Internet verbinding OK
+[2025-08-08T20:05:42.263Z] Backup gemaakt: C:\Users\kevin\Documents\beyrede_escalade\backend\data\members_backup_1754683542259.json
+[2025-08-08T20:05:42.562Z] Synchronisation réussie: 636 membres synchronisés
+[2025-08-08T20:05:42.565Z] === Synchronisation PEPsup terminée ===
+[2025-08-08T20:05:42.567Z] Script voltooid: 636 leden gesynchroniseerd
+[2025-08-08T21:05:39.826Z] Script gestart vanuit command line
+[2025-08-08T21:05:39.830Z] === Synchronisation PEPsup démarrée ===
+[2025-08-08T21:05:40.289Z] Internet verbinding OK
+[2025-08-08T21:05:41.421Z] Backup gemaakt: C:\Users\kevin\Documents\beyrede_escalade\backend\data\members_backup_1754687141416.json
+[2025-08-08T21:05:41.723Z] Synchronisation réussie: 636 membres synchronisés
+[2025-08-08T21:05:41.725Z] === Synchronisation PEPsup terminée ===
+[2025-08-08T21:05:41.727Z] Script voltooid: 636 leden gesynchroniseerd
+[2025-08-08T22:05:39.836Z] Script gestart vanuit command line
+[2025-08-08T22:05:39.840Z] === Synchronisation PEPsup démarrée ===
+[2025-08-08T22:05:40.151Z] Internet verbinding OK
+[2025-08-08T22:05:41.451Z] Backup gemaakt: C:\Users\kevin\Documents\beyrede_escalade\backend\data\members_backup_1754690741447.json
+[2025-08-08T22:05:41.756Z] Synchronisation réussie: 636 membres synchronisés
+[2025-08-08T22:05:41.758Z] === Synchronisation PEPsup terminée ===
+[2025-08-08T22:05:41.760Z] Script voltooid: 636 leden gesynchroniseerd
+[2025-08-08T23:05:39.819Z] Script gestart vanuit command line
+[2025-08-08T23:05:39.823Z] === Synchronisation PEPsup démarrée ===
+[2025-08-08T23:05:40.185Z] Internet verbinding OK
+[2025-08-08T23:05:41.309Z] Backup gemaakt: C:\Users\kevin\Documents\beyrede_escalade\backend\data\members_backup_1754694341305.json
+[2025-08-08T23:05:41.641Z] Synchronisation réussie: 636 membres synchronisés
+[2025-08-08T23:05:41.643Z] === Synchronisation PEPsup terminée ===
+[2025-08-08T23:05:41.645Z] Script voltooid: 636 leden gesynchroniseerd
+[2025-08-09T00:05:40.155Z] Script gestart vanuit command line
+[2025-08-09T00:05:40.159Z] === Synchronisation PEPsup démarrée ===
+[2025-08-09T00:05:40.528Z] Internet verbinding OK
+[2025-08-09T00:05:41.556Z] Backup gemaakt: C:\Users\kevin\Documents\beyrede_escalade\backend\data\members_backup_1754697941553.json
+[2025-08-09T00:05:41.868Z] Synchronisation réussie: 636 membres synchronisés
+[2025-08-09T00:05:41.870Z] === Synchronisation PEPsup terminée ===
+[2025-08-09T00:05:41.872Z] Script voltooid: 636 leden gesynchroniseerd
+[2025-08-09T01:05:39.837Z] Script gestart vanuit command line
+[2025-08-09T01:05:39.841Z] === Synchronisation PEPsup démarrée ===
+[2025-08-09T01:05:40.159Z] Internet verbinding OK
+[2025-08-09T01:05:41.156Z] Backup gemaakt: C:\Users\kevin\Documents\beyrede_escalade\backend\data\members_backup_1754701541152.json
+[2025-08-09T01:05:41.472Z] Synchronisation réussie: 636 membres synchronisés
+[2025-08-09T01:05:41.474Z] === Synchronisation PEPsup terminée ===
+[2025-08-09T01:05:41.476Z] Script voltooid: 636 leden gesynchroniseerd
+[2025-08-09T02:05:39.865Z] Script gestart vanuit command line
+[2025-08-09T02:05:39.869Z] === Synchronisation PEPsup démarrée ===
+[2025-08-09T02:05:40.179Z] Internet verbinding OK
+[2025-08-09T02:05:41.213Z] Backup gemaakt: C:\Users\kevin\Documents\beyrede_escalade\backend\data\members_backup_1754705141210.json
+[2025-08-09T02:05:41.533Z] Synchronisation réussie: 636 membres synchronisés
+[2025-08-09T02:05:41.536Z] === Synchronisation PEPsup terminée ===
+[2025-08-09T02:05:41.538Z] Script voltooid: 636 leden gesynchroniseerd
+[2025-08-09T03:05:39.834Z] Script gestart vanuit command line
+[2025-08-09T03:05:39.838Z] === Synchronisation PEPsup démarrée ===
+[2025-08-09T03:05:40.170Z] Internet verbinding OK
+[2025-08-09T03:05:41.142Z] Backup gemaakt: C:\Users\kevin\Documents\beyrede_escalade\backend\data\members_backup_1754708741138.json
+[2025-08-09T03:05:41.448Z] Synchronisation réussie: 636 membres synchronisés
+[2025-08-09T03:05:41.450Z] === Synchronisation PEPsup terminée ===
+[2025-08-09T03:05:41.452Z] Script voltooid: 636 leden gesynchroniseerd
+[2025-08-09T04:05:39.875Z] Script gestart vanuit command line
+[2025-08-09T04:05:39.879Z] === Synchronisation PEPsup démarrée ===
+[2025-08-09T04:05:40.190Z] Internet verbinding OK
+[2025-08-09T04:05:41.350Z] Backup gemaakt: C:\Users\kevin\Documents\beyrede_escalade\backend\data\members_backup_1754712341347.json
+[2025-08-09T04:05:41.666Z] Synchronisation réussie: 636 membres synchronisés
+[2025-08-09T04:05:41.669Z] === Synchronisation PEPsup terminée ===
+[2025-08-09T04:05:41.670Z] Script voltooid: 636 leden gesynchroniseerd
+[2025-08-09T05:05:39.859Z] Script gestart vanuit command line
+[2025-08-09T05:05:39.863Z] === Synchronisation PEPsup démarrée ===
+[2025-08-09T05:05:40.176Z] Internet verbinding OK
+[2025-08-09T05:05:41.206Z] Backup gemaakt: C:\Users\kevin\Documents\beyrede_escalade\backend\data\members_backup_1754715941204.json
+[2025-08-09T05:05:41.515Z] Synchronisation réussie: 636 membres synchronisés
+[2025-08-09T05:05:41.518Z] === Synchronisation PEPsup terminée ===
+[2025-08-09T05:05:41.519Z] Script voltooid: 636 leden gesynchroniseerd
+[2025-08-09T06:05:39.861Z] Script gestart vanuit command line
+[2025-08-09T06:05:39.865Z] === Synchronisation PEPsup démarrée ===
+[2025-08-09T06:05:40.266Z] Internet verbinding OK
+[2025-08-09T06:05:41.343Z] Backup gemaakt: C:\Users\kevin\Documents\beyrede_escalade\backend\data\members_backup_1754719541339.json
+[2025-08-09T06:05:41.648Z] Synchronisation réussie: 636 membres synchronisés
+[2025-08-09T06:05:41.650Z] === Synchronisation PEPsup terminée ===
+[2025-08-09T06:05:41.652Z] Script voltooid: 636 leden gesynchroniseerd
+[2025-08-09T07:05:39.859Z] Script gestart vanuit command line
+[2025-08-09T07:05:39.863Z] === Synchronisation PEPsup démarrée ===
+[2025-08-09T07:05:40.303Z] Internet verbinding OK
+[2025-08-09T07:05:41.098Z] Backup gemaakt: C:\Users\kevin\Documents\beyrede_escalade\backend\data\members_backup_1754723141095.json
+[2025-08-09T07:05:41.401Z] Synchronisation réussie: 636 membres synchronisés
+[2025-08-09T07:05:41.403Z] === Synchronisation PEPsup terminée ===
+[2025-08-09T07:05:41.405Z] Script voltooid: 636 leden gesynchroniseerd
