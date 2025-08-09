@@ -551,83 +551,79 @@
         let availableDates = [];
         let currentSelectedDate = 'today';
 
-        // **FONCTION AMÉLIORÉE: Charger les dates disponibles**
-        async function loadAvailableDates() {
-            try {
-                console.log('🔄 Chargement des dates disponibles...');
-                const response = await fetch('/presences/history');
-                const data = await response.json();
-                
-                if (data.success) {
-                    availableDates = data.dates;
-                    console.log('✅ Dates disponibles:', availableDates);
-                    updateDateSelect();
-                } else {
-                    console.error('❌ Erreur données dates:', data);
-                }
-            } catch (error) {
-                console.error('❌ Erreur réseau dates:', error);
+// **FUNCTIE VERBETERD: Charger les années disponibles pour export**
+async function loadAvailableYearsForExport() {
+    try {
+        console.log('🔄 Chargement des années pour export...');
+        
+        // Eerst een test call om te zien of de service werkt
+        const response = await fetch('/admin/export/years');
+        console.log('Raw response status:', response.status);
+        console.log('Raw response ok:', response.ok);
+        
+        const data = await response.json();
+        console.log('Full response data:', data);
+        
+        if (data.success) {
+            const yearSelect = document.getElementById('year-select');
+            
+            if (!yearSelect) {
+                console.error('❌ Element year-select non trouvé dans DOM');
+                return;
             }
-        }
-
-        // **FONCTION AMÉLIORÉE: Charger les années disponibles pour export**
-        async function loadAvailableYearsForExport() {
-            try {
-                console.log('🔄 Chargement des années pour export...');
-                const response = await fetch('/admin/export/years');
-                const data = await response.json();
-                
-                console.log('Réponse années export:', data);
-                
-                if (data.success) {
-                    const yearSelect = document.getElementById('year-select');
-                    
-                    if (!yearSelect) {
-                        console.error('❌ Element year-select non trouvé');
-                        return;
-                    }
-                    
-                    // Clear existing options (except first)
-                    while (yearSelect.children.length > 1) {
-                        yearSelect.removeChild(yearSelect.lastChild);
-                    }
-                    
-                    // Add available years
-                    if (data.years && data.years.length > 0) {
-                        data.years.forEach(year => {
-                            const option = document.createElement('option');
-                            option.value = year;
-                            option.textContent = year;
-                            yearSelect.appendChild(option);
-                        });
-                        console.log('✅ Années chargées pour export:', data.years);
-                    } else {
-                        console.log('⚠️ Aucune année disponible pour export');
-                        const option = document.createElement('option');
-                        option.value = '';
-                        option.textContent = 'Aucune année disponible';
-                        option.disabled = true;
-                        yearSelect.appendChild(option);
-                    }
-                } else {
-                    console.error('❌ Erreur données années:', data.error);
-                    const yearSelect = document.getElementById('year-select');
+            
+            // Clear existing options (except first placeholder)
+            while (yearSelect.children.length > 1) {
+                yearSelect.removeChild(yearSelect.lastChild);
+            }
+            
+            // Check if we have years
+            console.log('Années reçues:', data.years);
+            
+            if (data.years && Array.isArray(data.years) && data.years.length > 0) {
+                data.years.forEach((year, index) => {
+                    console.log(`Ajout année ${index}: ${year}`);
                     const option = document.createElement('option');
-                    option.value = '';
-                    option.textContent = 'Erreur de chargement';
-                    option.disabled = true;
+                    option.value = year;
+                    option.textContent = year;
                     yearSelect.appendChild(option);
-                }
-            } catch (error) {
-                console.error('❌ Erreur réseau années:', error);
-                const yearSelect = document.getElementById('year-select');
+                });
+                console.log('✅ Années chargées pour export:', data.years);
+                
+                // Update placeholder text to show we have data
+                yearSelect.children[0].textContent = `Sélectionner une année (${data.years.length} disponibles)...`;
+                
+            } else {
+                console.log('⚠️ Aucune année disponible pour export');
                 const option = document.createElement('option');
                 option.value = '';
-                option.textContent = 'Erreur de connexion';
+                option.textContent = 'Aucune année disponible';
+                option.disabled = true;
+                yearSelect.appendChild(option);
+            }
+        } else {
+            console.error('❌ Erreur données années:', data.error);
+            const yearSelect = document.getElementById('year-select');
+            if (yearSelect) {
+                const option = document.createElement('option');
+                option.value = '';
+                option.textContent = `Erreur: ${data.error || 'Erreur de chargement'}`;
                 option.disabled = true;
                 yearSelect.appendChild(option);
             }
         }
+    } catch (error) {
+        console.error('❌ Erreur réseau années:', error);
+        const yearSelect = document.getElementById('year-select');
+        if (yearSelect) {
+            const option = document.createElement('option');
+            option.value = '';
+            option.textContent = 'Erreur de connexion';
+            option.disabled = true;
+            yearSelect.appendChild(option);
+        }
+    }
+}
 
         // **NOUVELLE FONCTION: Excel export**
         async function exportYear() {

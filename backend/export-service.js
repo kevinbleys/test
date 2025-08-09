@@ -32,6 +32,72 @@ const ensureExportsDir = () => {
   }
 };
 
+// **NIEUWE FUNCTIE: Maak testdata aan als er geen data is**
+const createTestDataIfNeeded = () => {
+  try {
+    if (!fs.existsSync(HISTORY_FILE)) {
+      logMessage('Geen presence-history.json gevonden, maak testdata aan');
+      
+      // Maak testdata voor 2024 en 2025
+      const testData = [
+        {
+          date: '2024-12-15',
+          presences: [
+            {
+              id: 'test1',
+              type: 'non-adherent',
+              nom: 'Dupont',
+              prenom: 'Jean',
+              date: '2024-12-15T14:30:00.000Z',
+              status: 'Payé',
+              tarif: 10,
+              methodePaiement: 'CB',
+              telephone: '0123456789',
+              email: 'jean.dupont@email.com',
+              dateNaissance: '1985-03-15',
+              niveau: '1',
+              assuranceAccepted: true
+            },
+            {
+              id: 'test2',
+              type: 'adherent',
+              nom: 'Martin',
+              prenom: 'Marie',
+              date: '2024-12-15T15:00:00.000Z',
+              status: 'adherent'
+            }
+          ]
+        },
+        {
+          date: '2025-08-08',
+          presences: [
+            {
+              id: 'test3',
+              type: 'non-adherent',
+              nom: 'Bernard',
+              prenom: 'Pierre',
+              date: '2025-08-08T10:15:00.000Z',
+              status: 'Payé',
+              tarif: 8,
+              methodePaiement: 'Especes',
+              telephone: '0987654321',
+              email: 'pierre.bernard@email.com',
+              dateNaissance: '1990-07-22',
+              niveau: '0',
+              assuranceAccepted: true
+            }
+          ]
+        }
+      ];
+      
+      fs.writeFileSync(HISTORY_FILE, JSON.stringify(testData, null, 2));
+      logMessage('Testdata aangemaakt in presence-history.json');
+    }
+  } catch (error) {
+    logMessage(`Fout bij aanmaken testdata: ${error.message}`);
+  }
+};
+
 // **FUNCTIE: Exporteer jaar naar Excel**
 const exportYearToExcel = (year) => {
   try {
@@ -247,24 +313,37 @@ const cleanupYearAfterExport = (year) => {
   }
 };
 
-// **FUNCTIE: Beschikbare jaren ophalen**
+// **FUNCTIE VERBETERD: Beschikbare jaren ophalen**
 const getAvailableYears = () => {
   try {
+    logMessage('=== GET AVAILABLE YEARS GESTART ===');
+    
+    // Zorg eerst voor testdata als er niks is
+    createTestDataIfNeeded();
+    
     if (!fs.existsSync(HISTORY_FILE)) {
+      logMessage('HISTORY_FILE bestaat niet na testdata poging');
       return [];
     }
 
     const historyData = JSON.parse(fs.readFileSync(HISTORY_FILE, 'utf8'));
+    logMessage(`Gelezen history data: ${historyData.length} entries`);
     
-    if (!Array.isArray(historyData)) {
+    if (!Array.isArray(historyData) || historyData.length === 0) {
+      logMessage('History data is leeg of geen array');
       return [];
     }
 
     const years = [...new Set(historyData.map(entry => {
-      return new Date(entry.date).getFullYear();
+      const year = new Date(entry.date).getFullYear();
+      logMessage(`Entry datum: ${entry.date} -> jaar: ${year}`);
+      return year;
     }))].sort((a, b) => b - a); // Nieuwste eerst
 
+    logMessage(`Beschikbare jaren gevonden: ${JSON.stringify(years)}`);
+    logMessage('=== GET AVAILABLE YEARS VOLTOOID ===');
     return years;
+    
   } catch (error) {
     logMessage(`Fout bij ophalen beschikbare jaren: ${error.message}`);
     return [];
@@ -275,5 +354,6 @@ module.exports = {
   exportYearToExcel,
   cleanupYearAfterExport,
   getAvailableYears,
-  ensureExportsDir
+  ensureExportsDir,
+  createTestDataIfNeeded
 };

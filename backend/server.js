@@ -31,11 +31,24 @@ const initStorage = () => {
   if (!fs.existsSync(PRESENCE_HISTORY_FILE)) {
     fs.writeFileSync(PRESENCE_HISTORY_FILE, '[]');
   }
+// Initialisation du stockage
+const initStorage = () => {
+  if (!fs.existsSync(path.dirname(PRESENCES_FILE))) {
+    fs.mkdirSync(path.dirname(PRESENCES_FILE), { recursive: true });
+  }
+  if (!fs.existsSync(PRESENCES_FILE)) {
+    fs.writeFileSync(PRESENCES_FILE, '[]');
+  }
+  if (!fs.existsSync(PRESENCE_HISTORY_FILE)) {
+    fs.writeFileSync(PRESENCE_HISTORY_FILE, '[]');
+  }
   
   // **NIEUWE FUNCTIONALITEIT: Zorg dat exports directory bestaat**
   exportService.ensureExportsDir();
+  
+  // **NIEUWE LIJN: Maak testdata aan als er geen data is**
+  exportService.createTestDataIfNeeded();
 };
-initStorage();
 
 // Lecture/Écriture des données
 const readPresences = () => JSON.parse(fs.readFileSync(PRESENCES_FILE));
