@@ -20,18 +20,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 const PRESENCES_FILE = path.join(__dirname, 'data', 'presences.json');
 const PRESENCE_HISTORY_FILE = path.join(__dirname, 'data', 'presence-history.json');
 
-// Initialisation du stockage
-const initStorage = () => {
-  if (!fs.existsSync(path.dirname(PRESENCES_FILE))) {
-    fs.mkdirSync(path.dirname(PRESENCES_FILE), { recursive: true });
-  }
-  if (!fs.existsSync(PRESENCES_FILE)) {
-    fs.writeFileSync(PRESENCES_FILE, '[]');
-  }
-  if (!fs.existsSync(PRESENCE_HISTORY_FILE)) {
-    fs.writeFileSync(PRESENCE_HISTORY_FILE, '[]');
-  }
-// Initialisation du stockage
+// **GECORRIGEERDE INITIALISATIE - SLECHTS ÉÉN FUNCTIE**
 const initStorage = () => {
   if (!fs.existsSync(path.dirname(PRESENCES_FILE))) {
     fs.mkdirSync(path.dirname(PRESENCES_FILE), { recursive: true });
@@ -49,6 +38,7 @@ const initStorage = () => {
   // **NIEUWE LIJN: Maak testdata aan als er geen data is**
   exportService.createTestDataIfNeeded();
 };
+initStorage();
 
 // Lecture/Écriture des données
 const readPresences = () => JSON.parse(fs.readFileSync(PRESENCES_FILE));
