@@ -38,868 +38,6 @@
             margin-bottom: 10px;
         }
 
-        /* **NOUVELLE SECTION: Date controls** */
-        .date-controls {
-            display: flex;
-            gap: 15px;
-            align-items: center;
-            margin-bottom: 20px;
-            background: white;
-            padding: 15px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-
-        .date-controls select {
-            padding: 8px 12px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 14px;
-            background: #f8f9fa;
-            min-width: 150px;
-        }
-
-        .date-controls button {
-            padding: 8px 16px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 500;
-        }
-
-        .btn-archive {
-            background: #6c757d;
-            color: white;
-        }
-
-        .btn-refresh {
-            background: #17a2b8;
-            color: white;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .stat-card {
-            background: white;
-            padding: 25px;
-            border-radius: 12px;
-            text-align: center;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            border-left: 5px solid #007bff;
-        }
-
-        .stat-card.adherent {
-            border-left-color: #28a745;
-        }
-
-        .stat-card.non-adherent {
-            border-left-color: #ffc107;
-        }
-
-        .stat-card.pending {
-            border-left-color: #dc3545;
-        }
-
-        .stat-number {
-            font-size: 36px;
-            font-weight: bold;
-            color: #333;
-            margin-bottom: 5px;
-        }
-
-        .stat-label {
-            color: #666;
-            font-size: 14px;
-            font-weight: 500;
-        }
-
-        .filters {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-
-        .filter-btn {
-            padding: 8px 16px;
-            border: 1px solid #ddd;
-            background: #f8f9fa;
-            color: #333;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-size: 14px;
-        }
-
-        .filter-btn.active {
-            background: #007bff;
-            color: white;
-            border-color: #007bff;
-        }
-
-        .filter-btn.adherent.active {
-            background: #28a745;
-            border-color: #28a745;
-        }
-
-        .filter-btn.non-adherent.active {
-            background: #ffc107;
-            color: black;
-            border-color: #ffc107;
-        }
-
-        .filter-btn.pending.active {
-            background: #dc3545;
-            border-color: #dc3545;
-        }
-
-        .table-container {
-            background: white;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 14px;
-        }
-
-        th {
-            background: #343a40;
-            color: white;
-            padding: 15px 12px;
-            text-align: left;
-            font-weight: 600;
-            font-size: 13px;
-        }
-
-        td {
-            padding: 12px;
-            border-bottom: 1px solid #eee;
-        }
-
-        tr:nth-child(even) {
-            background: #f8f9fa;
-        }
-
-        tr:hover {
-            background: #e3f2fd;
-        }
-
-        .type-badge {
-            padding: 2px 6px;
-            border-radius: 3px;
-            font-size: 11px;
-            font-weight: bold;
-        }
-
-        .type-adherent {
-            background: #28a745;
-            color: white;
-        }
-
-        .type-non-adherent {
-            background: #ffc107;
-            color: black;
-        }
-
-        .status-badge {
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 12px;
-            font-weight: bold;
-        }
-
-        .status-adherent {
-            background: #28a745;
-            color: white;
-        }
-
-        .status-paye {
-            background: #007bff;
-            color: white;
-        }
-
-        .status-pending {
-            background: #ffc107;
-            color: black;
-        }
-
-        .status-annule {
-            background: #dc3545;
-            color: white;
-        }
-
-        /* **NOUVELLE SECTION: Badges de méthodes de paiement** */
-        .payment-badge {
-            padding: 2px 6px;
-            border-radius: 3px;
-            font-size: 11px;
-            font-weight: bold;
-        }
-
-        .payment-especes {
-            background: #28a745;
-            color: white;
-        }
-
-        .payment-cb {
-            background: #007bff;
-            color: white;
-        }
-
-        .payment-cheque {
-            background: #ffc107;
-            color: black;
-        }
-
-        .payment-none {
-            color: #6c757d;
-        }
-
-        .actions {
-            display: flex;
-            gap: 5px;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-
-        .actions input {
-            width: 50px;
-            padding: 4px;
-            border: 1px solid #ddd;
-            border-radius: 3px;
-            font-size: 12px;
-        }
-
-        .actions select {
-            padding: 4px;
-            border: 1px solid #ddd;
-            border-radius: 3px;
-            font-size: 12px;
-        }
-
-        .btn {
-            padding: 4px 8px;
-            border: none;
-            border-radius: 3px;
-            cursor: pointer;
-            font-size: 12px;
-        }
-
-        .btn-success {
-            background: #28a745;
-            color: white;
-        }
-
-        .btn-warning {
-            background: #ffc107;
-            color: black;
-        }
-
-        .btn-danger {
-            background: #dc3545;
-            color: white;
-        }
-
-        .loading {
-            text-align: center;
-            padding: 40px;
-            color: #666;
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 40px;
-            color: #6c757d;
-            background: #f8f9fa;
-            border-radius: 8px;
-            border: 1px solid #dee2e6;
-        }
-
-        /* **AMÉLIORATION: Meilleur affichage pour les modes** */
-        .history-mode-indicator {
-            background: #e3f2fd;
-            border: 1px solid #2196f3;
-            padding: 10px 15px;
-            border-radius: 6px;
-            margin-bottom: 15px;
-            color: #1976d2;
-            font-weight: 500;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>Administration - Présences du jour</h1>
-            <p id="page-title">Chargement...</p>
-        </div>
-
-        <!-- **NOUVELLE SECTION: Contrôles de date** -->
-        <div class="date-controls">
-            <label for="date-select">Sélectionner une date:</label>
-            <select id="date-select">
-                <option value="today">Aujourd'hui</option>
-            </select>
-            <button id="archive-btn" class="btn-archive" onclick="archiveToday()">📁 Archiver aujourd'hui</button>
-            <button class="btn-refresh" onclick="refreshData()">🔄 Actualiser</button>
-        </div>
-
-        <!-- **INDICATEUR MODE HISTORIQUE** -->
-        <div id="history-indicator" class="history-mode-indicator" style="display: none;">
-            📅 Mode historique - Les données sont en lecture seule
-        </div>
-
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-number" id="total-count">0</div>
-                <div class="stat-label">Total présences</div>
-            </div>
-            <div class="stat-card adherent">
-                <div class="stat-number" id="adherent-count">0</div>
-                <div class="stat-label">Adhérents</div>
-            </div>
-            <div class="stat-card non-adherent">
-                <div class="stat-number" id="non-adherent-count">0</div>
-                <div class="stat-label">Non-adhérents</div>
-            </div>
-            <div class="stat-card pending">
-                <div class="stat-number" id="pending-count">0</div>
-                <div class="stat-label">En attente</div>
-            </div>
-        </div>
-
-        <div class="filters">
-            <button class="filter-btn active" onclick="filterPresences('all')">Tous</button>
-            <button class="filter-btn adherent" onclick="filterPresences('adherent')">Adhérents</button>
-            <button class="filter-btn non-adherent" onclick="filterPresences('non-adherent')">Non-adhérents</button>
-            <button class="filter-btn pending" onclick="filterPresences('pending')">En attente</button>
-        </div>
-
-        <div id="loading" class="loading">Chargement...</div>
-
-        <div id="content" style="display: none;">
-            <div class="table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Date/Heure</th>
-                            <th>Type</th>
-                            <th>Nom</th>
-                            <th>Prénom</th>
-                            <th>Tarif</th>
-                            <th style="text-align: center;">Paiement</th>
-                            <th style="text-align: center;">Statut</th>
-                            <th id="actions-header" style="text-align: center;">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="presences-table">
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <div id="empty-state" class="empty-state" style="display: none;">
-            <h3 id="empty-message">Aucune présence pour aujourd'hui</h3>
-            <p>Les présences apparaîtront ici au fur et à mesure des arrivées.</p>
-        </div>
-    </div>
-
-    <script>
-        let allPresences = [];
-        let currentFilter = 'all';
-        let isHistoryMode = false;
-        let availableDates = [];
-        let currentSelectedDate = 'today';
-
-        // **FONCTION AMÉLIORÉE: Charger les dates disponibles**
-        async function loadAvailableDates() {
-            try {
-                console.log('🔄 Chargement des dates disponibles...');
-                const response = await fetch('/presences/history');
-                const data = await response.json();
-                
-                if (data.success) {
-                    availableDates = data.dates;
-                    console.log('✅ Dates disponibles:', availableDates);
-                    updateDateSelect();
-                } else {
-                    console.error('❌ Erreur données dates:', data);
-                }
-            } catch (error) {
-                console.error('❌ Erreur réseau dates:', error);
-            }
-        }
-
-        // **FONCTION AMÉLIORÉE: Mettre à jour le sélecteur de date**
-        function updateDateSelect() {
-            const select = document.getElementById('date-select');
-            
-            // Sauvegarder la sélection actuelle
-            const currentValue = select.value;
-            
-            // Nettoyer les options existantes (sauf "Aujourd'hui")
-            while (select.children.length > 1) {
-                select.removeChild(select.lastChild);
-            }
-            
-            // Ajouter les dates disponibles
-            availableDates.forEach(date => {
-                const option = document.createElement('option');
-                option.value = date;
-                option.textContent = new Date(date).toLocaleDateString('fr-FR');
-                select.appendChild(option);
-            });
-
-            // Restaurer la sélection si elle existe toujours
-            if (currentValue && [...select.options].some(option => option.value === currentValue)) {
-                select.value = currentValue;
-            }
-
-            console.log('📅 Sélecteur de date mis à jour avec', availableDates.length, 'dates');
-        }
-
-        // **FONCTION AMÉLIORÉE: Gérer le changement de date**
-        async function onDateChange() {
-            const select = document.getElementById('date-select');
-            const selectedDate = select.value;
-            
-            console.log('📅 Changement de date:', selectedDate);
-            
-            currentSelectedDate = selectedDate;
-            
-            // Masquer le contenu pendant le chargement
-            document.getElementById('loading').style.display = 'block';
-            document.getElementById('content').style.display = 'none';
-            document.getElementById('empty-state').style.display = 'none';
-            
-            if (selectedDate === 'today') {
-                console.log('🏠 Mode aujourd\'hui');
-                isHistoryMode = false;
-                document.getElementById('archive-btn').style.display = 'inline-block';
-                document.getElementById('actions-header').textContent = 'Actions';
-                document.getElementById('history-indicator').style.display = 'none';
-                await loadPresences();
-                updatePageTitle('Présences du jour');
-            } else {
-                console.log('📖 Mode historique pour:', selectedDate);
-                isHistoryMode = true;
-                document.getElementById('archive-btn').style.display = 'none';
-                document.getElementById('actions-header').textContent = '';
-                document.getElementById('history-indicator').style.display = 'block';
-                await loadPresencesByDate(selectedDate);
-                updatePageTitle(`Présences du ${new Date(selectedDate).toLocaleDateString('fr-FR')}`);
-            }
-        }
-
-        // **FONCTION AMÉLIORÉE: Charger les présences par date**
-        async function loadPresencesByDate(date) {
-            try {
-                console.log('📖 Chargement historique pour:', date);
-                const response = await fetch(`/presences/history/${date}`);
-                const data = await response.json();
-                
-                console.log('📖 Réponse historique:', data);
-                
-                if (data.success) {
-                    allPresences = data.presences.sort((a, b) => new Date(b.date) - new Date(a.date));
-                    console.log('📖 Présences historiques chargées:', allPresences.length);
-                    
-                    // Mettre à jour l'affichage
-                    updateStats();
-                    updateTable();
-                    
-                    // Gérer l'affichage du contenu
-                    document.getElementById('loading').style.display = 'none';
-                    
-                    if (allPresences.length === 0) {
-                        document.getElementById('content').style.display = 'none';
-                        document.getElementById('empty-state').style.display = 'block';
-                        document.getElementById('empty-message').textContent = 'Aucune présence trouvée pour cette date';
-                    } else {
-                        document.getElementById('content').style.display = 'block';
-                        document.getElementById('empty-state').style.display = 'none';
-                    }
-                } else {
-                    console.error('❌ Erreur chargement historique:', data.error);
-                    document.getElementById('loading').style.display = 'none';
-                    document.getElementById('empty-state').style.display = 'block';
-                    document.getElementById('empty-message').textContent = 'Erreur lors du chargement des données historiques';
-                }
-            } catch (error) {
-                console.error('❌ Erreur réseau historique:', error);
-                document.getElementById('loading').style.display = 'none';
-                document.getElementById('empty-state').style.display = 'block';
-                document.getElementById('empty-message').textContent = 'Erreur de connexion';
-            }
-        }
-
-        // **FONCTION AMÉLIORÉE: Archiver aujourd'hui**
-        async function archiveToday() {
-            if (!confirm('Êtes-vous sûr de vouloir archiver les présences d\'aujourd\'hui ?')) {
-                return;
-            }
-
-            try {
-                const response = await fetch('/presences/archive', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' }
-                });
-                
-                const data = await response.json();
-                
-                if (data.success) {
-                    alert(data.message);
-                    await refreshData();
-                } else {
-                    alert(data.message || 'Erreur lors de l\'archivage');
-                }
-            } catch (error) {
-                console.error('❌ Erreur archivage:', error);
-                alert('Erreur lors de l\'archivage');
-            }
-        }
-
-        // **NOUVELLE FONCTION: Actualiser toutes les données**
-        async function refreshData() {
-            console.log('🔄 Actualisation complète...');
-            
-            // Recharger les dates disponibles
-            await loadAvailableDates();
-            
-            // Recharger les données actuelles selon le mode
-            if (currentSelectedDate === 'today') {
-                await loadPresences();
-            } else {
-                await loadPresencesByDate(currentSelectedDate);
-            }
-        }
-
-        function updatePageTitle(title) {
-            document.getElementById('page-title').textContent = title;
-            console.log('📄 Titre mis à jour:', title);
-        }
-
-        async function loadPresences() {
-            try {
-                console.log('🏠 Chargement présences aujourd\'hui...');
-                const response = await fetch('/presences');
-                const data = await response.json();
-                
-                console.log('🏠 Réponse présences:', data);
-                
-                if (data.success) {
-                    allPresences = data.presences.sort((a, b) => new Date(b.date) - new Date(a.date));
-                    console.log('🏠 Présences chargées:', allPresences.length);
-                    
-                    updateStats();
-                    updateTable();
-                    document.getElementById('loading').style.display = 'none';
-                    
-                    if (allPresences.length === 0) {
-                        document.getElementById('content').style.display = 'none';
-                        document.getElementById('empty-state').style.display = 'block';
-                        document.getElementById('empty-message').textContent = 'Aucune présence pour aujourd\'hui';
-                    } else {
-                        document.getElementById('content').style.display = 'block';
-                        document.getElementById('empty-state').style.display = 'none';
-                    }
-                } else {
-                    console.error('❌ Erreur données présences:', data.error);
-                    document.getElementById('loading').style.display = 'none';
-                    document.getElementById('empty-state').style.display = 'block';
-                }
-            } catch (error) {
-                console.error('❌ Erreur réseau présences:', error);
-                document.getElementById('loading').style.display = 'none';
-                document.getElementById('empty-state').style.display = 'block';
-            }
-        }
-
-        function updateStats() {
-            const total = allPresences.length;
-            const adherents = allPresences.filter(p => p.type === 'adherent').length;
-            const nonAdherents = allPresences.filter(p => p.type === 'non-adherent').length;
-            const pending = allPresences.filter(p => p.status === 'pending').length;
-
-            document.getElementById('total-count').textContent = total;
-            document.getElementById('adherent-count').textContent = adherents;
-            document.getElementById('non-adherent-count').textContent = nonAdherents;
-            document.getElementById('pending-count').textContent = pending;
-
-            console.log('📊 Stats mises à jour:', { total, adherents, nonAdherents, pending });
-        }
-
-        function filterPresences(type) {
-            currentFilter = type;
-            
-            // Mettre à jour le bouton actif
-            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-            
-            // Trouver le bon bouton à activer
-            let targetBtn;
-            if (type === 'all') {
-                targetBtn = document.querySelector('.filter-btn:not(.adherent):not(.non-adherent):not(.pending)');
-            } else {
-                targetBtn = document.querySelector(`.filter-btn.${type}`);
-            }
-            
-            if (targetBtn) {
-                targetBtn.classList.add('active');
-            }
-            
-            updateTable();
-            console.log('🔍 Filtre appliqué:', type);
-        }
-
-        function updateTable() {
-            const tbody = document.getElementById('presences-table');
-            tbody.innerHTML = '';
-
-            let filteredPresences = allPresences;
-            if (currentFilter !== 'all') {
-                filteredPresences = allPresences.filter(p => 
-                    currentFilter === 'pending' ? p.status === 'pending' : p.type === currentFilter
-                );
-            }
-
-            console.log('📋 Affichage de', filteredPresences.length, 'présences (filtre:', currentFilter, ')');
-
-            filteredPresences.forEach((presence, index) => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${formatDate(presence.date)}</td>
-                    <td>
-                        <span class="type-badge type-${presence.type === 'adherent' ? 'adherent' : 'non-adherent'}">
-                            ${presence.type === 'adherent' ? 'Adhérent' : 'Non-adhérent'}
-                        </span>
-                    </td>
-                    <td style="font-weight: bold;">${presence.nom}</td>
-                    <td style="font-weight: bold;">${presence.prenom}</td>
-                    <td>${getTarifDisplay(presence)}</td>
-                    <td style="text-align: center;">${getPaymentDisplay(presence)}</td>
-                    <td style="text-align: center;">${getStatusDisplay(presence)}</td>
-                    <td>${getActionsDisplay(presence)}</td>
-                `;
-                tbody.appendChild(row);
-            });
-
-            // Mettre à jour les compteurs dans les boutons de filtre
-            const allCount = allPresences.length;
-            const adherentCount = allPresences.filter(p => p.type === 'adherent').length;
-            const nonAdherentCount = allPresences.filter(p => p.type === 'non-adherent').length;
-            const pendingCount = allPresences.filter(p => p.status === 'pending').length;
-
-            document.querySelector('.filter-btn:not(.adherent):not(.non-adherent):not(.pending)').textContent = `Tous (${allCount})`;
-            document.querySelector('.filter-btn.adherent').textContent = `Adhérents (${adherentCount})`;
-            document.querySelector('.filter-btn.non-adherent').textContent = `Non-adhérents (${nonAdherentCount})`;
-            document.querySelector('.filter-btn.pending').textContent = `En attente (${pendingCount})`;
-        }
-
-        // **FONCTION AMÉLIORÉE: Affichage du paiement**
-        function getPaymentDisplay(presence) {
-            if (!presence.methodePaiement) {
-                return '<span class="payment-none">-</span>';
-            }
-            
-            const classMap = {
-                'Especes': 'payment-especes',
-                'CB': 'payment-cb',
-                'Cheque': 'payment-cheque'
-            };
-            
-            return `<span class="payment-badge ${classMap[presence.methodePaiement] || 'payment-none'}">${presence.methodePaiement}</span>`;
-        }
-
-        function getTarifDisplay(presence) {
-            if (presence.type === 'adherent') {
-                if (presence.tarif !== undefined && presence.tarif !== null) {
-                    return `${presence.tarif}€`;
-                } else {
-                    return '<span style="color: #28a745; font-weight: bold;">Gratuit (adhérent)</span>';
-                }
-            } else {
-                return presence.tarif ? `${presence.tarif}€` : '10€';
-            }
-        }
-
-        function getStatusDisplay(presence) {
-            const statusMap = {
-                'adherent': { class: 'status-adherent', text: 'Adhérent validé' },
-                'Payé': { class: 'status-paye', text: 'Payé' },
-                'Pay': { class: 'status-paye', text: 'Payé' },
-                'pending': { class: 'status-pending', text: 'En attente' },
-                'Annulé': { class: 'status-annule', text: 'Annulé' }
-            };
-            
-            const status = statusMap[presence.status] || { class: 'status-pending', text: presence.status };
-            return `<span class="status-badge ${status.class}">${status.text}</span>`;
-        }
-
-        function getActionsDisplay(presence) {
-            if (isHistoryMode) {
-                return '<span style="color: #6c757d;">-</span>';
-            }
-
-            let actions = '<div class="actions">';
-
-            if (presence.status === 'pending') {
-                actions += `
-                    <input type="number" placeholder="€" value="${presence.tarif || 10}" id="amount-${presence.id}">
-                    <select id="method-${presence.id}">
-                        <option value="Especes" ${presence.methodePaiement === 'Especes' ? 'selected' : ''}>Espèces</option>
-                        <option value="CB" ${presence.methodePaiement === 'CB' ? 'selected' : ''}>CB</option>
-                        <option value="Cheque" ${presence.methodePaiement === 'Cheque' ? 'selected' : ''}>Chèque</option>
-                    </select>
-                    <button class="btn btn-success" onclick="validerPresence('${presence.id}')">✓ Valider</button>
-                `;
-            }
-
-            if (presence.type === 'adherent' && (presence.tarif === undefined || presence.tarif === null)) {
-                actions += `
-                    <input type="number" placeholder="€" id="tarif-${presence.id}">
-                    <select id="tarif-method-${presence.id}">
-                        <option value="Especes">Espèces</option>
-                        <option value="CB">CB</option>
-                        <option value="Cheque">Chèque</option>
-                    </select>
-                    <button class="btn btn-warning" onclick="ajouterTarif('${presence.id}')">+ Tarif</button>
-                `;
-            }
-
-            if (presence.status !== 'Annulé') {
-                actions += `<button class="btn btn-danger" onclick="annulerPresence('${presence.id}')">✗ Annuler</button>`;
-            }
-
-            actions += '</div>';
-            return actions;
-        }
-
-        async function validerPresence(id) {
-            const amount = document.getElementById(`amount-${id}`).value;
-            const method = document.getElementById(`method-${id}`).value;
-
-            try {
-                const response = await fetch(`/presences/${id}/valider`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ 
-                        montant: parseFloat(amount) || 10,
-                        methodePaiement: method 
-                    })
-                });
-
-                const data = await response.json();
-                if (data.success) {
-                    await loadPresences();
-                } else {
-                    alert('Erreur lors de la validation');
-                }
-            } catch (error) {
-                console.error('❌ Erreur validation:', error);
-                alert('Erreur lors de la validation');
-            }
-        }
-
-        async function ajouterTarif(id) {
-            const amount = document.getElementById(`tarif-${id}`).value;
-            const method = document.getElementById(`tarif-method-${id}`).value;
-
-            if (!amount) {
-                alert('Veuillez saisir un montant');
-                return;
-            }
-
-            try {
-                const response = await fetch(`/presences/${id}/ajouter-tarif`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ 
-                        montant: parseFloat(amount),
-                        methodePaiement: method 
-                    })
-                });
-
-                const data = await response.json();
-                if (data.success) {
-                    await loadPresences();
-                } else {
-                    alert('Erreur lors de l\'ajout du tarif');
-                }
-            } catch (error) {
-                console.error('❌ Erreur ajout tarif:', error);
-                alert('Erreur lors de l\'ajout du tarif');
-            }
-        }
-
-        async function annulerPresence(id) {
-            if (!confirm('Êtes-vous sûr de vouloir annuler cette présence ?')) {
-                return;
-            }
-
-            try {
-                const response = await fetch(`/presences/${id}/annuler`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' }
-                });
-
-                const data = await response.json();
-                if (data.success) {
-                    await loadPresences();
-                } else {
-                    alert('Erreur lors de l\'annulation');
-                }
-            } catch (error) {
-                console.error('❌ Erreur annulation:', error);<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Administration - Présences du jour</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background-color: #f5f5f5;
-            color: #333;
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 30px;
-            border-radius: 12px;
-            margin-bottom: 30px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-        }
-
-        .header h1 {
-            font-size: 32px;
-            font-weight: 700;
-            margin-bottom: 10px;
-        }
-
-        /* **NOUVELLE SECTION: Date controls** */
         .date-controls {
             display: flex;
             gap: 15px;
@@ -949,7 +87,6 @@
             background: #138496;
         }
 
-        /* **NIEUWE STIJLEN: Cleanup knoppen** */
         .btn-cleanup {
             background: #e74c3c;
             color: white;
@@ -1124,7 +261,6 @@
             color: white;
         }
 
-        /* **NOUVELLE SECTION: Badges de méthodes de paiement** */
         .payment-badge {
             padding: 2px 6px;
             border-radius: 3px;
@@ -1211,7 +347,6 @@
             border: 1px solid #dee2e6;
         }
 
-        /* **AMÉLIORATION: Meilleur affichage pour les modes** */
         .history-mode-indicator {
             background: #e3f2fd;
             border: 1px solid #2196f3;
@@ -1222,7 +357,6 @@
             font-weight: 500;
         }
 
-        /* **NIEUWE STIJLEN: Cleanup status** */
         .cleanup-status {
             background: #f8f9fa;
             border: 1px solid #dee2e6;
@@ -1268,7 +402,7 @@
             <p id="page-title">Chargement...</p>
         </div>
 
-        <!-- **NOUVELLE SECTION: Contrôles de date et cleanup** -->
+        <!-- Contrôles de date -->
         <div class="date-controls">
             <label for="date-select">Sélectionner une date:</label>
             <select id="date-select">
@@ -1278,7 +412,7 @@
             <button class="btn-refresh" onclick="refreshData()">🔄 Actualiser</button>
         </div>
 
-        <!-- **NOUVELLE SECTION: Cleanup controls** -->
+        <!-- Contrôles de cleanup -->
         <div class="date-controls">
             <button id="cleanup-btn" class="btn-cleanup" onclick="performCleanup()">
                 🧹 Cleanup uitvoeren
@@ -1288,13 +422,13 @@
             </button>
         </div>
 
-        <!-- **NOUVELLE SECTION: Cleanup status** -->
+        <!-- Status de cleanup -->
         <div id="cleanup-status" class="cleanup-status" style="display: none;">
             <h4>🗂️ Data Status</h4>
             <div id="cleanup-info" class="status-grid"></div>
         </div>
 
-        <!-- **INDICATEUR MODE HISTORIQUE** -->
+        <!-- Indicateur mode historique -->
         <div id="history-indicator" class="history-mode-indicator" style="display: none;">
             📅 Mode historique - Les données sont en lecture seule
         </div>
@@ -1361,7 +495,7 @@
         let availableDates = [];
         let currentSelectedDate = 'today';
 
-        // **FONCTION AMÉLIORÉE: Charger les dates disponibles**
+        // Charger les dates disponibles
         async function loadAvailableDates() {
             try {
                 console.log('🔄 Chargement des dates disponibles...');
@@ -1380,7 +514,7 @@
             }
         }
 
-        // **FONCTION AMÉLIORÉE: Mettre à jour le sélecteur de date**
+        // Mettre à jour le sélecteur de date
         function updateDateSelect() {
             const select = document.getElementById('date-select');
             
@@ -1408,7 +542,7 @@
             console.log('📅 Sélecteur de date mis à jour avec', availableDates.length, 'dates');
         }
 
-        // **FONCTION AMÉLIORÉE: Gérer le changement de date**
+        // Gérer le changement de date
         async function onDateChange() {
             const select = document.getElementById('date-select');
             const selectedDate = select.value;
@@ -1441,7 +575,7 @@
             }
         }
 
-        // **FONCTION AMÉLIORÉE: Charger les présences par date**
+        // Charger les présences par date
         async function loadPresencesByDate(date) {
             try {
                 console.log('📖 Chargement historique pour:', date);
@@ -1483,7 +617,7 @@
             }
         }
 
-        // **FONCTION AMÉLIORÉE: Archiver aujourd'hui**
+        // Archiver aujourd'hui
         async function archiveToday() {
             if (!confirm('Êtes-vous sûr de vouloir archiver les présences d\'aujourd\'hui ?')) {
                 return;
@@ -1509,7 +643,7 @@
             }
         }
 
-        // **NOUVELLE FONCTION: Cleanup uitvoeren**
+        // Cleanup uitvoeren
         async function performCleanup() {
             if (!confirm('Weet je zeker dat je een cleanup wilt uitvoeren?\n\nDit verwijdert:\n- Oude backup bestanden (behoudt laatste 5)\n- Oude presence historiek (behoudt laatste 30 dagen)\n- Te grote log bestanden')) {
                 return;
@@ -1544,7 +678,7 @@
             }
         }
 
-        // **NIEUWE FUNCTIE: Cleanup status ophalen**
+        // Cleanup status ophalen
         async function checkCleanupStatus() {
             try {
                 const response = await fetch('/admin/cleanup/status');
@@ -1578,7 +712,7 @@
             }
         }
 
-        // **NOUVELLE FONCTION: Actualiser toutes les données**
+        // Actualiser toutes les données
         async function refreshData() {
             console.log('🔄 Actualisation complète...');
             
@@ -1714,7 +848,7 @@
             document.querySelector('.filter-btn.pending').textContent = `En attente (${pendingCount})`;
         }
 
-        // **FONCTION AMÉLIORÉE: Affichage du paiement**
+        // Affichage du paiement
         function getPaymentDisplay(presence) {
             if (!presence.methodePaiement) {
                 return '<span class="payment-none">-</span>';
@@ -1877,45 +1011,11 @@
             return new Date(dateString).toLocaleString('fr-FR');
         }
 
-        // **INITIALISATION AMÉLIORÉE**
+        // INITIALISATION
         document.addEventListener('DOMContentLoaded', async () => {
             console.log('🚀 Initialisation de l\'application...');
             
-            // Event listener voor het sélecteur de date
-            document.getElementById('date-select').addEventListener('change', onDateChange);
-            
-            // Chargement initial
-            await loadAvailableDates();
-            await loadPresences();
-            updatePageTitle('Présences du jour');
-            
-            console.log('✅ Application initialisée');
-            
-            // Auto-actualisation toutes les 30 secondes (uniquement pour aujourd'hui)
-            setInterval(() => {
-                if (!isHistoryMode) {
-                    console.log('🔄 Auto-actualisation...');
-                    loadPresences();
-                }
-            }, 30000);
-        });
-    </script>
-</body>
-</html>
-
-                alert('Erreur lors de l\'annulation');
-            }
-        }
-
-        function formatDate(dateString) {
-            return new Date(dateString).toLocaleString('fr-FR');
-        }
-
-        // **INITIALISATION AMÉLIORÉE**
-        document.addEventListener('DOMContentLoaded', async () => {
-            console.log('🚀 Initialisation de l\'application...');
-            
-            // Event listener pour le sélecteur de date
+            // Event listener voor le sélecteur de date
             document.getElementById('date-select').addEventListener('change', onDateChange);
             
             // Chargement initial
