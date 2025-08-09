@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statistiques - Saison en cours</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .back-link {
+            display: inline-block;
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            transition: background 0.3s;
+        }
+
+        .back-link:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-left: 5px solid #007bff;
+        }
+
+        .stat-card.season {
+            border-left-color: #2196F3;
+        }
+
+        .stat-card.adherents {
+            border-left-color: #28a745;
+        }
+
+        .stat-card.non-adherents {
+            border-left-color: #ffc107;
+        }
+
+        .stat-card.payments {
+            border-left-color: #17a2b8;
+        }
+
+        .stat-number {
+            font-size: 36px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .detail-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .detail-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .detail-card h3 {
+            background: #343a40;
+            color: white;
+            padding: 15px 20px;
+            margin: 0;
+            font-size: 16px;
+        }
+
+        .detail-card.adherents h3 {
+            background: #28a745;
+        }
+
+        .detail-card.non-adherents h3 {
+            background: #ffc107;
+            color: black;
+        }
+
+        .detail-content {
+            padding: 20px;
+        }
+
+        .age-breakdown {
+            list-style: none;
+        }
+
+        .age-breakdown li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .age-breakdown li:last-child {
+            border-bottom: none;
+        }
+
+        .age-label {
+            font-weight: 500;
+        }
+
+        .age-count {
+            font-weight: bold;
+            color: #007bff;
+        }
+
+        .payment-methods {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .payment-methods h3 {
+            color: #343a40;
+            margin-bottom: 15px;
+        }
+
+        .payment-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+        }
+
+        .payment-item {
+            text-align: center;
+            padding: 15px;
+            border: 1px solid #e9ecef;
+            border-radius: 6px;
+        }
+
+        .payment-count {
+            font-size: 24px;
+            font-weight: bold;
+            color: #17a2b8;
+        }
+
+        .payment-label {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: #007bff;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #0056b3;
+        }
+
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #1e7e34;
+        }
+
+        .season-info {
+            background: #e7f3ff;
+            border: 1px solid #b3d4fc;
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .season-info strong {
+            color: #004085;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="/admin" class="back-link">← Retour à l'administration</a>
+            <h1>📊 Statistiques de la saison en cours</h1>
+            <p id="season-title">Chargement...</p>
+        </div>
+
+        <div id="loading" class="loading">
+            Chargement des statistiques...
+        </div>
+
+        <div id="error-message" class="error" style="display: none;"></div>
+
+        <div id="content" style="display: none;">
+            <div class="controls">
+                <button class="btn btn-primary" onclick="refreshStatistics()">🔄 Actualiser</button>
+                <button class="btn btn-success" onclick="exportSeason()">📊 Exporter saison (Excel)</button>
+            </div>
+
+            <div class="season-info">
+                <strong>ℹ️ Période de la saison :</strong> 1 juillet - 30 juin<br>
+                <strong>📅 Saison actuelle :</strong> <span id="current-season">-</span><br>
+                <strong>🗓️ Export automatique :</strong> 30 juin à minuit
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card season">
+                    <div class="stat-number" id="total-days">0</div>
+                    <div class="stat-label">Jours d'activité</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="total-visits">0</div>
+                    <div class="stat-label">Total visites</div>
+                </div>
+                <div class="stat-card adherents">
+                    <div class="stat-number" id="adherents-total">0</div>
+                    <div class="stat-label">Membres (adhérents)</div>
+                </div>
+                <div class="stat-card non-adherents">
+                    <div class="stat-number" id="non-adherents-total">0</div>
+                    <div class="stat-label">Non-membres</div>
+                </div>
+                <div class="stat-card payments">
+                    <div class="stat-number" id="total-paid">0€</div>
+                    <div class="stat-label">Payé par non-membres</div>
+                </div>
+            </div>
+
+            <div class="detail-cards">
+                <div class="detail-card adherents">
+                    <h3>👥 Membres par âge</h3>
+                    <div class="detail-content">
+                        <ul class="age-breakdown" id="adherents-ages">
+                            <li><span class="age-label">< 8 ans</span> <span class="age-count" id="adh-under-8">0</span></li>
+                            <li><span class="age-label">8-18 ans</span> <span class="age-count" id="adh-8-18">0</span></li>
+                            <li><span class="age-label">> 18 ans (adultes)</span> <span class="age-count" id="adh-over-18">0</span></li>
+                            <li><span class="age-label">Âge inconnu</span> <span class="age-count" id="adh-unknown">0</span></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="detail-card non-adherents">
+                    <h3>👤 Non-membres par âge</h3>
+                    <div class="detail-content">
+                        <ul class="age-breakdown" id="non-adherents-ages">
+                            <li><span class="age-label">< 8 ans</span> <span class="age-count" id="non-adh-under-8">0</span></li>
+                            <li><span class="age-label">8-18 ans</span> <span class="age-count" id="non-adh-8-18">0</span></li>
+                            <li><span class="age-label">> 18 ans (adultes)</span> <span class="age-count" id="non-adh-over-18">0</span></li>
+                            <li><span class="age-label">Âge inconnu</span> <span class="age-count" id="non-adh-unknown">0</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="payment-methods">
+                <h3>💳 Méthodes de paiement (non-membres)</h3>
+                <div class="payment-grid">
+                    <div class="payment-item">
+                        <div class="payment-count" id="payment-especes">0</div>
+                        <div class="payment-label">Espèces</div>
+                    </div>
+                    <div class="payment-item">
+                        <div class="payment-count" id="payment-cb">0</div>
+                        <div class="payment-label">Carte bancaire</div>
+                    </div>
+                    <div class="payment-item">
+                        <div class="payment-count" id="payment-cheque">0</div>
+                        <div class="payment-label">Chèque</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentStatistics = null;
+
+        async function loadStatistics() {
+            try {
+                console.log('Chargement des statistiques...');
+                const response = await fetch('/admin/statistics');
+                const data = await response.json();
+
+                if (data.success) {
+                    currentStatistics = data.statistics;
+                    displayStatistics(data.statistics, data.currentSeason);
+                    document.getElementById('loading').style.display = 'none';
+                    document.getElementById('content').style.display = 'block';
+                } else {
+                    showError('Erreur lors du chargement: ' + (data.error || 'Erreur inconnue'));
+                }
+            } catch (error) {
+                console.error('Erreur:', error);
+                showError('Erreur de connexion: ' + error.message);
+            }
+        }
+
+        function displayStatistics(stats, currentSeason) {
+            if (!stats) return;
+
+            // Header info
+            document.getElementById('season-title').textContent = `Saison ${stats.seasonName} (1 juillet - 30 juin)`;
+            document.getElementById('current-season').textContent = stats.seasonName;
+
+            // Main stats
+            document.getElementById('total-days').textContent = stats.totalDays;
+            document.getElementById('total-visits').textContent = stats.totalVisits;
+            document.getElementById('adherents-total').textContent = stats.adherents.total;
+            document.getElementById('non-adherents-total').textContent = stats.nonAdherents.total;
+            document.getElementById('total-paid').textContent = stats.nonAdherents.totalPaid.toFixed(2) + '€';
+
+            // Adherents age breakdown
+            document.getElementById('adh-under-8').textContent = stats.adherents.ageGroups['< 8 ans'] || 0;
+            document.getElementById('adh-8-18').textContent = stats.adherents.ageGroups['8-18 ans'] || 0;
+            document.getElementById('adh-over-18').textContent = stats.adherents.ageGroups['> 18 ans (adultes)'] || 0;
+            document.getElementById('adh-unknown').textContent = stats.adherents.ageGroups['Inconnu'] || 0;
+
+            // Non-adherents age breakdown
+            document.getElementById('non-adh-under-8').textContent = stats.nonAdherents.ageGroups['< 8 ans'] || 0;
+            document.getElementById('non-adh-8-18').textContent = stats.nonAdherents.ageGroups['8-18 ans'] || 0;
+            document.getElementById('non-adh-over-18').textContent = stats.nonAdherents.ageGroups['> 18 ans (adultes)'] || 0;
+            document.getElementById('non-adh-unknown').textContent = stats.nonAdherents.ageGroups['Inconnu'] || 0;
+
+            // Payment methods
+            document.getElementById('payment-especes').textContent = stats.paymentMethods.Especes || 0;
+            document.getElementById('payment-cb').textContent = stats.paymentMethods.CB || 0;
+            document.getElementById('payment-cheque').textContent = stats.paymentMethods.Cheque || 0;
+
+            console.log('Statistieken weergegeven:', stats);
+        }
+
+        function showError(message) {
+            document.getElementById('error-message').textContent = message;
+            document.getElementById('error-message').style.display = 'block';
+            document.getElementById('loading').style.display = 'none';
+        }
+
+        async function refreshStatistics() {
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('content').style.display = 'none';
+            document.getElementById('error-message').style.display = 'none';
+            
+            await loadStatistics();
+        }
+
+        async function exportSeason() {
+            if (!confirm('Exporter la saison actuelle vers Excel?\n\nCeci met à jour le fichier Excel existant avec toutes les données actuelles.')) {
+                return;
+            }
+
+            try {
+                const response = await fetch('/admin/export/season', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    alert(`✅ Export réussi!\n\nSaison: ${data.seasonName}\nFichier: ${data.filename}\nEnregistrements: ${data.recordCount}\n\nLe fichier Excel a été mis à jour.`);
+                } else {
+                    alert('❌ Erreur lors de l\'export:\n\n' + (data.error || 'Erreur inconnue'));
+                }
+            } catch (error) {
+                console.error('Export error:', error);
+                alert('❌ Erreur réseau lors de l\'export');
+            }
+        }
+
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('🚀 Initialisation page statistiques...');
+            loadStatistics();
+        });
+
+        // Auto-actualisation toutes les 60 secondes
+        setInterval(() => {
+            console.log('🔄 Auto-actualisation statistiques...');
+            loadStatistics();
+        }, 60000);
+    </script>
+</body>
+</html>
