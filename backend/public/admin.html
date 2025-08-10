@@ -38,7 +38,7 @@
             margin-bottom: 10px;
         }
 
-        .date-controls {
+        .controls-row {
             display: flex;
             gap: 15px;
             align-items: center;
@@ -50,7 +50,7 @@
             flex-wrap: wrap;
         }
 
-        .date-controls select {
+        .controls-row select {
             padding: 8px 12px;
             border: 1px solid #ddd;
             border-radius: 4px;
@@ -59,7 +59,7 @@
             min-width: 150px;
         }
 
-        .date-controls button {
+        .controls-row button {
             padding: 8px 16px;
             border: none;
             border-radius: 4px;
@@ -224,6 +224,7 @@
             border-radius: 12px;
             overflow: hidden;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
         }
 
         table {
@@ -367,6 +368,7 @@
             background: #f8f9fa;
             border-radius: 8px;
             border: 1px solid #dee2e6;
+            margin-bottom: 30px;
         }
 
         .history-mode-indicator {
@@ -416,7 +418,13 @@
         .status-warning { color: #f39c12; }
         .status-danger { color: #e74c3c; }
 
-        /* Excel export styling */
+        /* Export sections styling - ONDERAAN DE PAGINA */
+        .export-sections {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 3px solid #dee2e6;
+        }
+
         .export-section {
             background: #fff3cd;
             border: 1px solid #ffeeba;
@@ -440,19 +448,6 @@
             font-size: 13px;
         }
 
-        /* Debug info styling */
-        .debug-info {
-            background: #e7f3ff;
-            border: 1px solid #b3d4fc;
-            border-radius: 6px;
-            padding: 10px;
-            margin-bottom: 15px;
-            font-size: 12px;
-            font-family: monospace;
-            color: #004085;
-        }
-
-        /* Season section styling */
         .season-section {
             background: #d4edda;
             border: 1px solid #c3e6cb;
@@ -474,6 +469,18 @@
             font-size: 13px;
             color: #004085;
         }
+
+        /* Debug info styling */
+        .debug-info {
+            background: #e7f3ff;
+            border: 1px solid #b3d4fc;
+            border-radius: 6px;
+            padding: 10px;
+            margin-bottom: 15px;
+            font-size: 12px;
+            font-family: monospace;
+            color: #004085;
+        }
     </style>
 </head>
 <body>
@@ -490,7 +497,7 @@
         </div>
 
         <!-- Contrôles de date -->
-        <div class="date-controls">
+        <div class="controls-row">
             <label for="date-select">Sélectionner une date:</label>
             <select id="date-select">
                 <option value="today">Aujourd'hui</option>
@@ -499,8 +506,8 @@
             <button class="btn-refresh" onclick="refreshData()">🔄 Actualiser</button>
         </div>
 
-        <!-- Contrôles de cleanup -->
-        <div class="date-controls">
+        <!-- Contrôles de cleanup et navigation -->
+        <div class="controls-row">
             <button id="cleanup-btn" class="btn-cleanup" onclick="performCleanup()">
                 🧹 Nettoyage
             </button>
@@ -510,49 +517,9 @@
             <button class="btn-success" onclick="toggleDebug()">
                 🔧 Debug Info
             </button>
-            <!-- KNOP VOOR STATISTIEKEN -->
             <button class="btn-success" onclick="window.location.href='/admin/statistics-page'">
                 📈 Statistiques
             </button>
-        </div>
-
-        <!-- **NIEUWE SECTIE: Seizoen Export** -->
-        <div class="season-section">
-            <h4>🏔️ Export Saison Actuelle (1 juillet - 30 juin)</h4>
-            <div class="date-controls" style="background: transparent; padding: 0; box-shadow: none; margin-bottom: 0;">
-                <button class="btn-success" onclick="exportCurrentSeason()">
-                    📊 Exporter Saison Actuelle
-                </button>
-                <span style="margin-left: 15px; color: #155724; font-weight: 500;">
-                    📅 Export automatique: 30 juin à minuit
-                </span>
-            </div>
-            <div class="season-info">
-                <strong>ℹ️ Info:</strong> Cette fonction met à jour le fichier Excel de la saison en cours avec toutes les données actuelles. Le fichier est nommé automatiquement selon la saison (ex: presences-saison-2024-2025.xlsx).
-            </div>
-        </div>
-
-        <!-- SECTION EXCEL EXPORT HISTORIQUE -->
-        <div class="export-section">
-            <h4>📊 Export Excel Historique (par année civile)</h4>
-            <div class="date-controls" style="background: transparent; padding: 0; box-shadow: none; margin-bottom: 0;">
-                <label for="year-select">Sélectionner une année pour l'export :</label>
-                <select id="year-select">
-                    <option value="">Sélectionner une année pour l'export...</option>
-                </select>
-                <button id="export-btn" class="btn-warning" onclick="exportYear()">
-                    📊 Export Excel
-                </button>
-                <button id="export-cleanup-btn" class="btn-danger" onclick="exportAndCleanupYear()">
-                    📊🗑️ Export & Nettoyage
-                </button>
-                <button class="btn-success" onclick="forceCreateTestData()">
-                    🔄 Créer données test
-                </button>
-            </div>
-            <div class="export-warning">
-                <strong>⚠️ Attention :</strong> "Export & Nettoyage" supprime définitivement toutes les données de l'année sélectionnée après avoir créé l'export Excel. Cette action ne peut pas être annulée !
-            </div>
         </div>
 
         <!-- Status de cleanup -->
@@ -619,6 +586,48 @@
         <div id="empty-state" class="empty-state" style="display: none;">
             <h3 id="empty-message">Aucune présence pour aujourd'hui</h3>
             <p>Les présences apparaîtront ici au fur et à mesure des arrivées.</p>
+        </div>
+
+        <!-- **EXPORT SECTIE ONDERAAN - ZOALS OP DE BIJLAGE** -->
+        <div class="export-sections">
+            <!-- **SEIZOEN EXPORT** -->
+            <div class="season-section">
+                <h4>🏔️ Export Saison Actuelle (1 juillet - 30 juin)</h4>
+                <div class="controls-row" style="background: transparent; padding: 0; box-shadow: none; margin-bottom: 0;">
+                    <button class="btn-success" onclick="exportCurrentSeason()">
+                        📊 Exporter Saison Actuelle
+                    </button>
+                    <span style="margin-left: 15px; color: #155724; font-weight: 500;">
+                        📅 Export automatique: 30 juin à minuit
+                    </span>
+                </div>
+                <div class="season-info">
+                    <strong>ℹ️ Info:</strong> Cette fonction met à jour le fichier Excel de la saison en cours avec toutes les données actuelles. Le fichier est nommé automatiquement selon la saison (ex: presences-saison-2024-2025.xlsx).
+                </div>
+            </div>
+
+            <!-- **HISTORISCHE EXPORT** -->
+            <div class="export-section">
+                <h4>📊 Export Excel Historique (par année civile)</h4>
+                <div class="controls-row" style="background: transparent; padding: 0; box-shadow: none; margin-bottom: 0;">
+                    <label for="year-select">Sélectionner une année pour l'export :</label>
+                    <select id="year-select">
+                        <option value="">Sélectionner une année pour l'export...</option>
+                    </select>
+                    <button id="export-btn" class="btn-warning" onclick="exportYear()">
+                        📊 Export Excel
+                    </button>
+                    <button id="export-cleanup-btn" class="btn-danger" onclick="exportAndCleanupYear()">
+                        📊🗑️ Export & Nettoyage
+                    </button>
+                    <button class="btn-success" onclick="forceCreateTestData()">
+                        🔄 Créer données test
+                    </button>
+                </div>
+                <div class="export-warning">
+                    <strong>⚠️ Attention :</strong> "Export & Nettoyage" supprime définitivement toutes les données de l'année sélectionnée après avoir créé l'export Excel. Cette action ne peut pas être annulée !
+                </div>
+            </div>
         </div>
     </div>
 
@@ -702,7 +711,7 @@
             }
         }
 
-        // **FONCTION: Charger les dates disponibles**
+        // **FUNCTION: Load available dates**
         async function loadAvailableDates() {
             try {
                 addDebugLog('🔄 Chargement des dates disponibles...');
@@ -723,7 +732,7 @@
             }
         }
 
-        // **FONCTION: Charger les années disponibles pour export**
+        // **GECORRIGEERDE FUNCTIE: Charger les années disponibles pour export**
         async function loadAvailableYearsForExport() {
             try {
                 addDebugLog('🔄 Chargement des années pour export...');
@@ -906,7 +915,7 @@
             }
         }
 
-        // **OVERIGE FUNCTIES**
+        // **REST VAN DE FUNCTIES - VERKORT VOOR RUIMTE**
         function updateDateSelect() {
             const select = document.getElementById('date-select');
             const currentValue = select.value;
@@ -1222,7 +1231,6 @@
             document.querySelector('.filter-btn.pending').textContent = `En attente (${pendingCount})`;
         }
 
-        // **NIEUWE FUNCTIE: Niveau weergave**
         function getNiveauDisplay(presence) {
             if (presence.niveau !== undefined && presence.niveau !== null && presence.niveau !== '') {
                 return `<span style="font-weight: bold; color: #007bff;">Niveau ${presence.niveau}</span>`;
@@ -1392,7 +1400,7 @@
             return new Date(dateString).toLocaleString('fr-FR');
         }
 
-        // **GECORRIGEERDE INITIALISATION - GEEN EXTRA } );**
+        // **GECORRIGEERDE INITIALISATION**
         document.addEventListener('DOMContentLoaded', async () => {
             addDebugLog('🚀 Initialisation de l\'application...');
             
@@ -1416,7 +1424,7 @@
                 addDebugLog(`❌ Erreur lors de l\'initialisation: ${error.message}`);
             }
             
-            // **GECORRIGEERDE AUTO-ACTUALISATION - CORRECTE SYNTAX**
+            // Auto-actualisation toutes les 30 secondes (uniquement pour aujourd'hui)
             setInterval(() => {
                 if (!isHistoryMode) {
                     addDebugLog('🔄 Auto-actualisation...');
