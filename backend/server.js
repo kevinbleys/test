@@ -20,7 +20,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 const PRESENCES_FILE = path.join(__dirname, 'data', 'presences.json');
 const PRESENCE_HISTORY_FILE = path.join(__dirname, 'data', 'presence-history.json');
 
-// **GECORRIGEERDE INITIALISATIE - SLECHTS ÉÉN FUNCTIE**
+// **GECORRIGEERDE INITIALISATIE**
 const initStorage = () => {
   if (!fs.existsSync(path.dirname(PRESENCES_FILE))) {
     fs.mkdirSync(path.dirname(PRESENCES_FILE), { recursive: true });
@@ -46,6 +46,135 @@ const writePresences = (data) => fs.writeFileSync(PRESENCES_FILE, JSON.stringify
 const readPresenceHistory = () => JSON.parse(fs.readFileSync(PRESENCE_HISTORY_FILE));
 const writePresenceHistory = (data) => fs.writeFileSync(PRESENCE_HISTORY_FILE, JSON.stringify(data, null, 2));
 
+// **AANGEPASTE CRON JOBS**
+
+// Dagelijkse reset om middernacht (blijft hetzelfde)
+cron.schedule('0 0 * * *', () => {
+  try {
+    console.log('=== DAGELIJKSE RESET GESTART ===');
+    const currentPresences = readPresences();
+    
+    if (currentPresences.length > 0) {
+      const history = readPresenceHistory();
+      const today = new Date().toISOString().split('T')[0];
+      
+      history.push({
+        date: today,
+        presences: currentPresences
+      });
+      
+      writePresenceHistory(history);
+      console.log(`${currentPresences.length} presences gearchiveerd voor ${today}`);
+      
+      writePresences([]);
+      console.log('Huidige presences gereset voor nieuwe dag');
+    } else {
+      console.log('Geen presences om te archiveren');
+    }
+    
+    console.log('=== DAGELIJKSE RESET VOLTOOID ===');
+  } catch (error) {
+    console.error('Fout bij dagelijkse reset:', error);
+  }
+});
+
+// **NIEUWE CRON JOB: Automatische seizoen export op 30 juni om middernacht**
+cron.schedule('0 0 30 6 *', () => {
+  try {
+    console.log('=== AUTOMATISCHE SEIZOEN EXPORT GESTART (30 JUNI) ===');
+    
+    const result = exportService.exportSeasonToExcel();
+    console.log(`Seizoen ${result.seasonName} automatisch geëxporteerd: ${result.filename}`);
+    console.log(`${result.recordCount} records geëxporteerd`);
+    
+    console.log('=== AUTOMATISCHE SEIZOEN EXPORT VOLTOOID ===');
+  } catch (error) {
+    console.error('Fout bij automatische seizoen export:', error);
+  }
+});
+
+// Cleanup jobs (blijven hetzelfde)
+cron.schedule('0 2 * * *', () => {
+  console.log('=== AUTOMATISCHE CLEANUP GESTART (02:00) ===');
+  cleanupService.performCleanup();
+  console.log('=== AUTOMATISCHE CLEANUP VOLTOOID ===');
+});
+
+cron.schedule('0 3 * * 0', () => {
+  console.log('=== WEKELIJKSE CLEANUP GESTART (ZONDAG 03:00) ===');
+  cleanupService.performCleanup();
+  console.log('=== WEKELIJKSE CLEANUP VOLTOOID ===');
+});
+
+// Import routes des membres
+const membersRoutes = require('./routes/members');
+app.use('/members', membersRoutes);
+
+// **NIEUWE ROUTES: Seizoen export en statistieken**
+
+// Route: Seizoen export (update bestaand bestand)
+app.post('/admin/export/season', (req, res) => {
+  try {
+    const result = exportService.exportSeasonToExcel();
+    
+    res.json({
+      success: true,
+      message: `Excel export voor seizoen ${result.seasonName} bijgewerkt`,
+      filename: result.filename,
+      recordCount: result.recordCount,
+      seasonName: result.seasonName
+    });
+  } catch (error) {
+    console.error('Seizoen export error:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Fout bij seizoen export: ' + error.message
+    });
+  }
+});
+
+// Route: Beschikbare seizoenen ophalen
+app.get('/admin/seasons', (req, res) => {
+  try {
+    const seasons = exportService.getAvailableSeasons();
+    res.json({
+      success: true,
+      seasons
+    });
+  } catch (error) {
+    console.error('Seasons error:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Fout bij ophalen seizoenen: ' + error.message
+    });
+  }
+});
+
+// Route: Huidige seizoen statistieken
+app.get('/admin/statistics', (req, res) => {
+  try {
+    const stats = exportService.generateSeasonStatistics();
+    const currentSeason = exportService.getCurrentSeason();
+    
+    res.json({
+      success: true,
+      statistics: stats,
+      currentSeason: currentSeason
+    });
+  } catch (error) {
+    console.error('Statistics error:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Fout bij ophalen statistieken: ' + error.message
+    });
+  }
+});
+
+// Route: Statistieken pagina
+app.get('/admin/statistics-page', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'statistics.html'));
+});
+
 // **NIEUWE ROUTE: Force create test data**
 app.post('/admin/create-test-data', (req, res) => {
   try {
@@ -63,57 +192,7 @@ app.post('/admin/create-test-data', (req, res) => {
   }
 });
 
-
-// ===== CRON JOB: DAGELIJKSE RESET OM MIDDERNACHT =====
-cron.schedule('0 0 * * *', () => {
-  try {
-    console.log('=== DAGELIJKSE RESET GESTART ===');
-    const currentPresences = readPresences();
-    
-    if (currentPresences.length > 0) {
-      // Voeg huidige dag toe aan historiek
-      const history = readPresenceHistory();
-      const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD format
-      
-      history.push({
-        date: today,
-        presences: currentPresences
-      });
-      
-      writePresenceHistory(history);
-      console.log(`${currentPresences.length} presences gearchiveerd voor ${today}`);
-      
-      // Reset huidige presences
-      writePresences([]);
-      console.log('Huidige presences gereset voor nieuwe dag');
-    } else {
-      console.log('Geen presences om te archiveren');
-    }
-    
-    console.log('=== DAGELIJKSE RESET VOLTOOID ===');
-  } catch (error) {
-    console.error('Fout bij dagelijkse reset:', error);
-  }
-});
-
-// **AANGEPASTE CRON JOB: Alleen backup/log cleanup, GEEN presence history cleanup**
-cron.schedule('0 2 * * *', () => {
-  console.log('=== AUTOMATISCHE CLEANUP GESTART (02:00) ===');
-  cleanupService.performCleanup(); // Nu ZONDER presence history cleanup
-  console.log('=== AUTOMATISCHE CLEANUP VOLTOOID ===');
-});
-
-cron.schedule('0 3 * * 0', () => {
-  console.log('=== WEKELIJKSE CLEANUP GESTART (ZONDAG 03:00) ===');
-  cleanupService.performCleanup(); // Nu ZONDER presence history cleanup
-  console.log('=== WEKELIJKSE CLEANUP VOLTOOID ===');
-});
-
-// Import routes des membres
-const membersRoutes = require('./routes/members');
-app.use('/members', membersRoutes);
-
-// **NIEUWE ROUTE: Excel export voor een jaar**
+// **BESTAANDE EXPORT ROUTES** (voor oude jaren)
 app.post('/admin/export/:year', (req, res) => {
   try {
     const { year } = req.params;
@@ -143,7 +222,6 @@ app.post('/admin/export/:year', (req, res) => {
   }
 });
 
-// **NIEUWE ROUTE: Beschikbare jaren voor export**
 app.get('/admin/export/years', (req, res) => {
   try {
     const years = exportService.getAvailableYears();
@@ -160,7 +238,6 @@ app.get('/admin/export/years', (req, res) => {
   }
 });
 
-// **NIEUWE ROUTE: Excel export EN cleanup**
 app.post('/admin/export-and-cleanup/:year', (req, res) => {
   try {
     const { year } = req.params;
@@ -173,10 +250,7 @@ app.post('/admin/export-and-cleanup/:year', (req, res) => {
       });
     }
     
-    // Eerst exporteren
     const exportResult = exportService.exportYearToExcel(yearInt);
-    
-    // Dan opruimen
     const cleanupResult = exportService.cleanupYearAfterExport(yearInt);
     
     res.json({
@@ -200,7 +274,6 @@ app.post('/admin/export-and-cleanup/:year', (req, res) => {
   }
 });
 
-// **NIEUWE ROUTE: Download Excel bestand**
 app.get('/admin/download/:filename', (req, res) => {
   try {
     const { filename } = req.params;
@@ -223,7 +296,7 @@ app.get('/admin/download/:filename', (req, res) => {
   }
 });
 
-// **BESTAANDE ROUTES: Handmatige cleanup (aangepast)**
+// **CLEANUP ROUTES**
 app.post('/admin/cleanup', (req, res) => {
   try {
     const result = cleanupService.manualCleanup();
@@ -236,7 +309,6 @@ app.post('/admin/cleanup', (req, res) => {
   }
 });
 
-// **BESTAANDE ROUTE: Cleanup status (aangepast)**
 app.get('/admin/cleanup/status', (req, res) => {
   try {
     const dataDir = path.join(__dirname, 'data');
@@ -270,22 +342,19 @@ app.get('/admin/cleanup/status', (req, res) => {
   }
 });
 
-// Routes API pour les présences - AANGEPAST VOOR BETALINGSMETHODE EN EXTRA VELDEN
+// **PRESENCE REGISTRATION - AANGEPAST VOOR NIVEAU DE GRIMPE**
 app.post('/presences', (req, res) => {
   try {
-    // EXPLICIETE destructuring
     const type = req.body.type;
     const nom = req.body.nom;
     const prenom = req.body.prenom;
     
-    // DEBUG logging
-    console.log('=== PRESENCE REGISTRATION WITH PAYMENT METHOD ===');
+    console.log('=== PRESENCE REGISTRATION ===');
     console.log('Type:', type);
     console.log('Nom:', nom);
     console.log('Prenom:', prenom);
     console.log('Raw request body:', req.body);
     
-    // Base presence object
     const presence = {
       id: Date.now().toString(),
       type: type,
@@ -294,47 +363,44 @@ app.post('/presences', (req, res) => {
       date: new Date().toISOString()
     };
 
-    // KRITIEKE LOGICA - EXPLICIETE scheiding
     if (type === 'adherent') {
-      // Voor adherents: ABSOLUUT GEEN tarif veld
       presence.status = 'adherent';
       
-      console.log('=== ADHERENT DETECTED ===');
-      console.log('NO TARIF WILL BE ADDED');
+      // **NIVEAU DE GRIMPE VOOR ADHERENTS** (van tablet interface)
+      if (req.body.niveau !== undefined) {
+        presence.niveau = req.body.niveau.toString();
+        console.log('Niveau toegevoegd voor adherent:', presence.niveau);
+      }
+      
       console.log('Final presence object for adherent:', presence);
       
     } else if (type === 'non-adherent') {
-      // Voor non-adherents: wel tarif EN betalingsmethode
       presence.status = 'pending';
       presence.tarif = req.body.tarif || 10;
+      presence.methodePaiement = req.body.methodePaiement || 'Especes';
       
-      // **NIEUWE FUNCTIONALITEIT: BETALINGSMETHODE**
-      presence.methodePaiement = req.body.methodePaiement || 'Especes'; // Default naar especes
-      
-      // **NIEUWE FUNCTIONALITEIT: Extra velden voor Excel export**
+      // **EXTRA VELDEN VOOR NON-ADHERENTS**
       if (req.body.email) presence.email = req.body.email;
       if (req.body.telephone) presence.telephone = req.body.telephone;
       if (req.body.dateNaissance) presence.dateNaissance = req.body.dateNaissance;
       if (req.body.adresse) presence.adresse = req.body.adresse;
-      if (req.body.niveau !== undefined) presence.niveau = req.body.niveau;
       
-      // **Assurance informatie (voor Excel export)**
+      // **NIVEAU DE GRIMPE VOOR NON-ADHERENTS**
+      if (req.body.niveau !== undefined) {
+        presence.niveau = req.body.niveau.toString();
+        console.log('Niveau toegevoegd voor non-adherent:', presence.niveau);
+      }
+      
+      // **ASSURANCE**
       if (req.body.assuranceAccepted !== undefined) {
         presence.assuranceAccepted = req.body.assuranceAccepted;
       }
       
-      console.log('=== NON-ADHERENT DETECTED ===');
-      console.log('Tarif added:', presence.tarif);
-      console.log('Methode paiement added:', presence.methodePaiement);
       console.log('Final presence object for non-adherent:', presence);
       
     } else {
-      console.log('=== UNKNOWN TYPE ===');
-      console.log('Type received:', type);
       return res.status(400).json({ success: false, error: 'Type inconnu: ' + type });
     }
-    
-    console.log('=== SAVING TO FILE ===');
     
     const presences = readPresences();
     presences.push(presence);
@@ -350,8 +416,7 @@ app.post('/presences', (req, res) => {
   }
 });
 
-// **BESTAANDE ROUTES BLIJVEN HETZELFDE**
-// GET toutes les présences (huidige dag)
+// **BESTAANDE PRESENCE ROUTES**
 app.get('/presences', (req, res) => {
   try {
     const presences = readPresences();
@@ -362,12 +427,10 @@ app.get('/presences', (req, res) => {
   }
 });
 
-// GET historiek per datum
 app.get('/presences/history/:date', (req, res) => {
   try {
-    const { date } = req.params; // YYYY-MM-DD format
+    const { date } = req.params;
     const history = readPresenceHistory();
-    
     const dayHistory = history.find(h => h.date === date);
     
     if (!dayHistory) {
@@ -381,11 +444,10 @@ app.get('/presences/history/:date', (req, res) => {
   }
 });
 
-// GET alle beschikbare datums
 app.get('/presences/history', (req, res) => {
   try {
     const history = readPresenceHistory();
-    const dates = history.map(h => h.date).sort().reverse(); // Nieuwste eerst
+    const dates = history.map(h => h.date).sort().reverse();
     res.json({ success: true, dates });
   } catch (error) {
     console.error('Fout GET /presences/history:', error);
@@ -393,7 +455,6 @@ app.get('/presences/history', (req, res) => {
   }
 });
 
-// GET présence spécifique par ID
 app.get('/presences/:id', (req, res) => {
   try {
     const { id } = req.params;
@@ -411,7 +472,6 @@ app.get('/presences/:id', (req, res) => {
   }
 });
 
-// Valider une présence - AANGEPAST VOOR BETALINGSMETHODE
 app.post('/presences/:id/valider', (req, res) => {
   try {
     const { id } = req.params;
@@ -426,12 +486,10 @@ app.post('/presences/:id/valider', (req, res) => {
     
     presences[index].status = 'Payé';
     
-    // Alleen tarif toevoegen als er een montant is
     if (montant !== undefined && montant !== null) {
       presences[index].tarif = montant;
     }
     
-    // Update betalingsmethode bij validatie
     if (methodePaiement) {
       presences[index].methodePaiement = methodePaiement;
     }
@@ -447,7 +505,6 @@ app.post('/presences/:id/valider', (req, res) => {
   }
 });
 
-// Ajouter tarif aan adherent (indien nodig) - AANGEPAST VOOR BETALINGSMETHODE
 app.post('/presences/:id/ajouter-tarif', (req, res) => {
   try {
     const { id } = req.params;
@@ -462,7 +519,6 @@ app.post('/presences/:id/ajouter-tarif', (req, res) => {
     
     presences[index].tarif = montant || 0;
     
-    // Betalingsmethode voor adherents
     if (methodePaiement) {
       presences[index].methodePaiement = methodePaiement;
     }
@@ -478,13 +534,9 @@ app.post('/presences/:id/ajouter-tarif', (req, res) => {
   }
 });
 
-// AANGEPASTE ANNULER ROUTE - ZET TARIEF OP 0
 app.post('/presences/:id/annuler', (req, res) => {
   try {
     const { id } = req.params;
-    
-    console.log('=== ANNULER PRESENCE ===');
-    console.log('ID:', id);
     
     const presences = readPresences();
     const index = presences.findIndex(p => p.id === id);
@@ -493,24 +545,15 @@ app.post('/presences/:id/annuler', (req, res) => {
       return res.status(404).json({ success: false, error: 'Présence non trouvée' });
     }
     
-    const originalPresence = { ...presences[index] };
-    console.log('Original presence:', originalPresence);
-    
-    // Status op annulé zetten
     presences[index].status = 'Annulé';
     presences[index].dateAnnulation = new Date().toISOString();
     
-    // Tarief op 0 zetten bij annulering
     if (presences[index].tarif !== undefined) {
-      console.log('Setting tarif from', presences[index].tarif, 'to 0');
-      presences[index].tarifOriginal = presences[index].tarif; // Bewaar origineel tarief
+      presences[index].tarifOriginal = presences[index].tarif;
       presences[index].tarif = 0;
     } else {
-      console.log('No tarif field found, adding tarif: 0');
       presences[index].tarif = 0;
     }
-    
-    console.log('Updated presence:', presences[index]);
     
     writePresences(presences);
     
@@ -521,7 +564,6 @@ app.post('/presences/:id/annuler', (req, res) => {
   }
 });
 
-// Handmatige archivering (voor testing)
 app.post('/presences/archive', (req, res) => {
   try {
     const currentPresences = readPresences();
@@ -551,7 +593,7 @@ app.post('/presences/archive', (req, res) => {
   }
 });
 
-// Admin route
+// **ADMIN ROUTES**
 app.get('/admin', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'admin.html'));
 });
@@ -561,7 +603,8 @@ app.listen(PORT, () => {
   console.log(`Backend server actief op http://localhost:${PORT}`);
   console.log(`Admin interface op http://localhost:${PORT}/admin`);
   console.log('Dagelijkse reset om middernacht is geactiveerd');
-  console.log('Dagelijkse cleanup om 02:00 is geactiveerd (ZONDER presence history cleanup)');
+  console.log('Automatische seizoen export op 30 juni is geactiveerd');
+  console.log('Dagelijkse cleanup om 02:00 is geactiveerd');
   console.log('Wekelijkse cleanup op zondag om 03:00 is geactiveerd');
   console.log('Excel export functionaliteit beschikbaar via admin interface');
 });
