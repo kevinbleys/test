@@ -52,3 +52,10 @@
 [2025-08-10T14:07:01.080Z] EXPORT: ✅ presence-history.json bestaat al
 [2025-08-10T14:07:01.083Z] EXPORT: 📊 Gelezen history data: 0 entries
 [2025-08-10T14:07:01.085Z] EXPORT: ❌ History data is leeg of geen array
+[2025-08-10T14:10:37.263Z] EXPORT: 🔄 createTestDataIfNeeded gestart
+[2025-08-10T14:10:37.265Z] EXPORT: ✅ presence-history.json bestaat al
+[2025-08-10T14:10:38.772Z] EXPORT: 🔍 ===== GET AVAILABLE YEARS GESTART =====
+[2025-08-10T14:10:38.776Z] EXPORT: 🔄 createTestDataIfNeeded gestart
+[2025-08-10T14:10:38.779Z] EXPORT: ✅ presence-history.json bestaat al
+[2025-08-10T14:10:38.781Z] EXPORT: 📊 Gelezen history data: 0 entries
+[2025-08-10T14:10:38.783Z] EXPORT: ❌ History data is leeg of geen array
