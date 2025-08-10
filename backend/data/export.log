@@ -59,3 +59,11 @@
 [2025-08-10T14:10:38.779Z] EXPORT: ✅ presence-history.json bestaat al
 [2025-08-10T14:10:38.781Z] EXPORT: 📊 Gelezen history data: 0 entries
 [2025-08-10T14:10:38.783Z] EXPORT: ❌ History data is leeg of geen array
+[2025-08-10T15:04:17.808Z] EXPORT: 📝 presence-history.json ontbreekt of leeg/ongeldig, testdata aanmaken!
+[2025-08-10T15:04:17.818Z] EXPORT: ✅ Testdata aangemaakt voor jaren: 2023, 2024, 2025
+[2025-08-10T15:04:23.245Z] EXPORT: ✅ Er is al geldige presence-history.json aanwezig
+[2025-08-10T15:04:23.249Z] EXPORT: ✅ Er is al geldige presence-history.json aanwezig
+[2025-08-10T15:04:35.276Z] EXPORT: ✅ Er is al geldige presence-history.json aanwezig
+[2025-08-10T15:04:41.808Z] EXPORT: ✅ Er is al geldige presence-history.json aanwezig
+[2025-08-10T15:08:10.074Z] EXPORT: ✅ Er is al geldige presence-history.json aanwezig
+[2025-08-10T15:08:10.077Z] EXPORT: ✅ Er is al geldige presence-history.json aanwezig

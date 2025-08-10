@@ -1,0 +1,112 @@
+[
+  {
+    "date": "2023-01-15",
+    "presences": [
+      {
+        "id": "test-2023-1",
+        "type": "non-adherent",
+        "nom": "Historique",
+        "prenom": "Person2023",
+        "date": "2023-01-15T14:30:00.000Z",
+        "status": "Payé",
+        "tarif": 12,
+        "methodePaiement": "CB",
+        "dateNaissance": "1990-01-01",
+        "niveau": "2"
+      }
+    ]
+  },
+  {
+    "date": "2023-06-20",
+    "presences": [
+      {
+        "id": "test-2023-2",
+        "type": "adherent",
+        "nom": "Martin",
+        "prenom": "Sophie",
+        "date": "2023-06-20T15:00:00.000Z",
+        "status": "adherent",
+        "dateNaissance": "2008-03-15",
+        "niveau": "1"
+      }
+    ]
+  },
+  {
+    "date": "2024-03-15",
+    "presences": [
+      {
+        "id": "test-2024-1",
+        "type": "non-adherent",
+        "nom": "Historique",
+        "prenom": "Person2024",
+        "date": "2024-03-15T14:30:00.000Z",
+        "status": "Payé",
+        "tarif": 10,
+        "methodePaiement": "CB",
+        "dateNaissance": "1990-01-01",
+        "niveau": "2"
+      }
+    ]
+  },
+  {
+    "date": "2024-09-25",
+    "presences": [
+      {
+        "id": "test-2024-3",
+        "type": "non-adherent",
+        "nom": "Petit",
+        "prenom": "Emma",
+        "date": "2024-09-25T10:15:00.000Z",
+        "status": "Payé",
+        "tarif": 8,
+        "methodePaiement": "Especes",
+        "dateNaissance": "2016-12-05",
+        "niveau": "0"
+      }
+    ]
+  },
+  {
+    "date": "2025-07-15",
+    "presences": [
+      {
+        "id": "test-current-1",
+        "type": "non-adherent",
+        "nom": "Dupont",
+        "prenom": "Jean",
+        "date": "2025-07-15T14:30:00.000Z",
+        "status": "Payé",
+        "tarif": 10,
+        "methodePaiement": "CB",
+        "dateNaissance": "1985-03-15",
+        "niveau": "1"
+      },
+      {
+        "id": "test-current-2",
+        "type": "adherent",
+        "nom": "Martin",
+        "prenom": "Marie",
+        "date": "2025-07-15T15:00:00.000Z",
+        "status": "adherent",
+        "dateNaissance": "2010-05-20",
+        "niveau": "0"
+      }
+    ]
+  },
+  {
+    "date": "2025-01-10",
+    "presences": [
+      {
+        "id": "test-current-3",
+        "type": "non-adherent",
+        "nom": "Bernard",
+        "prenom": "Pierre",
+        "date": "2025-01-10T10:15:00.000Z",
+        "status": "Payé",
+        "tarif": 8,
+        "methodePaiement": "Especes",
+        "dateNaissance": "2018-07-22",
+        "niveau": "0"
+      }
+    ]
+  }
+]
