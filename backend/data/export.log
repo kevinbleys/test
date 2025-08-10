@@ -30,3 +30,25 @@
 [2025-08-09T16:09:30.819Z] EXPORT: === GET AVAILABLE YEARS VOLTOOID ===
 [2025-08-10T13:33:10.746Z] EXPORT: Huidige seizoen: 2025-2026 (Tue Jul 01 2025 - Tue Jun 30 2026)
 [2025-08-10T13:33:10.750Z] EXPORT: Seizoen statistieken gegenereerd: {"seasonName":"2025-2026","totalDays":3,"totalVisits":50,"adherents":{"total":23,"ageGroups":{"< 8 ans":0,"8-18 ans":0,"> 18 ans (adultes)":0,"Inconnu":23}},"nonAdherents":{"total":27,"ageGroups":{"< 8 ans":4,"8-18 ans":4,"> 18 ans (adultes)":17,"Inconnu":2},"totalPaid":236},"paymentMethods":{"Especes":7,"CB":5,"Cheque":7}}
+[2025-08-10T14:05:30.900Z] EXPORT: 🔄 createTestDataIfNeeded gestart
+[2025-08-10T14:05:30.904Z] EXPORT: ✅ presence-history.json bestaat al
+[2025-08-10T14:05:50.603Z] EXPORT: 🔍 ===== GET AVAILABLE YEARS GESTART =====
+[2025-08-10T14:05:50.606Z] EXPORT: 🔄 createTestDataIfNeeded gestart
+[2025-08-10T14:05:50.608Z] EXPORT: ✅ presence-history.json bestaat al
+[2025-08-10T14:05:50.611Z] EXPORT: 📊 Gelezen history data: 0 entries
+[2025-08-10T14:05:50.614Z] EXPORT: ❌ History data is leeg of geen array
+[2025-08-10T14:06:52.289Z] EXPORT: 📊 generateSeasonStatistics gestart
+[2025-08-10T14:06:52.292Z] EXPORT: 📊 getCurrentSeasonData gestart
+[2025-08-10T14:06:52.297Z] EXPORT: 📅 Huidige seizoen: 2025-2026 (Tue Jul 01 2025 - Tue Jun 30 2026)
+[2025-08-10T14:06:52.300Z] EXPORT: ✅ getCurrentSeasonData: 0 entries gevonden
+[2025-08-10T14:06:52.304Z] EXPORT: ⚠️ Geen seizoen data voor statistieken
+[2025-08-10T14:06:59.482Z] EXPORT: 📊 generateSeasonStatistics gestart
+[2025-08-10T14:06:59.485Z] EXPORT: 📊 getCurrentSeasonData gestart
+[2025-08-10T14:06:59.487Z] EXPORT: 📅 Huidige seizoen: 2025-2026 (Tue Jul 01 2025 - Tue Jun 30 2026)
+[2025-08-10T14:06:59.489Z] EXPORT: ✅ getCurrentSeasonData: 0 entries gevonden
+[2025-08-10T14:06:59.491Z] EXPORT: ⚠️ Geen seizoen data voor statistieken
+[2025-08-10T14:07:01.075Z] EXPORT: 🔍 ===== GET AVAILABLE YEARS GESTART =====
+[2025-08-10T14:07:01.078Z] EXPORT: 🔄 createTestDataIfNeeded gestart
+[2025-08-10T14:07:01.080Z] EXPORT: ✅ presence-history.json bestaat al
+[2025-08-10T14:07:01.083Z] EXPORT: 📊 Gelezen history data: 0 entries
+[2025-08-10T14:07:01.085Z] EXPORT: ❌ History data is leeg of geen array

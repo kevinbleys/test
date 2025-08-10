@@ -7,7 +7,7 @@ const EXPORTS_DIR = path.join(DATA_DIR, 'exports');
 const HISTORY_FILE = path.join(DATA_DIR, 'presence-history.json');
 const LOG_FILE = path.join(DATA_DIR, 'export.log');
 
-// **LOGGING FUNCTIE MET MEER DEBUG INFO**
+// **LOGGING FUNCTIE**
 const logMessage = (message) => {
   const timestamp = new Date().toISOString();
   const logEntry = `[${timestamp}] EXPORT: ${message}\n`;
@@ -32,12 +32,12 @@ const ensureExportsDir = () => {
   }
 };
 
-// **FUNCTIE: Huidige seizoen bepalen (1 juli - 30 juni)**
+// **FUNCTIE: Huidige seizoen bepalen**
 const getCurrentSeason = (date = new Date()) => {
   const year = date.getFullYear();
-  const month = date.getMonth(); // 0-based (0=januari)
+  const month = date.getMonth();
   
-  if (month < 6) { // Voor juli (maand 6)
+  if (month < 6) {
     return {
       startYear: year - 1,
       endYear: year,
@@ -52,7 +52,7 @@ const getCurrentSeason = (date = new Date()) => {
   }
 };
 
-// **FUNCTIE: Leeftijdsgroep bepalen op basis van geboortedatum**
+// **FUNCTIE: Leeftijdsgroep bepalen**
 const getAgeGroup = (dateNaissance, visitDate) => {
   if (!dateNaissance) return 'Inconnu';
   
@@ -185,7 +185,7 @@ const generateSeasonStatistics = () => {
   }
 };
 
-// **KRITIEKE FUNCTIE: Maak testdata aan met meer jaren**
+// **KRITIEKE FUNCTIE: Maak testdata aan**
 const createTestDataIfNeeded = () => {
   try {
     logMessage('🔄 createTestDataIfNeeded gestart');
@@ -197,7 +197,7 @@ const createTestDataIfNeeded = () => {
       const currentYear = new Date().getFullYear();
       
       const testData = [
-        // **2023 DATA - Voor historische export**
+        // **2023 DATA**
         {
           date: '2023-01-15',
           presences: [
@@ -234,7 +234,7 @@ const createTestDataIfNeeded = () => {
           ]
         },
         
-        // **2024 DATA - Voor historische export**
+        // **2024 DATA**
         {
           date: '2024-03-15',
           presences: [
@@ -293,7 +293,7 @@ const createTestDataIfNeeded = () => {
         
         // **HUIDIGE SEIZOEN DATA**
         {
-          date: `${currentSeason.startYear}-07-15`, // Juli
+          date: `${currentSeason.startYear}-07-15`,
           presences: [
             {
               id: 'test-current-1',
@@ -323,7 +323,7 @@ const createTestDataIfNeeded = () => {
           ]
         },
         {
-          date: `${currentYear}-01-10`, // Januari van huidig jaar
+          date: `${currentYear}-01-10`,
           presences: [
             {
               id: 'test-current-3',
@@ -345,27 +345,25 @@ const createTestDataIfNeeded = () => {
       ];
       
       fs.writeFileSync(HISTORY_FILE, JSON.stringify(testData, null, 2));
-      logMessage(`✅ Uitgebreide testdata aangemaakt in presence-history.json met data voor jaren: 2023, 2024, ${currentYear}`);
-      logMessage(`📊 Totaal ${testData.length} dagen met testdata aangemaakt`);
+      logMessage(`✅ Uitgebreide testdata aangemaakt met jaren: 2023, 2024, ${currentYear}`);
       
     } else {
-      logMessage('✅ presence-history.json bestaat al, geen testdata nodig');
+      logMessage('✅ presence-history.json bestaat al');
     }
   } catch (error) {
     logMessage(`❌ Fout bij aanmaken testdata: ${error.message}`);
   }
 };
 
-// **KRITIEKE FUNCTIE: Beschikbare jaren ophalen - MET UITGEBREIDE LOGGING**
+// **KRITIEKE FUNCTIE: Beschikbare jaren ophalen**
 const getAvailableYears = () => {
   try {
     logMessage('🔍 ===== GET AVAILABLE YEARS GESTART =====');
     
-    // Zorg eerst voor testdata
     createTestDataIfNeeded();
     
     if (!fs.existsSync(HISTORY_FILE)) {
-      logMessage(`❌ HISTORY_FILE bestaat niet na testdata poging: ${HISTORY_FILE}`);
+      logMessage(`❌ HISTORY_FILE bestaat niet: ${HISTORY_FILE}`);
       return [];
     }
 
@@ -377,7 +375,6 @@ const getAvailableYears = () => {
       return [];
     }
 
-    // **EXTRACT YEARS WITH DETAILED LOGGING**
     const yearCounts = {};
     historyData.forEach((entry, index) => {
       if (!entry.date) {
@@ -437,7 +434,6 @@ const exportYearToExcel = (year) => {
 
     logMessage(`📊 Gevonden ${yearData.length} dagen voor jaar ${year}`);
 
-    // Converteer alle presences naar Excel format
     const excelData = [];
     
     yearData.forEach(dayEntry => {
@@ -474,7 +470,6 @@ const exportYearToExcel = (year) => {
       throw new Error(`Geen presences gevonden voor jaar ${year}`);
     }
 
-    // Créer workbook Excel
     const wb = XLSX.utils.book_new();
     const ws = XLSX.utils.json_to_sheet(excelData);
     
@@ -754,16 +749,21 @@ const getAssuranceStatus = (presence) => {
   return 'Non spécifié';
 };
 
-// **MODULE EXPORTS - ALLE FUNCTIES**
+// **KRITIEKE MODULE EXPORTS - ALLE FUNCTIES EXPLICIET**
 module.exports = {
+  // Seizoen functies
   exportSeasonToExcel,
-  exportYearToExcel,
-  cleanupYearAfterExport,
   getAvailableSeasons,
-  getAvailableYears,
   generateSeasonStatistics,
   getCurrentSeason,
   getCurrentSeasonData,
+  
+  // Jaar functies
+  exportYearToExcel,
+  getAvailableYears,
+  cleanupYearAfterExport,
+  
+  // Utility functies
   ensureExportsDir,
   createTestDataIfNeeded
 };
