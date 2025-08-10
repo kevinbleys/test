@@ -10452,10 +10452,10 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "24/07/2025, 07:34",
+    "dateLastConnexion": "09/08/2025, 15:12",
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "À payer",
+    "joinFileStatusLabel": "En cours de paiement",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -13652,10 +13652,10 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "11/07/2025, 12:43",
+    "dateLastConnexion": "09/08/2025, 17:19",
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "À payer",
+    "joinFileStatusLabel": "En cours de paiement",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "Gestionnaire de 1 contact : Thoma GOURBEYRE",
@@ -13728,7 +13728,7 @@
     "dateLastConnexion": null,
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "À payer",
+    "joinFileStatusLabel": "En cours de paiement",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -24151,7 +24151,7 @@
     "dateLastConnexion": null,
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": null,
+    "joinFileStatusLabel": "À payer",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -24170,7 +24170,7 @@
     "groups": [],
     "categories": [
       {
-        "label": "Nouveau contact (adhésion)"
+        "label": "Adhérent"
       }
     ],
     "roles": [],
@@ -28575,7 +28575,7 @@
     "dateLastConnexion": "07/08/2025, 15:24",
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "Payé",
+    "joinFileStatusLabel": "À payer",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "Gestionnaire de 1 contact : Zora Barrere Pozeg",
@@ -29205,7 +29205,7 @@
     "groups": [],
     "categories": [
       {
-        "label": "Nouveau contact (adhésion)"
+        "label": "Parent"
       }
     ],
     "roles": [],
@@ -37969,7 +37969,7 @@
     "dateLastConnexion": null,
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "Payé",
+    "joinFileStatusLabel": "À payer",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -39911,7 +39911,7 @@
     "dateLastConnexion": "07/08/2025, 16:45",
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "Payé",
+    "joinFileStatusLabel": "À payer",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -40039,7 +40039,7 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "08/08/2025, 13:58",
+    "dateLastConnexion": "09/08/2025, 10:09",
     "emailValid": true,
     "notificationActive": true,
     "joinFileStatusLabel": null,
