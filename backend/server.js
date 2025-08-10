@@ -222,8 +222,10 @@ app.post('/admin/export/:year', (req, res) => {
   }
 });
 
+// Route: Beschikbare jaren ophalen
 app.get('/admin/export/years', (req, res) => {
   try {
+    exportService.createTestDataIfNeeded(); // <-- force testdata fix
     const years = exportService.getAvailableYears();
     res.json({
       success: true,
