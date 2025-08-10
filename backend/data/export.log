@@ -28,3 +28,5 @@
 [2025-08-09T16:09:30.816Z] EXPORT: Entry datum: 2025-08-08 -> jaar: 2025
 [2025-08-09T16:09:30.818Z] EXPORT: Beschikbare jaren gevonden: [2025]
 [2025-08-09T16:09:30.819Z] EXPORT: === GET AVAILABLE YEARS VOLTOOID ===
+[2025-08-10T13:33:10.746Z] EXPORT: Huidige seizoen: 2025-2026 (Tue Jul 01 2025 - Tue Jun 30 2026)
+[2025-08-10T13:33:10.750Z] EXPORT: Seizoen statistieken gegenereerd: {"seasonName":"2025-2026","totalDays":3,"totalVisits":50,"adherents":{"total":23,"ageGroups":{"< 8 ans":0,"8-18 ans":0,"> 18 ans (adultes)":0,"Inconnu":23}},"nonAdherents":{"total":27,"ageGroups":{"< 8 ans":4,"8-18 ans":4,"> 18 ans (adultes)":17,"Inconnu":2},"totalPaid":236},"paymentMethods":{"Especes":7,"CB":5,"Cheque":7}}
