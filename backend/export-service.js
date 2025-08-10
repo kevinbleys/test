@@ -7,12 +7,12 @@ const EXPORTS_DIR = path.join(DATA_DIR, 'exports');
 const HISTORY_FILE = path.join(DATA_DIR, 'presence-history.json');
 const LOG_FILE = path.join(DATA_DIR, 'export.log');
 
-// Logging functie
+// **LOGGING FUNCTIE MET MEER DEBUG INFO**
 const logMessage = (message) => {
   const timestamp = new Date().toISOString();
   const logEntry = `[${timestamp}] EXPORT: ${message}\n`;
   
-  console.log(logEntry.trim());
+  console.log(`🔍 EXPORT-SERVICE: ${message}`);
   
   try {
     if (!fs.existsSync(DATA_DIR)) {
@@ -20,7 +20,7 @@ const logMessage = (message) => {
     }
     fs.appendFileSync(LOG_FILE, logEntry);
   } catch (error) {
-    console.error('Fout bij schrijven naar export log:', error);
+    console.error('❌ Fout bij schrijven naar export log:', error);
   }
 };
 
@@ -28,16 +28,15 @@ const logMessage = (message) => {
 const ensureExportsDir = () => {
   if (!fs.existsSync(EXPORTS_DIR)) {
     fs.mkdirSync(EXPORTS_DIR, { recursive: true });
-    logMessage(`Exports directory aangemaakt: ${EXPORTS_DIR}`);
+    logMessage(`📁 Exports directory aangemaakt: ${EXPORTS_DIR}`);
   }
 };
 
-// **NIEUWE FUNCTIE: Huidige seizoen bepalen (1 juli - 30 juni)**
+// **FUNCTIE: Huidige seizoen bepalen (1 juli - 30 juni)**
 const getCurrentSeason = (date = new Date()) => {
   const year = date.getFullYear();
   const month = date.getMonth(); // 0-based (0=januari)
   
-  // Als we voor 1 juli zijn, behoren we tot het seizoen dat het vorige jaar begon
   if (month < 6) { // Voor juli (maand 6)
     return {
       startYear: year - 1,
@@ -45,7 +44,6 @@ const getCurrentSeason = (date = new Date()) => {
       seasonName: `${year - 1}-${year}`
     };
   } else {
-    // Na 1 juli behoren we tot het seizoen dat dit jaar begon
     return {
       startYear: year,
       endYear: year + 1,
@@ -54,7 +52,7 @@ const getCurrentSeason = (date = new Date()) => {
   }
 };
 
-// **NIEUWE FUNCTIE: Leeftijdsgroep bepalen op basis van geboortedatum**
+// **FUNCTIE: Leeftijdsgroep bepalen op basis van geboortedatum**
 const getAgeGroup = (dateNaissance, visitDate) => {
   if (!dateNaissance) return 'Inconnu';
   
@@ -65,7 +63,6 @@ const getAgeGroup = (dateNaissance, visitDate) => {
     let age = visitDateObj.getFullYear() - birthDate.getFullYear();
     const monthDiff = visitDateObj.getMonth() - birthDate.getMonth();
     
-    // Pas leeftijd aan als verjaardag nog niet geweest is dit jaar
     if (monthDiff < 0 || (monthDiff === 0 && visitDateObj.getDate() < birthDate.getDate())) {
       age--;
     }
@@ -75,47 +72,56 @@ const getAgeGroup = (dateNaissance, visitDate) => {
     return '> 18 ans (adultes)';
     
   } catch (error) {
-    logMessage(`Fout bij berekenen leeftijd voor ${dateNaissance}: ${error.message}`);
+    logMessage(`❌ Fout bij berekenen leeftijd voor ${dateNaissance}: ${error.message}`);
     return 'Inconnu';
   }
 };
 
-// **NIEUWE FUNCTIE: Data voor huidige seizoen ophalen**
+// **FUNCTIE: Data voor huidige seizoen ophalen**
 const getCurrentSeasonData = () => {
   try {
+    logMessage('📊 getCurrentSeasonData gestart');
+    
     if (!fs.existsSync(HISTORY_FILE)) {
+      logMessage(`❌ HISTORY_FILE bestaat niet: ${HISTORY_FILE}`);
       return [];
     }
 
     const historyData = JSON.parse(fs.readFileSync(HISTORY_FILE, 'utf8'));
     if (!Array.isArray(historyData)) {
+      logMessage('❌ History data is niet een array');
       return [];
     }
 
     const currentSeason = getCurrentSeason();
-    const startDate = new Date(currentSeason.startYear, 6, 1); // 1 juli
-    const endDate = new Date(currentSeason.endYear, 5, 30); // 30 juni
+    const startDate = new Date(currentSeason.startYear, 6, 1);
+    const endDate = new Date(currentSeason.endYear, 5, 30);
 
-    logMessage(`Huidige seizoen: ${currentSeason.seasonName} (${startDate.toDateString()} - ${endDate.toDateString()})`);
+    logMessage(`📅 Huidige seizoen: ${currentSeason.seasonName} (${startDate.toDateString()} - ${endDate.toDateString()})`);
 
-    return historyData.filter(entry => {
+    const filteredData = historyData.filter(entry => {
       const entryDate = new Date(entry.date);
       return entryDate >= startDate && entryDate <= endDate;
     });
+    
+    logMessage(`✅ getCurrentSeasonData: ${filteredData.length} entries gevonden`);
+    return filteredData;
 
   } catch (error) {
-    logMessage(`Fout bij ophalen seizoen data: ${error.message}`);
+    logMessage(`❌ Fout bij ophalen seizoen data: ${error.message}`);
     return [];
   }
 };
 
-// **NIEUWE FUNCTIE: Seizoen statistieken genereren**
+// **FUNCTIE: Seizoen statistieken genereren**
 const generateSeasonStatistics = () => {
   try {
+    logMessage('📊 generateSeasonStatistics gestart');
     const seasonData = getCurrentSeasonData();
     const currentSeason = getCurrentSeason();
     
     if (seasonData.length === 0) {
+      logMessage('⚠️ Geen seizoen data voor statistieken');
       return {
         seasonName: currentSeason.seasonName,
         totalDays: 0,
@@ -157,7 +163,6 @@ const generateSeasonStatistics = () => {
           stats.nonAdherents.total++;
           stats.nonAdherents.ageGroups[ageGroup]++;
           
-          // Betaling statistieken
           if (presence.tarif && presence.tarif > 0) {
             stats.nonAdherents.totalPaid += parseFloat(presence.tarif) || 0;
           }
@@ -171,51 +176,127 @@ const generateSeasonStatistics = () => {
       });
     });
 
-    logMessage(`Seizoen statistieken gegenereerd: ${JSON.stringify(stats)}`);
+    logMessage(`✅ Seizoen statistieken gegenereerd: ${JSON.stringify(stats)}`);
     return stats;
 
   } catch (error) {
-    logMessage(`Fout bij genereren seizoen statistieken: ${error.message}`);
+    logMessage(`❌ Fout bij genereren seizoen statistieken: ${error.message}`);
     return null;
   }
 };
 
-// **NIEUWE FUNCTIE: Maak testdata aan als er geen data is**
+// **KRITIEKE FUNCTIE: Maak testdata aan met meer jaren**
 const createTestDataIfNeeded = () => {
   try {
+    logMessage('🔄 createTestDataIfNeeded gestart');
+    
     if (!fs.existsSync(HISTORY_FILE)) {
-      logMessage('Geen presence-history.json gevonden, maak testdata aan');
+      logMessage('📝 Geen presence-history.json gevonden, maak uitgebreide testdata aan');
       
-      // Maak testdata voor huidige seizoen EN vorig jaar voor historische export
       const currentSeason = getCurrentSeason();
+      const currentYear = new Date().getFullYear();
+      
       const testData = [
-        // Vorig jaar data (voor historische export)
+        // **2023 DATA - Voor historische export**
         {
-          date: '2024-03-15',
+          date: '2023-01-15',
           presences: [
             {
-              id: 'test-old1',
+              id: 'test-2023-1',
               type: 'non-adherent',
               nom: 'Historique',
-              prenom: 'Personne',
-              date: '2024-03-15T14:30:00.000Z',
+              prenom: 'Person2023',
+              date: '2023-01-15T14:30:00.000Z',
               status: 'Payé',
-              tarif: 10,
+              tarif: 12,
               methodePaiement: 'CB',
               telephone: '0123456789',
-              email: 'historique@email.com',
+              email: 'historique2023@email.com',
               dateNaissance: '1990-01-01',
               niveau: '2',
               assuranceAccepted: true
             }
           ]
         },
-        // Huidig seizoen data
+        {
+          date: '2023-06-20',
+          presences: [
+            {
+              id: 'test-2023-2',
+              type: 'adherent',
+              nom: 'Martin',
+              prenom: 'Sophie',
+              date: '2023-06-20T15:00:00.000Z',
+              status: 'adherent',
+              dateNaissance: '2008-03-15',
+              niveau: '1'
+            }
+          ]
+        },
+        
+        // **2024 DATA - Voor historische export**
+        {
+          date: '2024-03-15',
+          presences: [
+            {
+              id: 'test-2024-1',
+              type: 'non-adherent',
+              nom: 'Historique',
+              prenom: 'Person2024',
+              date: '2024-03-15T14:30:00.000Z',
+              status: 'Payé',
+              tarif: 10,
+              methodePaiement: 'CB',
+              telephone: '0123456789',
+              email: 'historique2024@email.com',
+              dateNaissance: '1990-01-01',
+              niveau: '2',
+              assuranceAccepted: true
+            }
+          ]
+        },
+        {
+          date: '2024-05-10',
+          presences: [
+            {
+              id: 'test-2024-2',
+              type: 'adherent',
+              nom: 'Durand',
+              prenom: 'Michel',
+              date: '2024-05-10T16:00:00.000Z',
+              status: 'adherent',
+              dateNaissance: '1985-07-20',
+              niveau: '2'
+            }
+          ]
+        },
+        {
+          date: '2024-09-25',
+          presences: [
+            {
+              id: 'test-2024-3',
+              type: 'non-adherent',
+              nom: 'Petit',
+              prenom: 'Emma',
+              date: '2024-09-25T10:15:00.000Z',
+              status: 'Payé',
+              tarif: 8,
+              methodePaiement: 'Especes',
+              telephone: '0987654321',
+              email: 'emma.petit@email.com',
+              dateNaissance: '2016-12-05',
+              niveau: '0',
+              assuranceAccepted: true
+            }
+          ]
+        },
+        
+        // **HUIDIGE SEIZOEN DATA**
         {
           date: `${currentSeason.startYear}-07-15`, // Juli
           presences: [
             {
-              id: 'test1',
+              id: 'test-current-1',
               type: 'non-adherent',
               nom: 'Dupont',
               prenom: 'Jean',
@@ -225,37 +306,37 @@ const createTestDataIfNeeded = () => {
               methodePaiement: 'CB',
               telephone: '0123456789',
               email: 'jean.dupont@email.com',
-              dateNaissance: '1985-03-15', // > 18 ans
+              dateNaissance: '1985-03-15',
               niveau: '1',
               assuranceAccepted: true
             },
             {
-              id: 'test2',
+              id: 'test-current-2',
               type: 'adherent',
               nom: 'Martin',
               prenom: 'Marie',
               date: `${currentSeason.startYear}-07-15T15:00:00.000Z`,
               status: 'adherent',
-              dateNaissance: '2010-05-20', // 8-18 ans
+              dateNaissance: '2010-05-20',
               niveau: '0'
             }
           ]
         },
         {
-          date: `${currentSeason.endYear}-01-10`, // Januari (hetzelfde seizoen)
+          date: `${currentYear}-01-10`, // Januari van huidig jaar
           presences: [
             {
-              id: 'test3',
+              id: 'test-current-3',
               type: 'non-adherent',
               nom: 'Bernard',
               prenom: 'Pierre',
-              date: `${currentSeason.endYear}-01-10T10:15:00.000Z`,
+              date: `${currentYear}-01-10T10:15:00.000Z`,
               status: 'Payé',
               tarif: 8,
               methodePaiement: 'Especes',
               telephone: '0987654321',
               email: 'pierre.bernard@email.com',
-              dateNaissance: '2018-07-22', // < 8 ans
+              dateNaissance: '2018-07-22',
               niveau: '0',
               assuranceAccepted: true
             }
@@ -264,17 +345,74 @@ const createTestDataIfNeeded = () => {
       ];
       
       fs.writeFileSync(HISTORY_FILE, JSON.stringify(testData, null, 2));
-      logMessage('Testdata aangemaakt in presence-history.json voor huidige seizoen EN historische data');
+      logMessage(`✅ Uitgebreide testdata aangemaakt in presence-history.json met data voor jaren: 2023, 2024, ${currentYear}`);
+      logMessage(`📊 Totaal ${testData.length} dagen met testdata aangemaakt`);
+      
+    } else {
+      logMessage('✅ presence-history.json bestaat al, geen testdata nodig');
     }
   } catch (error) {
-    logMessage(`Fout bij aanmaken testdata: ${error.message}`);
+    logMessage(`❌ Fout bij aanmaken testdata: ${error.message}`);
   }
 };
 
-// **FUNCTIE: Exporteer jaar naar Excel (voor historische export)**
+// **KRITIEKE FUNCTIE: Beschikbare jaren ophalen - MET UITGEBREIDE LOGGING**
+const getAvailableYears = () => {
+  try {
+    logMessage('🔍 ===== GET AVAILABLE YEARS GESTART =====');
+    
+    // Zorg eerst voor testdata
+    createTestDataIfNeeded();
+    
+    if (!fs.existsSync(HISTORY_FILE)) {
+      logMessage(`❌ HISTORY_FILE bestaat niet na testdata poging: ${HISTORY_FILE}`);
+      return [];
+    }
+
+    const historyData = JSON.parse(fs.readFileSync(HISTORY_FILE, 'utf8'));
+    logMessage(`📊 Gelezen history data: ${historyData.length} entries`);
+    
+    if (!Array.isArray(historyData) || historyData.length === 0) {
+      logMessage('❌ History data is leeg of geen array');
+      return [];
+    }
+
+    // **EXTRACT YEARS WITH DETAILED LOGGING**
+    const yearCounts = {};
+    historyData.forEach((entry, index) => {
+      if (!entry.date) {
+        logMessage(`⚠️ Entry ${index} heeft geen datum`);
+        return;
+      }
+      
+      const year = new Date(entry.date).getFullYear();
+      yearCounts[year] = (yearCounts[year] || 0) + 1;
+      logMessage(`📅 Entry ${index}: datum=${entry.date} -> jaar=${year}`);
+    });
+
+    const years = Object.keys(yearCounts).map(y => parseInt(y)).sort((a, b) => b - a);
+    
+    logMessage(`🎯 Jaren gevonden met aantallen:`);
+    Object.keys(yearCounts).forEach(year => {
+      logMessage(`   ${year}: ${yearCounts[year]} dagen`);
+    });
+    
+    logMessage(`✅ Finale jaren lijst: ${JSON.stringify(years)}`);
+    logMessage('🔍 ===== GET AVAILABLE YEARS VOLTOOID =====');
+    
+    return years;
+    
+  } catch (error) {
+    logMessage(`❌ FOUT bij ophalen beschikbare jaren: ${error.message}`);
+    logMessage(`❌ Stack trace: ${error.stack}`);
+    return [];
+  }
+};
+
+// **FUNCTIE: Exporteer jaar naar Excel**
 const exportYearToExcel = (year) => {
   try {
-    logMessage(`=== JAARLIJKSE EXCEL EXPORT GESTART (${year}) ===`);
+    logMessage(`📊 === JAAR EXCEL EXPORT GESTART (${year}) ===`);
     
     ensureExportsDir();
     
@@ -288,7 +426,6 @@ const exportYearToExcel = (year) => {
       throw new Error('Presence historiek is leeg of ongeldig');
     }
 
-    // Filter data voor het specifieke jaar
     const yearData = historyData.filter(entry => {
       const entryYear = new Date(entry.date).getFullYear();
       return entryYear === parseInt(year);
@@ -297,6 +434,8 @@ const exportYearToExcel = (year) => {
     if (yearData.length === 0) {
       throw new Error(`Geen data gevonden voor jaar ${year}`);
     }
+
+    logMessage(`📊 Gevonden ${yearData.length} dagen voor jaar ${year}`);
 
     // Converteer alle presences naar Excel format
     const excelData = [];
@@ -337,49 +476,28 @@ const exportYearToExcel = (year) => {
 
     // Créer workbook Excel
     const wb = XLSX.utils.book_new();
-    
-    // Hoofdwerkblad met alle data
     const ws = XLSX.utils.json_to_sheet(excelData);
     
-    // Kolom breedtes instellen
     const columnWidths = [
-      { wch: 12 }, // Date
-      { wch: 8 },  // Heure
-      { wch: 15 }, // Nom
-      { wch: 15 }, // Prénom
-      { wch: 10 }, // Adhérent
-      { wch: 15 }, // Téléphone
-      { wch: 25 }, // Email
-      { wch: 15 }, // Date de naissance
-      { wch: 15 }, // Niveau de grimpe
-      { wch: 18 }, // Assurance acceptée
-      { wch: 12 }, // Montant
-      { wch: 18 }, // Méthode de paiement
-      { wch: 12 }, // Statut
-      { wch: 15 }, // Date validation
-      { wch: 30 }  // Adresse
+      { wch: 12 }, { wch: 8 }, { wch: 15 }, { wch: 15 }, { wch: 10 },
+      { wch: 15 }, { wch: 25 }, { wch: 15 }, { wch: 15 }, { wch: 18 },
+      { wch: 12 }, { wch: 18 }, { wch: 12 }, { wch: 15 }, { wch: 30 }
     ];
     ws['!cols'] = columnWidths;
 
     XLSX.utils.book_append_sheet(wb, ws, 'Présences');
     
-    // Statistieken werkblad
     const stats = generateHistoricalStatistics(excelData, year);
     const wsStats = XLSX.utils.json_to_sheet(stats);
     XLSX.utils.book_append_sheet(wb, wsStats, 'Statistiques');
 
-    // Bestandsnaam met timestamp
     const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 16);
     const filename = `presences-${year}-export-${timestamp}.xlsx`;
     const filepath = path.join(EXPORTS_DIR, filename);
     
-    // Schrijf Excel bestand
     XLSX.writeFile(wb, filepath);
     
-    logMessage(`Excel export succesvol: ${filename}`);
-    logMessage(`Totaal ${excelData.length} records geëxporteerd`);
-    logMessage(`Bestand opgeslagen: ${filepath}`);
-    logMessage(`=== JAARLIJKSE EXCEL EXPORT VOLTOOID (${year}) ===`);
+    logMessage(`✅ Excel export succesvol: ${filename} (${excelData.length} records)`);
     
     return {
       success: true,
@@ -390,7 +508,51 @@ const exportYearToExcel = (year) => {
     };
     
   } catch (error) {
-    logMessage(`FOUT BIJ EXCEL EXPORT: ${error.message}`);
+    logMessage(`❌ FOUT BIJ EXCEL EXPORT: ${error.message}`);
+    throw error;
+  }
+};
+
+// **FUNCTIE: Cleanup jaar na export**
+const cleanupYearAfterExport = (year) => {
+  try {
+    logMessage(`🧹 === CLEANUP NA EXPORT GESTART (${year}) ===`);
+    
+    if (!fs.existsSync(HISTORY_FILE)) {
+      throw new Error('Geen presence-history.json bestand gevonden');
+    }
+
+    const historyData = JSON.parse(fs.readFileSync(HISTORY_FILE, 'utf8'));
+    
+    if (!Array.isArray(historyData)) {
+      throw new Error('Ongeldig historie bestand format');
+    }
+
+    const originalCount = historyData.length;
+    const filteredHistory = historyData.filter(entry => {
+      const entryYear = new Date(entry.date).getFullYear();
+      return entryYear !== parseInt(year);
+    });
+    
+    const deletedCount = originalCount - filteredHistory.length;
+    
+    if (deletedCount === 0) {
+      logMessage(`⚠️ Geen entries gevonden voor jaar ${year}`);
+      return { success: false, message: `Geen data gevonden voor jaar ${year}` };
+    }
+
+    fs.writeFileSync(HISTORY_FILE, JSON.stringify(filteredHistory, null, 2));
+
+    logMessage(`✅ Cleanup voltooid: ${deletedCount} entries verwijderd, ${filteredHistory.length} behouden`);
+    
+    return {
+      success: true,
+      deletedCount,
+      remainingCount: filteredHistory.length
+    };
+    
+  } catch (error) {
+    logMessage(`❌ FOUT BIJ CLEANUP: ${error.message}`);
     throw error;
   }
 };
@@ -402,17 +564,13 @@ const generateHistoricalStatistics = (data, year) => {
     { 'Statistique': 'Total présences', 'Valeur': data.length },
     { 'Statistique': 'Adhérents', 'Valeur': data.filter(r => r.Adhérent === 'Oui').length },
     { 'Statistique': 'Non-adhérents', 'Valeur': data.filter(r => r.Adhérent === 'Non').length },
-    { 'Statistique': '', 'Valeur': '' }, // Lege regel
-    
-    // Paiements statistieken
+    { 'Statistique': '', 'Valeur': '' },
     { 'Statistique': 'PAIEMENTS:', 'Valeur': '' },
     { 'Statistique': 'Total facturé (€)', 'Valeur': data.reduce((sum, r) => sum + (parseFloat(r['Montant (€)']) || 0), 0) },
     { 'Statistique': 'Espèces', 'Valeur': data.filter(r => r['Méthode de paiement'] === 'Especes').length },
     { 'Statistique': 'Carte bancaire', 'Valeur': data.filter(r => r['Méthode de paiement'] === 'CB').length },
     { 'Statistique': 'Chèque', 'Valeur': data.filter(r => r['Méthode de paiement'] === 'Cheque').length },
-    { 'Statistique': '', 'Valeur': '' }, // Lege regel
-    
-    // Niveau statistieken
+    { 'Statistique': '', 'Valeur': '' },
     { 'Statistique': 'NIVEAUX:', 'Valeur': '' },
     { 'Statistique': 'Niveau 0', 'Valeur': data.filter(r => r['Niveau de grimpe'] === '0').length },
     { 'Statistique': 'Niveau 1', 'Valeur': data.filter(r => r['Niveau de grimpe'] === '1').length },
@@ -422,60 +580,11 @@ const generateHistoricalStatistics = (data, year) => {
   return stats;
 };
 
-// **FUNCTIE: Jaar data opruimen NA export**
-const cleanupYearAfterExport = (year) => {
-  try {
-    logMessage(`=== CLEANUP NA EXPORT GESTART (${year}) ===`);
-    
-    if (!fs.existsSync(HISTORY_FILE)) {
-      logMessage('Geen presence-history.json bestand gevonden');
-      return { success: false, message: 'Geen historie bestand gevonden' };
-    }
-
-    const historyData = JSON.parse(fs.readFileSync(HISTORY_FILE, 'utf8'));
-    
-    if (!Array.isArray(historyData)) {
-      throw new Error('Ongeldig historie bestand format');
-    }
-
-    // Filter data: behoud alles BEHALVE het geëxporteerde jaar
-    const originalCount = historyData.length;
-    const filteredHistory = historyData.filter(entry => {
-      const entryYear = new Date(entry.date).getFullYear();
-      return entryYear !== parseInt(year);
-    });
-    
-    const deletedCount = originalCount - filteredHistory.length;
-    
-    if (deletedCount === 0) {
-      logMessage(`Geen entries gevonden voor jaar ${year}`);
-      return { success: false, message: `Geen data gevonden voor jaar ${year}` };
-    }
-
-    // Schrijf gefilterde data terug
-    fs.writeFileSync(HISTORY_FILE, JSON.stringify(filteredHistory, null, 2));
-
-    logMessage(`Behouden: ${filteredHistory.length} entries`);
-    logMessage(`Verwijderd: ${deletedCount} entries voor jaar ${year}`);
-    logMessage(`=== CLEANUP NA EXPORT VOLTOOID (${year}) ===`);
-    
-    return {
-      success: true,
-      deletedCount,
-      remainingCount: filteredHistory.length
-    };
-    
-  } catch (error) {
-    logMessage(`FOUT BIJ CLEANUP NA EXPORT: ${error.message}`);
-    throw error;
-  }
-};
-
-// **AANGEPASTE FUNCTIE: Exporteer seizoen naar Excel (update bestaand bestand)**
+// **FUNCTIE: Seizoen export**
 const exportSeasonToExcel = () => {
   try {
     const currentSeason = getCurrentSeason();
-    logMessage(`=== SEIZOEN EXCEL EXPORT GESTART (${currentSeason.seasonName}) ===`);
+    logMessage(`📊 === SEIZOEN EXCEL EXPORT GESTART (${currentSeason.seasonName}) ===`);
     
     ensureExportsDir();
     
@@ -484,7 +593,6 @@ const exportSeasonToExcel = () => {
       throw new Error(`Geen data gevonden voor seizoen ${currentSeason.seasonName}`);
     }
 
-    // Converteer alle presences naar Excel format
     const excelData = [];
     
     seasonData.forEach(dayEntry => {
@@ -522,52 +630,29 @@ const exportSeasonToExcel = () => {
       throw new Error(`Geen presences gevonden voor seizoen ${currentSeason.seasonName}`);
     }
 
-    // **BESTANDSNAAM: Update bestaand bestand**
     const filename = `presences-saison-${currentSeason.seasonName}.xlsx`;
     const filepath = path.join(EXPORTS_DIR, filename);
     
-    // Créer workbook Excel
     const wb = XLSX.utils.book_new();
-    
-    // Hoofdwerkblad met alle data
     const ws = XLSX.utils.json_to_sheet(excelData);
     
-    // Kolom breedtes instellen
     const columnWidths = [
-      { wch: 12 }, // Date
-      { wch: 8 },  // Heure
-      { wch: 15 }, // Nom
-      { wch: 15 }, // Prénom
-      { wch: 10 }, // Adhérent
-      { wch: 15 }, // Téléphone
-      { wch: 25 }, // Email
-      { wch: 15 }, // Date de naissance
-      { wch: 18 }, // Groupe d'âge
-      { wch: 15 }, // Niveau de grimpe
-      { wch: 18 }, // Assurance acceptée
-      { wch: 12 }, // Montant
-      { wch: 18 }, // Méthode de paiement
-      { wch: 12 }, // Statut
-      { wch: 15 }, // Date validation
-      { wch: 30 }  // Adresse
+      { wch: 12 }, { wch: 8 }, { wch: 15 }, { wch: 15 }, { wch: 10 },
+      { wch: 15 }, { wch: 25 }, { wch: 15 }, { wch: 18 }, { wch: 15 },
+      { wch: 18 }, { wch: 12 }, { wch: 18 }, { wch: 12 }, { wch: 15 }, { wch: 30 }
     ];
     ws['!cols'] = columnWidths;
 
     XLSX.utils.book_append_sheet(wb, ws, 'Présences');
     
-    // **NIEUWE STATISTIEKEN: Seizoen statistieken**
     const seasonStats = generateSeasonStatistics();
     const statsData = generateDetailedStatisticsForExcel(seasonStats);
     const wsStats = XLSX.utils.json_to_sheet(statsData);
     XLSX.utils.book_append_sheet(wb, wsStats, 'Statistiques');
 
-    // **OVERSCHRIJF bestaand bestand**
     XLSX.writeFile(wb, filepath);
     
-    logMessage(`Excel export succesvol (bijgewerkt): ${filename}`);
-    logMessage(`Totaal ${excelData.length} records geëxporteerd`);
-    logMessage(`Seizoen: ${currentSeason.seasonName}`);
-    logMessage(`=== SEIZOEN EXCEL EXPORT VOLTOOID ===`);
+    logMessage(`✅ Seizoen Excel export succesvol: ${filename} (${excelData.length} records)`);
     
     return {
       success: true,
@@ -578,12 +663,12 @@ const exportSeasonToExcel = () => {
     };
     
   } catch (error) {
-    logMessage(`FOUT BIJ SEIZOEN EXCEL EXPORT: ${error.message}`);
+    logMessage(`❌ FOUT BIJ SEIZOEN EXCEL EXPORT: ${error.message}`);
     throw error;
   }
 };
 
-// **NIEUWE FUNCTIE: Gedetailleerde statistieken voor Excel**
+// **FUNCTIE: Gedetailleerde statistieken voor Excel**
 const generateDetailedStatisticsForExcel = (seasonStats) => {
   if (!seasonStats) return [];
   
@@ -594,8 +679,6 @@ const generateDetailedStatisticsForExcel = (seasonStats) => {
     { 'Statistique': 'Aantal dagen actief', 'Valeur': seasonStats.totalDays },
     { 'Statistique': 'Totaal bezoeken', 'Valeur': seasonStats.totalVisits },
     { 'Statistique': '', 'Valeur': '' },
-    
-    // Adherents statistieken
     { 'Statistique': 'LEDEN (ADHERENTS)', 'Valeur': '' },
     { 'Statistique': 'Totaal leden', 'Valeur': seasonStats.adherents.total },
     { 'Statistique': '  • < 8 jaar', 'Valeur': seasonStats.adherents.ageGroups['< 8 ans'] || 0 },
@@ -603,8 +686,6 @@ const generateDetailedStatisticsForExcel = (seasonStats) => {
     { 'Statistique': '  • > 18 jaar (volwassenen)', 'Valeur': seasonStats.adherents.ageGroups['> 18 ans (adultes)'] || 0 },
     { 'Statistique': '  • Onbekende leeftijd', 'Valeur': seasonStats.adherents.ageGroups['Inconnu'] || 0 },
     { 'Statistique': '', 'Valeur': '' },
-    
-    // Non-adherents statistieken
     { 'Statistique': 'NIET-LEDEN', 'Valeur': '' },
     { 'Statistique': 'Totaal niet-leden', 'Valeur': seasonStats.nonAdherents.total },
     { 'Statistique': '  • < 8 jaar', 'Valeur': seasonStats.nonAdherents.ageGroups['< 8 ans'] || 0 },
@@ -613,8 +694,6 @@ const generateDetailedStatisticsForExcel = (seasonStats) => {
     { 'Statistique': '  • Onbekende leeftijd', 'Valeur': seasonStats.nonAdherents.ageGroups['Inconnu'] || 0 },
     { 'Statistique': 'Totaal betaald door niet-leden (€)', 'Valeur': seasonStats.nonAdherents.totalPaid.toFixed(2) },
     { 'Statistique': '', 'Valeur': '' },
-    
-    // Betalingsmethodes
     { 'Statistique': 'BETALINGSMETHODES', 'Valeur': '' },
     { 'Statistique': 'Contant (Espèces)', 'Valeur': seasonStats.paymentMethods.Especes || 0 },
     { 'Statistique': 'Bankkaart (CB)', 'Valeur': seasonStats.paymentMethods.CB || 0 },
@@ -622,7 +701,47 @@ const generateDetailedStatisticsForExcel = (seasonStats) => {
   ];
 };
 
-// **BESTAANDE FUNCTIES BLIJVEN**
+// **FUNCTIE: Beschikbare seizoenen ophalen**
+const getAvailableSeasons = () => {
+  try {
+    logMessage('📊 === GET AVAILABLE SEASONS GESTART ===');
+    
+    createTestDataIfNeeded();
+    
+    if (!fs.existsSync(HISTORY_FILE)) {
+      logMessage('❌ HISTORY_FILE bestaat niet na testdata poging');
+      return [];
+    }
+
+    const historyData = JSON.parse(fs.readFileSync(HISTORY_FILE, 'utf8'));
+    logMessage(`📊 Gelezen history data: ${historyData.length} entries`);
+    
+    if (!Array.isArray(historyData) || historyData.length === 0) {
+      logMessage('❌ History data is leeg of geen array');
+      return [];
+    }
+
+    const seasons = new Set();
+    
+    historyData.forEach(entry => {
+      const entryDate = new Date(entry.date);
+      const season = getCurrentSeason(entryDate);
+      seasons.add(season.seasonName);
+      logMessage(`📅 Entry datum: ${entry.date} -> seizoen: ${season.seasonName}`);
+    });
+
+    const seasonList = Array.from(seasons).sort().reverse();
+    logMessage(`✅ Beschikbare seizoenen gevonden: ${JSON.stringify(seasonList)}`);
+    
+    return seasonList;
+    
+  } catch (error) {
+    logMessage(`❌ Fout bij ophalen beschikbare seizoenen: ${error.message}`);
+    return [];
+  }
+};
+
+// **HELPER FUNCTIE: Assurance status**
 const getAssuranceStatus = (presence) => {
   if (presence.assuranceAccepted !== undefined) {
     return presence.assuranceAccepted ? 'Oui' : 'Non';
@@ -635,83 +754,7 @@ const getAssuranceStatus = (presence) => {
   return 'Non spécifié';
 };
 
-// **AANGEPASTE FUNCTIE: Beschikbare seizoenen ophalen**
-const getAvailableSeasons = () => {
-  try {
-    logMessage('=== GET AVAILABLE SEASONS GESTART ===');
-    
-    createTestDataIfNeeded();
-    
-    if (!fs.existsSync(HISTORY_FILE)) {
-      logMessage('HISTORY_FILE bestaat niet na testdata poging');
-      return [];
-    }
-
-    const historyData = JSON.parse(fs.readFileSync(HISTORY_FILE, 'utf8'));
-    logMessage(`Gelezen history data: ${historyData.length} entries`);
-    
-    if (!Array.isArray(historyData) || historyData.length === 0) {
-      logMessage('History data is leeg of geen array');
-      return [];
-    }
-
-    // Bepaal alle unieke seizoenen
-    const seasons = new Set();
-    
-    historyData.forEach(entry => {
-      const entryDate = new Date(entry.date);
-      const season = getCurrentSeason(entryDate);
-      seasons.add(season.seasonName);
-      logMessage(`Entry datum: ${entry.date} -> seizoen: ${season.seasonName}`);
-    });
-
-    const seasonList = Array.from(seasons).sort().reverse(); // Nieuwste eerst
-    logMessage(`Beschikbare seizoenen gevonden: ${JSON.stringify(seasonList)}`);
-    logMessage('=== GET AVAILABLE SEASONS VOLTOOID ===');
-    return seasonList;
-    
-  } catch (error) {
-    logMessage(`Fout bij ophalen beschikbare seizoenen: ${error.message}`);
-    return [];
-  }
-};
-
-// **NIEUWE FUNCTIE: Beschikbare jaren ophalen (voor historische export)**
-const getAvailableYears = () => {
-  try {
-    logMessage('=== GET AVAILABLE YEARS GESTART ===');
-    
-    createTestDataIfNeeded();
-    
-    if (!fs.existsSync(HISTORY_FILE)) {
-      logMessage('HISTORY_FILE bestaat niet na testdata poging');
-      return [];
-    }
-
-    const historyData = JSON.parse(fs.readFileSync(HISTORY_FILE, 'utf8'));
-    logMessage(`Gelezen history data: ${historyData.length} entries`);
-    
-    if (!Array.isArray(historyData) || historyData.length === 0) {
-      logMessage('History data is leeg of geen array');
-      return [];
-    }
-
-    const years = [...new Set(historyData.map(entry => {
-      const year = new Date(entry.date).getFullYear();
-      logMessage(`Entry datum: ${entry.date} -> jaar: ${year}`);
-      return year;
-    }))].sort((a, b) => b - a); // Nieuwste eerst
-
-    logMessage(`Beschikbare jaren gevonden: ${JSON.stringify(years)}`);
-    logMessage('=== GET AVAILABLE YEARS VOLTOOID ===');
-    return years;
-    
-  } catch (error) {
-    logMessage(`Fout bij ophalen beschikbare jaren: ${error.message}`);
-    return [];
-  }
-};
-
+// **MODULE EXPORTS - ALLE FUNCTIES**
 module.exports = {
   exportSeasonToExcel,
   exportYearToExcel,
