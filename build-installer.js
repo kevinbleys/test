@@ -2,8 +2,8 @@ const builder = require('electron-builder');
 const path = require('path');
 const fs = require('fs');
 
-console.log('🏗️  Logiciel d\'Escalade - Constructeur d\'installateur FRANÇAIS');
-console.log('================================================================');
+console.log('🏗️  Logiciel d\'Escalade - ULTIMATE CLEAN BUILDER');
+console.log('===================================================');
 
 // Vérifier tous les répertoires et fichiers requis
 const requiredPaths = [
@@ -32,17 +32,14 @@ requiredPaths.forEach(filePath => {
 if (missingFiles.length > 0) {
   console.error('❌ Fichiers manquants:');
   missingFiles.forEach(file => console.error(`   - ${file}`));
-  console.log('');
-  console.log('🔧 RÉSOUDRE LES FICHIERS MANQUANTS:');
-  console.log('1. Créer les fichiers PNG dans assets/');
-  console.log('2. Convertir PNG vers ICO: https://convertio.co/png-ico/');
   process.exit(1);
 }
 
-// Configuration de construction - VERSION FRANÇAISE
+// Configuration ULTRA SIMPLE - GEEN TAALCODES
 const buildConfig = {
-  appId: 'com.escalade.logiciel-presence',
-  productName: 'Logiciel d\'Escalade',
+  appId: 'com.escalade.logiciel',
+  productName: 'Logiciel Escalade',
+  copyright: 'Copyright © 2025 Kevin Bleys',
   directories: {
     output: 'dist'
   },
@@ -50,7 +47,6 @@ const buildConfig = {
     'main.js',
     'assets/**/*',
     'package.json',
-    // Backend avec dépendances
     {
       from: 'backend',
       to: 'resources/app/backend',
@@ -59,7 +55,6 @@ const buildConfig = {
         '!node_modules/**/*'
       ]
     },
-    // Build du tableau de bord admin
     {
       from: 'admin-dashboard/build',
       to: 'resources/app/admin-dashboard/build',
@@ -69,7 +64,6 @@ const buildConfig = {
       from: 'admin-dashboard/package.json',
       to: 'resources/app/admin-dashboard/package.json'
     },
-    // Build de l'interface tablette
     {
       from: 'tablet-ui/dist',
       to: 'resources/app/tablet-ui/dist',
@@ -81,91 +75,76 @@ const buildConfig = {
     }
   ],
   win: {
-    target: {
-      target: 'nsis',
-      arch: ['x64']
-    },
-    icon: 'assets/icon.ico',
-    requestedExecutionLevel: 'requireAdministrator'
+    target: 'nsis',
+    icon: 'assets/icon.ico'
   },
   nsis: {
     oneClick: false,
     allowToChangeInstallationDirectory: true,
     createDesktopShortcut: true,
-    createStartMenuShortcut: true,
     shortcutName: 'Logiciel Escalade',
-    installerIcon: 'assets/icon.ico',
-    uninstallerIcon: 'assets/icon.ico',
-    installerHeaderIcon: 'assets/icon.ico',
-    deleteAppDataOnUninstall: false,
-    runAfterFinish: false,
-    artifactName: 'logiciel-escalade-${version}.${ext}',
-    displayLanguageSelector: false,
-    installerLanguages: ['fr_FR'],
-    // Textes français pour l'installateur
-    language: 'fr_FR'
-  },
-  publish: null
+    artifactName: 'logiciel-escalade.${ext}'
+  }
 };
+
+// ULTIMATE CLEANUP FUNCTIE
+async function ultimateCleanup() {
+  console.log('🧹 ULTIMATE CLEANUP - verwijderen van alle cache...');
+  
+  const pathsToClean = [
+    path.join(__dirname, 'dist'),
+    path.join(__dirname, 'node_modules', '.cache'),
+    path.join(require('os').homedir(), 'AppData', 'Local', 'electron-builder'),
+    path.join(require('os').homedir(), 'AppData', 'Local', 'electron')
+  ];
+  
+  for (const cleanPath of pathsToClean) {
+    if (fs.existsSync(cleanPath)) {
+      try {
+        console.log(`🧹 Nettoyage: ${cleanPath}`);
+        fs.rmSync(cleanPath, { recursive: true, force: true });
+      } catch (error) {
+        console.log(`⚠️  Impossible de nettoyer ${cleanPath}:`, error.message);
+      }
+    }
+  }
+  
+  // Kill alle electron processen
+  try {
+    const { execSync } = require('child_process');
+    execSync('taskkill /f /im electron.exe 2>nul', { stdio: 'ignore' });
+    console.log('🛑 Processus Electron fermés');
+  } catch (error) {
+    // Ignore errors
+  }
+  
+  console.log('⏳ Attendre 3 secondes...');
+  await new Promise(resolve => setTimeout(resolve, 3000));
+}
 
 // Tâches de pré-construction
 async function preBuildTasks() {
-  console.log('📦 Exécution des tâches de pré-construction...');
+  console.log('📦 Vérification des builds...');
   const { execSync } = require('child_process');
   
-  // Vérifier si la construction du tableau de bord admin existe
+  // Admin dashboard build
   if (!fs.existsSync('admin-dashboard/build')) {
-    console.log('📊 Construction du tableau de bord admin non trouvée - construction...');
+    console.log('📊 Construction admin dashboard...');
     try {
-      console.log('📂 Répertoire de travail:', path.resolve('admin-dashboard'));
-      execSync('npm run build', { 
-        cwd: 'admin-dashboard', 
-        stdio: 'inherit',
-        timeout: 300000 // 5 minutes timeout
-      });
-      console.log('✅ Construction du tableau de bord admin réussie');
+      execSync('npm run build', { cwd: 'admin-dashboard', stdio: 'inherit' });
     } catch (error) {
-      console.error('❌ Échec de la construction du tableau de bord admin:', error.message);
-      console.log('💡 Aller au répertoire admin-dashboard et exécuter: npm run build');
+      console.error('❌ Échec build admin dashboard');
       return false;
     }
-  } else {
-    console.log('✅ Construction du tableau de bord admin existe déjà');
   }
   
-  // Vérifier si la construction de l'interface tablette existe
+  // Tablet UI build
   if (!fs.existsSync('tablet-ui/dist')) {
-    console.log('📱 Construction de l\'interface tablette non trouvée - construction...');
+    console.log('📱 Construction tablet UI...');
     try {
-      console.log('📂 Répertoire de travail:', path.resolve('tablet-ui'));
-      execSync('npm run build', { 
-        cwd: 'tablet-ui', 
-        stdio: 'inherit',
-        timeout: 300000 // 5 minutes timeout
-      });
-      console.log('✅ Construction de l\'interface tablette réussie');
+      execSync('npm run build', { cwd: 'tablet-ui', stdio: 'inherit' });
     } catch (error) {
-      console.error('❌ Échec de la construction de l\'interface tablette:', error.message);
-      console.log('💡 Aller au répertoire tablet-ui et exécuter: npm run build');
-      return false;
-    }
-  } else {
-    console.log('✅ Construction de l\'interface tablette existe déjà');
-  }
-  
-  // Installer les dépendances du backend si nécessaire
-  const backendNodeModules = path.join('backend', 'node_modules');
-  if (!fs.existsSync(backendNodeModules)) {
-    console.log('📦 Installation des dépendances du backend...');
-    try {
-      execSync('npm install --production', { 
-        cwd: 'backend', 
-        stdio: 'inherit',
-        timeout: 300000
-      });
-      console.log('✅ Dépendances du backend installées');
-    } catch (error) {
-      console.error('❌ Échec de l\'installation des dépendances du backend:', error.message);
+      console.error('❌ Échec build tablet UI');
       return false;
     }
   }
@@ -173,95 +152,73 @@ async function preBuildTasks() {
   return true;
 }
 
-// Fonction de nettoyage
-async function cleanupDist() {
-  console.log('🧹 Nettoyage des anciens fichiers de construction...');
-  const distDir = path.join(__dirname, 'dist');
-  
-  if (fs.existsSync(distDir)) {
-    try {
-      fs.rmSync(distDir, { recursive: true, force: true });
-      console.log('✅ Anciens fichiers de construction nettoyés');
-    } catch (error) {
-      console.log('⚠️  Impossible de supprimer tous les anciens fichiers:', error.message);
-    }
-  }
-  
-  await new Promise(resolve => setTimeout(resolve, 1000));
-}
-
-// Démarrer le processus de construction
-async function buildInstaller() {
+// ULTIMATE BUILD FUNCTION
+async function ultimateBuild() {
   try {
-    await cleanupDist();
+    // Ultimate cleanup
+    await ultimateCleanup();
     
+    // Pre-build tasks
     const preBuildSuccess = await preBuildTasks();
     if (!preBuildSuccess) {
       process.exit(1);
     }
     
-    console.log('🔨 Construction de l\'installateur avec icônes FRANÇAIS...');
-    console.log('⏳ Cela peut prendre 5-10 minutes...');
-    console.log('');
+    console.log('🔨 ULTIMATE BUILD - Configuration ultra simple...');
+    console.log('⏳ Construction en cours (5-10 minutes)...');
     
-    const result = await builder.build({
+    // Build with simple config
+    await builder.build({
       targets: builder.Platform.WINDOWS.createTarget('nsis', builder.Arch.x64),
       config: buildConfig
     });
     
     console.log('');
-    console.log('🎉 ✅ INSTALLATEUR FRANÇAIS CONSTRUIT AVEC SUCCÈS! ✅ 🎉');
-    console.log('=======================================================');
-    console.log('📂 Emplacement de l\'installateur:', path.join(__dirname, 'dist'));
-    console.log('');
+    console.log('🎉 ✅ ULTIMATE SUCCESS! ✅ 🎉');
+    console.log('================================');
     
-    // Rechercher le fichier .exe
+    // Find and show result
     const distDir = path.join(__dirname, 'dist');
     if (fs.existsSync(distDir)) {
       const exeFiles = fs.readdirSync(distDir).filter(file => file.endsWith('.exe'));
       if (exeFiles.length > 0) {
-        console.log('💾 Fichier d\'installation:', exeFiles[0]);
-        console.log('📊 Taille du fichier:', (fs.statSync(path.join(distDir, exeFiles[0])).size / (1024*1024)).toFixed(1) + ' MB');
+        console.log('💾 Fichier installer:', exeFiles[0]);
+        const fileSize = (fs.statSync(path.join(distDir, exeFiles[0])).size / (1024*1024)).toFixed(1);
+        console.log('📊 Taille:', fileSize + ' MB');
       }
     }
     
     console.log('');
-    console.log('🎯 INSTRUCTIONS DE DÉPLOIEMENT:');
-    console.log('===============================');
-    console.log('1. Copier le fichier .exe vers l\'ordinateur de la salle d\'escalade');
-    console.log('2. Démarrer l\'installateur EN TANT QU\'ADMINISTRATEUR');
-    console.log('3. Suivre les étapes d\'installation');
-    console.log('4. Les raccourcis du bureau seront créés automatiquement');
-    console.log('5. Le service backend démarrera automatiquement');
+    console.log('🎯 PRÊT POUR DÉPLOIEMENT:');
+    console.log('=========================');
+    console.log('1. Copier le .exe sur clé USB');
+    console.log('2. Installer en tant qu\'Administrateur');
+    console.log('3. L\'application sera en français');
+    console.log('4. Raccourci "Logiciel Escalade" créé sur le bureau');
     console.log('');
-    console.log('📱 Disponible après l\'installation:');
-    console.log('   • Tableau de Bord Admin: http://localhost:3000');
-    console.log('   • Interface Tablette: http://localhost:3002'); 
-    console.log('   • API Backend: http://localhost:3001');
-    console.log('');
-    console.log('🚀 SUCCÈS! Votre installateur français est prêt pour le déploiement!');
+    console.log('🚀 TERMINÉ AVEC SUCCÈS!');
     
   } catch (error) {
     console.error('');
-    console.error('❌ ERREUR DE CONSTRUCTION:');
-    console.error('===========================');
+    console.error('❌ ERREUR ULTIMATE:');
+    console.error('===================');
     console.error(error.message);
+    
     console.log('');
-    console.log('🔧 SOLUTIONS POSSIBLES:');
-    console.log('1. Vérifier que tous les node_modules sont installés');
-    console.log('2. Construire admin-dashboard: cd admin-dashboard && npm run build');
-    console.log('3. Construire tablet-ui: cd tablet-ui && npm run build');
-    console.log('4. Vérifier que tous les icônes PNG et ICO existent dans assets/');
-    console.log('5. Exécuter en tant qu\'Administrateur');
-    console.log('6. Essayer: npm run clean && npm run build');
+    console.log('🆘 DERNIÈRE TENTATIVE:');
+    console.log('======================');
+    console.log('1. Redémarrer l\'ordinateur');
+    console.log('2. Ouvrir PowerShell en tant qu\'Administrateur');
+    console.log('3. cd vers le dossier du projet');
+    console.log('4. npm run rebuild');
     
     process.exit(1);
   }
 }
 
-// Vérifier les dépendances
-const requiredDeps = ['electron', 'electron-builder'];
-const missingDeps = requiredDeps.filter(dep => {
+// VÉRIFICATION DES DÉPENDANCES
+const deps = ['electron', 'electron-builder'];
+const missing = deps.filter(dep => {
   try {
     require.resolve(dep);
     return false;
@@ -270,11 +227,11 @@ const missingDeps = requiredDeps.filter(dep => {
   }
 });
 
-if (missingDeps.length > 0) {
-  console.error('❌ Dépendances manquantes:', missingDeps.join(', '));
-  console.log('💡 Les installer avec: npm install --save-dev', missingDeps.join(' '));
+if (missing.length > 0) {
+  console.error('❌ Dépendances manquantes:', missing.join(', '));
+  console.log('💡 Installer avec: npm install --save-dev', missing.join(' '));
   process.exit(1);
 }
 
-// Démarrer la construction
-buildInstaller();
+// START ULTIMATE BUILD
+ultimateBuild();

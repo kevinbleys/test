@@ -1,13 +1,13 @@
 {
   "name": "logiciel-escalade",
   "version": "1.0.0",
-  "description": "Logiciel de gestion de présence pour salle d'escalade",
+  "description": "Logiciel de gestion de presence pour salle d'escalade",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
     "dev": "electron . --dev",
     "build": "node build-installer.js",
-    "clean": "rmdir /s /q dist 2>nul || echo 'Dossier dist effacé'",
+    "clean": "rmdir /s /q dist 2>nul || echo 'Dossier dist efface'",
     "rebuild": "npm run clean && npm run build"
   },
   "author": "Kevin Bleys",
@@ -55,8 +55,7 @@
       "deleteAppDataOnUninstall": false,
       "runAfterFinish": false,
       "artifactName": "logiciel-escalade-${version}.${ext}",
-      "displayLanguageSelector": false,
-      "installerLanguages": ["fr_FR"]
+      "displayLanguageSelector": false
     }
   }
 }

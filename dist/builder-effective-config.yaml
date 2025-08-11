@@ -1,8 +1,8 @@
 directories:
   output: dist
   buildResources: build
-appId: com.escalade.logiciel-presence
-productName: Logiciel d'Escalade
+appId: com.escalade.logiciel
+productName: Logiciel Escalade
 files:
   - filter:
       - main.js
@@ -34,10 +34,7 @@ files:
   - from: tablet-ui/package.json
     to: resources/app/tablet-ui/package.json
 win:
-  target:
-    target: nsis
-    arch:
-      - x64
+  target: nsis
   icon: assets/icon.ico
   requestedExecutionLevel: requireAdministrator
 nsis:
@@ -50,11 +47,7 @@ nsis:
   uninstallerIcon: assets/icon.ico
   deleteAppDataOnUninstall: false
   runAfterFinish: false
-  artifactName: logiciel-escalade-${version}.${ext}
+  artifactName: logiciel-escalade.${ext}
   displayLanguageSelector: false
-  installerLanguages:
-    - fr_FR
-  installerHeaderIcon: assets/icon.ico
-  language: fr_FR
-publish: null
+copyright: Copyright © 2025 Kevin Bleys
 electronVersion: 25.9.8
