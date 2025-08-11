@@ -591,3 +591,39 @@
 [2025-08-10T01:00:00.906Z] CLEANUP: Log bestand OK: export.log (0.00MB)
 [2025-08-10T01:00:00.908Z] CLEANUP: === CLEANUP LOG BESTANDEN BEËINDIGD ===
 [2025-08-10T01:00:00.911Z] CLEANUP: 🧹 DAGELIJKSE CLEANUP VOLTOOID
+[2025-08-11T00:00:00.908Z] CLEANUP: 🧹 DAGELIJKSE CLEANUP GESTART
+[2025-08-11T00:00:00.923Z] CLEANUP: === CLEANUP BACKUP BESTANDEN GESTART ===
+[2025-08-11T00:00:00.926Z] CLEANUP: Gevonden 20 backup bestanden
+[2025-08-11T00:00:00.928Z] CLEANUP: Behouden: 5 backups (de 5 nieuwste)
+[2025-08-11T00:00:00.948Z] CLEANUP:   ✓ Behouden: members_backup_1754838341523.json (10/08/2025)
+[2025-08-11T00:00:00.950Z] CLEANUP:   ✓ Behouden: members_backup_1754834741545.json (10/08/2025)
+[2025-08-11T00:00:00.952Z] CLEANUP:   ✓ Behouden: members_backup_1754831141546.json (10/08/2025)
+[2025-08-11T00:00:00.953Z] CLEANUP:   ✓ Behouden: members_backup_1754827541234.json (10/08/2025)
+[2025-08-11T00:00:00.955Z] CLEANUP:   ✓ Behouden: members_backup_1754823941344.json (10/08/2025)
+[2025-08-11T00:00:00.957Z] CLEANUP:   🗑️  Verwijderd: members_backup_1754820341355.json (10/08/2025)
+[2025-08-11T00:00:00.959Z] CLEANUP:   🗑️  Verwijderd: members_backup_1754816741440.json (10/08/2025)
+[2025-08-11T00:00:00.961Z] CLEANUP:   🗑️  Verwijderd: members_backup_1754813141379.json (10/08/2025)
+[2025-08-11T00:00:00.963Z] CLEANUP:   🗑️  Verwijderd: members_backup_1754809541233.json (10/08/2025)
+[2025-08-11T00:00:00.965Z] CLEANUP:   🗑️  Verwijderd: members_backup_1754805941056.json (10/08/2025)
+[2025-08-11T00:00:00.967Z] CLEANUP:   🗑️  Verwijderd: members_backup_1754802341538.json (10/08/2025)
+[2025-08-11T00:00:00.968Z] CLEANUP:   🗑️  Verwijderd: members_backup_1754798741329.json (10/08/2025)
+[2025-08-11T00:00:00.971Z] CLEANUP:   🗑️  Verwijderd: members_backup_1754795141492.json (10/08/2025)
+[2025-08-11T00:00:00.972Z] CLEANUP:   🗑️  Verwijderd: members_backup_1754791541223.json (10/08/2025)
+[2025-08-11T00:00:00.974Z] CLEANUP:   🗑️  Verwijderd: members_backup_1754787941326.json (10/08/2025)
+[2025-08-11T00:00:00.976Z] CLEANUP:   🗑️  Verwijderd: members_backup_1754784341335.json (10/08/2025)
+[2025-08-11T00:00:00.977Z] CLEANUP:   🗑️  Verwijderd: members_backup_1754780741164.json (10/08/2025)
+[2025-08-11T00:00:00.979Z] CLEANUP:   🗑️  Verwijderd: members_backup_1754777141330.json (10/08/2025)
+[2025-08-11T00:00:00.981Z] CLEANUP:   🗑️  Verwijderd: members_backup_1754773541186.json (09/08/2025)
+[2025-08-11T00:00:00.982Z] CLEANUP:   🗑️  Verwijderd: members_backup_1754769941031.json (09/08/2025)
+[2025-08-11T00:00:00.984Z] CLEANUP: CLEANUP VOLTOOID: 15 oude backup bestanden verwijderd
+[2025-08-11T00:00:00.985Z] CLEANUP: === CLEANUP BACKUP BESTANDEN BEËINDIGD ===
+[2025-08-11T00:00:00.987Z] CLEANUP: === PRESENCE HISTORY CLEANUP OVERGESLAGEN ===
+[2025-08-11T00:00:00.988Z] CLEANUP: Presence history wordt alleen handmatig opgeruimd na jaarlijkse Excel export
+[2025-08-11T00:00:00.990Z] CLEANUP: Gebruik de Excel export functie voor jaarlijkse archivering
+[2025-08-11T00:00:00.991Z] CLEANUP: === PRESENCE HISTORY CLEANUP BEËINDIGD ===
+[2025-08-11T00:00:00.993Z] CLEANUP: === CLEANUP LOG BESTANDEN GESTART ===
+[2025-08-11T00:00:00.994Z] CLEANUP: Log bestand OK: sync.log (0.34MB)
+[2025-08-11T00:00:00.996Z] CLEANUP: Log bestand OK: cleanup.log (0.06MB)
+[2025-08-11T00:00:00.997Z] CLEANUP: Log bestand OK: export.log (0.01MB)
+[2025-08-11T00:00:00.999Z] CLEANUP: === CLEANUP LOG BESTANDEN BEËINDIGD ===
+[2025-08-11T00:00:01.000Z] CLEANUP: 🧹 DAGELIJKSE CLEANUP VOLTOOID

@@ -1,0 +1,7 @@
+.excell-active {
+	box-shadow: 1px 1px 0 #ccc inset, -1px -1px 0 #ccc inset;
+}
+.excell-input {
+	border: 1px solid #ccc;
+	box-sizing: border-box;
+}

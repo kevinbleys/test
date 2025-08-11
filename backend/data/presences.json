@@ -1,18 +1,1 @@
-[
-  {
-    "id": "1754831282812",
-    "type": "adherent",
-    "nom": "bleys",
-    "prenom": "kevin",
-    "date": "2025-08-10T13:08:02.812Z",
-    "status": "adherent"
-  },
-  {
-    "id": "1754831300698",
-    "type": "adherent",
-    "nom": "cadu",
-    "prenom": "maud",
-    "date": "2025-08-10T13:08:20.698Z",
-    "status": "adherent"
-  }
-]
+[]

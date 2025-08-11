@@ -1,0 +1,28 @@
+body {
+	font-size: 16px;
+	line-height: 16px;
+}
+
+.table {
+	border-collapse: collapse;
+}
+.table,
+.table th,
+.table td {
+	border: 1px solid #ccc;
+}
+.table th,
+.table td {
+	padding: 4px 8px;
+}
+.table th.excell-editing,
+.table td.excell-editing {
+	padding: 0;
+}
+.table th::before,
+.table td::before {
+	content: "";
+	display: inline-block;
+	height: 16px;
+	width: 0;
+}
