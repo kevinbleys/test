@@ -5,19 +5,23 @@ const fs = require('fs');
 
 // Globale variabelen
 let mainWindow;
-let backendProcess;
+let processes = [];
 let tray;
 
-// Configuratie - GECORRIGEERDE POORTEN
-const BACKEND_PORT = 3001;  // Backend API server
-const ADMIN_PORT = 4000;    // Admin dashboard server  
-const BACKEND_PATH = path.join(__dirname, 'backend');
-const BACKEND_SCRIPT = path.join(BACKEND_PATH, 'server.js');
+// Configuratie - GEBASEERD OP JE STARTUP.BAT
+const BACKEND_PORT = 3001;     // Backend API server
+const ADMIN_PORT = 3000;       // Admin dashboard server (React default)  
+const TABLET_PORT = 3002;      // Tablet interface server
+const PATHS = {
+  backend: path.join(__dirname, 'backend'),
+  adminDashboard: path.join(__dirname, 'admin-dashboard'),
+  tabletUi: path.join(__dirname, 'tablet-ui')
+};
 
 // App ready event
 app.whenReady().then(() => {
   createWindow();
-  startBackend();
+  startAllServices();
   createTray();
   
   app.on('activate', () => {
@@ -25,32 +29,31 @@ app.whenReady().then(() => {
   });
 });
 
-// Quit app wanneer alle vensters gesloten zijn (behalve macOS)
+// Quit app wanneer alle vensters gesloten zijn
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
-    stopBackend();
+    stopAllServices();
     app.quit();
   }
 });
 
 // App wordt beëindigd
 app.on('before-quit', () => {
-  stopBackend();
+  stopAllServices();
 });
 
 function createWindow() {
-  // Maak browser venster
   mainWindow = new BrowserWindow({
-    width: 1200,
-    height: 800,
-    icon: path.join(__dirname, 'assets', 'icon.ico'),
+    width: 1400,
+    height: 900,
+    icon: path.join(__dirname, 'assets', 'icon.png'), // GEBRUIKT PNG
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
       webSecurity: true
     },
     autoHideMenuBar: true,
-    title: 'Klimzaal Presence Management - Admin Dashboard'
+    title: 'Klimzaal Presence Management - Opstarten...'
   });
 
   // Menu verwijderen in productie
@@ -58,16 +61,68 @@ function createWindow() {
     mainWindow.setMenuBarVisibility(false);
   }
 
-  // Wacht tot backend opgestart is, dan load ADMIN DASHBOARD op poort 4000
-  setTimeout(() => {
-    mainWindow.loadURL(`http://localhost:${ADMIN_PORT}`);
-  }, 3000);
+  // Loading page terwijl services starten
+  const loadingHTML = `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <title>Klimzaal Loading...</title>
+      <style>
+        body { 
+          font-family: Arial; 
+          display: flex; 
+          justify-content: center; 
+          align-items: center; 
+          height: 100vh; 
+          margin: 0; 
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          color: white;
+        }
+        .loader { 
+          text-align: center; 
+          background: rgba(255,255,255,0.1);
+          padding: 40px;
+          border-radius: 20px;
+          backdrop-filter: blur(10px);
+        }
+        .spinner { 
+          border: 4px solid rgba(255,255,255,0.3); 
+          border-top: 4px solid #ffffff; 
+          border-radius: 50%; 
+          width: 60px; 
+          height: 60px; 
+          animation: spin 2s linear infinite; 
+          margin: 0 auto 20px; 
+        }
+        @keyframes spin { 
+          0% { transform: rotate(0deg); } 
+          100% { transform: rotate(360deg); } 
+        }
+        h2 { margin-bottom: 10px; }
+        p { margin: 5px 0; opacity: 0.9; }
+      </style>
+    </head>
+    <body>
+      <div class="loader">
+        <div class="spinner"></div>
+        <h2>🧗‍♀️ Klimzaal Presence Management</h2>
+        <p>⚡ Services worden gestart...</p>
+        <p>📊 Admin Dashboard (poort 3000)</p>
+        <p>📱 Tablet Interface (poort 3002)</p>
+        <p>🔧 Backend API (poort 3001)</p>
+        <p><br>⏳ Even geduld alstublieft...</p>
+      </div>
+    </body>
+    </html>
+  `;
+  
+  mainWindow.loadURL(`data:text/html;charset=utf-8,${encodeURIComponent(loadingHTML)}`);
 
-  // Open externe links in browser
-  mainWindow.webContents.setWindowOpenHandler(({ url }) => {
-    shell.openExternal(url);
-    return { action: 'deny' };
-  });
+  // Wacht op services en laad dan admin dashboard
+  setTimeout(() => {
+    mainWindow.setTitle('Klimzaal Presence Management - Admin Dashboard');
+    mainWindow.loadURL(`http://localhost:${ADMIN_PORT}`);
+  }, 8000); // 8 seconden om alle services te starten
 
   // Development tools
   if (isDev()) {
@@ -75,39 +130,70 @@ function createWindow() {
   }
 }
 
-function startBackend() {
-  if (!fs.existsSync(BACKEND_SCRIPT)) {
-    console.error('Backend script niet gevonden:', BACKEND_SCRIPT);
-    return;
+function startAllServices() {
+  console.log('🚀 Alle services starten...');
+  
+  // Start Backend (poort 3001)
+  if (fs.existsSync(path.join(PATHS.backend, 'server.js'))) {
+    console.log('📡 Backend starten op poort 3001...');
+    const backendProcess = spawn('npm', ['start'], {
+      cwd: PATHS.backend,
+      stdio: isDev() ? 'inherit' : 'ignore',
+      shell: true,
+      env: { ...process.env, NODE_ENV: 'production', PORT: BACKEND_PORT }
+    });
+    processes.push({ name: 'Backend', process: backendProcess, port: BACKEND_PORT });
   }
 
-  console.log('🚀 Backend starten...');
-  
-  backendProcess = spawn('node', [BACKEND_SCRIPT], {
-    cwd: BACKEND_PATH,
-    stdio: isDev() ? 'inherit' : 'ignore',
-    env: { ...process.env, NODE_ENV: 'production' }
-  });
+  // Start Admin Dashboard (poort 3000) 
+  if (fs.existsSync(path.join(PATHS.adminDashboard, 'package.json'))) {
+    console.log('📊 Admin Dashboard starten op poort 3000...');
+    const adminProcess = spawn('npm', ['start'], {
+      cwd: PATHS.adminDashboard,
+      stdio: isDev() ? 'inherit' : 'ignore', 
+      shell: true,
+      env: { ...process.env, NODE_ENV: 'production', PORT: ADMIN_PORT }
+    });
+    processes.push({ name: 'Admin Dashboard', process: adminProcess, port: ADMIN_PORT });
+  }
 
-  backendProcess.on('error', (error) => {
-    console.error('Backend error:', error);
-  });
+  // Start Tablet UI (poort 3002 om conflict te vermijden)
+  if (fs.existsSync(path.join(PATHS.tabletUi, 'package.json'))) {
+    console.log('📱 Tablet UI starten op poort 3002...');
+    const tabletProcess = spawn('npm', ['start'], {
+      cwd: PATHS.tabletUi,
+      stdio: isDev() ? 'inherit' : 'ignore',
+      shell: true,
+      env: { ...process.env, NODE_ENV: 'production', PORT: TABLET_PORT }
+    });
+    processes.push({ name: 'Tablet UI', process: tabletProcess, port: TABLET_PORT });
+  }
 
-  backendProcess.on('exit', (code) => {
-    console.log(`Backend gestopt met code ${code}`);
+  // Error handling voor alle processen
+  processes.forEach(({ name, process }) => {
+    process.on('error', (error) => {
+      console.error(`❌ ${name} error:`, error);
+    });
+    
+    process.on('exit', (code) => {
+      console.log(`🛑 ${name} gestopt met code ${code}`);
+    });
   });
 }
 
-function stopBackend() {
-  if (backendProcess) {
-    console.log('🛑 Backend stoppen...');
-    backendProcess.kill();
-    backendProcess = null;
-  }
+function stopAllServices() {
+  console.log('🛑 Alle services stoppen...');
+  processes.forEach(({ name, process }) => {
+    if (process && !process.killed) {
+      console.log(`🛑 ${name} stoppen...`);
+      process.kill();
+    }
+  });
+  processes = [];
 }
 
 function createTray() {
-  const iconPath = path.join(__dirname, 'assets', 'tray-icon.ico');
+  const iconPath = path.join(__dirname, 'assets', 'tray-icon.png'); // GEBRUIKT PNG
   
   if (fs.existsSync(iconPath)) {
     tray = new Tray(iconPath);
@@ -119,7 +205,7 @@ function createTray() {
       },
       { 
         label: 'Tablet Interface', 
-        click: () => shell.openExternal(`http://localhost:${ADMIN_PORT}/tablet`)
+        click: () => shell.openExternal(`http://localhost:${TABLET_PORT}`)
       },
       { 
         label: 'Backend API', 
@@ -136,6 +222,14 @@ function createTray() {
         }
       },
       { 
+        label: 'Herstart Services',
+        click: () => {
+          stopAllServices();
+          setTimeout(() => startAllServices(), 2000);
+        }
+      },
+      { type: 'separator' },
+      { 
         label: 'Afsluiten', 
         click: () => app.quit()
       }
@@ -144,7 +238,6 @@ function createTray() {
     tray.setToolTip('Klimzaal Presence Management');
     tray.setContextMenu(contextMenu);
     
-    // Dubbelklik om hoofdvenster te tonen
     tray.on('double-click', () => {
       if (mainWindow) {
         mainWindow.show();
