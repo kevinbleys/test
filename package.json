@@ -17,7 +17,8 @@
     "electron-builder": "^24.0.0"
   },
   "dependencies": {
-    "node-windows": "^0.1.14"
+    "node-windows": "^0.1.14",
+    "express": "^4.18.0"
   },
   "build": {
     "appId": "com.escalade.logiciel-presence",
@@ -28,13 +29,15 @@
     "files": [
       "main.js",
       "backend/**/*",
-      "admin-dashboard/**/*",
-      "tablet-ui/**/*", 
+      "admin-dashboard/build/**/*",
+      "tablet-ui/dist/**/*", 
       "assets/**/*",
       "package.json",
       "!backend/node_modules/**/*",
       "!admin-dashboard/node_modules/**/*",
-      "!tablet-ui/node_modules/**/*"
+      "!tablet-ui/node_modules/**/*",
+      "!admin-dashboard/src/**/*",
+      "!tablet-ui/src/**/*"
     ],
     "win": {
       "target": "nsis",
@@ -48,7 +51,7 @@
       "createStartMenuShortcut": true,
       "shortcutName": "Logiciel Escalade",
       "installerIcon": "assets/icon.ico",
-      "uninstallerIcon": "assets/icon.ico", 
+      "uninstallerIcon": "assets/icon.ico",
       "deleteAppDataOnUninstall": false,
       "runAfterFinish": false,
       "artifactName": "logiciel-escalade-${version}.${ext}",

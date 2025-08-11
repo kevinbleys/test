@@ -7,13 +7,32 @@ files:
   - filter:
       - main.js
       - backend/**/*
-      - admin-dashboard/**/*
-      - tablet-ui/**/*
+      - admin-dashboard/build/**/*
+      - tablet-ui/dist/**/*
       - assets/**/*
       - package.json
       - '!backend/node_modules/**/*'
       - '!admin-dashboard/node_modules/**/*'
       - '!tablet-ui/node_modules/**/*'
+      - '!admin-dashboard/src/**/*'
+      - '!tablet-ui/src/**/*'
+  - from: backend
+    to: resources/app/backend
+    filter:
+      - '**/*'
+      - '!node_modules/**/*'
+  - from: admin-dashboard/build
+    to: resources/app/admin-dashboard/build
+    filter:
+      - '**/*'
+  - from: admin-dashboard/package.json
+    to: resources/app/admin-dashboard/package.json
+  - from: tablet-ui/dist
+    to: resources/app/tablet-ui/dist
+    filter:
+      - '**/*'
+  - from: tablet-ui/package.json
+    to: resources/app/tablet-ui/package.json
 win:
   target:
     target: nsis
@@ -36,5 +55,6 @@ nsis:
   installerLanguages:
     - fr_FR
   installerHeaderIcon: assets/icon.ico
+  language: fr_FR
 publish: null
 electronVersion: 25.9.8
