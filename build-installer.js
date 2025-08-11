@@ -2,14 +2,15 @@ const builder = require('electron-builder');
 const path = require('path');
 const fs = require('fs');
 
-console.log('🏗️  Klimzaal Presence Management - PNG Installer Builder');
-console.log('=============================================================');
+console.log('🏗️  Klimzaal Presence Management - HYBRID Installer Builder');
+console.log('================================================================');
 
-// Controleer alle vereiste directories en bestanden - NU MET PNG!
+// Controleer alle vereiste directories en bestanden - HYBRID VERSIE
 const requiredPaths = [
-  'assets/icon.png',           // VERANDERD van .ico naar .png
-  'assets/tablet-icon.png',    // VERANDERD van .ico naar .png
-  'assets/tray-icon.png',      // VERANDERD van .ico naar .png
+  'assets/icon.png',           // Voor Electron app
+  'assets/tablet-icon.png',    // Voor Electron app
+  'assets/tray-icon.png',      // Voor Electron app
+  'assets/icon.ico',           // Voor NSIS installer (NIEUW!)
   'main.js',
   'backend/server.js',
   'backend/package.json',
@@ -17,7 +18,7 @@ const requiredPaths = [
   'tablet-ui/package.json'
 ];
 
-console.log('📋 Bestandencheck (PNG versie)...');
+console.log('📋 Bestandencheck (HYBRID versie - PNG + ICO)...');
 let missingFiles = [];
 
 requiredPaths.forEach(filePath => {
@@ -29,26 +30,35 @@ requiredPaths.forEach(filePath => {
 });
 
 if (missingFiles.length > 0) {
-  console.error('❌ Ontbrekende PNG bestanden:');
+  console.error('❌ Ontbrekende bestanden:');
   missingFiles.forEach(file => console.error(`   - ${file}`));
   console.log('');
-  console.log('🔧 ONTBREKENDE PNG BESTANDEN OPLOSSEN:');
-  console.log('1. Maak PNG bestanden aan in assets/ folder:');
+  console.log('🔧 ONTBREKENDE BESTANDEN OPLOSSEN:');
+  console.log('');
+  console.log('🖼️  Voor PNG bestanden (Electron app iconen):');
   console.log('   • icon.png (256x256 of groter)');
   console.log('   • tablet-icon.png (256x256 of groter)'); 
   console.log('   • tray-icon.png (32x32 of groter)');
-  console.log('2. Of converteer je ICO bestanden naar PNG via:');
-  console.log('   https://convertio.co/ico-png/');
   console.log('');
-  console.log('💡 TIP: Je kunt ook tijdelijk zonder iconen bouwen door');
-  console.log('   de icon-regels uit package.json te verwijderen.');
+  console.log('🎯 Voor ICO bestand (NSIS installer icoon):');
+  console.log('   • icon.ico (Windows ico formaat, multi-size)');
+  console.log('');
+  console.log('💡 SNELLE ICO CONVERSIE:');
+  console.log('   1. Ga naar: https://convertio.co/png-ico/');
+  console.log('   2. Upload je icon.png');
+  console.log('   3. Download als icon.ico');
+  console.log('   4. Plaats in assets/ folder');
+  console.log('');
+  console.log('⚡ OF gebruik online ICO maker:');
+  console.log('   https://www.favicon-generator.org/');
+  
   process.exit(1);
 }
 
-// Build configuratie - MET PNG ICONEN
+// Build configuratie - HYBRID (PNG voor app, ICO voor installer)
 const buildConfig = {
-  appId: 'com.klimzaal.presence-management',
-  productName: 'Klimzaal Presence Management',
+  appId: 'com.escalade.logiciel-presence',
+  productName: 'Logiciel d\'Escalade',  // FRANSE NAAM
   directories: {
     output: 'dist'
   },
@@ -56,42 +66,14 @@ const buildConfig = {
     'main.js',
     'assets/**/*',
     'package.json',
-    // Backend inclusief dependencies
-    {
-      from: 'backend',
-      to: 'backend', 
-      filter: [
-        '**/*',
-        '!node_modules/**/*'  // Exclude node_modules - will be reinstalled
-      ]
-    },
-    // Admin dashboard build
-    {
-      from: 'admin-dashboard/build',
-      to: 'admin-dashboard/build',
-      filter: ['**/*']
-    },
-    {
-      from: 'admin-dashboard/package.json',
-      to: 'admin-dashboard/package.json'
-    },
-    // Tablet UI build
-    {
-      from: 'tablet-ui/dist', 
-      to: 'tablet-ui/dist',
-      filter: ['**/*']
-    },
-    {
-      from: 'tablet-ui/package.json',
-      to: 'tablet-ui/package.json'
-    }
+    // ... rest van je files
   ],
   win: {
     target: {
       target: 'nsis',
       arch: ['x64']
     },
-    icon: 'assets/icon.png',  // PNG IN PLAATS VAN ICO
+    icon: 'assets/icon.ico',
     requestedExecutionLevel: 'requireAdministrator'
   },
   nsis: {
@@ -99,16 +81,15 @@ const buildConfig = {
     allowToChangeInstallationDirectory: true,
     createDesktopShortcut: true,
     createStartMenuShortcut: true,
-    shortcutName: 'Klimzaal Admin',
-    installerIcon: 'assets/icon.png',         // PNG
-    uninstallerIcon: 'assets/icon.png',       // PNG
-    installerHeaderIcon: 'assets/icon.png',   // PNG
+    shortcutName: 'Logiciel Escalade',              // FRANSE SHORTCUT NAAM
+    installerIcon: 'assets/icon.ico',
+    uninstallerIcon: 'assets/icon.ico',
+    installerHeaderIcon: 'assets/icon.ico',
     deleteAppDataOnUninstall: false,
-    runAfterFinish: true,
-    include: 'installer-script.nsh',
-    artifactName: 'Klimzaal-Presence-Management-Setup-${version}.${ext}',
+    runAfterFinish: false,
+    artifactName: 'logiciel-escalade-${version}.${ext}',  // FRANSE BESTANDSNAAM
     displayLanguageSelector: false,
-    installerLanguages: ['nl_NL', 'en_US']
+    installerLanguages: ['fr_FR']                   // FRANSE TAAL
   },
   publish: null
 };
@@ -126,11 +107,14 @@ async function preBuildTasks() {
         cwd: 'admin-dashboard', 
         stdio: 'inherit' 
       });
+      console.log('✅ Admin dashboard build succesvol');
     } catch (error) {
       console.error('❌ Admin dashboard build gefaald:', error.message);
       console.log('💡 Ga naar admin-dashboard map en run: npm run build');
       return false;
     }
+  } else {
+    console.log('✅ Admin dashboard build bestaat al');
   }
   
   // Controleer of tablet-ui build bestaat  
@@ -141,26 +125,52 @@ async function preBuildTasks() {
         cwd: 'tablet-ui', 
         stdio: 'inherit' 
       });
+      console.log('✅ Tablet UI build succesvol');
     } catch (error) {
       console.error('❌ Tablet UI build gefaald:', error.message);
       console.log('💡 Ga naar tablet-ui map en run: npm run build');
       return false;
     }
+  } else {
+    console.log('✅ Tablet UI build bestaat al');
   }
   
   return true;
 }
 
+// Cleanup functie om locked bestanden te verwijderen
+async function cleanupDist() {
+  console.log('🧹 Opruimen oude build bestanden...');
+  const distDir = path.join(__dirname, 'dist');
+  
+  if (fs.existsSync(distDir)) {
+    try {
+      // Probeer dist directory te verwijderen
+      fs.rmSync(distDir, { recursive: true, force: true });
+      console.log('✅ Oude build bestanden opgeruimd');
+    } catch (error) {
+      console.log('⚠️  Kon niet alle oude bestanden verwijderen:', error.message);
+      console.log('💡 Dit is normaal als bestanden in gebruik zijn');
+    }
+  }
+  
+  // Even wachten
+  await new Promise(resolve => setTimeout(resolve, 1000));
+}
+
 // Start build proces
 async function buildInstaller() {
   try {
+    // Cleanup eerst
+    await cleanupDist();
+    
     // Pre-build checks
     const preBuildSuccess = await preBuildTasks();
     if (!preBuildSuccess) {
       process.exit(1);
     }
     
-    console.log('🔨 Installer bouwen met PNG iconen...');
+    console.log('🔨 Installer bouwen met HYBRID iconen (PNG+ICO)...');
     console.log('⏳ Dit kan 5-10 minuten duren...');
     console.log('');
     
@@ -170,8 +180,8 @@ async function buildInstaller() {
     });
     
     console.log('');
-    console.log('🎉 ✅ PNG INSTALLER SUCCESVOL GEBOUWD! ✅ 🎉');
-    console.log('===================================================');
+    console.log('🎉 ✅ HYBRID INSTALLER SUCCESVOL GEBOUWD! ✅ 🎉');
+    console.log('======================================================');
     console.log('📂 Installer locatie:', path.join(__dirname, 'dist'));
     console.log('');
     
@@ -186,6 +196,11 @@ async function buildInstaller() {
     }
     
     console.log('');
+    console.log('🎯 ICONEN CONFIGURATIE:');
+    console.log('========================');
+    console.log('📱 Electron app gebruikt: PNG bestanden');
+    console.log('💿 NSIS installer gebruikt: ICO bestand');
+    console.log('');
     console.log('🎯 DEPLOYMENT INSTRUCTIES:');
     console.log('==========================');
     console.log('1. Kopieer de .exe naar de klimzaalcomputer');
@@ -199,7 +214,7 @@ async function buildInstaller() {
     console.log('   • Tablet Interface: http://localhost:3002'); 
     console.log('   • Backend API: http://localhost:3001');
     console.log('');
-    console.log('🚀 SUCCES! Je PNG installer is klaar voor deployment!');
+    console.log('🚀 SUCCES! Je HYBRID installer is klaar voor deployment!');
     
   } catch (error) {
     console.error('');
@@ -208,10 +223,10 @@ async function buildInstaller() {
     console.error(error.message);
     console.log('');
     console.log('🔧 MOGELIJKE OPLOSSINGEN:');
-    console.log('1. Controleer of alle node_modules geïnstalleerd zijn');
-    console.log('2. Bouw admin-dashboard: cd admin-dashboard && npm run build');
-    console.log('3. Bouw tablet-ui: cd tablet-ui && npm run build');
-    console.log('4. Controleer of alle PNG iconen bestaan in assets/');
+    console.log('1. Controleer of icon.ico een geldig ICO bestand is');
+    console.log('2. Herstart PowerShell en probeer opnieuw');
+    console.log('3. Verwijder dist/ folder handmatig en probeer opnieuw');
+    console.log('4. Converteer PNG naar ICO: https://convertio.co/png-ico/');
     console.log('5. Run als Administrator');
     
     process.exit(1);

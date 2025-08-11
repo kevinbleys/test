@@ -1,14 +1,14 @@
 {
-  "name": "klimzaal-presence-management",
+  "name": "logiciel-escalade",
   "version": "1.0.0",
-  "description": "Klimzaal Presence Management Systeem - Complete Installer",
+  "description": "Logiciel de gestion de présence pour salle d'escalade",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
     "dev": "electron . --dev",
     "build": "node build-installer.js",
-    "install-deps": "npm install",
-    "postinstall": "electron-builder install-app-deps"
+    "clean": "rmdir /s /q dist 2>nul || echo 'Dossier dist effacé'",
+    "rebuild": "npm run clean && npm run build"
   },
   "author": "Kevin Bleys",
   "license": "MIT",
@@ -20,8 +20,8 @@
     "node-windows": "^0.1.14"
   },
   "build": {
-    "appId": "com.klimzaal.presence-management",
-    "productName": "Klimzaal Presence Management",
+    "appId": "com.escalade.logiciel-presence",
+    "productName": "Logiciel d'Escalade",
     "directories": {
       "output": "dist"
     },
@@ -38,7 +38,7 @@
     ],
     "win": {
       "target": "nsis",
-      "icon": "assets/icon.png",
+      "icon": "assets/icon.ico",
       "requestedExecutionLevel": "requireAdministrator"
     },
     "nsis": {
@@ -46,11 +46,14 @@
       "allowToChangeInstallationDirectory": true,
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true,
-      "shortcutName": "Klimzaal Admin",
-      "installerIcon": "assets/icon.png",
-      "uninstallerIcon": "assets/icon.png",
+      "shortcutName": "Logiciel Escalade",
+      "installerIcon": "assets/icon.ico",
+      "uninstallerIcon": "assets/icon.ico", 
       "deleteAppDataOnUninstall": false,
-      "runAfterFinish": false
+      "runAfterFinish": false,
+      "artifactName": "logiciel-escalade-${version}.${ext}",
+      "displayLanguageSelector": false,
+      "installerLanguages": ["fr_FR"]
     }
   }
 }

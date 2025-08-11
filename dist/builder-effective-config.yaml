@@ -1,8 +1,8 @@
 directories:
   output: dist
   buildResources: build
-appId: com.klimzaal.presence-management
-productName: Klimzaal Presence Management
+appId: com.escalade.logiciel-presence
+productName: Logiciel d'Escalade
 files:
   - filter:
       - main.js
@@ -14,46 +14,27 @@ files:
       - '!backend/node_modules/**/*'
       - '!admin-dashboard/node_modules/**/*'
       - '!tablet-ui/node_modules/**/*'
-  - from: backend
-    to: backend
-    filter:
-      - '**/*'
-      - '!node_modules/**/*'
-  - from: admin-dashboard/build
-    to: admin-dashboard/build
-    filter:
-      - '**/*'
-  - from: admin-dashboard/package.json
-    to: admin-dashboard/package.json
-  - from: tablet-ui/dist
-    to: tablet-ui/dist
-    filter:
-      - '**/*'
-  - from: tablet-ui/package.json
-    to: tablet-ui/package.json
 win:
   target:
     target: nsis
     arch:
       - x64
-  icon: assets/icon.png
+  icon: assets/icon.ico
   requestedExecutionLevel: requireAdministrator
 nsis:
   oneClick: false
   allowToChangeInstallationDirectory: true
   createDesktopShortcut: true
   createStartMenuShortcut: true
-  shortcutName: Klimzaal Admin
-  installerIcon: assets/icon.png
-  uninstallerIcon: assets/icon.png
+  shortcutName: Logiciel Escalade
+  installerIcon: assets/icon.ico
+  uninstallerIcon: assets/icon.ico
   deleteAppDataOnUninstall: false
-  runAfterFinish: true
-  installerHeaderIcon: assets/icon.png
-  include: installer-script.nsh
-  artifactName: Klimzaal-Presence-Management-Setup-${version}.${ext}
+  runAfterFinish: false
+  artifactName: logiciel-escalade-${version}.${ext}
   displayLanguageSelector: false
   installerLanguages:
-    - nl_NL
-    - en_US
+    - fr_FR
+  installerHeaderIcon: assets/icon.ico
 publish: null
 electronVersion: 25.9.8
