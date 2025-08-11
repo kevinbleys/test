@@ -46,7 +46,7 @@ function createWindow() {
   mainWindow = new BrowserWindow({
     width: 1400,
     height: 900,
-    icon: path.join(__dirname, 'assets', 'icon.png'), // GEBRUIKT PNG
+    icon: path.join(__dirname, 'assets', 'icon.png'), // PNG BESTAND!
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
@@ -69,7 +69,7 @@ function createWindow() {
       <title>Klimzaal Loading...</title>
       <style>
         body { 
-          font-family: Arial; 
+          font-family: 'Segoe UI', Arial, sans-serif; 
           display: flex; 
           justify-content: center; 
           align-items: center; 
@@ -81,36 +81,67 @@ function createWindow() {
         .loader { 
           text-align: center; 
           background: rgba(255,255,255,0.1);
-          padding: 40px;
+          padding: 50px;
           border-radius: 20px;
           backdrop-filter: blur(10px);
+          box-shadow: 0 8px 32px rgba(0,0,0,0.3);
         }
         .spinner { 
           border: 4px solid rgba(255,255,255,0.3); 
           border-top: 4px solid #ffffff; 
           border-radius: 50%; 
-          width: 60px; 
-          height: 60px; 
+          width: 80px; 
+          height: 80px; 
           animation: spin 2s linear infinite; 
-          margin: 0 auto 20px; 
+          margin: 0 auto 30px; 
         }
         @keyframes spin { 
           0% { transform: rotate(0deg); } 
           100% { transform: rotate(360deg); } 
         }
-        h2 { margin-bottom: 10px; }
-        p { margin: 5px 0; opacity: 0.9; }
+        h2 { 
+          margin-bottom: 20px; 
+          font-size: 28px;
+          font-weight: 300;
+        }
+        p { 
+          margin: 8px 0; 
+          opacity: 0.9; 
+          font-size: 16px;
+        }
+        .progress {
+          width: 300px;
+          height: 4px;
+          background: rgba(255,255,255,0.2);
+          border-radius: 2px;
+          margin: 30px auto 20px;
+          overflow: hidden;
+        }
+        .progress-bar {
+          height: 100%;
+          background: linear-gradient(90deg, #00ff87, #60efff);
+          border-radius: 2px;
+          animation: progress 8s ease-in-out forwards;
+        }
+        @keyframes progress {
+          0% { width: 0%; }
+          25% { width: 30%; }
+          50% { width: 60%; }
+          75% { width: 85%; }
+          100% { width: 100%; }
+        }
       </style>
     </head>
     <body>
       <div class="loader">
         <div class="spinner"></div>
         <h2>🧗‍♀️ Klimzaal Presence Management</h2>
+        <div class="progress"><div class="progress-bar"></div></div>
         <p>⚡ Services worden gestart...</p>
         <p>📊 Admin Dashboard (poort 3000)</p>
         <p>📱 Tablet Interface (poort 3002)</p>
         <p>🔧 Backend API (poort 3001)</p>
-        <p><br>⏳ Even geduld alstublieft...</p>
+        <p><br>⏳ Even geduld alstublieft... (8 seconden)</p>
       </div>
     </body>
     </html>
@@ -193,7 +224,7 @@ function stopAllServices() {
 }
 
 function createTray() {
-  const iconPath = path.join(__dirname, 'assets', 'tray-icon.png'); // GEBRUIKT PNG
+  const iconPath = path.join(__dirname, 'assets', 'tray-icon.png'); // PNG BESTAND!
   
   if (fs.existsSync(iconPath)) {
     tray = new Tray(iconPath);

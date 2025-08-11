@@ -2,14 +2,14 @@ const builder = require('electron-builder');
 const path = require('path');
 const fs = require('fs');
 
-console.log('🏗️  Klimzaal Presence Management - Complete Installer Builder');
-console.log('==============================================================');
+console.log('🏗️  Klimzaal Presence Management - PNG Installer Builder');
+console.log('=============================================================');
 
-// Controleer alle vereiste directories en bestanden
+// Controleer alle vereiste directories en bestanden - NU MET PNG!
 const requiredPaths = [
-  'assets/icon.ico',
-  'assets/tablet-icon.ico', 
-  'assets/tray-icon.ico',
+  'assets/icon.png',           // VERANDERD van .ico naar .png
+  'assets/tablet-icon.png',    // VERANDERD van .ico naar .png
+  'assets/tray-icon.png',      // VERANDERD van .ico naar .png
   'main.js',
   'backend/server.js',
   'backend/package.json',
@@ -17,7 +17,7 @@ const requiredPaths = [
   'tablet-ui/package.json'
 ];
 
-console.log('📋 Bestandencheck...');
+console.log('📋 Bestandencheck (PNG versie)...');
 let missingFiles = [];
 
 requiredPaths.forEach(filePath => {
@@ -29,14 +29,23 @@ requiredPaths.forEach(filePath => {
 });
 
 if (missingFiles.length > 0) {
-  console.error('❌ Ontbrekende bestanden:');
+  console.error('❌ Ontbrekende PNG bestanden:');
   missingFiles.forEach(file => console.error(`   - ${file}`));
   console.log('');
-  console.log('🔧 Los deze problemen op voordat je de installer bouwt.');
+  console.log('🔧 ONTBREKENDE PNG BESTANDEN OPLOSSEN:');
+  console.log('1. Maak PNG bestanden aan in assets/ folder:');
+  console.log('   • icon.png (256x256 of groter)');
+  console.log('   • tablet-icon.png (256x256 of groter)'); 
+  console.log('   • tray-icon.png (32x32 of groter)');
+  console.log('2. Of converteer je ICO bestanden naar PNG via:');
+  console.log('   https://convertio.co/ico-png/');
+  console.log('');
+  console.log('💡 TIP: Je kunt ook tijdelijk zonder iconen bouwen door');
+  console.log('   de icon-regels uit package.json te verwijderen.');
   process.exit(1);
 }
 
-// Build configuratie
+// Build configuratie - MET PNG ICONEN
 const buildConfig = {
   appId: 'com.klimzaal.presence-management',
   productName: 'Klimzaal Presence Management',
@@ -82,7 +91,7 @@ const buildConfig = {
       target: 'nsis',
       arch: ['x64']
     },
-    icon: 'assets/icon.ico',
+    icon: 'assets/icon.png',  // PNG IN PLAATS VAN ICO
     requestedExecutionLevel: 'requireAdministrator'
   },
   nsis: {
@@ -91,9 +100,9 @@ const buildConfig = {
     createDesktopShortcut: true,
     createStartMenuShortcut: true,
     shortcutName: 'Klimzaal Admin',
-    installerIcon: 'assets/icon.ico',
-    uninstallerIcon: 'assets/icon.ico',
-    installerHeaderIcon: 'assets/icon.ico',
+    installerIcon: 'assets/icon.png',         // PNG
+    uninstallerIcon: 'assets/icon.png',       // PNG
+    installerHeaderIcon: 'assets/icon.png',   // PNG
     deleteAppDataOnUninstall: false,
     runAfterFinish: true,
     include: 'installer-script.nsh',
@@ -107,11 +116,11 @@ const buildConfig = {
 // Pre-build checks en taken
 async function preBuildTasks() {
   console.log('📦 Pre-build taken uitvoeren...');
+  const { execSync } = require('child_process');
   
   // Controleer of admin-dashboard build bestaat
   if (!fs.existsSync('admin-dashboard/build')) {
     console.log('📊 Admin dashboard build niet gevonden - bouwen...');
-    const { execSync } = require('child_process');
     try {
       execSync('npm run build', { 
         cwd: 'admin-dashboard', 
@@ -151,7 +160,7 @@ async function buildInstaller() {
       process.exit(1);
     }
     
-    console.log('🔨 Installer bouwen...');
+    console.log('🔨 Installer bouwen met PNG iconen...');
     console.log('⏳ Dit kan 5-10 minuten duren...');
     console.log('');
     
@@ -161,8 +170,8 @@ async function buildInstaller() {
     });
     
     console.log('');
-    console.log('🎉 ✅ INSTALLER SUCCESVOL GEBOUWD! ✅ 🎉');
-    console.log('================================================');
+    console.log('🎉 ✅ PNG INSTALLER SUCCESVOL GEBOUWD! ✅ 🎉');
+    console.log('===================================================');
     console.log('📂 Installer locatie:', path.join(__dirname, 'dist'));
     console.log('');
     
@@ -190,7 +199,7 @@ async function buildInstaller() {
     console.log('   • Tablet Interface: http://localhost:3002'); 
     console.log('   • Backend API: http://localhost:3001');
     console.log('');
-    console.log('🚀 SUCCES! Je installer is klaar voor deployment!');
+    console.log('🚀 SUCCES! Je PNG installer is klaar voor deployment!');
     
   } catch (error) {
     console.error('');
@@ -202,7 +211,7 @@ async function buildInstaller() {
     console.log('1. Controleer of alle node_modules geïnstalleerd zijn');
     console.log('2. Bouw admin-dashboard: cd admin-dashboard && npm run build');
     console.log('3. Bouw tablet-ui: cd tablet-ui && npm run build');
-    console.log('4. Controleer of alle iconen bestaan in assets/');
+    console.log('4. Controleer of alle PNG iconen bestaan in assets/');
     console.log('5. Run als Administrator');
     
     process.exit(1);

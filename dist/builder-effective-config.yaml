@@ -36,7 +36,7 @@ win:
     target: nsis
     arch:
       - x64
-  icon: assets/icon.ico
+  icon: assets/icon.png
   requestedExecutionLevel: requireAdministrator
 nsis:
   oneClick: false
@@ -44,12 +44,12 @@ nsis:
   createDesktopShortcut: true
   createStartMenuShortcut: true
   shortcutName: Klimzaal Admin
-  installerIcon: assets/icon.ico
-  uninstallerIcon: assets/icon.ico
+  installerIcon: assets/icon.png
+  uninstallerIcon: assets/icon.png
   deleteAppDataOnUninstall: false
   runAfterFinish: true
+  installerHeaderIcon: assets/icon.png
   include: installer-script.nsh
-  installerHeaderIcon: assets/icon.ico
   artifactName: Klimzaal-Presence-Management-Setup-${version}.${ext}
   displayLanguageSelector: false
   installerLanguages:
