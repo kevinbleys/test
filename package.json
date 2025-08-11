@@ -1,0 +1,54 @@
+{
+  "name": "klimzaal-presence-management",
+  "version": "1.0.0",
+  "description": "Klimzaal Presence Management Systeem",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --dev",
+    "build": "node build-installer.js",
+    "install-deps": "npm install --save-dev electron electron-builder && npm install --save node-windows"
+  },
+  "author": "Kevin Bleys",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^25.0.0",
+    "electron-builder": "^24.0.0"
+  },
+  "dependencies": {
+    "node-windows": "^1.0.0"
+  },
+  "build": {
+    "appId": "com.klimzaal.presence-management",
+    "productName": "Klimzaal Presence Management",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "main.js",
+      "backend/**/*",
+      "admin-dashboard/**/*", 
+      "tablet-ui/**/*",
+      "assets/**/*",
+      "node_modules/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "assets/icon.ico",
+      "requestedExecutionLevel": "requireAdministrator"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Klimzaal Admin",
+      "installerIcon": "assets/icon.ico",
+      "uninstallerIcon": "assets/icon.ico",
+      "deleteAppDataOnUninstall": false,
+      "runAfterFinish": false,
+      "include": "installer-script.nsh"
+    }
+  }
+}
