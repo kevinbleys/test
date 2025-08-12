@@ -22,7 +22,7 @@
   },
   "build": {
     "appId": "com.escalade.logiciel-presence",
-    "productName": "Logiciel d'Escalade",
+    "productName": "Logiciel Escalade",
     "directories": {
       "output": "dist"
     },

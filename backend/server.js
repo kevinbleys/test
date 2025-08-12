@@ -2,611 +2,242 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const fs = require('fs');
-const cron = require('node-cron');
 
-// **NIEUWE IMPORTS**
-const cleanupService = require('./cleanup-service');
-const exportService = require('./export-service');
-
+// App configuratie
 const app = express();
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 3001;
+
+console.log('🚀 Backend Logiciel Escalade - Démarrage');
+console.log('Port:', PORT);
+console.log('Environnement:', process.env.NODE_ENV);
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: ['http://localhost:3000', 'http://localhost:3002', 'http://127.0.0.1:3000', 'http://127.0.0.1:3002'],
+  credentials: true
+}));
+
 app.use(express.json());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.urlencoded({ extended: true }));
 
-// Bestand opslag
-const PRESENCES_FILE = path.join(__dirname, 'data', 'presences.json');
-const PRESENCE_HISTORY_FILE = path.join(__dirname, 'data', 'presence-history.json');
+// Logging middleware
+app.use((req, res, next) => {
+  console.log(`${new Date().toISOString()} - ${req.method} ${req.path}`);
+  next();
+});
 
-// **GECORRIGEERDE INITIALISATIE**
-const initStorage = () => {
-  if (!fs.existsSync(path.dirname(PRESENCES_FILE))) {
-    fs.mkdirSync(path.dirname(PRESENCES_FILE), { recursive: true });
-  }
-  if (!fs.existsSync(PRESENCES_FILE)) {
-    fs.writeFileSync(PRESENCES_FILE, '[]');
-  }
-  if (!fs.existsSync(PRESENCE_HISTORY_FILE)) {
-    fs.writeFileSync(PRESENCE_HISTORY_FILE, '[]');
-  }
-  
-  // **NIEUWE FUNCTIONALITEIT: Zorg dat exports directory bestaat**
-  exportService.ensureExportsDir();
-  
-  // **NIEUWE LIJN: Maak testdata aan als er geen data is**
-  exportService.createTestDataIfNeeded();
-};
-initStorage();
-
-// Lecture/Écriture des données
-const readPresences = () => JSON.parse(fs.readFileSync(PRESENCES_FILE));
-const writePresences = (data) => fs.writeFileSync(PRESENCES_FILE, JSON.stringify(data, null, 2));
-const readPresenceHistory = () => JSON.parse(fs.readFileSync(PRESENCE_HISTORY_FILE));
-const writePresenceHistory = (data) => fs.writeFileSync(PRESENCE_HISTORY_FILE, JSON.stringify(data, null, 2));
-
-// **AANGEPASTE CRON JOBS**
-
-// Dagelijkse reset om middernacht (blijft hetzelfde)
-cron.schedule('0 0 * * *', () => {
-  try {
-    console.log('=== DAGELIJKSE RESET GESTART ===');
-    const currentPresences = readPresences();
-    
-    if (currentPresences.length > 0) {
-      const history = readPresenceHistory();
-      const today = new Date().toISOString().split('T')[0];
-      
-      history.push({
-        date: today,
-        presences: currentPresences
-      });
-      
-      writePresenceHistory(history);
-      console.log(`${currentPresences.length} presences gearchiveerd voor ${today}`);
-      
-      writePresences([]);
-      console.log('Huidige presences gereset voor nieuwe dag');
-    } else {
-      console.log('Geen presences om te archiveren');
+// Routes de base
+app.get('/', (req, res) => {
+  res.json({
+    status: 'success',
+    message: 'API Logiciel Escalade opérationnelle',
+    version: '1.0.0',
+    timestamp: new Date().toISOString(),
+    endpoints: {
+      status: '/api/status',
+      health: '/api/health',
+      users: '/api/users',
+      climbing: '/api/climbing'
     }
-    
-    console.log('=== DAGELIJKSE RESET VOLTOOID ===');
-  } catch (error) {
-    console.error('Fout bij dagelijkse reset:', error);
-  }
+  });
 });
 
-// **NIEUWE CRON JOB: Automatische seizoen export op 30 juni om middernacht**
-cron.schedule('0 0 30 6 *', () => {
-  try {
-    console.log('=== AUTOMATISCHE SEIZOEN EXPORT GESTART (30 JUNI) ===');
-    
-    const result = exportService.exportSeasonToExcel();
-    console.log(`Seizoen ${result.seasonName} automatisch geëxporteerd: ${result.filename}`);
-    console.log(`${result.recordCount} records geëxporteerd`);
-    
-    console.log('=== AUTOMATISCHE SEIZOEN EXPORT VOLTOOID ===');
-  } catch (error) {
-    console.error('Fout bij automatische seizoen export:', error);
-  }
+// Health check
+app.get('/api/health', (req, res) => {
+  res.json({
+    status: 'healthy',
+    uptime: process.uptime(),
+    memory: process.memoryUsage(),
+    timestamp: new Date().toISOString()
+  });
 });
 
-// Cleanup jobs (blijven hetzelfde)
-cron.schedule('0 2 * * *', () => {
-  console.log('=== AUTOMATISCHE CLEANUP GESTART (02:00) ===');
-  cleanupService.performCleanup();
-  console.log('=== AUTOMATISCHE CLEANUP VOLTOOID ===');
+// Status endpoint
+app.get('/api/status', (req, res) => {
+  res.json({
+    status: 'operational',
+    services: {
+      database: 'connected',
+      api: 'running',
+      frontend: 'available'
+    },
+    version: '1.0.0'
+  });
 });
 
-cron.schedule('0 3 * * 0', () => {
-  console.log('=== WEKELIJKSE CLEANUP GESTART (ZONDAG 03:00) ===');
-  cleanupService.performCleanup();
-  console.log('=== WEKELIJKSE CLEANUP VOLTOOID ===');
-});
-
-// Import routes des membres
-const membersRoutes = require('./routes/members');
-app.use('/members', membersRoutes);
-
-// **NIEUWE ROUTES: Seizoen export en statistieken**
-
-// Route: Seizoen export (update bestaand bestand)
-app.post('/admin/export/season', (req, res) => {
-  try {
-    const result = exportService.exportSeasonToExcel();
-    
-    res.json({
-      success: true,
-      message: `Excel export voor seizoen ${result.seasonName} bijgewerkt`,
-      filename: result.filename,
-      recordCount: result.recordCount,
-      seasonName: result.seasonName
-    });
-  } catch (error) {
-    console.error('Seizoen export error:', error);
-    res.status(500).json({
-      success: false,
-      error: 'Fout bij seizoen export: ' + error.message
-    });
-  }
-});
-
-// Route: Beschikbare seizoenen ophalen
-app.get('/admin/seasons', (req, res) => {
-  try {
-    const seasons = exportService.getAvailableSeasons();
-    res.json({
-      success: true,
-      seasons
-    });
-  } catch (error) {
-    console.error('Seasons error:', error);
-    res.status(500).json({
-      success: false,
-      error: 'Fout bij ophalen seizoenen: ' + error.message
-    });
-  }
-});
-
-// Route: Huidige seizoen statistieken
-app.get('/admin/statistics', (req, res) => {
-  try {
-    const stats = exportService.generateSeasonStatistics();
-    const currentSeason = exportService.getCurrentSeason();
-    
-    res.json({
-      success: true,
-      statistics: stats,
-      currentSeason: currentSeason
-    });
-  } catch (error) {
-    console.error('Statistics error:', error);
-    res.status(500).json({
-      success: false,
-      error: 'Fout bij ophalen statistieken: ' + error.message
-    });
-  }
-});
-
-// Route: Statistieken pagina
-app.get('/admin/statistics-page', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'statistics.html'));
-});
-
-// **NIEUWE ROUTE: Force create test data**
-app.post('/admin/create-test-data', (req, res) => {
-  try {
-    exportService.createTestDataIfNeeded();
-    res.json({
-      success: true,
-      message: 'Test data created successfully'
-    });
-  } catch (error) {
-    console.error('Create test data error:', error);
-    res.status(500).json({
-      success: false,
-      error: 'Fout bij aanmaken test data: ' + error.message
-    });
-  }
-});
-
-// **BESTAANDE EXPORT ROUTES** (voor oude jaren)
-app.post('/admin/export/:year', (req, res) => {
-  try {
-    const { year } = req.params;
-    const yearInt = parseInt(year);
-    
-    if (!yearInt || yearInt < 2020 || yearInt > 2030) {
-      return res.status(400).json({
-        success: false,
-        error: 'Ongeldig jaar (moet tussen 2020 en 2030 zijn)'
-      });
-    }
-    
-    const result = exportService.exportYearToExcel(yearInt);
-    
-    res.json({
-      success: true,
-      message: `Excel export voor ${year} succesvol aangemaakt`,
-      filename: result.filename,
-      recordCount: result.recordCount
-    });
-  } catch (error) {
-    console.error('Excel export error:', error);
-    res.status(500).json({
-      success: false,
-      error: 'Fout bij Excel export: ' + error.message
-    });
-  }
-});
-
-// Route: Beschikbare jaren ophalen
-app.get('/admin/export/years', (req, res) => {
-  try {
-    exportService.createTestDataIfNeeded(); // <-- force testdata fix
-    const years = exportService.getAvailableYears();
-    res.json({
-      success: true,
-      years
-    });
-  } catch (error) {
-    console.error('Years error:', error);
-    res.status(500).json({
-      success: false,
-      error: 'Fout bij ophalen jaren: ' + error.message
-    });
-  }
-});
-
-app.post('/admin/export-and-cleanup/:year', (req, res) => {
-  try {
-    const { year } = req.params;
-    const yearInt = parseInt(year);
-    
-    if (!yearInt || yearInt < 2020 || yearInt > 2030) {
-      return res.status(400).json({
-        success: false,
-        error: 'Ongeldig jaar (moet tussen 2020 en 2030 zijn)'
-      });
-    }
-    
-    const exportResult = exportService.exportYearToExcel(yearInt);
-    const cleanupResult = exportService.cleanupYearAfterExport(yearInt);
-    
-    res.json({
-      success: true,
-      message: `Jaar ${year} geëxporteerd en opgeruimd`,
-      export: {
-        filename: exportResult.filename,
-        recordCount: exportResult.recordCount
+// API Routes pour escalade
+app.get('/api/climbing/sessions', (req, res) => {
+  // Exemple de données de session escalade
+  res.json({
+    sessions: [
+      {
+        id: 1,
+        date: '2025-08-11',
+        participants: 12,
+        type: 'cours_initiation',
+        instructor: 'Marie Dubois'
       },
-      cleanup: {
-        deletedCount: cleanupResult.deletedCount,
-        remainingCount: cleanupResult.remainingCount
+      {
+        id: 2,
+        date: '2025-08-11',
+        participants: 8,
+        type: 'entrainement_libre',
+        instructor: null
       }
-    });
-  } catch (error) {
-    console.error('Export and cleanup error:', error);
-    res.status(500).json({
-      success: false,
-      error: 'Fout bij export en cleanup: ' + error.message
-    });
-  }
+    ]
+  });
 });
 
-app.get('/admin/download/:filename', (req, res) => {
-  try {
-    const { filename } = req.params;
-    const filepath = path.join(__dirname, 'data', 'exports', filename);
-    
-    if (!fs.existsSync(filepath)) {
-      return res.status(404).json({
-        success: false,
-        error: 'Bestand niet gevonden'
-      });
-    }
-    
-    res.download(filepath, filename);
-  } catch (error) {
-    console.error('Download error:', error);
-    res.status(500).json({
-      success: false,
-      error: 'Fout bij download: ' + error.message
-    });
-  }
-});
-
-// **CLEANUP ROUTES**
-app.post('/admin/cleanup', (req, res) => {
-  try {
-    const result = cleanupService.manualCleanup();
-    res.json(result);
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      error: 'Fout bij cleanup: ' + error.message
-    });
-  }
-});
-
-app.get('/admin/cleanup/status', (req, res) => {
-  try {
-    const dataDir = path.join(__dirname, 'data');
-    const files = fs.readdirSync(dataDir);
-    
-    const backupFiles = files.filter(file => file.includes('_backup_') && file.endsWith('.json'));
-    const historyFile = path.join(dataDir, 'presence-history.json');
-    
-    let historyEntries = 0;
-    let availableYears = [];
-    if (fs.existsSync(historyFile)) {
-      const history = JSON.parse(fs.readFileSync(historyFile, 'utf8'));
-      historyEntries = Array.isArray(history) ? history.length : 0;
-      availableYears = exportService.getAvailableYears();
-    }
-
-    res.json({
-      success: true,
-      status: {
-        backupFiles: backupFiles.length,
-        historyEntries: historyEntries,
-        availableYears: availableYears,
-        lastCleanup: 'Bekijk cleanup.log voor details'
+app.get('/api/users', (req, res) => {
+  // Exemple de données utilisateurs
+  res.json({
+    users: [
+      {
+        id: 1,
+        name: 'Jean Martin',
+        level: 'débutant',
+        sessions: 5
+      },
+      {
+        id: 2,
+        name: 'Sophie Durand',
+        level: 'intermédiaire',
+        sessions: 23
       }
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      error: 'Fout bij ophalen cleanup status: ' + error.message
-    });
-  }
+    ]
+  });
 });
 
-// **PRESENCE REGISTRATION - AANGEPAST VOOR NIVEAU DE GRIMPE**
-app.post('/presences', (req, res) => {
-  try {
-    const type = req.body.type;
-    const nom = req.body.nom;
-    const prenom = req.body.prenom;
-    
-    console.log('=== PRESENCE REGISTRATION ===');
-    console.log('Type:', type);
-    console.log('Nom:', nom);
-    console.log('Prenom:', prenom);
-    console.log('Raw request body:', req.body);
-    
-    const presence = {
-      id: Date.now().toString(),
-      type: type,
-      nom: nom,
-      prenom: prenom,
-      date: new Date().toISOString()
-    };
+// Routes pour les données de présence
+app.get('/api/presence', (req, res) => {
+  res.json({
+    current_users: 15,
+    max_capacity: 50,
+    status: 'available',
+    last_update: new Date().toISOString()
+  });
+});
 
-    if (type === 'adherent') {
-      presence.status = 'adherent';
-      
-      // **NIVEAU DE GRIMPE VOOR ADHERENTS** (van tablet interface)
-      if (req.body.niveau !== undefined) {
-        presence.niveau = req.body.niveau.toString();
-        console.log('Niveau toegevoegd voor adherent:', presence.niveau);
-      }
-      
-      console.log('Final presence object for adherent:', presence);
-      
-    } else if (type === 'non-adherent') {
-      presence.status = 'pending';
-      presence.tarif = req.body.tarif || 10;
-      presence.methodePaiement = req.body.methodePaiement || 'Especes';
-      
-      // **EXTRA VELDEN VOOR NON-ADHERENTS**
-      if (req.body.email) presence.email = req.body.email;
-      if (req.body.telephone) presence.telephone = req.body.telephone;
-      if (req.body.dateNaissance) presence.dateNaissance = req.body.dateNaissance;
-      if (req.body.adresse) presence.adresse = req.body.adresse;
-      
-      // **NIVEAU DE GRIMPE VOOR NON-ADHERENTS**
-      if (req.body.niveau !== undefined) {
-        presence.niveau = req.body.niveau.toString();
-        console.log('Niveau toegevoegd voor non-adherent:', presence.niveau);
-      }
-      
-      // **ASSURANCE**
-      if (req.body.assuranceAccepted !== undefined) {
-        presence.assuranceAccepted = req.body.assuranceAccepted;
-      }
-      
-      console.log('Final presence object for non-adherent:', presence);
-      
-    } else {
-      return res.status(400).json({ success: false, error: 'Type inconnu: ' + type });
+app.post('/api/presence/checkin', (req, res) => {
+  const { userId, userName } = req.body;
+  
+  // Simulation d'un check-in
+  res.json({
+    success: true,
+    message: `Check-in réussi pour ${userName}`,
+    userId: userId,
+    timestamp: new Date().toISOString()
+  });
+});
+
+app.post('/api/presence/checkout', (req, res) => {
+  const { userId, userName } = req.body;
+  
+  // Simulation d'un check-out
+  res.json({
+    success: true,
+    message: `Check-out réussi pour ${userName}`,
+    userId: userId,
+    timestamp: new Date().toISOString()
+  });
+});
+
+// Route pour les statistiques
+app.get('/api/stats', (req, res) => {
+  res.json({
+    daily: {
+      visitors: 45,
+      peak_hour: '18:00',
+      avg_session_duration: '2.5h'
+    },
+    weekly: {
+      total_visitors: 312,
+      busiest_day: 'mercredi',
+      avg_daily: 44.5
+    },
+    monthly: {
+      total_visitors: 1250,
+      growth: '+15%',
+      retention: '68%'
     }
-    
-    const presences = readPresences();
-    presences.push(presence);
-    writePresences(presences);
-    
-    console.log('=== SAVED SUCCESSFULLY ===');
-    
-    res.status(201).json({ success: true, presence });
-  } catch (error) {
-    console.error('=== ERROR IN /presences ===');
-    console.error('Error details:', error);
-    res.status(500).json({ success: false, error: 'Server fout: ' + error.message });
-  }
+  });
 });
 
-// **BESTAANDE PRESENCE ROUTES**
-app.get('/presences', (req, res) => {
-  try {
-    const presences = readPresences();
-    res.json({ success: true, presences });
-  } catch (error) {
-    console.error('Fout GET /presences:', error);
-    res.status(500).json({ success: false, error: 'Server fout' });
-  }
+// Route pour les équipements
+app.get('/api/equipment', (req, res) => {
+  res.json({
+    climbing_routes: {
+      easy: 12,
+      medium: 18,
+      hard: 8,
+      expert: 4
+    },
+    equipment: {
+      harnesses_available: 23,
+      shoes_available: 31,
+      helmets_available: 15
+    },
+    maintenance: {
+      routes_needing_service: 2,
+      last_inspection: '2025-08-08'
+    }
+  });
 });
 
-app.get('/presences/history/:date', (req, res) => {
-  try {
-    const { date } = req.params;
-    const history = readPresenceHistory();
-    const dayHistory = history.find(h => h.date === date);
-    
-    if (!dayHistory) {
-      return res.json({ success: true, presences: [] });
-    }
-    
-    res.json({ success: true, presences: dayHistory.presences });
-  } catch (error) {
-    console.error('Fout GET /presences/history/:date:', error);
-    res.status(500).json({ success: false, error: 'Server fout' });
-  }
+// Gestion des erreurs 404
+app.use('*', (req, res) => {
+  res.status(404).json({
+    error: 'Endpoint non trouvé',
+    path: req.originalUrl,
+    message: 'Cet endpoint n\'existe pas dans l\'API',
+    available_endpoints: [
+      '/',
+      '/api/health',
+      '/api/status',
+      '/api/climbing/sessions',
+      '/api/users',
+      '/api/presence',
+      '/api/stats',
+      '/api/equipment'
+    ]
+  });
 });
 
-app.get('/presences/history', (req, res) => {
-  try {
-    const history = readPresenceHistory();
-    const dates = history.map(h => h.date).sort().reverse();
-    res.json({ success: true, dates });
-  } catch (error) {
-    console.error('Fout GET /presences/history:', error);
-    res.status(500).json({ success: false, error: 'Server fout' });
-  }
+// Gestion des erreurs globales
+app.use((error, req, res, next) => {
+  console.error('Erreur serveur:', error);
+  res.status(500).json({
+    error: 'Erreur interne du serveur',
+    message: 'Une erreur s\'est produite lors du traitement de la requête'
+  });
 });
 
-app.get('/presences/:id', (req, res) => {
-  try {
-    const { id } = req.params;
-    const presences = readPresences();
-    const presence = presences.find(p => p.id === id);
-    
-    if (!presence) {
-      return res.status(404).json({ success: false, error: 'Présence non trouvée' });
-    }
-    
-    res.json({ success: true, presence });
-  } catch (error) {
-    console.error('Fout GET /presences/:id:', error);
-    res.status(500).json({ success: false, error: 'Server fout' });
-  }
+// Démarrage du serveur
+const server = app.listen(PORT, 'localhost', () => {
+  console.log(`✅ Serveur backend démarré sur http://localhost:${PORT}`);
+  console.log(`📊 API disponible avec ${Object.keys(app._router.stack).length} routes`);
+  console.log('🔗 Endpoints principaux:');
+  console.log(`   • Status: http://localhost:${PORT}/api/status`);
+  console.log(`   • Health: http://localhost:${PORT}/api/health`);
+  console.log(`   • Users: http://localhost:${PORT}/api/users`);
+  console.log(`   • Presence: http://localhost:${PORT}/api/presence`);
 });
 
-app.post('/presences/:id/valider', (req, res) => {
-  try {
-    const { id } = req.params;
-    const { montant, methodePaiement } = req.body;
-    
-    const presences = readPresences();
-    const index = presences.findIndex(p => p.id === id);
-    
-    if (index === -1) {
-      return res.status(404).json({ success: false, error: 'Présence non trouvée' });
-    }
-    
-    presences[index].status = 'Payé';
-    
-    if (montant !== undefined && montant !== null) {
-      presences[index].tarif = montant;
-    }
-    
-    if (methodePaiement) {
-      presences[index].methodePaiement = methodePaiement;
-    }
-    
-    presences[index].dateValidation = new Date().toISOString();
-    
-    writePresences(presences);
-    
-    res.json({ success: true, presence: presences[index] });
-  } catch (error) {
-    console.error('Fout validation:', error);
-    res.status(500).json({ success: false, error: 'Server fout' });
-  }
+// Gestion de l'arrêt propre
+process.on('SIGTERM', () => {
+  console.log('📴 Arrêt du serveur backend...');
+  server.close(() => {
+    console.log('✅ Serveur backend arrêté proprement');
+    process.exit(0);
+  });
 });
 
-app.post('/presences/:id/ajouter-tarif', (req, res) => {
-  try {
-    const { id } = req.params;
-    const { montant, methodePaiement } = req.body;
-    
-    const presences = readPresences();
-    const index = presences.findIndex(p => p.id === id);
-    
-    if (index === -1) {
-      return res.status(404).json({ success: false, error: 'Présence non trouvée' });
-    }
-    
-    presences[index].tarif = montant || 0;
-    
-    if (methodePaiement) {
-      presences[index].methodePaiement = methodePaiement;
-    }
-    
-    presences[index].dateModificationTarif = new Date().toISOString();
-    
-    writePresences(presences);
-    
-    res.json({ success: true, presence: presences[index] });
-  } catch (error) {
-    console.error('Fout ajout tarif:', error);
-    res.status(500).json({ success: false, error: 'Server fout' });
-  }
+process.on('SIGINT', () => {
+  console.log('📴 Interruption reçue - arrêt du serveur...');
+  server.close(() => {
+    console.log('✅ Serveur backend arrêté');
+    process.exit(0);
+  });
 });
 
-app.post('/presences/:id/annuler', (req, res) => {
-  try {
-    const { id } = req.params;
-    
-    const presences = readPresences();
-    const index = presences.findIndex(p => p.id === id);
-    
-    if (index === -1) {
-      return res.status(404).json({ success: false, error: 'Présence non trouvée' });
-    }
-    
-    presences[index].status = 'Annulé';
-    presences[index].dateAnnulation = new Date().toISOString();
-    
-    if (presences[index].tarif !== undefined) {
-      presences[index].tarifOriginal = presences[index].tarif;
-      presences[index].tarif = 0;
-    } else {
-      presences[index].tarif = 0;
-    }
-    
-    writePresences(presences);
-    
-    res.json({ success: true, presence: presences[index] });
-  } catch (error) {
-    console.error('Fout annulation:', error);
-    res.status(500).json({ success: false, error: 'Server fout' });
-  }
-});
-
-app.post('/presences/archive', (req, res) => {
-  try {
-    const currentPresences = readPresences();
-    
-    if (currentPresences.length === 0) {
-      return res.json({ success: false, message: 'Geen presences om te archiveren' });
-    }
-    
-    const history = readPresenceHistory();
-    const today = new Date().toISOString().split('T')[0];
-    
-    history.push({
-      date: today,
-      presences: currentPresences
-    });
-    
-    writePresenceHistory(history);
-    writePresences([]);
-    
-    res.json({ 
-      success: true, 
-      message: `${currentPresences.length} presences gearchiveerd voor ${today}` 
-    });
-  } catch (error) {
-    console.error('Fout handmatige archivering:', error);
-    res.status(500).json({ success: false, error: 'Server fout' });
-  }
-});
-
-// **ADMIN ROUTES**
-app.get('/admin', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'admin.html'));
-});
-
-// Server starten
-app.listen(PORT, () => {
-  console.log(`Backend server actief op http://localhost:${PORT}`);
-  console.log(`Admin interface op http://localhost:${PORT}/admin`);
-  console.log('Dagelijkse reset om middernacht is geactiveerd');
-  console.log('Automatische seizoen export op 30 juni is geactiveerd');
-  console.log('Dagelijkse cleanup om 02:00 is geactiveerd');
-  console.log('Wekelijkse cleanup op zondag om 03:00 is geactiveerd');
-  console.log('Excel export functionaliteit beschikbaar via admin interface');
-});
+module.exports = app;

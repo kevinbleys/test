@@ -2,7 +2,7 @@ const builder = require('electron-builder');
 const path = require('path');
 const fs = require('fs');
 
-console.log('🏗️  Logiciel d\'Escalade - ULTIMATE CLEAN BUILDER');
+console.log('🏗️  Logiciel Escalade - ULTIMATE CLEAN BUILDER');
 console.log('===================================================');
 
 // Vérifier tous les répertoires et fichiers requis
