@@ -17,8 +17,8 @@
     "electron-builder": "^24.0.0"
   },
   "dependencies": {
-    "node-windows": "^0.1.14",
-    "express": "^4.18.0"
+    "express": "^4.18.3",
+    "node-windows": "^0.1.14"
   },
   "build": {
     "appId": "com.escalade.logiciel-presence",
@@ -30,7 +30,7 @@
       "main.js",
       "backend/**/*",
       "admin-dashboard/build/**/*",
-      "tablet-ui/dist/**/*", 
+      "tablet-ui/dist/**/*",
       "assets/**/*",
       "package.json",
       "!backend/node_modules/**/*",

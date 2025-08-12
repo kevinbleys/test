@@ -67,7 +67,6 @@ app.get('/api/status', (req, res) => {
 
 // API Routes pour escalade
 app.get('/api/climbing/sessions', (req, res) => {
-  // Exemple de données de session escalade
   res.json({
     sessions: [
       {
@@ -89,7 +88,6 @@ app.get('/api/climbing/sessions', (req, res) => {
 });
 
 app.get('/api/users', (req, res) => {
-  // Exemple de données utilisateurs
   res.json({
     users: [
       {
@@ -108,7 +106,7 @@ app.get('/api/users', (req, res) => {
   });
 });
 
-// Routes pour les données de présence
+// Routes voor de données de présence
 app.get('/api/presence', (req, res) => {
   res.json({
     current_users: 15,
@@ -121,7 +119,6 @@ app.get('/api/presence', (req, res) => {
 app.post('/api/presence/checkin', (req, res) => {
   const { userId, userName } = req.body;
   
-  // Simulation d'un check-in
   res.json({
     success: true,
     message: `Check-in réussi pour ${userName}`,
@@ -133,7 +130,6 @@ app.post('/api/presence/checkin', (req, res) => {
 app.post('/api/presence/checkout', (req, res) => {
   const { userId, userName } = req.body;
   
-  // Simulation d'un check-out
   res.json({
     success: true,
     message: `Check-out réussi pour ${userName}`,
@@ -184,8 +180,14 @@ app.get('/api/equipment', (req, res) => {
   });
 });
 
-// Gestion des erreurs 404
-app.use('*', (req, res) => {
+// Import route members (als het bestaat)
+if (fs.existsSync(path.join(__dirname, 'routes', 'members.js'))) {
+  const membersRoutes = require('./routes/members');
+  app.use('/members', membersRoutes);
+}
+
+// **GECORRIGEERDE 404 HANDLER - GEEN WILDCARD**
+app.use((req, res) => {
   res.status(404).json({
     error: 'Endpoint non trouvé',
     path: req.originalUrl,
@@ -215,12 +217,12 @@ app.use((error, req, res, next) => {
 // Démarrage du serveur
 const server = app.listen(PORT, 'localhost', () => {
   console.log(`✅ Serveur backend démarré sur http://localhost:${PORT}`);
-  console.log(`📊 API disponible avec ${Object.keys(app._router.stack).length} routes`);
+  console.log(`📊 API disponible`);
   console.log('🔗 Endpoints principaux:');
-  console.log(`   • Status: http://localhost:${PORT}/api/status`);
-  console.log(`   • Health: http://localhost:${PORT}/api/health`);
-  console.log(`   • Users: http://localhost:${PORT}/api/users`);
-  console.log(`   • Presence: http://localhost:${PORT}/api/presence`);
+  console.log(` • Status: http://localhost:${PORT}/api/status`);
+  console.log(` • Health: http://localhost:${PORT}/api/health`);
+  console.log(` • Users: http://localhost:${PORT}/api/users`);
+  console.log(` • Presence: http://localhost:${PORT}/api/presence`);
 });
 
 // Gestion de l'arrêt propre
