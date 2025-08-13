@@ -9,7 +9,12 @@
     "build": "node build-installer.js",
     "clean": "rmdir /s /q dist 2>nul || echo 'Dossier dist efface'",
     "rebuild": "npm run clean && npm run build",
-    "build-all": "npm run --prefix admin-dashboard build && npm run --prefix tablet-ui build && npm run --prefix backend install --production"
+    "build-all": "npm run build-frontend && npm run build-backend",
+    "build-frontend": "npm run build-admin && npm run build-tablet",
+    "build-admin": "cd admin-dashboard && npm install && npm run build",
+    "build-tablet": "cd tablet-ui && npm install && npm run build",
+    "build-backend": "cd backend && npm install --production",
+    "install-all": "npm install && npm run build-backend && npm run build-frontend"
   },
   "author": "Kevin Bleys",
   "license": "MIT",
