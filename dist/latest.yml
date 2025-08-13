@@ -1,8 +1,8 @@
 version: 1.0.0
 files:
   - url: logiciel-escalade.exe
-    sha512: SBvBfs94pd4n32ceKTOASlRlp7gRxBusVwzED93TfWQrre+YGsM8TsdUH27ULEf7aKprXrMAe4ikqj4Ul9R5IQ==
-    size: 73317921
+    sha512: nFP3r4MwYAbiPq3yHdUTSK6mgV+l5at6WLH5pc0aSbUaLgO5Czl6MWKGAWrr5O7MzPRmrlthOvdU+8a55JZZFA==
+    size: 73324084
 path: logiciel-escalade.exe
-sha512: SBvBfs94pd4n32ceKTOASlRlp7gRxBusVwzED93TfWQrre+YGsM8TsdUH27ULEf7aKprXrMAe4ikqj4Ul9R5IQ==
-releaseDate: '2025-08-11T14:36:08.453Z'
+sha512: nFP3r4MwYAbiPq3yHdUTSK6mgV+l5at6WLH5pc0aSbUaLgO5Czl6MWKGAWrr5O7MzPRmrlthOvdU+8a55JZZFA==
+releaseDate: '2025-08-12T15:20:17.399Z'
