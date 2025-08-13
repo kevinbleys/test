@@ -1,33 +1,27 @@
 const Service = require('node-windows').Service;
 const path = require('path');
 
-console.log('🗑️  Klimzaal Presence Management - Service Verwijderen');
-console.log('====================================================');
+console.log('🔧 Désinstallation du service backend Windows...');
 
 // Service configuratie
-const serviceName = 'KlimzaalPresenceManagement';
-const serviceDescription = 'Klimzaal Presence Management Backend Service';
-const scriptPath = path.join(__dirname, 'server.js');
-
-// Maak service object
 const svc = new Service({
-  name: serviceName,
-  description: serviceDescription,
-  script: scriptPath
+  name: 'EscaladeBackendService',
+  script: path.join(__dirname, 'server.js')
 });
 
 // Event listeners
-svc.on('uninstall', function() {
-  console.log('✅ Service succesvol verwijderd!');
-  console.log('🛑 Backend service is gestopt');
-  process.exit(0);
+svc.on('uninstall', () => {
+  console.log('✅ Service désinstallé avec succès');
 });
 
-svc.on('error', function(err) {
-  console.error('❌ Service error:', err);
-  process.exit(1);
+svc.on('stop', () => {
+  console.log('🛑 Service arrêté');
 });
 
-// Verwijder service
-console.log('🛑 Service verwijderen...');
+svc.on('error', (error) => {
+  console.error('❌ Erreur:', error);
+});
+
+// Désinstaller le service
+console.log('🛑 Arrêt et désinstallation...');
 svc.uninstall();

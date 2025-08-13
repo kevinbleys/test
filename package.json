@@ -8,7 +8,8 @@
     "dev": "electron . --dev",
     "build": "node build-installer.js",
     "clean": "rmdir /s /q dist 2>nul || echo 'Dossier dist efface'",
-    "rebuild": "npm run clean && npm run build"
+    "rebuild": "npm run clean && npm run build",
+    "build-all": "npm run --prefix admin-dashboard build && npm run --prefix tablet-ui build && npm run --prefix backend install --production"
   },
   "author": "Kevin Bleys",
   "license": "MIT",
@@ -32,12 +33,20 @@
       "admin-dashboard/build/**/*",
       "tablet-ui/dist/**/*",
       "assets/**/*",
+      "create-shortcuts.js",
+      "installer-script.nsh",
       "package.json",
       "!backend/node_modules/**/*",
       "!admin-dashboard/node_modules/**/*",
       "!tablet-ui/node_modules/**/*",
       "!admin-dashboard/src/**/*",
       "!tablet-ui/src/**/*"
+    ],
+    "extraResources": [
+      {
+        "from": "assets",
+        "to": "assets"
+      }
     ],
     "win": {
       "target": "nsis",
@@ -55,7 +64,8 @@
       "deleteAppDataOnUninstall": false,
       "runAfterFinish": false,
       "artifactName": "logiciel-escalade-${version}.${ext}",
-      "displayLanguageSelector": false
+      "displayLanguageSelector": false,
+      "include": "installer-script.nsh"
     }
   }
 }

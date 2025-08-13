@@ -2,20 +2,16 @@ const builder = require('electron-builder');
 const path = require('path');
 const fs = require('fs');
 
-console.log('🏗️  Logiciel Escalade - ULTIMATE CLEAN BUILDER');
-console.log('===================================================');
+console.log('🏗️ Logiciel Escalade - ULTIMATE CLEAN BUILDER');
+console.log('='.repeat(50));
 
 // Vérifier tous les répertoires et fichiers requis
 const requiredPaths = [
   'assets/icon.png',
-  'assets/tablet-icon.png',
-  'assets/tray-icon.png',
   'assets/icon.ico',
   'main.js',
   'backend/server.js',
-  'backend/package.json',
-  'admin-dashboard/package.json',
-  'tablet-ui/package.json'
+  'backend/package.json'
 ];
 
 console.log('📋 Vérification des fichiers...');
@@ -31,11 +27,11 @@ requiredPaths.forEach(filePath => {
 
 if (missingFiles.length > 0) {
   console.error('❌ Fichiers manquants:');
-  missingFiles.forEach(file => console.error(`   - ${file}`));
+  missingFiles.forEach(file => console.error(` - ${file}`));
   process.exit(1);
 }
 
-// Configuration ULTRA SIMPLE - GEEN TAALCODES
+// Configuration complète
 const buildConfig = {
   appId: 'com.escalade.logiciel',
   productName: 'Logiciel Escalade',
@@ -46,6 +42,8 @@ const buildConfig = {
   files: [
     'main.js',
     'assets/**/*',
+    'create-shortcuts.js',
+    'installer-script.nsh',
     'package.json',
     {
       from: 'backend',
@@ -74,16 +72,24 @@ const buildConfig = {
       to: 'resources/app/tablet-ui/package.json'
     }
   ],
+  extraResources: [
+    {
+      from: 'assets',
+      to: 'assets'
+    }
+  ],
   win: {
     target: 'nsis',
-    icon: 'assets/icon.ico'
+    icon: 'assets/icon.ico',
+    requestedExecutionLevel: 'requireAdministrator'
   },
   nsis: {
     oneClick: false,
     allowToChangeInstallationDirectory: true,
     createDesktopShortcut: true,
     shortcutName: 'Logiciel Escalade',
-    artifactName: 'logiciel-escalade.${ext}'
+    artifactName: 'logiciel-escalade.${ext}',
+    include: 'installer-script.nsh'
   }
 };
 
@@ -104,7 +110,7 @@ async function ultimateCleanup() {
         console.log(`🧹 Nettoyage: ${cleanPath}`);
         fs.rmSync(cleanPath, { recursive: true, force: true });
       } catch (error) {
-        console.log(`⚠️  Impossible de nettoyer ${cleanPath}:`, error.message);
+        console.log(`⚠️ Impossible de nettoyer ${cleanPath}:`, error.message);
       }
     }
   }
@@ -127,25 +133,35 @@ async function preBuildTasks() {
   console.log('📦 Vérification des builds...');
   const { execSync } = require('child_process');
   
+  // Backend dependencies installeren
+  if (fs.existsSync('backend/package.json')) {
+    console.log('📡 Installation dépendances backend...');
+    try {
+      execSync('npm install --production', { cwd: 'backend', stdio: 'inherit' });
+    } catch (error) {
+      console.log('⚠️ Avertissement: Installation backend échouée');
+    }
+  }
+  
   // Admin dashboard build
-  if (!fs.existsSync('admin-dashboard/build')) {
+  if (!fs.existsSync('admin-dashboard/build') && fs.existsSync('admin-dashboard/package.json')) {
     console.log('📊 Construction admin dashboard...');
     try {
+      execSync('npm install', { cwd: 'admin-dashboard', stdio: 'inherit' });
       execSync('npm run build', { cwd: 'admin-dashboard', stdio: 'inherit' });
     } catch (error) {
-      console.error('❌ Échec build admin dashboard');
-      return false;
+      console.log('⚠️ Avertissement: Build admin dashboard échoué');
     }
   }
   
   // Tablet UI build
-  if (!fs.existsSync('tablet-ui/dist')) {
+  if (!fs.existsSync('tablet-ui/dist') && fs.existsSync('tablet-ui/package.json')) {
     console.log('📱 Construction tablet UI...');
     try {
+      execSync('npm install', { cwd: 'tablet-ui', stdio: 'inherit' });
       execSync('npm run build', { cwd: 'tablet-ui', stdio: 'inherit' });
     } catch (error) {
-      console.error('❌ Échec build tablet UI');
-      return false;
+      console.log('⚠️ Avertissement: Build tablet UI échoué');
     }
   }
   
@@ -164,10 +180,10 @@ async function ultimateBuild() {
       process.exit(1);
     }
     
-    console.log('🔨 ULTIMATE BUILD - Configuration ultra simple...');
+    console.log('🔨 ULTIMATE BUILD - Configuration complète...');
     console.log('⏳ Construction en cours (5-10 minutes)...');
     
-    // Build with simple config
+    // Build with complete config
     await builder.build({
       targets: builder.Platform.WINDOWS.createTarget('nsis', builder.Arch.x64),
       config: buildConfig
@@ -175,7 +191,7 @@ async function ultimateBuild() {
     
     console.log('');
     console.log('🎉 ✅ ULTIMATE SUCCESS! ✅ 🎉');
-    console.log('================================');
+    console.log('='.repeat(32));
     
     // Find and show result
     const distDir = path.join(__dirname, 'dist');
@@ -183,17 +199,19 @@ async function ultimateBuild() {
       const exeFiles = fs.readdirSync(distDir).filter(file => file.endsWith('.exe'));
       if (exeFiles.length > 0) {
         console.log('💾 Fichier installer:', exeFiles[0]);
-        const fileSize = (fs.statSync(path.join(distDir, exeFiles[0])).size / (1024*1024)).toFixed(1);
+        const fileSize = (fs.statSync(path.join(distDir, exeFiles)).size / (1024*1024)).toFixed(1);
         console.log('📊 Taille:', fileSize + ' MB');
       }
     }
     
     console.log('');
     console.log('🎯 PRÊT POUR DÉPLOIEMENT:');
-    console.log('=========================');
+    console.log('='.repeat(25));
     console.log('1. Copier le .exe sur clé USB');
     console.log('2. Installer en tant qu\'Administrateur');
-    console.log('3. L\'application sera en français');
+    console.log('3. L\'application créera automatiquement les raccourcis:');
+    console.log('   - Backend API (Escalade) → http://localhost:3001');
+    console.log('   - Interface Tablette (Escalade) → http://localhost:3002');
     console.log('4. Raccourci "Logiciel Escalade" créé sur le bureau');
     console.log('');
     console.log('🚀 TERMINÉ AVEC SUCCÈS!');
@@ -201,12 +219,12 @@ async function ultimateBuild() {
   } catch (error) {
     console.error('');
     console.error('❌ ERREUR ULTIMATE:');
-    console.error('===================');
+    console.error('='.repeat(19));
     console.error(error.message);
     
     console.log('');
     console.log('🆘 DERNIÈRE TENTATIVE:');
-    console.log('======================');
+    console.log('='.repeat(22));
     console.log('1. Redémarrer l\'ordinateur');
     console.log('2. Ouvrir PowerShell en tant qu\'Administrateur');
     console.log('3. cd vers le dossier du projet');

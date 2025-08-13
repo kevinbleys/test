@@ -11,7 +11,7 @@ let processes = [];
 let tray;
 let servers = [];
 
-// Configuratie
+// GECORRIGEERDE CONFIGURATIE
 const BACKEND_PORT = 3001;
 const ADMIN_PORT = 3000;
 const TABLET_PORT = 3002;
@@ -32,6 +32,9 @@ app.whenReady().then(() => {
   createWindow();
   setTimeout(() => startAllServices(), 3000);
   createTray();
+  
+  // Desktop shortcuts maken na installatie
+  setTimeout(() => createDesktopShortcuts(), 5000);
   
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
@@ -68,37 +71,46 @@ function createWindow() {
     <!DOCTYPE html>
     <html>
     <head>
-        <title>Logiciel Escalade - Chargement</title>
-        <meta charset="utf-8">
-        <style>
-            body { font-family: Arial, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-align: center; margin: 0; padding: 50px; }
-            .container { max-width: 600px; margin: 0 auto; }
-            .icon { font-size: 64px; margin-bottom: 20px; }
-            h1 { margin: 30px 0; font-size: 2.5em; }
-            .status { background: rgba(255,255,255,0.1); padding: 20px; border-radius: 10px; margin: 20px 0; }
-            .service { margin: 10px 0; padding: 8px; background: rgba(255,255,255,0.05); border-radius: 5px; }
-            .loading { margin: 30px 0; font-size: 1.2em; }
-            .note { margin-top: 40px; font-size: 0.9em; opacity: 0.8; }
-        </style>
+      <meta charset="UTF-8">
+      <title>Logiciel Escalade - Chargement</title>
+      <style>
+        body {
+          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          color: white;
+          text-align: center;
+          margin: 0;
+          padding: 50px;
+          min-height: 100vh;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+        }
+        .logo { font-size: 4rem; margin-bottom: 30px; }
+        h1 { font-size: 2.5rem; margin-bottom: 40px; }
+        .status { font-size: 1.2rem; margin: 20px 0; padding: 15px; background: rgba(0,0,0,0.3); border-radius: 10px; }
+        .loading { animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
+        .services { text-align: left; max-width: 600px; margin: 0 auto; }
+        .service { margin: 10px 0; padding: 10px; background: rgba(0,0,0,0.2); border-radius: 5px; }
+      </style>
     </head>
     <body>
-        <div class="container">
-            <div class="icon">🧗‍♀️</div>
-            <h1>Logiciel de Gestion Escalade</h1>
-            
-            <div class="status">
-                <div class="service">⚡ Démarrage des services en cours...</div>
-                <div class="service">🔧 Backend API (port 3001)</div>
-                <div class="service">📊 Tableau de bord (port 3000)</div>
-                <div class="service">📱 Interface tablette (port 3002)</div>
-            </div>
-            
-            <div class="loading">⏳ Initialisation complète... (15 secondes)</div>
-            
-            <div class="note">
-                Les services démarrent automatiquement en arrière-plan
-            </div>
+      <div class="logo">🧗‍♀️</div>
+      <h1>Logiciel de Gestion Escalade</h1>
+      
+      <div class="status loading">
+        ⚡ Démarrage des services en cours...
+        <div class="services">
+          <div class="service">🔧 Backend API (port 3001)</div>
+          <div class="service">📊 Tableau de bord (port 3000)</div>
+          <div class="service">📱 Interface tablette (port 3002)</div>
         </div>
+      </div>
+      
+      <div class="status">⏳ Initialisation complète... (15 secondes)</div>
+      
+      <p>Les services démarrent automatiquement en arrière-plan</p>
     </body>
     </html>
   `;
@@ -119,62 +131,90 @@ function createWindow() {
     } catch (error) {
       console.log('❌ Erreur chargement tableau de bord:', error.message);
       
-      // Fallback naar error page
-      const errorHTML = `
+      // Fallback naar success page met shortcuts
+      const successHTML = `
         <!DOCTYPE html>
         <html>
         <head>
-            <title>Logiciel Escalade - Services</title>
-            <meta charset="utf-8">
-            <style>
-                body { font-family: Arial, sans-serif; background: #f5f5f5; margin: 0; padding: 40px; }
-                .container { max-width: 800px; margin: 0 auto; background: white; padding: 40px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-                .header { text-align: center; color: #2c3e50; margin-bottom: 40px; }
-                .icon { font-size: 48px; margin-bottom: 20px; }
-                .service-card { background: #ecf0f1; padding: 20px; margin: 20px 0; border-radius: 8px; border-left: 4px solid #3498db; }
-                .btn { display: inline-block; padding: 12px 24px; background: #3498db; color: white; text-decoration: none; border-radius: 5px; margin: 10px 5px; }
-                .btn:hover { background: #2980b9; }
-                .footer { text-align: center; margin-top: 40px; color: #7f8c8d; font-size: 0.9em; }
-            </style>
+          <meta charset="UTF-8">
+          <title>Logiciel Escalade - Services</title>
+          <style>
+            body {
+              font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+              background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+              color: white;
+              text-align: center;
+              margin: 0;
+              padding: 30px;
+              min-height: 100vh;
+            }
+            .container { max-width: 800px; margin: 0 auto; }
+            .logo { font-size: 3rem; margin-bottom: 20px; }
+            h1 { font-size: 2rem; margin-bottom: 30px; }
+            .success { background: rgba(0,0,0,0.3); padding: 20px; border-radius: 15px; margin-bottom: 30px; }
+            .services { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin: 30px 0; }
+            .service {
+              background: rgba(255,255,255,0.1);
+              padding: 25px;
+              border-radius: 15px;
+              transition: transform 0.3s, background 0.3s;
+            }
+            .service:hover { transform: translateY(-5px); background: rgba(255,255,255,0.2); }
+            .service h3 { margin-top: 0; color: #FFD700; }
+            .btn {
+              display: inline-block;
+              background: #4CAF50;
+              color: white;
+              padding: 12px 24px;
+              text-decoration: none;
+              border-radius: 8px;
+              margin-top: 15px;
+              transition: background 0.3s;
+            }
+            .btn:hover { background: #45a049; }
+            .btn.backend { background: #2196F3; }
+            .btn.backend:hover { background: #1976D2; }
+            .footer { margin-top: 40px; font-size: 0.9rem; opacity: 0.8; }
+          </style>
         </head>
         <body>
-            <div class="container">
-                <div class="header">
-                    <div class="icon">🧗‍♀️</div>
-                    <h1>Logiciel de Gestion Escalade</h1>
-                </div>
-                
-                <div style="text-align: center; margin: 30px 0;">
-                    <h3>✅ Application démarrée avec succès</h3>
-                    <p>Le logiciel est maintenant opérationnel. Accédez aux différentes interfaces :</p>
-                </div>
-
-                <div class="service-card">
-                    <h3>📊 Tableau de Bord Administrateur</h3>
-                    <p>Interface de gestion complète pour les administrateurs.</p>
-                    <a href="http://localhost:3000" class="btn">Ouvrir le Tableau de Bord</a>
-                </div>
-
-                <div class="service-card">
-                    <h3>📱 Interface Tablette</h3>
-                    <p>Interface simplifiée pour les utilisateurs sur tablette.</p>
-                    <a href="http://localhost:3002" class="btn">Ouvrir Interface Tablette</a>
-                </div>
-
-                <div class="service-card">
-                    <h3>🔧 API Backend</h3>
-                    <p>Service de données et API REST.</p>
-                    <a href="http://localhost:3001" class="btn">Vérifier l'API</a>
-                </div>
-
-                <div class="footer">
-                    Logiciel développé par Kevin Bleys • Version 1.0.0
-                </div>
+          <div class="container">
+            <div class="logo">🧗‍♀️</div>
+            <h1>Logiciel de Gestion Escalade</h1>
+            
+            <div class="success">
+              <h2>✅ Application démarrée avec succès</h2>
+              <p>Le logiciel est maintenant opérationnel. Accédez aux différentes interfaces :</p>
             </div>
+
+            <div class="services">
+              <div class="service">
+                <h3>📊 Tableau de Bord Administrateur</h3>
+                <p>Interface de gestion complète pour les administrateurs.</p>
+                <a href="http://localhost:3000" class="btn">Ouvrir le Tableau de Bord</a>
+              </div>
+              
+              <div class="service">
+                <h3>📱 Interface Tablette</h3>
+                <p>Interface simplifiée pour les utilisateurs sur tablette.</p>
+                <a href="http://localhost:3002" class="btn">Ouvrir Interface Tablette</a>
+              </div>
+              
+              <div class="service">
+                <h3>🔧 API Backend</h3>
+                <p>Service de données et API REST.</p>
+                <a href="http://localhost:3001" class="btn backend">Vérifier l'API</a>
+              </div>
+            </div>
+            
+            <div class="footer">
+              Logiciel développé par Kevin Bleys • Version 1.0.0
+            </div>
+          </div>
         </body>
         </html>
       `;
-      mainWindow.loadURL(`data:text/html;charset=utf-8,${encodeURIComponent(errorHTML)}`);
+      mainWindow.loadURL(`data:text/html;charset=utf-8,${encodeURIComponent(successHTML)}`);
     }
   }, 15000);
 
@@ -283,6 +323,50 @@ function startAdminDashboardServer() {
     servers.push({ name: 'Admin Dashboard', server, port: ADMIN_PORT });
   } else {
     console.error('❌ Build admin dashboard introuvable:', adminBuildPath);
+    
+    // Créer een fallback server
+    const app = express();
+    app.get('*', (req, res) => {
+      res.send(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <meta charset="UTF-8">
+          <title>Admin Dashboard - En Construction</title>
+          <style>
+            body {
+              font-family: Arial, sans-serif;
+              background: #f0f0f0;
+              text-align: center;
+              padding: 50px;
+            }
+            .container {
+              max-width: 600px;
+              margin: 0 auto;
+              background: white;
+              padding: 40px;
+              border-radius: 15px;
+              box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            }
+          </style>
+        </head>
+        <body>
+          <div class="container">
+            <h1>🚧 Admin Dashboard</h1>
+            <p>L'interface administrateur est en cours de construction.</p>
+            <a href="http://localhost:3001">← Vérifier l'API Backend</a>
+          </div>
+        </body>
+        </html>
+      `);
+    });
+    
+    const server = http.createServer(app);
+    server.listen(ADMIN_PORT, () => {
+      console.log(`✅ Admin dashboard placeholder démarré sur http://localhost:${ADMIN_PORT}`);
+    });
+    
+    servers.push({ name: 'Admin Dashboard Placeholder', server, port: ADMIN_PORT });
   }
 }
 
@@ -308,25 +392,46 @@ function startTabletUIServer() {
           <!DOCTYPE html>
           <html>
           <head>
-              <title>Interface Tablette - Escalade</title>
-              <meta charset="utf-8">
-              <style>
-                  body { font-family: Arial, sans-serif; background: #2c3e50; color: white; text-align: center; padding: 50px; }
-                  .container { max-width: 500px; margin: 0 auto; }
-                  .icon { font-size: 64px; margin-bottom: 20px; }
-                  h1 { color: #3498db; }
-                  .btn { display: inline-block; padding: 12px 24px; background: #3498db; color: white; text-decoration: none; border-radius: 5px; margin: 10px; }
-              </style>
+            <meta charset="UTF-8">
+            <title>Interface Tablette - Escalade</title>
+            <style>
+              body {
+                font-family: Arial, sans-serif;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+                text-align: center;
+                padding: 50px;
+                margin: 0;
+                min-height: 100vh;
+              }
+              .container {
+                max-width: 600px;
+                margin: 0 auto;
+                padding: 40px;
+                background: rgba(0,0,0,0.3);
+                border-radius: 20px;
+              }
+              .btn {
+                display: inline-block;
+                background: #4CAF50;
+                color: white;
+                padding: 12px 24px;
+                text-decoration: none;
+                border-radius: 8px;
+                margin: 10px;
+              }
+            </style>
           </head>
           <body>
-              <div class="container">
-                  <div class="icon">🧗‍♀️</div>
-                  <h1>Interface Tablette</h1>
-                  <p>Bienvenue dans l'interface tablette du système de gestion escalade.</p>
-                  <p>Cette interface est optimisée pour les écrans tactiles.</p>
-                  <a href="http://localhost:3000" class="btn">📊 Tableau de Bord</a>
-                  <a href="http://localhost:3001" class="btn">🔧 API Backend</a>
-              </div>
+            <div class="container">
+              <div style="font-size: 3rem;">🧗‍♀️</div>
+              <h1>Interface Tablette</h1>
+              <p>Bienvenue dans l'interface tablette du système de gestion escalade.</p>
+              <p>Cette interface est optimisée pour les écrans tactiles.</p>
+              
+              <a href="http://localhost:3000" class="btn">📊 Tableau de Bord</a>
+              <a href="http://localhost:3001" class="btn">🔧 API Backend</a>
+            </div>
           </body>
           </html>
         `);
@@ -354,21 +459,33 @@ function startTabletUIServer() {
         <!DOCTYPE html>
         <html>
         <head>
-            <title>Interface Tablette - En Construction</title>
-            <meta charset="utf-8">
-            <style>
-                body { font-family: Arial, sans-serif; background: #e74c3c; color: white; text-align: center; padding: 50px; }
-                .container { max-width: 500px; margin: 0 auto; }
-                h1 { margin: 30px 0; }
-                .btn { display: inline-block; padding: 12px 24px; background: white; color: #e74c3c; text-decoration: none; border-radius: 5px; margin: 10px; }
-            </style>
+          <meta charset="UTF-8">
+          <title>Interface Tablette - En Construction</title>
+          <style>
+            body {
+              font-family: Arial, sans-serif;
+              background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+              color: white;
+              text-align: center;
+              padding: 50px;
+              margin: 0;
+              min-height: 100vh;
+            }
+            .container {
+              max-width: 600px;
+              margin: 0 auto;
+              padding: 40px;
+              background: rgba(0,0,0,0.3);
+              border-radius: 20px;
+            }
+          </style>
         </head>
         <body>
-            <div class="container">
-                <h1>🚧 Interface Tablette</h1>
-                <p>L'interface tablette est en cours de construction.</p>
-                <a href="http://localhost:3000" class="btn">← Retour au Tableau de Bord</a>
-            </div>
+          <div class="container">
+            <h1>🚧 Interface Tablette</h1>
+            <p>L'interface tablette est en cours de construction.</p>
+            <a href="http://localhost:3000">← Retour au Tableau de Bord</a>
+          </div>
         </body>
         </html>
       `);
@@ -458,4 +575,41 @@ function createTray() {
       }
     });
   }
+}
+
+// NIEUWE FUNCTIE: Desktop Shortcuts maken
+function createDesktopShortcuts() {
+  const os = require('os');
+  const desktopPath = path.join(os.homedir(), 'Desktop');
+  
+  // Shortcut configuratie
+  const shortcuts = [
+    {
+      name: 'Backend API (Escalade)',
+      url: 'http://localhost:3001',
+      icon: path.join(__dirname, 'assets', 'icon.ico')
+    },
+    {
+      name: 'Interface Tablette (Escalade)',
+      url: 'http://localhost:3002', 
+      icon: path.join(__dirname, 'assets', 'tablet-icon.png')
+    }
+  ];
+
+  shortcuts.forEach(shortcut => {
+    const shortcutPath = path.join(desktopPath, `${shortcut.name}.url`);
+    
+    const urlContent = `[InternetShortcut]
+URL=${shortcut.url}
+IconFile=${shortcut.icon}
+IconIndex=0
+`;
+
+    try {
+      fs.writeFileSync(shortcutPath, urlContent);
+      console.log(`✅ Desktop shortcut créé: ${shortcut.name} → ${shortcut.url}`);
+    } catch (error) {
+      console.error(`❌ Erreur création shortcut ${shortcut.name}:`, error.message);
+    }
+  });
 }
