@@ -10,6 +10,8 @@ files:
       - admin-dashboard/build/**/*
       - tablet-ui/dist/**/*
       - assets/**/*
+      - create-shortcuts.js
+      - installer-script.nsh
       - package.json
       - '!backend/node_modules/**/*'
       - '!admin-dashboard/node_modules/**/*'
@@ -33,6 +35,11 @@ files:
       - '**/*'
   - from: tablet-ui/package.json
     to: resources/app/tablet-ui/package.json
+extraResources:
+  - from: assets
+    to: assets
+  - from: assets
+    to: assets
 win:
   target: nsis
   icon: assets/icon.ico
@@ -49,5 +56,6 @@ nsis:
   runAfterFinish: false
   artifactName: logiciel-escalade.${ext}
   displayLanguageSelector: false
+  include: installer-script.nsh
 copyright: Copyright © 2025 Kevin Bleys
 electronVersion: 25.9.8
