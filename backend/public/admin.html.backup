@@ -236,6 +236,57 @@
             color: #999;
         }
 
+        .export-section {
+            margin-top: 20px;
+        }
+
+        .export-section h4 {
+            margin-bottom: 15px;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-group select {
+            width: 100%;
+            padding: 8px 12px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+
+        .info-box {
+            background: #e3f2fd;
+            border: 1px solid #2196F3;
+            border-radius: 6px;
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 0.9rem;
+            color: #1976D2;
+        }
+
+        .warning-box {
+            background: #fff3e0;
+            border: 1px solid #ff9500;
+            border-radius: 6px;
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 0.9rem;
+            color: #f57c00;
+        }
+
         .debug-info {
             background: #f5f5f5;
             border: 1px solid #ddd;
@@ -246,35 +297,55 @@
             margin-bottom: 20px;
         }
 
-        .error-box {
-            background: #ff6b6b;
-            color: white;
-            padding: 15px;
-            border-radius: 10px;
+        .historical-mode {
+            background: #fff3e0;
+            border: 1px solid #ff9500;
+            border-radius: 6px;
+            padding: 10px;
             margin-bottom: 20px;
+            text-align: center;
+            color: #f57c00;
+            font-weight: 600;
         }
 
-        .success-box {
-            background: #4CAF50;
-            color: white;
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 20px;
+        .refresh-info {
+            background: #e8f5e8;
+            border: 1px solid #4CAF50;
+            border-radius: 6px;
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 0.9rem;
+            color: #2e7d32;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
 
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        @media (max-width: 1200px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
         }
 
-        .spinner {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #667eea;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto;
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .container {
+                padding: 10px;
+            }
+
+            th, td {
+                padding: 6px 4px;
+                font-size: 0.8rem;
+            }
         }
     </style>
 </head>
@@ -282,10 +353,7 @@
     <div class="container">
         <div class="header">
             <h1>📊 Administration - Présences du jour</h1>
-            <div class="loading" id="loading">
-                <div class="spinner"></div>
-                <p>Chargement de l'interface...</p>
-            </div>
+            <div class="loading" id="loading">Chargement...</div>
         </div>
 
         <div id="content" style="display: none;">
@@ -304,10 +372,8 @@
                         <button class="btn btn-warning" onclick="archiveToday()">📦 Archiver aujourd'hui</button>
                     </div>
 
-                    <div id="error-display" style="display: none;" class="error-box">
-                    </div>
-
-                    <div id="success-display" style="display: none;" class="success-box">
+                    <div id="historical-mode" class="historical-mode" style="display: none;">
+                        📅 Mode historique - Les données sont en lecture seule
                     </div>
 
                     <div class="stats-grid">
@@ -330,11 +396,7 @@
                     </div>
 
                     <div class="table-container">
-                        <div id="table-loading" class="loading" style="display: none;">
-                            <div class="spinner"></div>
-                            <p>Chargement des données...</p>
-                        </div>
-
+                        <div id="table-loading" class="loading">Chargement...</div>
                         <table id="presences-table" style="display: none;">
                             <thead>
                                 <tr>
@@ -359,43 +421,43 @@
                         </div>
                     </div>
 
-                    <div style={{
-                        marginTop: '20px',
-                        padding: '15px',
-                        background: '#e3f2fd',
-                        borderRadius: '10px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '10px'
-                    }}>
-                        <span style="font-size: 1.2rem;">🔄</span>
-                        <span>Actualisation automatique toutes les 30 secondes</span>
+                    <div class="refresh-info">
+                        🔄 <span>Actualisation automatique toutes les 30 secondes</span>
                     </div>
                 </div>
 
                 <div class="right-panel">
-                    <div class="panel">
-                        <h4>🏔️ Export Saison Actuelle</h4>
-                        <button class="btn btn-success" onclick="exportSeason()" style="width: 100%; margin: 10px 0;">
+                    <div class="panel export-section">
+                        <h4>🏔️ Export Saison Actuelle (1 juillet - 30 juin)</h4>
+                        <button class="btn btn-success" onclick="exportSeason()" style="width: 100%; margin-bottom: 10px;">
                             📊 Exporter Saison Courante
                         </button>
-                        <p style="font-size: 0.9rem; color: #666;">
-                            Export automatique: 30 juin à minuit
-                        </p>
+                        <div class="info-box">
+                            📅 Export automatique: 30 juin à minuit
+                        </div>
+                        <div class="info-box">
+                            <strong>ℹ️ Info:</strong> Cette fonction met à jour le fichier Excel de la saison en cours avec toutes les données actuelles.
+                        </div>
                     </div>
 
-                    <div class="panel">
-                        <h4>📊 Export Excel Historique</h4>
-                        <select id="year-select" style="width: 100%; padding: 8px; margin: 10px 0;">
-                            <option value="">Sélectionner une année...</option>
-                        </select>
-                        <div style="display: flex; gap: 10px;">
+                    <div class="panel export-section">
+                        <h4>📊 Export Excel Historique (par année civile)</h4>
+                        <div class="form-group">
+                            <label for="year-select">Sélectionner une année pour l'export :</label>
+                            <select id="year-select">
+                                <option value="">Sélectionner une année pour l'export...</option>
+                            </select>
+                        </div>
+                        <div style="display: flex; gap: 10px; margin-bottom: 15px;">
                             <button class="btn btn-primary" onclick="exportYear()" style="flex: 1;">
                                 📥 Exporter
                             </button>
                             <button class="btn btn-danger" onclick="exportAndCleanup()" style="flex: 1;">
-                                🗑️ Export & Cleanup
+                                🗑️ Export & Nettoyage
                             </button>
+                        </div>
+                        <div class="warning-box">
+                            <strong>⚠️ Attention :</strong> "Export & Nettoyage" supprime définitivement toutes les données de l'année sélectionnée après avoir créé l'export Excel. Cette action ne peut pas être annulée !
                         </div>
                     </div>
                 </div>
@@ -404,30 +466,30 @@
     </div>
 
     <script>
-        // ✅ DEFINITIEVE API CONFIGURATIE
+        // ✅ GECORRIGEERDE API BASE URL - WAS 4000, NU 3001
         const API_BASE_URL = 'http://localhost:3001';
 
         let isHistoricalMode = false;
         let currentDate = '';
 
-        // Utility functions
-        function showError(message) {
-            const errorDiv = document.getElementById('error-display');
-            errorDiv.textContent = message;
-            errorDiv.style.display = 'block';
-            setTimeout(() => {
-                errorDiv.style.display = 'none';
-            }, 5000);
-        }
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('date-picker').value = today;
+            currentDate = today;
 
-        function showSuccess(message) {
-            const successDiv = document.getElementById('success-display');
-            successDiv.textContent = message;
-            successDiv.style.display = 'block';
-            setTimeout(() => {
-                successDiv.style.display = 'none';
-            }, 3000);
-        }
+            loadToday();
+            loadAvailableYears();
+
+            // Auto refresh every 30 seconds for current day only
+            setInterval(() => {
+                if (!isHistoricalMode) {
+                    loadPresences();
+                }
+            }, 30000);
+
+            updateDebugInfo();
+        });
 
         function updateDebugInfo() {
             const debugInfo = document.getElementById('debug-info');
@@ -439,36 +501,13 @@
             `;
         }
 
-        // Initialize page
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('🚀 ADMIN INTERFACE STARTING UP');
-            console.log('API Base URL:', API_BASE_URL);
-
-            const today = new Date().toISOString().split('T')[0];
-            document.getElementById('date-picker').value = today;
-            currentDate = today;
-
-            loadToday();
-            loadAvailableYears();
-
-            // Auto refresh every 30 seconds for current day only
-            setInterval(() => {
-                if (!isHistoricalMode) {
-                    console.log('🔄 Auto refresh...');
-                    loadPresences();
-                }
-            }, 30000);
-
-            updateDebugInfo();
-        });
-
         async function loadToday() {
-            console.log('📅 Loading today');
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('date-picker').value = today;
             currentDate = today;
             isHistoricalMode = false;
 
+            document.getElementById('historical-mode').style.display = 'none';
             await loadPresences();
             updateDebugInfo();
         }
@@ -476,42 +515,33 @@
         async function loadSelectedDate() {
             const selectedDate = document.getElementById('date-picker').value;
             if (!selectedDate) {
-                showError('Veuillez sélectionner une date');
+                alert('Veuillez sélectionner une date');
                 return;
             }
 
-            console.log('📅 Loading selected date:', selectedDate);
             currentDate = selectedDate;
             const today = new Date().toISOString().split('T')[0];
             isHistoricalMode = selectedDate !== today;
+
+            document.getElementById('historical-mode').style.display = 
+                isHistoricalMode ? 'block' : 'none';
 
             await loadPresences();
             updateDebugInfo();
         }
 
         async function loadPresences() {
-            console.log('📋 Loading presences for:', currentDate);
-            showTableLoading();
-
             try {
+                showLoading();
+
                 let response;
-                let url;
-
                 if (isHistoricalMode) {
-                    url = `${API_BASE_URL}/presences/history/${currentDate}`;
+                    response = await fetch(`${API_BASE_URL}/presences/history/${currentDate}`);
                 } else {
-                    url = `${API_BASE_URL}/presences`;
-                }
-
-                console.log('🌐 API Call:', url);
-                response = await fetch(url);
-
-                if (!response.ok) {
-                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                    response = await fetch(`${API_BASE_URL}/presences`);
                 }
 
                 const data = await response.json();
-                console.log('📋 API Response:', data);
 
                 if (data.success) {
                     let presences = data.presences || [];
@@ -521,35 +551,22 @@
                         presences = presences.filter(p => 
                             p.date && p.date.startsWith(currentDate)
                         );
-                        console.log(`📋 Filtered to ${presences.length} presences for today`);
                     }
 
                     displayPresences(presences);
                     updateStats(presences);
                 } else {
-                    console.error('❌ API Error:', data.error);
-                    showError(data.error || 'Erreur lors du chargement');
+                    console.error('Error loading presences:', data.error);
                     displayPresences([]);
                 }
 
-                hideTableLoading();
+                hideLoading();
 
             } catch (error) {
-                console.error('💥 Network Error:', error);
-                hideTableLoading();
-                showError(`Erreur de connexion: ${error.message}`);
+                console.error('Network error:', error);
+                hideLoading();
                 displayPresences([]);
             }
-        }
-
-        function showTableLoading() {
-            document.getElementById('table-loading').style.display = 'block';
-            document.getElementById('presences-table').style.display = 'none';
-            document.getElementById('no-data').style.display = 'none';
-        }
-
-        function hideTableLoading() {
-            document.getElementById('table-loading').style.display = 'none';
         }
 
         function displayPresences(presences) {
@@ -567,9 +584,6 @@
 
             table.style.display = 'table';
             noData.style.display = 'none';
-
-            // Sort presences by date (newest first)
-            presences.sort((a, b) => new Date(b.date) - new Date(a.date));
 
             presences.forEach(presence => {
                 const row = document.createElement('tr');
@@ -655,8 +669,6 @@
             const methodePaiement = prompt('Méthode de paiement:', 'Especes');
             if (methodePaiement === null) return;
 
-            console.log(`💳 Validating presence ${id} with amount ${montant}€`);
-
             try {
                 const response = await fetch(`${API_BASE_URL}/presences/${id}/valider`, {
                     method: 'POST',
@@ -670,17 +682,14 @@
                 });
 
                 const result = await response.json();
-                console.log('💳 Validation result:', result);
-
                 if (result.success) {
-                    showSuccess('Présence validée avec succès');
+                    alert('Présence validée avec succès');
                     await loadPresences();
                 } else {
-                    showError('Erreur: ' + result.error);
+                    alert('Erreur: ' + result.error);
                 }
             } catch (error) {
-                console.error('💥 Validation error:', error);
-                showError('Erreur de connexion');
+                alert('Erreur de connexion');
             }
         }
 
@@ -689,25 +698,20 @@
                 return;
             }
 
-            console.log(`🗑️ Deleting presence ${id}`);
-
             try {
                 const response = await fetch(`${API_BASE_URL}/presences/${id}`, {
                     method: 'DELETE'
                 });
 
                 const result = await response.json();
-                console.log('🗑️ Delete result:', result);
-
                 if (result.success) {
-                    showSuccess('Présence supprimée');
+                    alert('Présence supprimée');
                     await loadPresences();
                 } else {
-                    showError('Erreur: ' + result.error);
+                    alert('Erreur: ' + result.error);
                 }
             } catch (error) {
-                console.error('💥 Delete error:', error);
-                showError('Erreur de connexion');
+                alert('Erreur de connexion');
             }
         }
 
@@ -723,35 +727,13 @@
 
                 const result = await response.json();
                 if (result.success) {
-                    showSuccess(result.message);
+                    alert(result.message);
                     await loadPresences();
                 } else {
-                    showError('Erreur: ' + (result.error || result.message));
+                    alert('Erreur: ' + (result.error || result.message));
                 }
             } catch (error) {
-                console.error('💥 Archive error:', error);
-                showError('Erreur de connexion');
-            }
-        }
-
-        async function loadAvailableYears() {
-            try {
-                const response = await fetch(`${API_BASE_URL}/admin/export/years`);
-                const result = await response.json();
-
-                if (result.success) {
-                    const select = document.getElementById('year-select');
-                    select.innerHTML = '<option value="">Sélectionner une année...</option>';
-
-                    result.years.forEach(year => {
-                        const option = document.createElement('option');
-                        option.value = year;
-                        option.textContent = year;
-                        select.appendChild(option);
-                    });
-                }
-            } catch (error) {
-                console.error('💥 Load years error:', error);
+                alert('Erreur de connexion');
             }
         }
 
@@ -763,20 +745,40 @@
 
                 const result = await response.json();
                 if (result.success) {
-                    showSuccess(`Export réussi: ${result.filename}\nRecords: ${result.recordCount}`);
+                    alert(`Export réussi: ${result.filename}\nRecords: ${result.recordCount}\nSaison: ${result.seasonName}`);
                 } else {
-                    showError('Erreur: ' + result.error);
+                    alert('Erreur: ' + result.error);
                 }
             } catch (error) {
-                console.error('💥 Season export error:', error);
-                showError('Erreur de connexion');
+                alert('Erreur de connexion');
+            }
+        }
+
+        async function loadAvailableYears() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/admin/export/years`);
+                const result = await response.json();
+
+                if (result.success) {
+                    const select = document.getElementById('year-select');
+                    select.innerHTML = '<option value="">Sélectionner une année pour l\'export...</option>';
+
+                    result.years.forEach(year => {
+                        const option = document.createElement('option');
+                        option.value = year;
+                        option.textContent = year;
+                        select.appendChild(option);
+                    });
+                }
+            } catch (error) {
+                console.error('Error loading years:', error);
             }
         }
 
         async function exportYear() {
             const year = document.getElementById('year-select').value;
             if (!year) {
-                showError('Veuillez sélectionner une année');
+                alert('Veuillez sélectionner une année');
                 return;
             }
 
@@ -787,21 +789,52 @@
 
                 const result = await response.json();
                 if (result.success) {
-                    showSuccess(`Export réussi: ${result.filename}\nRecords: ${result.recordCount}`);
+                    alert(`Export réussi: ${result.filename}\nRecords: ${result.recordCount}`);
                 } else {
-                    showError('Erreur: ' + result.error);
+                    alert('Erreur: ' + result.error);
                 }
             } catch (error) {
-                console.error('💥 Year export error:', error);
-                showError('Erreur de connexion');
+                alert('Erreur de connexion');
             }
         }
 
-        // Hide loading and show content when page is ready
-        setTimeout(() => {
+        async function exportAndCleanup() {
+            const year = document.getElementById('year-select').value;
+            if (!year) {
+                alert('Veuillez sélectionner une année');
+                return;
+            }
+
+            if (!confirm(`ATTENTION: Cette action va exporter l'année ${year} puis supprimer définitivement toutes les données de cette année. Cette action ne peut pas être annulée. Continuer ?`)) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/admin/export-and-cleanup/${year}`, {
+                    method: 'POST'
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    alert(`Export et nettoyage réussis:\nFichier: ${result.export.filename}\nRecords exportés: ${result.export.recordCount}\nRecords supprimés: ${result.cleanup.deletedCount}`);
+                    await loadAvailableYears(); // Refresh the year list
+                } else {
+                    alert('Erreur: ' + result.error);
+                }
+            } catch (error) {
+                alert('Erreur de connexion');
+            }
+        }
+
+        function showLoading() {
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('content').style.display = 'none';
+        }
+
+        function hideLoading() {
             document.getElementById('loading').style.display = 'none';
             document.getElementById('content').style.display = 'block';
-        }, 1000);
+        }
     </script>
 </body>
 </html>

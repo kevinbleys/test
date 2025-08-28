@@ -59,7 +59,24 @@
     "tarif": 10,
     "niveau": "2",
     "assuranceAccepted": true,
-    "status": "pending",
-    "methodePaiement": "Especes"
+    "status": "Payé",
+    "methodePaiement": "Especes",
+    "dateValidation": "2025-08-28T14:28:20.566Z"
+  },
+  {
+    "id": "1756391395909",
+    "type": "non-adherent",
+    "nom": "TRUONG",
+    "prenom": "Youen",
+    "date": "2025-08-28T14:29:55.909Z",
+    "email": "truong.thomas@free.fr",
+    "telephone": "0782917804",
+    "dateNaissance": "2010-01-10",
+    "tarif": 8,
+    "niveau": "2",
+    "assuranceAccepted": true,
+    "status": "Payé",
+    "methodePaiement": "CB",
+    "dateValidation": "2025-08-28T14:30:24.497Z"
   }
 ]

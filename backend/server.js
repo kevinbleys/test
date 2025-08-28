@@ -28,7 +28,7 @@ try {
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-console.log('🚀 Backend Logiciel Escalade - Démarrage avec Admin Interface');
+console.log('🚀 DEFINITIEVE BACKEND - VOLLEDIGE WERKENDE VERSIE');
 console.log('Port:', PORT);
 
 // Data file paths
@@ -77,17 +77,20 @@ initDataFile(PRESENCES_FILE);
 initDataFile(NON_MEMBERS_FILE);
 initDataFile(PRESENCE_HISTORY_FILE);
 
-// File operations
+// File operations with extensive logging
 const readJsonFile = (filePath) => {
     try {
         if (!fs.existsSync(filePath)) {
+            console.log(`⚠️ File does not exist: ${path.basename(filePath)}, returning empty array`);
             return [];
         }
         const data = fs.readFileSync(filePath, 'utf8');
         const parsed = JSON.parse(data);
-        return Array.isArray(parsed) ? parsed : [];
+        const result = Array.isArray(parsed) ? parsed : [];
+        console.log(`📖 Read ${result.length} records from ${path.basename(filePath)}`);
+        return result;
     } catch (error) {
-        console.error(`Error reading ${path.basename(filePath)}:`, error);
+        console.error(`❌ Error reading ${path.basename(filePath)}:`, error);
         return [];
     }
 };
@@ -95,7 +98,7 @@ const readJsonFile = (filePath) => {
 const writeJsonFile = (filePath, data) => {
     try {
         if (!Array.isArray(data)) {
-            console.error(`Attempted to write non-array data to ${path.basename(filePath)}`);
+            console.error(`❌ Attempted to write non-array data to ${path.basename(filePath)}`);
             return false;
         }
 
@@ -106,16 +109,24 @@ const writeJsonFile = (filePath, data) => {
         }
 
         fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+        console.log(`💾 Wrote ${data.length} records to ${path.basename(filePath)}`);
         return true;
     } catch (error) {
-        console.error(`Error writing ${path.basename(filePath)}:`, error);
+        console.error(`❌ Error writing ${path.basename(filePath)}:`, error);
         return false;
     }
 };
 
 // Middleware
 app.use(cors({
-    origin: ['http://localhost:3000', 'http://localhost:3002', 'http://127.0.0.1:3000', 'http://127.0.0.1:3002'],
+    origin: [
+        'http://localhost:3000', 
+        'http://localhost:3001',  // ✅ TOEGEVOEGD: Admin interface zelf
+        'http://localhost:3002', 
+        'http://127.0.0.1:3000', 
+        'http://127.0.0.1:3001',  // ✅ TOEGEVOEGD: Admin interface zelf
+        'http://127.0.0.1:3002'
+    ],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization']
@@ -127,11 +138,14 @@ app.use(express.urlencoded({ extended: true }));
 // Serve static files for admin interface
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Logging middleware
+// Enhanced logging middleware
 app.use((req, res, next) => {
-    console.log(`${new Date().toISOString()} - ${req.method} ${req.path}`);
+    console.log(`🌐 ${new Date().toISOString()} - ${req.method} ${req.path}`);
     if (req.body && Object.keys(req.body).length > 0) {
-        console.log('Request body:', JSON.stringify(req.body, null, 2));
+        console.log('📋 Request body:', JSON.stringify(req.body, null, 2));
+    }
+    if (req.query && Object.keys(req.query).length > 0) {
+        console.log('🔍 Query params:', JSON.stringify(req.query, null, 2));
     }
     next();
 });
@@ -157,7 +171,7 @@ if (!syncService) {
     };
 }
 
-// ===== CRON JOBS FOR DAILY RESET AND CLEANUP =====
+// ===== CRON JOBS =====
 
 // Daily reset at midnight
 cron.schedule('0 0 * * *', () => {
@@ -189,37 +203,13 @@ cron.schedule('0 0 * * *', () => {
     }
 });
 
-// Automatic season export on June 30th at midnight
-cron.schedule('0 0 30 6 *', () => {
-    if (exportService) {
-        try {
-            console.log('=== AUTOMATISCHE SEIZOEN EXPORT GESTART (30 JUNI) ===');
-            const result = exportService.exportSeasonToExcel();
-            console.log(`Seizoen ${result.seasonName} automatisch geëxporteerd: ${result.filename}`);
-            console.log(`${result.recordCount} records geëxporteerd`);
-            console.log('=== AUTOMATISCHE SEIZOEN EXPORT VOLTOOID ===');
-        } catch (error) {
-            console.error('Fout bij automatische seizoen export:', error);
-        }
-    }
-});
-
-// Cleanup jobs
-if (cleanupService) {
-    cron.schedule('0 2 * * *', () => {
-        console.log('=== AUTOMATISCHE CLEANUP GESTART (02:00) ===');
-        cleanupService.performCleanup();
-        console.log('=== AUTOMATISCHE CLEANUP VOLTOOID ===');
-    });
-}
-
 // ===== BASIC API ROUTES =====
 
 app.get('/', (req, res) => {
     res.json({
         status: 'success',
-        message: 'API Logiciel Escalade opérationnelle',
-        version: '1.0.0',
+        message: 'API Logiciel Escalade - DEFINITIEVE VERSIE',
+        version: '2.0.0',
         timestamp: new Date().toISOString(),
         endpoints: {
             health: '/api/health',
@@ -231,17 +221,26 @@ app.get('/', (req, res) => {
 });
 
 app.get('/api/health', (req, res) => {
-    res.json({
+    const presences = readJsonFile(PRESENCES_FILE);
+    const health = {
         status: 'healthy',
         uptime: process.uptime(),
         memory: process.memoryUsage(),
-        timestamp: new Date().toISOString()
-    });
+        timestamp: new Date().toISOString(),
+        dataFiles: {
+            presences: presences.length,
+            presencesFile: fs.existsSync(PRESENCES_FILE),
+            dataDir: fs.existsSync(DATA_DIR)
+        }
+    };
+    console.log('💚 Health check:', health);
+    res.json(health);
 });
 
 // ===== ADMIN INTERFACE ROUTE =====
 
 app.get('/admin', (req, res) => {
+    console.log('📊 Admin interface requested');
     res.sendFile(path.join(__dirname, 'public', 'admin.html'));
 });
 
@@ -312,24 +311,53 @@ app.get('/members/all', (req, res) => {
 
 // ===== PRESENCES ROUTES =====
 
-// Get specific presence by ID (needed for PaymentPage)
-app.get('/presences/:id', (req, res) => {
+// ✅ GET /presences - CRITICAL ROUTE FOR ADMIN INTERFACE
+app.get('/presences', (req, res) => {
+    console.log('📋 GET /presences - Admin interface requesting all presences');
     try {
-        const { id } = req.params;
+        const presences = readJsonFile(PRESENCES_FILE);
+        console.log(`📋 Returning ${presences.length} presences to admin interface`);
+
+        res.json({
+            success: true,
+            presences,
+            count: presences.length
+        });
+    } catch (error) {
+        console.error('❌ Error in GET /presences:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Erreur lors de la lecture des présences'
+        });
+    }
+});
+
+// ✅ GET /presences/:id - FOR PAYMENT PAGE STATUS CHECK
+app.get('/presences/:id', (req, res) => {
+    const { id } = req.params;
+    console.log(`🔍 GET /presences/${id} - Payment page checking status`);
+
+    try {
         const presences = readJsonFile(PRESENCES_FILE);
         const presence = presences.find(p => p.id === id);
-        
+
         if (!presence) {
-            return res.status(404).json({ success: false, error: 'Présence non trouvée' });
+            console.log(`❌ Presence ${id} not found`);
+            return res.status(404).json({ 
+                success: false, 
+                error: 'Présence non trouvée' 
+            });
         }
-        
+
+        console.log(`✅ Found presence ${id}, status: ${presence.status}`);
         res.json({ success: true, presence });
     } catch (error) {
+        console.error(`❌ Error getting presence ${id}:`, error);
         res.status(500).json({ success: false, error: 'Server error' });
     }
 });
 
-
+// ✅ POST /presences - FOR CREATING NEW PRESENCES
 app.post('/presences', (req, res) => {
     console.log('=== NEW PRESENCE REQUEST ===');
     console.log('Request body:', JSON.stringify(req.body, null, 2));
@@ -379,6 +407,7 @@ app.post('/presences', (req, res) => {
         presences.push(newPresence);
 
         if (writeJsonFile(PRESENCES_FILE, presences)) {
+            console.log('✅ NEW PRESENCE CREATED:', newPresence);
             res.json({
                 success: true,
                 message: 'Présence enregistrée avec succès',
@@ -388,7 +417,7 @@ app.post('/presences', (req, res) => {
             throw new Error('Failed to write presence file');
         }
     } catch (error) {
-        console.error('Error saving presence:', error);
+        console.error('❌ Error saving presence:', error);
         res.status(500).json({
             success: false,
             error: 'Erreur lors de l\'enregistrement de la présence'
@@ -396,7 +425,70 @@ app.post('/presences', (req, res) => {
     }
 });
 
-// Presence history routes for calendar functionality
+// ✅ POST /presences/:id/valider - FOR ADMIN VALIDATION
+app.post('/presences/:id/valider', (req, res) => {
+    const { id } = req.params;
+    const { montant, methodePaiement } = req.body;
+
+    console.log(`💳 VALIDATING PAYMENT for presence ${id}`);
+    console.log('Validation data:', { montant, methodePaiement });
+
+    try {
+        const presences = readJsonFile(PRESENCES_FILE);
+        const index = presences.findIndex(p => p.id === id);
+
+        if (index === -1) {
+            return res.status(404).json({ success: false, error: 'Présence non trouvée' });
+        }
+
+        presences[index].status = 'Payé';
+        if (montant !== undefined && montant !== null) {
+            presences[index].tarif = montant;
+        }
+        if (methodePaiement) {
+            presences[index].methodePaiement = methodePaiement;
+        }
+        presences[index].dateValidation = new Date().toISOString();
+
+        if (writeJsonFile(PRESENCES_FILE, presences)) {
+            console.log('✅ PAYMENT VALIDATED:', presences[index]);
+            res.json({ success: true, presence: presences[index] });
+        } else {
+            throw new Error('Failed to write presence file');
+        }
+    } catch (error) {
+        console.error('❌ Error validating payment:', error);
+        res.status(500).json({ success: false, error: 'Server error' });
+    }
+});
+
+// ✅ DELETE /presences/:id - FOR ADMIN DELETION
+app.delete('/presences/:id', (req, res) => {
+    const { id } = req.params;
+    console.log(`🗑️ DELETING presence ${id}`);
+
+    try {
+        const presences = readJsonFile(PRESENCES_FILE);
+        const filteredPresences = presences.filter(p => p.id !== id);
+
+        if (filteredPresences.length === presences.length) {
+            return res.status(404).json({ success: false, error: 'Présence non trouvée' });
+        }
+
+        if (writeJsonFile(PRESENCES_FILE, filteredPresences)) {
+            console.log(`✅ DELETED presence ${id}`);
+            res.json({ success: true, message: 'Présence supprimée avec succès' });
+        } else {
+            throw new Error('Failed to write presence file');
+        }
+    } catch (error) {
+        console.error('❌ Error deleting presence:', error);
+        res.status(500).json({ success: false, error: 'Server error' });
+    }
+});
+
+// ===== HISTORY ROUTES =====
+
 app.get('/presences/history', (req, res) => {
     try {
         const history = readJsonFile(PRESENCE_HISTORY_FILE);
@@ -423,59 +515,8 @@ app.get('/presences/history/:date', (req, res) => {
     }
 });
 
-// Presence management routes for admin
-app.post('/presences/:id/valider', (req, res) => {
-    try {
-        const { id } = req.params;
-        const { montant, methodePaiement } = req.body;
+// ===== ARCHIVE ROUTE =====
 
-        const presences = readJsonFile(PRESENCES_FILE);
-        const index = presences.findIndex(p => p.id === id);
-
-        if (index === -1) {
-            return res.status(404).json({ success: false, error: 'Présence non trouvée' });
-        }
-
-        presences[index].status = 'Payé';
-        if (montant !== undefined && montant !== null) {
-            presences[index].tarif = montant;
-        }
-        if (methodePaiement) {
-            presences[index].methodePaiement = methodePaiement;
-        }
-        presences[index].dateValidation = new Date().toISOString();
-
-        if (writeJsonFile(PRESENCES_FILE, presences)) {
-            res.json({ success: true, presence: presences[index] });
-        } else {
-            throw new Error('Failed to write presence file');
-        }
-    } catch (error) {
-        res.status(500).json({ success: false, error: 'Server error' });
-    }
-});
-
-app.delete('/presences/:id', (req, res) => {
-    try {
-        const { id } = req.params;
-        const presences = readJsonFile(PRESENCES_FILE);
-        const filteredPresences = presences.filter(p => p.id !== id);
-
-        if (filteredPresences.length === presences.length) {
-            return res.status(404).json({ success: false, error: 'Présence non trouvée' });
-        }
-
-        if (writeJsonFile(PRESENCES_FILE, filteredPresences)) {
-            res.json({ success: true, message: 'Présence supprimée avec succès' });
-        } else {
-            throw new Error('Failed to write presence file');
-        }
-    } catch (error) {
-        res.status(500).json({ success: false, error: 'Server error' });
-    }
-});
-
-// Manual archive route
 app.post('/presences/archive', (req, res) => {
     try {
         const currentPresences = readJsonFile(PRESENCES_FILE);
@@ -504,137 +545,53 @@ app.post('/presences/archive', (req, res) => {
     }
 });
 
-// ===== ADMIN EXPORT ROUTES =====
+// ===== NON-MEMBERS ROUTES =====
 
-// Season export
-app.post('/admin/export/season', (req, res) => {
-    if (!exportService) {
-        return res.status(500).json({
-            success: false,
-            error: 'Export service niet beschikbaar'
-        });
-    }
-
+app.get('/non-members', (req, res) => {
     try {
-        const result = exportService.exportSeasonToExcel();
+        const nonMembers = readJsonFile(NON_MEMBERS_FILE);
         res.json({
             success: true,
-            message: `Excel export voor seizoen ${result.seasonName} bijgewerkt`,
-            filename: result.filename,
-            recordCount: result.recordCount,
-            seasonName: result.seasonName
+            nonMembers,
+            count: nonMembers.length
         });
     } catch (error) {
-        console.error('Season export error:', error);
         res.status(500).json({
             success: false,
-            error: 'Fout bij seizoen export: ' + error.message
+            error: 'Erreur lors de la lecture des non-membres'
         });
     }
 });
 
-// Get available years for export
-app.get('/admin/export/years', (req, res) => {
-    if (!exportService) {
-        return res.json({ success: true, years: [] });
-    }
+app.post('/non-members', (req, res) => {
+    console.log('=== NEW NON-MEMBER REQUEST ===');
+    console.log('Request body:', JSON.stringify(req.body, null, 2));
 
     try {
-        const years = exportService.getAvailableYears();
-        res.json({ success: true, years });
-    } catch (error) {
-        res.status(500).json({
-            success: false,
-            error: 'Fout bij ophalen jaren: ' + error.message
-        });
-    }
-});
+        const nonMembers = readJsonFile(NON_MEMBERS_FILE);
 
-// Export specific year
-app.post('/admin/export/:year', (req, res) => {
-    if (!exportService) {
-        return res.status(500).json({
-            success: false,
-            error: 'Export service niet beschikbaar'
-        });
-    }
+        const newNonMember = {
+            id: Date.now().toString(),
+            ...req.body,
+            dateCreated: new Date().toISOString()
+        };
 
-    try {
-        const { year } = req.params;
-        const yearInt = parseInt(year);
+        nonMembers.push(newNonMember);
 
-        if (!yearInt || yearInt < 2020 || yearInt > 2030) {
-            return res.status(400).json({
-                success: false,
-                error: 'Ongeldig jaar (moet tussen 2020 en 2030 zijn)'
+        if (writeJsonFile(NON_MEMBERS_FILE, nonMembers)) {
+            res.json({
+                success: true,
+                message: 'Non-membre enregistré avec succès',
+                nonMember: newNonMember
             });
+        } else {
+            throw new Error('Failed to write non-members file');
         }
-
-        const result = exportService.exportYearToExcel(yearInt);
-        res.json({
-            success: true,
-            message: `Excel export voor ${year} succesvol aangemaakt`,
-            filename: result.filename,
-            recordCount: result.recordCount
-        });
     } catch (error) {
+        console.error('❌ Error saving non-member:', error);
         res.status(500).json({
             success: false,
-            error: 'Fout bij Excel export: ' + error.message
-        });
-    }
-});
-
-// Statistics route
-app.get('/admin/statistics', (req, res) => {
-    if (!exportService) {
-        return res.json({
-            success: true,
-            statistics: {
-                seasonName: 'Onbekend',
-                totalVisits: 0,
-                adherents: { total: 0 },
-                nonAdherents: { total: 0, totalPaid: 0 }
-            },
-            currentSeason: 'Onbekend'
-        });
-    }
-
-    try {
-        const stats = exportService.generateSeasonStatistics();
-        const currentSeason = exportService.getCurrentSeason();
-
-        res.json({
-            success: true,
-            statistics: stats,
-            currentSeason: currentSeason
-        });
-    } catch (error) {
-        res.status(500).json({
-            success: false,
-            error: 'Fout bij ophalen statistieken: ' + error.message
-        });
-    }
-});
-
-// Download route
-app.get('/admin/download/:filename', (req, res) => {
-    try {
-        const { filename } = req.params;
-        const filepath = path.join(EXPORTS_DIR, filename);
-
-        if (!fs.existsSync(filepath)) {
-            return res.status(404).json({
-                success: false,
-                error: 'Bestand niet gevonden'
-            });
-        }
-
-        res.download(filepath, filename);
-    } catch (error) {
-        res.status(500).json({
-            success: false,
-            error: 'Fout bij download: ' + error.message
+            error: 'Erreur lors de l\'enregistrement du non-membre'
         });
     }
 });
@@ -642,6 +599,7 @@ app.get('/admin/download/:filename', (req, res) => {
 // ===== STATS ROUTES =====
 
 app.get('/api/stats/today', (req, res) => {
+    console.log('📊 TODAY STATS REQUESTED');
     try {
         const presences = readJsonFile(PRESENCES_FILE);
         const today = new Date().toISOString().split('T')[0];
@@ -656,18 +614,22 @@ app.get('/api/stats/today', (req, res) => {
             .filter(p => p.tarif && typeof p.tarif === 'number')
             .reduce((sum, p) => sum + p.tarif, 0);
 
+        const stats = {
+            date: today,
+            total: todayPresences.length,
+            adherents,
+            nonAdherents,
+            revenue: totalRevenue,
+            presences: todayPresences
+        };
+
+        console.log('📊 TODAY STATS:', stats);
         res.json({
             success: true,
-            stats: {
-                date: today,
-                total: todayPresences.length,
-                adherents,
-                nonAdherents,
-                revenue: totalRevenue,
-                presences: todayPresences
-            }
+            stats
         });
     } catch (error) {
+        console.error('❌ Error calculating today stats:', error);
         res.status(500).json({
             success: false,
             error: 'Erreur lors du calcul des statistiques'
@@ -675,29 +637,97 @@ app.get('/api/stats/today', (req, res) => {
     }
 });
 
+// ===== EXPORT ROUTES =====
+
+if (exportService) {
+    app.post('/admin/export/season', (req, res) => {
+        try {
+            const result = exportService.exportSeasonToExcel();
+            res.json({
+                success: true,
+                message: `Excel export voor seizoen ${result.seasonName} bijgewerkt`,
+                filename: result.filename,
+                recordCount: result.recordCount,
+                seasonName: result.seasonName
+            });
+        } catch (error) {
+            console.error('Season export error:', error);
+            res.status(500).json({
+                success: false,
+                error: 'Fout bij seizoen export: ' + error.message
+            });
+        }
+    });
+
+    app.get('/admin/export/years', (req, res) => {
+        try {
+            const years = exportService.getAvailableYears();
+            res.json({ success: true, years });
+        } catch (error) {
+            res.status(500).json({
+                success: false,
+                error: 'Fout bij ophalen jaren: ' + error.message
+            });
+        }
+    });
+
+    app.post('/admin/export/:year', (req, res) => {
+        try {
+            const { year } = req.params;
+            const yearInt = parseInt(year);
+
+            if (!yearInt || yearInt < 2020 || yearInt > 2030) {
+                return res.status(400).json({
+                    success: false,
+                    error: 'Ongeldig jaar (moet tussen 2020 en 2030 zijn)'
+                });
+            }
+
+            const result = exportService.exportYearToExcel(yearInt);
+            res.json({
+                success: true,
+                message: `Excel export voor ${year} succesvol aangemaakt`,
+                filename: result.filename,
+                recordCount: result.recordCount
+            });
+        } catch (error) {
+            res.status(500).json({
+                success: false,
+                error: 'Fout bij Excel export: ' + error.message
+            });
+        }
+    });
+}
+
 // ===== 404 HANDLER =====
 
 app.use((req, res) => {
+    console.log(`❌ 404 - Route not found: ${req.method} ${req.path}`);
     res.status(404).json({
         error: 'Endpoint non trouvé',
         path: req.originalUrl,
+        method: req.method,
         available_endpoints: [
-            '/',
-            '/admin',
-            '/api/health',
-            '/members/check',
-            '/presences',
-            '/api/stats/today'
+            'GET /',
+            'GET /admin',
+            'GET /api/health',
+            'GET /members/check',
+            'GET /presences',
+            'POST /presences',
+            'GET /presences/:id',
+            'POST /presences/:id/valider',
+            'DELETE /presences/:id',
+            'GET /api/stats/today'
         ]
     });
 });
 
 // Global error handler
 app.use((error, req, res, next) => {
-    console.error('Server error:', error);
+    console.error('💥 GLOBAL ERROR:', error);
     res.status(500).json({
         error: 'Erreur interne du serveur',
-        message: 'Une erreur s\'est produite lors du traitement de la requête'
+        message: error.message
     });
 });
 
@@ -705,36 +735,40 @@ app.use((error, req, res, next) => {
 
 const server = app.listen(PORT, 'localhost', () => {
     console.log('🎉 ======================================');
-    console.log('🎉 SERVER WITH ADMIN INTERFACE STARTED!');
+    console.log('🎉 DEFINITIEVE BACKEND GESTART!');
     console.log('🎉 ======================================');
-    console.log(`✅ Backend running on: http://localhost:${PORT}`);
-    console.log(`📊 Admin Interface: http://localhost:${PORT}/admin`);
-    console.log(`📈 Health check: http://localhost:${PORT}/api/health`);
-    console.log('🕛 Daily reset scheduled for midnight');
-    console.log('📅 Season export scheduled for June 30th');
+    console.log(`✅ Backend: http://localhost:${PORT}`);
+    console.log(`📊 Admin: http://localhost:${PORT}/admin`);
+    console.log(`💚 Health: http://localhost:${PORT}/api/health`);
     console.log('🎉 ======================================');
+
+    // Test data files
+    setTimeout(() => {
+        const presences = readJsonFile(PRESENCES_FILE);
+        console.log(`📊 Current presences count: ${presences.length}`);
+    }, 1000);
 });
 
 server.on('error', (error) => {
-    console.error('Server error:', error);
+    console.error('💥 Server error:', error);
     if (error.code === 'EADDRINUSE') {
-        console.error(`Port ${PORT} is already in use!`);
+        console.error(`❌ Port ${PORT} is already in use!`);
         process.exit(1);
     }
 });
 
 process.on('SIGTERM', () => {
-    console.log('Shutting down gracefully...');
+    console.log('📴 Shutting down gracefully...');
     server.close(() => {
-        console.log('Server closed');
+        console.log('✅ Server closed');
         process.exit(0);
     });
 });
 
 process.on('SIGINT', () => {
-    console.log('Received SIGINT, shutting down...');
+    console.log('📴 Received SIGINT, shutting down...');
     server.close(() => {
-        console.log('Server closed');
+        console.log('✅ Server closed');
         process.exit(0);
     });
 });
