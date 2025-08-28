@@ -38,5 +38,28 @@
     "prenom": "kevin",
     "date": "2025-08-28T13:32:38.923Z",
     "status": "adherent"
+  },
+  {
+    "id": "1756389853775",
+    "type": "adherent",
+    "nom": "bleys",
+    "prenom": "kevin",
+    "date": "2025-08-28T14:04:13.775Z",
+    "status": "adherent"
+  },
+  {
+    "id": "1756389910380",
+    "type": "non-adherent",
+    "nom": "truong",
+    "prenom": "thomas",
+    "date": "2025-08-28T14:05:10.380Z",
+    "email": "truong.thomas@free.fr",
+    "telephone": "0782917804",
+    "dateNaissance": "1999-01-02",
+    "tarif": 10,
+    "niveau": "2",
+    "assuranceAccepted": true,
+    "status": "pending",
+    "methodePaiement": "Especes"
   }
 ]

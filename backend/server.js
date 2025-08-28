@@ -312,21 +312,23 @@ app.get('/members/all', (req, res) => {
 
 // ===== PRESENCES ROUTES =====
 
-app.get('/presences', (req, res) => {
+// Get specific presence by ID (needed for PaymentPage)
+app.get('/presences/:id', (req, res) => {
     try {
+        const { id } = req.params;
         const presences = readJsonFile(PRESENCES_FILE);
-        res.json({
-            success: true,
-            presences,
-            count: presences.length
-        });
+        const presence = presences.find(p => p.id === id);
+        
+        if (!presence) {
+            return res.status(404).json({ success: false, error: 'Présence non trouvée' });
+        }
+        
+        res.json({ success: true, presence });
     } catch (error) {
-        res.status(500).json({
-            success: false,
-            error: 'Erreur lors de la lecture des présences'
-        });
+        res.status(500).json({ success: false, error: 'Server error' });
     }
 });
+
 
 app.post('/presences', (req, res) => {
     console.log('=== NEW PRESENCE REQUEST ===');
