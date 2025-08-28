@@ -3,292 +3,392 @@ import { useNavigate } from 'react-router-dom';
 import { playBuzzerSound } from '../utils/soundUtils';
 import { calculateAgeAndTarif } from '../utils/ageCalculation';
 
+// ✅ GECORRIGEERDE API BASE URL
+const API_BASE_URL = 'http://localhost:3001';
+
 export default function NonMemberForm() {
-  const nav = useNavigate();
-  const [form, setForm] = useState({
-    nom: '', 
-    prenom: '', 
-    email: '',
-    telephone: '', 
-    dateNaissance: ''
-  });
-  const [err, setErr] = useState('');
-  const [tarifPreview, setTarifPreview] = useState(null);
-
-  const onChange = (e) => {
-    const { name, value } = e.target;
-    setForm({ ...form, [name]: value });
-
-    // **NIEUWE FUNCTIONALITEIT: Preview du tarif en temps réel**
-    if (name === 'dateNaissance' && value) {
-      try {
-        const { age, tarif, description } = calculateAgeAndTarif(value);
-        setTarifPreview({ age, tarif, description });
-      } catch (error) {
-        setTarifPreview(null);
-      }
-    } else if (name === 'dateNaissance' && !value) {
-      setTarifPreview(null);
-    }
-  };
-
-  const next = (e) => {
-    e.preventDefault();
-    
-    if (!form.nom || !form.prenom || !form.email) {
-      setErr('Champs obligatoires manquants'); 
-      playBuzzerSound(); 
-      return;
-    }
-
-    if (!form.dateNaissance) {
-      setErr('La date de naissance est obligatoire pour calculer le tarif');
-      playBuzzerSound();
-      return;
-    }
-
-    // **CALCUL DU TARIF BASÉ SUR L'ÂGE**
-    const { age, tarif, description, category } = calculateAgeAndTarif(form.dateNaissance);
-
-    console.log('=== TARIF CALCULATION ===');
-    console.log('Date de naissance:', form.dateNaissance);
-    console.log('Âge calculé:', age);
-    console.log('Tarif calculé:', tarif);
-    console.log('Catégorie:', category);
-
-    // Navigation avec toutes les données nécessaires
-    nav('/niveau', { 
-      state: { 
-        form,
-        age,
-        tarif,
-        tarifDescription: description,
-        tarifCategory: category
-      }
+    const nav = useNavigate();
+    const [form, setForm] = useState({
+        nom: '', 
+        prenom: '', 
+        email: '',
+        telephone: '', 
+        dateNaissance: ''
     });
-  };
+    const [err, setErr] = useState('');
+    const [tarifPreview, setTarifPreview] = useState(null);
+    const [loading, setLoading] = useState(false);
 
-  return (
-    <div style={{ padding: '20px', maxWidth: '500px', margin: '0 auto', fontFamily: 'Arial, sans-serif' }}>
-      <div style={{ 
-        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-        color: 'white',
-        padding: '30px',
-        borderRadius: '12px',
-        marginBottom: '30px',
-        textAlign: 'center'
-      }}>
-        <h2 style={{ margin: 0, fontSize: '28px' }}>Inscription non-membre</h2>
-      </div>
+    const onChange = (e) => {
+        const { name, value } = e.target;
+        setForm({ ...form, [name]: value });
 
-      <form onSubmit={next} style={{ background: 'white', padding: '30px', borderRadius: '12px', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
-        <div style={{ marginBottom: '20px' }}>
-          <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>
-            Nom *
-          </label>
-          <input
-            type="text"
-            name="nom"
-            value={form.nom}
-            onChange={onChange}
-            required
-            style={{
-              width: '100%',
-              padding: '12px',
-              border: '2px solid #dee2e6',
-              borderRadius: '6px',
-              fontSize: '16px',
-              transition: 'border-color 0.3s ease'
-            }}
-            onFocus={(e) => e.target.style.borderColor = '#007bff'}
-            onBlur={(e) => e.target.style.borderColor = '#dee2e6'}
-          />
-        </div>
+        // Preview du tarif en temps réel
+        if (name === 'dateNaissance' && value) {
+            try {
+                const { age, tarif, description } = calculateAgeAndTarif(value);
+                setTarifPreview({ age, tarif, description });
+            } catch (error) {
+                setTarifPreview(null);
+            }
+        } else if (name === 'dateNaissance' && !value) {
+            setTarifPreview(null);
+        }
+    };
 
-        <div style={{ marginBottom: '20px' }}>
-          <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>
-            Prénom *
-          </label>
-          <input
-            type="text"
-            name="prenom"
-            value={form.prenom}
-            onChange={onChange}
-            required
-            style={{
-              width: '100%',
-              padding: '12px',
-              border: '2px solid #dee2e6',
-              borderRadius: '6px',
-              fontSize: '16px',
-              transition: 'border-color 0.3s ease'
-            }}
-            onFocus={(e) => e.target.style.borderColor = '#007bff'}
-            onBlur={(e) => e.target.style.borderColor = '#dee2e6'}
-          />
-        </div>
+    const next = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+        setErr('');
 
-        <div style={{ marginBottom: '20px' }}>
-          <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>
-            Email *
-          </label>
-          <input
-            type="email"
-            name="email"
-            value={form.email}
-            onChange={onChange}
-            required
-            style={{
-              width: '100%',
-              padding: '12px',
-              border: '2px solid #dee2e6',
-              borderRadius: '6px',
-              fontSize: '16px',
-              transition: 'border-color 0.3s ease'
-            }}
-            onFocus={(e) => e.target.style.borderColor = '#007bff'}
-            onBlur={(e) => e.target.style.borderColor = '#dee2e6'}
-          />
-        </div>
+        if (!form.nom || !form.prenom || !form.email) {
+            setErr('Champs obligatoires manquants'); 
+            playBuzzerSound(); 
+            setLoading(false);
+            return;
+        }
 
-        <div style={{ marginBottom: '20px' }}>
-          <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>
-            Téléphone
-          </label>
-          <input
-            type="tel"
-            name="telephone"
-            value={form.telephone}
-            onChange={onChange}
-            style={{
-              width: '100%',
-              padding: '12px',
-              border: '2px solid #dee2e6',
-              borderRadius: '6px',
-              fontSize: '16px',
-              transition: 'border-color 0.3s ease'
-            }}
-            onFocus={(e) => e.target.style.borderColor = '#007bff'}
-            onBlur={(e) => e.target.style.borderColor = '#dee2e6'}
-          />
-        </div>
+        if (!form.dateNaissance) {
+            setErr('La date de naissance est obligatoire pour calculer le tarif');
+            playBuzzerSound();
+            setLoading(false);
+            return;
+        }
 
-        <div style={{ marginBottom: '20px' }}>
-          <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>
-            Date de naissance *
-          </label>
-          <input
-            type="date"
-            name="dateNaissance"
-            value={form.dateNaissance}
-            onChange={onChange}
-            required
-            max={new Date().toISOString().split('T')[0]} // Pas de dates futures
-            style={{
-              width: '100%',
-              padding: '12px',
-              border: '2px solid #dee2e6',
-              borderRadius: '6px',
-              fontSize: '16px',
-              transition: 'border-color 0.3s ease'
-            }}
-            onFocus={(e) => e.target.style.borderColor = '#007bff'}
-            onBlur={(e) => e.target.style.borderColor = '#dee2e6'}
-          />
-        </div>
+        try {
+            // Calcul du tarif basé sur l'âge
+            const { age, tarif, description, category } = calculateAgeAndTarif(form.dateNaissance);
 
-        {/* **NOUVELLE SECTION: Preview du tarif** */}
-        {tarifPreview && (
-          <div style={{
-            background: tarifPreview.tarif === 0 ? 'linear-gradient(135deg, #28a745 0%, #20c997 100%)' :
-                       tarifPreview.tarif === 8 ? 'linear-gradient(135deg, #ffc107 0%, #fd7e14 100%)' :
-                       'linear-gradient(135deg, #007bff 0%, #0056b3 100%)',
-            color: tarifPreview.tarif === 8 ? 'black' : 'white',
+            console.log('=== TARIF CALCULATION ===');
+            console.log('Date de naissance:', form.dateNaissance);
+            console.log('Âge calculé:', age);
+            console.log('Tarif calculé:', tarif);
+            console.log('Catégorie:', category);
+
+            // Optionnel: Sauvegarder dans non-members voor tracking
+            const nonMemberData = {
+                ...form,
+                age,
+                tarif,
+                tarifDescription: description,
+                tarifCategory: category,
+                status: 'form_completed'
+            };
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/non-members`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(nonMemberData)
+                });
+
+                if (response.ok) {
+                    console.log('✅ Non-member data saved for tracking');
+                } else {
+                    console.warn('⚠️ Could not save non-member data, but continuing...');
+                }
+            } catch (saveError) {
+                console.warn('⚠️ Save error, but continuing...', saveError);
+            }
+
+            // Navigation naar niveau pagina met alle data
+            nav('/niveau', { 
+                state: { 
+                    form,
+                    age,
+                    tarif,
+                    tarifDescription: description,
+                    tarifCategory: category
+                }
+            });
+
+        } catch (error) {
+            console.error('Error in form processing:', error);
+            setErr('Erreur lors du traitement du formulaire');
+            playBuzzerSound();
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    return (
+        <div style={{
+            minHeight: '100vh',
+            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
             padding: '20px',
-            borderRadius: '8px',
-            marginBottom: '20px',
-            textAlign: 'center'
-          }}>
-            <h4 style={{ margin: '0 0 10px 0', fontSize: '18px' }}>
-              Tarif calculé : {tarifPreview.tarif === 0 ? 'GRATUIT' : `${tarifPreview.tarif}€`}
-            </h4>
-            <p style={{ margin: '0 0 5px 0', fontSize: '14px' }}>
-              Âge : {tarifPreview.age} ans
-            </p>
-            <p style={{ margin: 0, fontSize: '12px', opacity: 0.9 }}>
-              {tarifPreview.description}
-            </p>
-          </div>
-        )}
+            fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif"
+        }}>
+            <div style={{
+                background: 'rgba(255, 255, 255, 0.95)',
+                padding: '40px',
+                borderRadius: '20px',
+                boxShadow: '0 20px 60px rgba(0, 0, 0, 0.3)',
+                width: '100%',
+                maxWidth: '600px'
+            }}>
+                <h2 style={{
+                    color: '#333',
+                    marginBottom: '30px',
+                    fontSize: '2rem',
+                    fontWeight: '300',
+                    textAlign: 'center'
+                }}>
+                    Inscription non-membre
+                </h2>
 
-        {err && (
-          <div style={{
-            background: '#f8d7da',
-            color: '#721c24',
-            padding: '12px',
-            borderRadius: '6px',
-            marginBottom: '20px',
-            border: '1px solid #f5c6cb'
-          }}>
-            {err}
-          </div>
-        )}
+                <form onSubmit={next}>
+                    <div style={{
+                        display: 'grid',
+                        gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+                        gap: '20px',
+                        marginBottom: '20px'
+                    }}>
+                        <div>
+                            <label style={{
+                                display: 'block',
+                                marginBottom: '8px',
+                                fontSize: '1.1rem',
+                                color: '#555',
+                                fontWeight: '500'
+                            }}>
+                                Nom *
+                            </label>
+                            <input
+                                type="text"
+                                name="nom"
+                                value={form.nom}
+                                onChange={onChange}
+                                required
+                                disabled={loading}
+                                style={{
+                                    width: '100%',
+                                    padding: '15px',
+                                    border: '2px solid #ddd',
+                                    borderRadius: '10px',
+                                    fontSize: '1.1rem',
+                                    transition: 'border-color 0.3s',
+                                    boxSizing: 'border-box'
+                                }}
+                                onFocus={(e) => e.target.style.borderColor = '#667eea'}
+                                onBlur={(e) => e.target.style.borderColor = '#ddd'}
+                            />
+                        </div>
 
-        <div style={{ display: 'flex', gap: '15px' }}>
-          <button
-            type="button"
-            onClick={() => nav('/')}
-            style={{
-              flex: 1,
-              padding: '15px',
-              background: '#f8f9fa',
-              color: '#6c757d',
-              border: '2px solid #dee2e6',
-              borderRadius: '8px',
-              fontSize: '16px',
-              cursor: 'pointer',
-              transition: 'all 0.3s ease'
-            }}
-            onMouseOver={(e) => {
-              e.target.style.background = '#e9ecef';
-              e.target.style.borderColor = '#adb5bd';
-            }}
-            onMouseOut={(e) => {
-              e.target.style.background = '#f8f9fa';
-              e.target.style.borderColor = '#dee2e6';
-            }}
-          >
-            Annuler
-          </button>
-          
-          <button
-            type="submit"
-            style={{
-              flex: 1,
-              padding: '15px',
-              background: 'linear-gradient(135deg, #007bff 0%, #0056b3 100%)',
-              color: 'white',
-              border: 'none',
-              borderRadius: '8px',
-              fontSize: '16px',
-              fontWeight: 'bold',
-              cursor: 'pointer',
-              transition: 'all 0.3s ease',
-              boxShadow: '0 4px 12px rgba(0, 123, 255, 0.3)'
-            }}
-            onMouseOver={(e) => {
-              e.target.style.transform = 'translateY(-2px)';
-              e.target.style.boxShadow = '0 6px 16px rgba(0, 123, 255, 0.4)';
-            }}
-            onMouseOut={(e) => {
-              e.target.style.transform = 'translateY(0)';
-              e.target.style.boxShadow = '0 4px 12px rgba(0, 123, 255, 0.3)';
-            }}
-          >
-            Continuer
-          </button>
+                        <div>
+                            <label style={{
+                                display: 'block',
+                                marginBottom: '8px',
+                                fontSize: '1.1rem',
+                                color: '#555',
+                                fontWeight: '500'
+                            }}>
+                                Prénom *
+                            </label>
+                            <input
+                                type="text"
+                                name="prenom"
+                                value={form.prenom}
+                                onChange={onChange}
+                                required
+                                disabled={loading}
+                                style={{
+                                    width: '100%',
+                                    padding: '15px',
+                                    border: '2px solid #ddd',
+                                    borderRadius: '10px',
+                                    fontSize: '1.1rem',
+                                    transition: 'border-color 0.3s',
+                                    boxSizing: 'border-box'
+                                }}
+                                onFocus={(e) => e.target.style.borderColor = '#667eea'}
+                                onBlur={(e) => e.target.style.borderColor = '#ddd'}
+                            />
+                        </div>
+                    </div>
+
+                    <div style={{ marginBottom: '20px' }}>
+                        <label style={{
+                            display: 'block',
+                            marginBottom: '8px',
+                            fontSize: '1.1rem',
+                            color: '#555',
+                            fontWeight: '500'
+                        }}>
+                            Email *
+                        </label>
+                        <input
+                            type="email"
+                            name="email"
+                            value={form.email}
+                            onChange={onChange}
+                            required
+                            disabled={loading}
+                            style={{
+                                width: '100%',
+                                padding: '15px',
+                                border: '2px solid #ddd',
+                                borderRadius: '10px',
+                                fontSize: '1.1rem',
+                                transition: 'border-color 0.3s',
+                                boxSizing: 'border-box'
+                            }}
+                            onFocus={(e) => e.target.style.borderColor = '#667eea'}
+                            onBlur={(e) => e.target.style.borderColor = '#ddd'}
+                        />
+                    </div>
+
+                    <div style={{
+                        display: 'grid',
+                        gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+                        gap: '20px',
+                        marginBottom: '20px'
+                    }}>
+                        <div>
+                            <label style={{
+                                display: 'block',
+                                marginBottom: '8px',
+                                fontSize: '1.1rem',
+                                color: '#555',
+                                fontWeight: '500'
+                            }}>
+                                Téléphone
+                            </label>
+                            <input
+                                type="tel"
+                                name="telephone"
+                                value={form.telephone}
+                                onChange={onChange}
+                                disabled={loading}
+                                style={{
+                                    width: '100%',
+                                    padding: '15px',
+                                    border: '2px solid #ddd',
+                                    borderRadius: '10px',
+                                    fontSize: '1.1rem',
+                                    transition: 'border-color 0.3s',
+                                    boxSizing: 'border-box'
+                                }}
+                                onFocus={(e) => e.target.style.borderColor = '#667eea'}
+                                onBlur={(e) => e.target.style.borderColor = '#ddd'}
+                            />
+                        </div>
+
+                        <div>
+                            <label style={{
+                                display: 'block',
+                                marginBottom: '8px',
+                                fontSize: '1.1rem',
+                                color: '#555',
+                                fontWeight: '500'
+                            }}>
+                                Date de naissance *
+                            </label>
+                            <input
+                                type="date"
+                                name="dateNaissance"
+                                value={form.dateNaissance}
+                                onChange={onChange}
+                                required
+                                disabled={loading}
+                                style={{
+                                    width: '100%',
+                                    padding: '15px',
+                                    border: '2px solid #ddd',
+                                    borderRadius: '10px',
+                                    fontSize: '1.1rem',
+                                    transition: 'border-color 0.3s',
+                                    boxSizing: 'border-box'
+                                }}
+                                onFocus={(e) => e.target.style.borderColor = '#667eea'}
+                                onBlur={(e) => e.target.style.borderColor = '#ddd'}
+                            />
+                        </div>
+                    </div>
+
+                    {/* Tarif Preview */}
+                    {tarifPreview && (
+                        <div style={{
+                            background: 'linear-gradient(135deg, #4CAF50, #45a049)',
+                            color: 'white',
+                            padding: '20px',
+                            borderRadius: '15px',
+                            marginBottom: '20px',
+                            textAlign: 'center'
+                        }}>
+                            <h4 style={{ margin: '0 0 10px 0', fontSize: '1.3rem' }}>
+                                Tarif calculé : {tarifPreview.tarif === 0 ? 'GRATUIT' : `${tarifPreview.tarif}€`}
+                            </h4>
+                            <p style={{ margin: '5px 0', opacity: 0.9 }}>
+                                Âge : {tarifPreview.age} ans
+                            </p>
+                            <p style={{ margin: '5px 0', opacity: 0.9 }}>
+                                {tarifPreview.description}
+                            </p>
+                        </div>
+                    )}
+
+                    {err && (
+                        <div style={{
+                            marginBottom: '20px',
+                            padding: '15px',
+                            background: '#ff6b6b',
+                            color: 'white',
+                            borderRadius: '10px',
+                            textAlign: 'center'
+                        }}>
+                            {err}
+                        </div>
+                    )}
+
+                    <div style={{ display: 'flex', gap: '15px', flexWrap: 'wrap' }}>
+                        <button
+                            type="button"
+                            onClick={() => nav('/')}
+                            disabled={loading}
+                            style={{
+                                flex: 1,
+                                padding: '15px 30px',
+                                background: 'transparent',
+                                color: '#667eea',
+                                border: '2px solid #667eea',
+                                borderRadius: '10px',
+                                fontSize: '1.1rem',
+                                fontWeight: '600',
+                                cursor: 'pointer',
+                                transition: 'all 0.3s',
+                                minWidth: '150px'
+                            }}
+                        >
+                            ← Retour
+                        </button>
+
+                        <button
+                            type="submit"
+                            disabled={loading}
+                            style={{
+                                flex: 2,
+                                padding: '15px 30px',
+                                background: loading ? '#ccc' : 'linear-gradient(135deg, #667eea, #764ba2)',
+                                color: 'white',
+                                border: 'none',
+                                borderRadius: '10px',
+                                fontSize: '1.1rem',
+                                fontWeight: '600',
+                                cursor: loading ? 'not-allowed' : 'pointer',
+                                transition: 'all 0.3s',
+                                minWidth: '150px'
+                            }}
+                        >
+                            {loading ? 'Traitement...' : 'Continuer →'}
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
-      </form>
-    </div>
-  );
+    );
 }
