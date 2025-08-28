@@ -4,7 +4,7 @@
   "description": "Interface tablet pour le contrôle d'accès",
   "main": "src/index.js",
   "scripts": {
-    "start": "cross-env NODE_ENV=development webpack serve --config webpack.config.js --port 3001",
+    "start": "cross-env NODE_ENV=development webpack serve --config webpack.config.js --port 3000 --host 0.0.0.0",
     "build": "cross-env NODE_ENV=production webpack --config webpack.config.js",
     "dev": "npm start"
   },
