@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Climbing Club - Control Panel</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 800px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .logo {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 2rem;
+            font-weight: 300;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 40px;
+            font-size: 1.1rem;
+        }
+
+        .status {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .status-card {
+            padding: 20px;
+            border-radius: 15px;
+            color: white;
+            text-align: center;
+        }
+
+        .status-backend { background: linear-gradient(135deg, #667eea, #764ba2); }
+        .status-frontend { background: linear-gradient(135deg, #4CAF50, #45a049); }
+        .status-admin { background: linear-gradient(135deg, #ff9500, #ff8c00); }
+
+        .status-card h3 {
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .status-indicator {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, #ff9500, #ff8c00);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            color: #666;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">🧗‍♀️</div>
+        <h1>Climbing Club Control Panel</h1>
+        <div class="subtitle">Système de gestion pour club d'escalade</div>
+
+        <div class="status">
+            <div class="status-card status-backend">
+                <div class="status-indicator" id="backend-status">⏳</div>
+                <h3>Backend Server</h3>
+                <div>Port 3001</div>
+            </div>
+            <div class="status-card status-frontend">
+                <div class="status-indicator" id="frontend-status">⏳</div>
+                <h3>Interface Tablette</h3>
+                <div>Port 3000</div>
+            </div>
+            <div class="status-card status-admin">
+                <div class="status-indicator" id="admin-status">⏳</div>
+                <h3>Interface Admin</h3>
+                <div>localhost:3001/admin</div>
+            </div>
+        </div>
+
+        <div class="actions">
+            <a href="http://localhost:3001/admin" class="btn btn-primary" target="_blank">
+                🖥️ Interface Administration
+            </a>
+            <a href="http://localhost:3000" class="btn btn-success" target="_blank">
+                📱 Interface Tablette
+            </a>
+            <button class="btn btn-warning" onclick="refreshStatus()">
+                🔄 Actualiser Status
+            </button>
+        </div>
+
+        <div class="footer">
+            <p><strong>Instructions:</strong></p>
+            <p>• Utilisez "Interface Administration" pour gérer les présences</p>
+            <p>• Utilisez "Interface Tablette" pour l'enregistrement des visiteurs</p>
+            <p>• Si un service ne répond pas, redémarrez avec start-climbing-club.bat</p>
+        </div>
+    </div>
+
+    <script>
+        async function checkService(url) {
+            try {
+                const response = await fetch(url, { 
+                    method: 'GET',
+                    mode: 'no-cors' // Avoid CORS issues
+                });
+                return true; // If no error, service is likely running
+            } catch (error) {
+                try {
+                    // Alternative: try to open the URL and see if it fails immediately
+                    const controller = new AbortController();
+                    const timeoutId = setTimeout(() => controller.abort(), 1000);
+
+                    await fetch(url, { 
+                        signal: controller.signal,
+                        mode: 'no-cors'
+                    });
+                    clearTimeout(timeoutId);
+                    return true;
+                } catch {
+                    return false;
+                }
+            }
+        }
+
+        async function refreshStatus() {
+            // Update indicators to loading state
+            document.getElementById('backend-status').textContent = '⏳';
+            document.getElementById('frontend-status').textContent = '⏳';
+            document.getElementById('admin-status').textContent = '⏳';
+
+            // Check backend
+            const backendRunning = await checkService('http://localhost:3001/api/health');
+            document.getElementById('backend-status').textContent = backendRunning ? '✅' : '❌';
+
+            // Check frontend  
+            const frontendRunning = await checkService('http://localhost:3000');
+            document.getElementById('frontend-status').textContent = frontendRunning ? '✅' : '❌';
+
+            // Admin is same as backend
+            document.getElementById('admin-status').textContent = backendRunning ? '✅' : '❌';
+        }
+
+        // Auto-refresh status every 10 seconds
+        refreshStatus();
+        setInterval(refreshStatus, 10000);
+
+        // Show instructions on first load
+        setTimeout(() => {
+            if (document.getElementById('backend-status').textContent === '❌') {
+                alert('Services ne semblent pas fonctionner.\n\nDémarrez-les avec: start-climbing-club.bat');
+            }
+        }, 2000);
+    </script>
+</body>
+</html>
