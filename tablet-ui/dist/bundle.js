@@ -46836,6 +46836,9 @@ function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
 
 
 
+
+// ✅ GECORRIGEERDE API BASE URL - WAS 4000, NU 3001
+var API_BASE_URL = 'http://localhost:3001';
 function AssurancePage() {
   var _state$form, _state$form2;
   var state = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_1__.useLocation)().state;
@@ -46853,6 +46856,10 @@ function AssurancePage() {
     _useState4 = _slicedToArray(_useState3, 2),
     error = _useState4[0],
     setError = _useState4[1];
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+    _useState6 = _slicedToArray(_useState5, 2),
+    loading = _useState6[0],
+    setLoading = _useState6[1];
 
   // Redirect si aucune donnée de formulaire n'est disponible
   if (!(state !== null && state !== void 0 && state.form)) {
@@ -46868,7 +46875,7 @@ function AssurancePage() {
   };
   var finish = /*#__PURE__*/function () {
     var _ref = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee() {
-      var registrationData, response, _t;
+      var registrationData, response, _err$response, _err$response2, _t;
       return _regenerator().w(function (_context) {
         while (1) switch (_context.p = _context.n) {
           case 0:
@@ -46880,24 +46887,29 @@ function AssurancePage() {
             (0,_utils_soundUtils__WEBPACK_IMPORTED_MODULE_4__.playBuzzerSound)();
             return _context.a(2);
           case 1:
-            _context.p = 1;
+            setLoading(true);
+            setError('');
+            _context.p = 2;
             console.log('=== ASSURANCE PAGE SUBMISSION ===');
             console.log('State data:', state);
 
-            // **IMPORTANTE: Utiliser le tarif calculé basé sur l'âge ET assurance status**
+            // Utiliser le tarif calculé basé sur l'âge ET assurance status
             registrationData = _objectSpread(_objectSpread({
               type: 'non-adherent'
             }, state.form), {}, {
               tarif: state.tarif,
-              // **UTILISE LE TARIF CALCULÉ**
+              // Utilise le tarif calculé
               niveau: state.niveau,
-              // **NOUVELLE LIJN: Assurance status voor Excel export**
-              assuranceAccepted: true // Gebruiker heeft alle checkboxes aangevinkt
+              assuranceAccepted: true,
+              // Gebruiker heeft alle checkboxes aangevinkt
+              status: 'pending' // Default status for non-members
             });
             console.log('Submitting with calculated tarif and assurance:', registrationData);
-            _context.n = 2;
-            return axios__WEBPACK_IMPORTED_MODULE_3__["default"].post('http://localhost:4000/presences', registrationData);
-          case 2:
+
+            // ✅ GECORRIGEERDE API URL
+            _context.n = 3;
+            return axios__WEBPACK_IMPORTED_MODULE_3__["default"].post("".concat(API_BASE_URL, "/presences"), registrationData);
+          case 3:
             response = _context.v;
             if (response.data.success) {
               console.log('=== REGISTRATION SUCCESS ===');
@@ -46907,7 +46919,7 @@ function AssurancePage() {
                 state: {
                   presenceId: response.data.presence.id,
                   montant: state.tarif,
-                  // **UTILISE LE CALCULÉ TARIF**
+                  // Utilise le calculé tarif
                   nom: state.form.nom,
                   prenom: state.form.prenom,
                   age: state.age,
@@ -46918,82 +46930,98 @@ function AssurancePage() {
               setError('Erreur lors de l\'enregistrement');
               (0,_utils_soundUtils__WEBPACK_IMPORTED_MODULE_4__.playBuzzerSound)();
             }
-            _context.n = 4;
+            _context.n = 5;
             break;
-          case 3:
-            _context.p = 3;
+          case 4:
+            _context.p = 4;
             _t = _context.v;
             console.error('=== REGISTRATION ERROR ===');
             console.error('Error details:', _t);
-            setError('Erreur de connexion');
+            if (((_err$response = _t.response) === null || _err$response === void 0 ? void 0 : _err$response.status) === 500) {
+              setError('Erreur du serveur. Veuillez réessayer.');
+            } else if ((_err$response2 = _t.response) !== null && _err$response2 !== void 0 && (_err$response2 = _err$response2.data) !== null && _err$response2 !== void 0 && _err$response2.error) {
+              setError(_t.response.data.error);
+            } else {
+              setError('Erreur de connexion. Vérifiez que le serveur fonctionne.');
+            }
             (0,_utils_soundUtils__WEBPACK_IMPORTED_MODULE_4__.playBuzzerSound)();
-          case 4:
+          case 5:
+            _context.p = 5;
+            setLoading(false);
+            return _context.f(5);
+          case 6:
             return _context.a(2);
         }
-      }, _callee, null, [[1, 3]]);
+      }, _callee, null, [[2, 4, 5, 6]]);
     }));
     return function finish() {
       return _ref.apply(this, arguments);
     };
   }();
+  var handleRetourAccueil = function handleRetourAccueil() {
+    navigate('/');
+  };
+  var handleRetourNiveau = function handleRetourNiveau() {
+    navigate('/niveau', {
+      state: state
+    });
+  };
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     style: {
+      minHeight: '100vh',
+      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
       padding: '20px',
-      maxWidth: '700px',
-      margin: '0 auto',
-      fontFamily: 'Arial, sans-serif'
+      fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif"
     }
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     style: {
-      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-      color: 'white',
-      padding: '30px',
-      borderRadius: '12px',
-      marginBottom: '30px',
-      textAlign: 'center'
+      background: 'rgba(255, 255, 255, 0.95)',
+      padding: '40px',
+      borderRadius: '20px',
+      boxShadow: '0 20px 60px rgba(0, 0, 0, 0.3)',
+      width: '100%',
+      maxWidth: '800px'
     }
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h2", {
     style: {
-      margin: 0,
-      fontSize: '28px'
+      color: '#333',
+      marginBottom: '30px',
+      fontSize: '2rem',
+      fontWeight: '300',
+      textAlign: 'center'
     }
-  }, "INFORMATION RELATIVE \xC0 L'ASSURANCE DU PRATIQUANT")), state.tarif !== undefined && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+  }, "INFORMATION RELATIVE \xC0 L'ASSURANCE DU PRATIQUANT"), state.tarif !== undefined && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     style: {
-      background: state.tarif === 0 ? 'linear-gradient(135deg, #28a745 0%, #20c997 100%)' : state.tarif === 8 ? 'linear-gradient(135deg, #ffc107 0%, #fd7e14 100%)' : 'linear-gradient(135deg, #007bff 0%, #0056b3 100%)',
-      color: state.tarif === 8 ? 'black' : 'white',
+      background: 'linear-gradient(135deg, #4CAF50, #45a049)',
+      color: 'white',
       padding: '20px',
-      borderRadius: '8px',
+      borderRadius: '15px',
       marginBottom: '30px',
       textAlign: 'center'
     }
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h4", {
     style: {
       margin: '0 0 10px 0',
-      fontSize: '18px'
+      fontSize: '1.3rem'
     }
   }, "\uD83D\uDCB0 Tarif \xE0 r\xE9gler : ", state.tarif === 0 ? 'GRATUIT' : "".concat(state.tarif, "\u20AC")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
     style: {
-      margin: '0 0 5px 0',
-      fontSize: '14px'
+      margin: '5px 0',
+      opacity: 0.9
     }
   }, "\uD83D\uDC64 ", (_state$form = state.form) === null || _state$form === void 0 ? void 0 : _state$form.nom, " ", (_state$form2 = state.form) === null || _state$form2 === void 0 ? void 0 : _state$form2.prenom, " - ", state.age, " ans - Niveau ", state.niveau), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
     style: {
-      margin: 0,
-      fontSize: '12px',
+      margin: '5px 0',
       opacity: 0.9
     }
   }, state.tarifDescription)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     style: {
-      background: 'white',
-      padding: '30px',
-      borderRadius: '12px',
-      boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
-    }
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
-    style: {
-      fontSize: '14px',
-      color: '#666',
-      marginBottom: '30px'
+      marginBottom: '30px',
+      lineHeight: '1.6',
+      color: '#333'
     }
   }, "Conform\xE9ment \xE0 l'article L321-4 du Code du sport, le pr\xE9sent document vise \xE0 informer le pratiquant des conditions d'assurance applicables dans le cadre de la pratique de l'escalade au sein de la structure."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     style: {
@@ -47001,16 +47029,13 @@ function AssurancePage() {
     }
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h3", {
     style: {
-      color: '#495057',
+      color: '#667eea',
       marginBottom: '15px'
     }
   }, "Assurance en Responsabilit\xE9 Civile"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
     style: {
-      fontSize: '14px',
-      color: '#666',
-      background: '#e3f2fd',
-      padding: '15px',
-      borderRadius: '6px'
+      marginBottom: '15px',
+      lineHeight: '1.6'
     }
   }, "La structure dispose d'un contrat d'assurance en responsabilit\xE9 civile couvrant les dommages caus\xE9s \xE0 des tiers dans le cadre de la pratique de l'escalade.")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     style: {
@@ -47018,187 +47043,145 @@ function AssurancePage() {
     }
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h3", {
     style: {
-      color: '#495057',
+      color: '#667eea',
       marginBottom: '15px'
     }
-  }, "Assurance Individuelle Accident"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+  }, "Assurance Individuelle Accident"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
     style: {
-      background: '#fff3cd',
-      padding: '15px',
-      borderRadius: '6px',
-      marginBottom: '15px'
+      marginBottom: '15px',
+      lineHeight: '1.6'
     }
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
+  }, "Cette assurance ne couvre pas les dommages corporels que le pratiquant pourrait se causer \xE0 lui-m\xEAme, en l'absence de tiers responsable identifi\xE9."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
     style: {
-      fontSize: '14px',
-      color: '#856404',
-      margin: 0
-    }
-  }, "Cette assurance ne couvre pas les dommages corporels que le pratiquant pourrait se causer \xE0 lui-m\xEAme, en l'absence de tiers responsable identifi\xE9.")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
-    style: {
-      fontSize: '14px',
-      color: '#666',
-      marginBottom: '15px'
+      marginBottom: '15px',
+      lineHeight: '1.6'
     }
   }, "L'assurance individuelle accident permet au pratiquant d'\xEAtre indemnis\xE9 pour les dommages corporels dont il pourrait \xEAtre victime, y compris en l'absence de tiers responsable."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
     style: {
-      fontSize: '14px',
-      color: '#666'
+      marginBottom: '15px',
+      lineHeight: '1.6'
     }
   }, "En l'absence de garantie individuelle accident, il est recommand\xE9 de souscrire une couverture adapt\xE9e soit aupr\xE8s de l'assureur de son choix, soit via une licence FFME.")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     style: {
       marginBottom: '30px'
     }
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+  }, [{
+    key: 'c1',
+    text: "Je reconnais avoir été informé(e) des conditions d'assurance applicables dans le cadre de la pratique de l'escalade au sein de cette structure."
+  }, {
+    key: 'c2',
+    text: "Je reconnais avoir été informé(e) de l'existence et de l'intérêt d'une assurance individuelle accident."
+  }, {
+    key: 'c3',
+    text: "Je reconnais avoir été informé(e) de la possibilité de souscrire une assurance complémentaire adaptée à mes besoins, notamment via une licence FFME en club ou hors club."
+  }, {
+    key: 'c4',
+    text: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, "J'ai pris connaissance du", ' ', /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Link, {
+      to: "/reglement",
+      style: {
+        color: '#667eea',
+        textDecoration: 'underline'
+      }
+    }, "R\xE8glement int\xE9rieur"), ' ', "et je m'engage \xE0 le respecter.")
+  }].map(function (_ref2) {
+    var key = _ref2.key,
+      text = _ref2.text;
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+      key: key,
+      style: {
+        display: 'flex',
+        alignItems: 'flex-start',
+        marginBottom: '20px',
+        padding: '15px',
+        border: '2px solid #ddd',
+        borderRadius: '10px',
+        backgroundColor: checks[key] ? '#e8f5e8' : '#fff',
+        borderColor: checks[key] ? '#4CAF50' : '#ddd',
+        cursor: 'pointer',
+        transition: 'all 0.3s'
+      },
+      onClick: function onClick() {
+        return toggleCheck(key);
+      }
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
+      type: "checkbox",
+      checked: checks[key],
+      onChange: function onChange() {
+        return toggleCheck(key);
+      },
+      style: {
+        marginRight: '15px',
+        marginTop: '3px',
+        transform: 'scale(1.2)'
+      }
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
+      style: {
+        lineHeight: '1.6',
+        flex: 1
+      }
+    }, text));
+  })), error && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     style: {
-      marginBottom: '15px'
-    }
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
-    style: {
-      display: 'flex',
-      alignItems: 'flex-start',
-      cursor: 'pointer'
-    }
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
-    type: "checkbox",
-    checked: checks.c1,
-    onChange: function onChange() {
-      return toggleCheck('c1');
-    },
-    style: {
-      marginRight: '15px',
-      marginTop: '3px',
-      transform: 'scale(1.2)'
-    }
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
-    style: {
-      fontSize: '14px'
-    }
-  }, "Je reconnais avoir \xE9t\xE9 inform\xE9(e) des conditions d'assurance applicables dans le cadre de la pratique de l'escalade au sein de cette structure."))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    style: {
-      marginBottom: '15px'
-    }
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
-    style: {
-      display: 'flex',
-      alignItems: 'flex-start',
-      cursor: 'pointer'
-    }
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
-    type: "checkbox",
-    checked: checks.c2,
-    onChange: function onChange() {
-      return toggleCheck('c2');
-    },
-    style: {
-      marginRight: '15px',
-      marginTop: '3px',
-      transform: 'scale(1.2)'
-    }
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
-    style: {
-      fontSize: '14px'
-    }
-  }, "Je reconnais avoir \xE9t\xE9 inform\xE9(e) de l'existence et de l'int\xE9r\xEAt d'une assurance individuelle accident."))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    style: {
-      marginBottom: '15px'
-    }
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
-    style: {
-      display: 'flex',
-      alignItems: 'flex-start',
-      cursor: 'pointer'
-    }
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
-    type: "checkbox",
-    checked: checks.c3,
-    onChange: function onChange() {
-      return toggleCheck('c3');
-    },
-    style: {
-      marginRight: '15px',
-      marginTop: '3px',
-      transform: 'scale(1.2)'
-    }
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
-    style: {
-      fontSize: '14px'
-    }
-  }, "Je reconnais avoir \xE9t\xE9 inform\xE9(e) de la possibilit\xE9 de souscrire une assurance compl\xE9mentaire adapt\xE9e \xE0 mes besoins, notamment via une licence FFME en club ou hors club."))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    style: {
-      marginBottom: '15px'
-    }
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
-    style: {
-      display: 'flex',
-      alignItems: 'flex-start',
-      cursor: 'pointer'
-    }
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
-    type: "checkbox",
-    checked: checks.c4,
-    onChange: function onChange() {
-      return toggleCheck('c4');
-    },
-    style: {
-      marginRight: '15px',
-      marginTop: '3px',
-      transform: 'scale(1.2)'
-    }
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
-    style: {
-      fontSize: '14px'
-    }
-  }, "J'ai pris connaissance du", ' ', /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Link, {
-    to: "/reglement",
-    style: {
-      color: '#007bff'
-    }
-  }, "R\xE8glement int\xE9rieur"), ' ', "et je m'engage \xE0 le respecter.")))), error && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    style: {
-      background: '#f8d7da',
-      color: '#721c24',
-      padding: '12px',
-      borderRadius: '6px',
       marginBottom: '20px',
-      border: '1px solid #f5c6cb'
+      padding: '15px',
+      background: '#ff6b6b',
+      color: 'white',
+      borderRadius: '10px',
+      textAlign: 'center'
     }
   }, error), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     style: {
       display: 'flex',
-      gap: '15px'
+      gap: '15px',
+      flexWrap: 'wrap'
     }
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
-    type: "button",
-    onClick: function onClick() {
-      return navigate('/niveau');
-    },
+    onClick: handleRetourAccueil,
     style: {
       flex: 1,
-      padding: '15px',
-      background: '#f8f9fa',
-      color: '#6c757d',
-      border: '2px solid #dee2e6',
-      borderRadius: '8px',
-      fontSize: '16px',
-      cursor: 'pointer'
+      padding: '15px 30px',
+      background: 'transparent',
+      color: '#667eea',
+      border: '2px solid #667eea',
+      borderRadius: '10px',
+      fontSize: '1.1rem',
+      fontWeight: '600',
+      cursor: 'pointer',
+      transition: 'all 0.3s',
+      minWidth: '150px'
     }
-  }, "Retour"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
-    onClick: finish,
-    disabled: !allChecked,
+  }, "\uD83C\uDFE0 Retour \xE0 l'accueil"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
+    onClick: handleRetourNiveau,
     style: {
       flex: 1,
-      padding: '15px',
-      background: allChecked ? 'linear-gradient(135deg, #28a745 0%, #20c997 100%)' : '#6c757d',
+      padding: '15px 30px',
+      background: 'transparent',
+      color: '#ff9500',
+      border: '2px solid #ff9500',
+      borderRadius: '10px',
+      fontSize: '1.1rem',
+      fontWeight: '600',
+      cursor: 'pointer',
+      transition: 'all 0.3s',
+      minWidth: '150px'
+    }
+  }, "\u2190 Retour niveau"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
+    onClick: finish,
+    disabled: !allChecked || loading,
+    style: {
+      flex: 2,
+      padding: '15px 30px',
+      background: !allChecked || loading ? '#ccc' : 'linear-gradient(135deg, #667eea, #764ba2)',
       color: 'white',
       border: 'none',
-      borderRadius: '8px',
-      fontSize: '16px',
-      fontWeight: 'bold',
-      cursor: allChecked ? 'pointer' : 'not-allowed',
-      boxShadow: allChecked ? '0 4px 12px rgba(40, 167, 69, 0.3)' : 'none'
+      borderRadius: '10px',
+      fontSize: '1.1rem',
+      fontWeight: '600',
+      cursor: !allChecked || loading ? 'not-allowed' : 'pointer',
+      transition: 'all 0.3s',
+      minWidth: '150px'
     }
-  }, "Terminer"))));
+  }, loading ? 'Traitement...' : 'Terminer ✓'))));
 }
 
 /***/ }),
@@ -47385,7 +47368,7 @@ function LevelPage() {
     }
     (0,_utils_soundUtils__WEBPACK_IMPORTED_MODULE_2__.playSuccessSound)();
 
-    // **IMPORTANTE: Doorsturen van ALLE state data inclusief tarief info**
+    // Doorsturen van ALLE state data inclusief tarief info
     nav('/assurance', {
       state: _objectSpread(_objectSpread({}, state), {}, {
         // Spread alle bestaande state (form, age, tarif, etc.)
@@ -47393,275 +47376,214 @@ function LevelPage() {
       })
     });
   };
+  var handleRetourAccueil = function handleRetourAccueil() {
+    nav('/');
+  };
+  var handleRetourForm = function handleRetourForm() {
+    nav('/non-member', {
+      state: state
+    });
+  };
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     style: {
+      minHeight: '100vh',
+      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
       padding: '20px',
-      maxWidth: '700px',
-      margin: '0 auto',
-      fontFamily: 'Arial, sans-serif'
+      fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif"
     }
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     style: {
-      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-      color: 'white',
-      padding: '30px',
-      borderRadius: '12px',
-      marginBottom: '30px',
-      textAlign: 'center'
+      background: 'rgba(255, 255, 255, 0.95)',
+      padding: '40px',
+      borderRadius: '20px',
+      boxShadow: '0 20px 60px rgba(0, 0, 0, 0.3)',
+      width: '100%',
+      maxWidth: '900px'
     }
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h2", {
     style: {
-      margin: 0,
-      fontSize: '28px'
+      color: '#333',
+      marginBottom: '30px',
+      fontSize: '2rem',
+      fontWeight: '300',
+      textAlign: 'center'
     }
-  }, "Je d\xE9clare :")), state.tarif !== undefined && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+  }, "Je d\xE9clare :"), state.tarif !== undefined && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     style: {
-      background: state.tarif === 0 ? 'linear-gradient(135deg, #28a745 0%, #20c997 100%)' : state.tarif === 8 ? 'linear-gradient(135deg, #ffc107 0%, #fd7e14 100%)' : 'linear-gradient(135deg, #007bff 0%, #0056b3 100%)',
-      color: state.tarif === 8 ? 'black' : 'white',
+      background: 'linear-gradient(135deg, #4CAF50, #45a049)',
+      color: 'white',
       padding: '20px',
-      borderRadius: '8px',
+      borderRadius: '15px',
       marginBottom: '30px',
       textAlign: 'center'
     }
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h4", {
     style: {
       margin: '0 0 10px 0',
-      fontSize: '18px'
+      fontSize: '1.3rem'
     }
   }, "\uD83D\uDCB0 Tarif applicable : ", state.tarif === 0 ? 'GRATUIT' : "".concat(state.tarif, "\u20AC")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
     style: {
-      margin: '0 0 5px 0',
-      fontSize: '14px'
+      margin: '5px 0',
+      opacity: 0.9
     }
   }, "\uD83D\uDC64 ", (_state$form = state.form) === null || _state$form === void 0 ? void 0 : _state$form.nom, " ", (_state$form2 = state.form) === null || _state$form2 === void 0 ? void 0 : _state$form2.prenom, " - ", state.age, " ans"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
     style: {
-      margin: 0,
-      fontSize: '12px',
+      margin: '5px 0',
       opacity: 0.9
     }
   }, state.tarifDescription)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     style: {
-      background: 'white',
-      padding: '30px',
-      borderRadius: '12px',
-      boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
-    }
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    style: {
       marginBottom: '30px'
     }
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+  }, [{
+    level: '0',
+    title: 'ne pas être un grimpeur autonome (*)',
+    description: 'Niveau 0 - Grimpeur non autonome',
+    details: ["Je n'ai accès qu'à la structure de blocs.", "Je n'ai pas les compétences requises pour grimper sur le mur à cordes et je m'engage à ne pas grimper sur les zones nécessitant un encordement. Je n'ai accès qu'à la structure de blocs."]
+  }, {
+    level: '1',
+    title: 'être grimpeur autonome de niveau 1 ou je possède un Passeport FFME Escalade blanc (**)',
+    description: 'Niveau 1 - Grimpeur autonome niveau 1',
+    details: ["J'ai accès à la structure blocs et au mur à cordes en moulinette uniquement.", "Je possède les compétences suivantes :", "• Je sais mettre correctement un baudrier", "• Je sais m'encorder en utilisant un nœud de huit tressé avec un nœud d'arrêt", "• Je sais utiliser un système d'assurage pour assurer en moulinette", "• Je sais parer une chute"]
+  }, {
+    level: '2',
+    title: 'être grimpeur autonome de niveau 2 ou je possède un Passeport FFME Escalade jaune (***)',
+    description: 'Niveau 2 - Grimpeur autonome niveau 2',
+    details: ["J'ai accès à la structure blocs et au mur à cordes en tête.", "Je possède toutes les compétences du niveau 1, plus :", "• Je suis autonome de niveau 1", "• Je sais utiliser un système d'assurage pour assurer en tête", "• Je sais grimper en tête"]
+  }].map(function (_ref) {
+    var level = _ref.level,
+      title = _ref.title,
+      description = _ref.description,
+      details = _ref.details;
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+      key: level,
+      style: {
+        marginBottom: '25px'
+      }
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+      style: {
+        display: 'flex',
+        alignItems: 'flex-start',
+        padding: '20px',
+        border: '2px solid #ddd',
+        borderRadius: '15px',
+        backgroundColor: selectedLevel === level ? '#e8f5e8' : '#fff',
+        borderColor: selectedLevel === level ? '#4CAF50' : '#ddd',
+        cursor: 'pointer',
+        transition: 'all 0.3s',
+        marginBottom: '15px'
+      },
+      onClick: function onClick() {
+        return handleLevelChange(level);
+      }
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
+      type: "radio",
+      name: "niveau",
+      value: level,
+      checked: selectedLevel === level,
+      onChange: function onChange() {
+        return handleLevelChange(level);
+      },
+      style: {
+        marginRight: '15px',
+        transform: 'scale(1.2)'
+      }
+    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
+      style: {
+        lineHeight: '1.6',
+        flex: 1,
+        fontSize: '1.1rem'
+      }
+    }, title)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+      style: {
+        marginLeft: '40px',
+        padding: '15px',
+        background: '#f8f9fa',
+        borderRadius: '10px',
+        border: '1px solid #e9ecef'
+      }
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h4", {
+      style: {
+        color: '#667eea',
+        marginBottom: '10px'
+      }
+    }, description), details.map(function (detail, index) {
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
+        key: index,
+        style: {
+          margin: '5px 0',
+          lineHeight: '1.5',
+          color: '#555',
+          fontSize: '0.95rem'
+        }
+      }, detail);
+    })));
+  })), error && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     style: {
-      marginBottom: '15px'
-    }
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
-    style: {
-      display: 'flex',
-      alignItems: 'center',
-      cursor: 'pointer',
-      padding: '15px',
-      border: "2px solid ".concat(selectedLevel === '0' ? '#007bff' : '#dee2e6'),
-      borderRadius: '8px',
-      marginBottom: '10px',
-      transition: 'all 0.3s ease'
-    }
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
-    type: "radio",
-    name: "niveau",
-    value: "0",
-    checked: selectedLevel === '0',
-    onChange: function onChange() {
-      return handleLevelChange('0');
-    },
-    style: {
-      marginRight: '15px',
-      transform: 'scale(1.2)'
-    }
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
-    style: {
-      fontSize: '16px',
-      fontWeight: '500'
-    }
-  }, "ne pas \xEAtre un grimpeur autonome (*)"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    style: {
-      marginBottom: '15px'
-    }
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
-    style: {
-      display: 'flex',
-      alignItems: 'center',
-      cursor: 'pointer',
-      padding: '15px',
-      border: "2px solid ".concat(selectedLevel === '1' ? '#007bff' : '#dee2e6'),
-      borderRadius: '8px',
-      marginBottom: '10px',
-      transition: 'all 0.3s ease'
-    }
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
-    type: "radio",
-    name: "niveau",
-    value: "1",
-    checked: selectedLevel === '1',
-    onChange: function onChange() {
-      return handleLevelChange('1');
-    },
-    style: {
-      marginRight: '15px',
-      transform: 'scale(1.2)'
-    }
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
-    style: {
-      fontSize: '16px',
-      fontWeight: '500'
-    }
-  }, "\xEAtre grimpeur autonome de niveau 1 ou je poss\xE8de un Passeport FFME Escalade blanc (**)"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    style: {
-      marginBottom: '30px'
-    }
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
-    style: {
-      display: 'flex',
-      alignItems: 'center',
-      cursor: 'pointer',
-      padding: '15px',
-      border: "2px solid ".concat(selectedLevel === '2' ? '#007bff' : '#dee2e6'),
-      borderRadius: '8px',
-      marginBottom: '10px',
-      transition: 'all 0.3s ease'
-    }
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
-    type: "radio",
-    name: "niveau",
-    value: "2",
-    checked: selectedLevel === '2',
-    onChange: function onChange() {
-      return handleLevelChange('2');
-    },
-    style: {
-      marginRight: '15px',
-      transform: 'scale(1.2)'
-    }
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
-    style: {
-      fontSize: '16px',
-      fontWeight: '500'
-    }
-  }, "\xEAtre grimpeur autonome de niveau 2 ou je poss\xE8de un Passeport FFME Escalade jaune (***)")))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    style: {
-      background: '#f8f9fa',
-      padding: '20px',
-      borderRadius: '8px',
-      marginBottom: '20px'
-    }
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    style: {
-      marginBottom: '20px'
-    }
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h4", {
-    style: {
-      color: '#495057',
-      marginBottom: '10px'
-    }
-  }, "(*) Niveau 0 - Grimpeur non autonome"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
-    style: {
-      fontWeight: 'bold',
-      color: '#dc3545'
-    }
-  }, "Je n'ai acc\xE8s qu'\xE0 la structure de blocs."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
-    style: {
-      fontSize: '14px',
-      color: '#666'
-    }
-  }, "Je n'ai pas les comp\xE9tences requises pour grimper sur le mur \xE0 cordes et je m'engage \xE0 ne pas grimper sur les zones n\xE9cessitant un encordement. Je n'ai acc\xE8s qu'\xE0 la structure de blocs.")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    style: {
-      marginBottom: '20px'
-    }
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h4", {
-    style: {
-      color: '#495057',
-      marginBottom: '10px'
-    }
-  }, "(**) Niveau 1 - Grimpeur autonome niveau 1"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
-    style: {
-      fontWeight: 'bold',
-      color: '#ffc107'
-    }
-  }, "J'ai acc\xE8s \xE0 la structure blocs et au mur \xE0 cordes en moulinette uniquement."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
-    style: {
-      fontSize: '14px',
-      color: '#666'
-    }
-  }, "Je poss\xE8de les comp\xE9tences suivantes :"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("ul", {
-    style: {
-      fontSize: '14px',
-      color: '#666',
-      marginLeft: '20px'
-    }
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", null, "Je sais mettre correctement un baudrier"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", null, "Je sais m'encorder en utilisant un n\u0153ud de huit tress\xE9 avec un n\u0153ud d'arr\xEAt"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", null, "Je sais utiliser un syst\xE8me d'assurage pour assurer en moulinette"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", null, "Je sais parer une chute"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h4", {
-    style: {
-      color: '#495057',
-      marginBottom: '10px'
-    }
-  }, "(**) Niveau 2 - Grimpeur autonome niveau 2"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
-    style: {
-      fontWeight: 'bold',
-      color: '#28a745'
-    }
-  }, "J'ai acc\xE8s \xE0 la structure blocs et au mur \xE0 cordes en t\xEAte."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
-    style: {
-      fontSize: '14px',
-      color: '#666'
-    }
-  }, "Je poss\xE8de toutes les comp\xE9tences du niveau 1, plus :"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("ul", {
-    style: {
-      fontSize: '14px',
-      color: '#666',
-      marginLeft: '20px'
-    }
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", null, "Je suis autonome de niveau 1"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", null, "Je sais utiliser un syst\xE8me d'assurage pour assurer en t\xEAte"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", null, "Je sais grimper en t\xEAte")))), error && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    style: {
-      background: '#f8d7da',
-      color: '#721c24',
-      padding: '12px',
-      borderRadius: '6px',
       marginBottom: '20px',
-      border: '1px solid #f5c6cb'
+      padding: '15px',
+      background: '#ff6b6b',
+      color: 'white',
+      borderRadius: '10px',
+      textAlign: 'center'
     }
   }, error), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     style: {
       display: 'flex',
-      gap: '15px'
+      gap: '15px',
+      flexWrap: 'wrap'
     }
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
-    type: "button",
-    onClick: function onClick() {
-      return nav('/non-member');
-    },
+    onClick: handleRetourAccueil,
     style: {
       flex: 1,
-      padding: '15px',
-      background: '#f8f9fa',
-      color: '#6c757d',
-      border: '2px solid #dee2e6',
-      borderRadius: '8px',
-      fontSize: '16px',
-      cursor: 'pointer'
+      padding: '15px 30px',
+      background: 'transparent',
+      color: '#667eea',
+      border: '2px solid #667eea',
+      borderRadius: '10px',
+      fontSize: '1.1rem',
+      fontWeight: '600',
+      cursor: 'pointer',
+      transition: 'all 0.3s',
+      minWidth: '150px'
     }
-  }, "Retour"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
-    onClick: continuer,
+  }, "\uD83C\uDFE0 Retour \xE0 l'accueil"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
+    onClick: handleRetourForm,
     style: {
       flex: 1,
-      padding: '15px',
-      background: 'linear-gradient(135deg, #28a745 0%, #20c997 100%)',
+      padding: '15px 30px',
+      background: 'transparent',
+      color: '#ff9500',
+      border: '2px solid #ff9500',
+      borderRadius: '10px',
+      fontSize: '1.1rem',
+      fontWeight: '600',
+      cursor: 'pointer',
+      transition: 'all 0.3s',
+      minWidth: '150px'
+    }
+  }, "\u2190 Retour formulaire"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
+    onClick: continuer,
+    disabled: !selectedLevel,
+    style: {
+      flex: 2,
+      padding: '15px 30px',
+      background: !selectedLevel ? '#ccc' : 'linear-gradient(135deg, #667eea, #764ba2)',
       color: 'white',
       border: 'none',
-      borderRadius: '8px',
-      fontSize: '16px',
-      fontWeight: 'bold',
-      cursor: 'pointer',
-      boxShadow: '0 4px 12px rgba(40, 167, 69, 0.3)'
+      borderRadius: '10px',
+      fontSize: '1.1rem',
+      fontWeight: '600',
+      cursor: !selectedLevel ? 'not-allowed' : 'pointer',
+      transition: 'all 0.3s',
+      minWidth: '150px'
     }
-  }, "Continuer"))));
+  }, "Continuer \u2192"))));
 }
 
 /***/ }),
@@ -47695,6 +47617,9 @@ function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
 
 
 
+
+// ✅ GECORRIGEERDE API BASE URL - WAS 4000, NU 3001
+var API_BASE_URL = 'http://localhost:3001';
 function MemberCheck() {
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(''),
     _useState2 = _slicedToArray(_useState, 2),
@@ -47739,9 +47664,9 @@ function MemberCheck() {
             console.log('=== STARTING MEMBER VERIFICATION ===');
             console.log('Checking member:', nom, prenom);
 
-            // Étape 1: Vérification de l'adhésion
+            // Étape 1: Vérification de l'adhésion - GECORRIGEERDE URL
             _context.n = 2;
-            return axios__WEBPACK_IMPORTED_MODULE_2__["default"].get('http://localhost:4000/members/check', {
+            return axios__WEBPACK_IMPORTED_MODULE_2__["default"].get("".concat(API_BASE_URL, "/members/check"), {
               params: {
                 nom: nom,
                 prenom: prenom
@@ -47759,16 +47684,16 @@ function MemberCheck() {
             (0,_utils_soundUtils__WEBPACK_IMPORTED_MODULE_3__.playSuccessSound)();
             console.log('=== MEMBER VALIDATED - REGISTERING PRESENCE ===');
 
-            // Étape 2: KRITIEKE AANPASSING - Minimale data voor adherents
+            // Étape 2: Enregistrement présence adherent - GECORRIGEERDE URL
             presenceData = {
               type: 'adherent',
               nom: nom.trim(),
               prenom: prenom.trim()
-              // EXPLICIET: Geen andere velden voor adherents
+              // Expliciet: geen andere velden voor adherents
             };
             console.log('Sending presence data:', presenceData);
             _context.n = 3;
-            return axios__WEBPACK_IMPORTED_MODULE_2__["default"].post('http://localhost:4000/presences', presenceData, {
+            return axios__WEBPACK_IMPORTED_MODULE_2__["default"].post("".concat(API_BASE_URL, "/presences"), presenceData, {
               headers: {
                 'Content-Type': 'application/json'
               }
@@ -47780,7 +47705,7 @@ function MemberCheck() {
               console.log('=== PRESENCE REGISTERED SUCCESSFULLY ===');
               console.log('Final presence object:', presenceResponse.data.presence);
 
-              // Check if tarif was wrongly added
+              // Verificatie dat geen tarif werd toegevoegd
               if (presenceResponse.data.presence.tarif !== undefined) {
                 console.error('ERROR: Tarif was added to adherent!', presenceResponse.data.presence.tarif);
               } else {
@@ -47850,56 +47775,193 @@ function MemberCheck() {
     navigate('/');
   };
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "member-check"
+    style: {
+      minHeight: '100vh',
+      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: '20px',
+      fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif"
+    }
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "header-section"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h2", null, "V\xE9rification d'adh\xE9sion"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "header-buttons"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
-    type: "button",
-    className: "btn-appeler-benevole",
-    onClick: handleAppelerBenevole,
-    disabled: loading
-  }, "\uD83D\uDD14 Appeler un b\xE9n\xE9vole"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
-    type: "button",
-    className: "btn-retour-accueil",
-    onClick: handleRetourAccueil,
-    disabled: loading
-  }, "\u2190 Retour \xE0 l'accueil"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("form", {
-    onSubmit: handleVerification
+    style: {
+      background: 'rgba(255, 255, 255, 0.95)',
+      padding: '40px',
+      borderRadius: '20px',
+      boxShadow: '0 20px 60px rgba(0, 0, 0, 0.3)',
+      width: '100%',
+      maxWidth: '500px',
+      textAlign: 'center'
+    }
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h2", {
+    style: {
+      color: '#333',
+      marginBottom: '30px',
+      fontSize: '2rem',
+      fontWeight: '300'
+    }
+  }, "V\xE9rification d'adh\xE9sion"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("form", {
+    onSubmit: handleVerification,
+    style: {
+      marginBottom: '20px'
+    }
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "form-group"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", null, "Nom"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
+    style: {
+      marginBottom: '20px',
+      textAlign: 'left'
+    }
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
+    style: {
+      display: 'block',
+      marginBottom: '8px',
+      fontSize: '1.1rem',
+      color: '#555',
+      fontWeight: '500'
+    }
+  }, "Nom"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
     type: "text",
     value: nom,
     onChange: function onChange(e) {
       return setNom(e.target.value);
     },
     required: true,
-    disabled: loading
+    disabled: loading,
+    style: {
+      width: '100%',
+      padding: '15px',
+      border: '2px solid #ddd',
+      borderRadius: '10px',
+      fontSize: '1.1rem',
+      transition: 'border-color 0.3s',
+      boxSizing: 'border-box'
+    },
+    onFocus: function onFocus(e) {
+      return e.target.style.borderColor = '#667eea';
+    },
+    onBlur: function onBlur(e) {
+      return e.target.style.borderColor = '#ddd';
+    }
   })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "form-group"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", null, "Pr\xE9nom"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
+    style: {
+      marginBottom: '30px',
+      textAlign: 'left'
+    }
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
+    style: {
+      display: 'block',
+      marginBottom: '8px',
+      fontSize: '1.1rem',
+      color: '#555',
+      fontWeight: '500'
+    }
+  }, "Pr\xE9nom"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
     type: "text",
     value: prenom,
     onChange: function onChange(e) {
       return setPrenom(e.target.value);
     },
     required: true,
-    disabled: loading
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
+    disabled: loading,
+    style: {
+      width: '100%',
+      padding: '15px',
+      border: '2px solid #ddd',
+      borderRadius: '10px',
+      fontSize: '1.1rem',
+      transition: 'border-color 0.3s',
+      boxSizing: 'border-box'
+    },
+    onFocus: function onFocus(e) {
+      return e.target.style.borderColor = '#667eea';
+    },
+    onBlur: function onBlur(e) {
+      return e.target.style.borderColor = '#ddd';
+    }
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    style: {
+      display: 'flex',
+      gap: '15px',
+      flexWrap: 'wrap'
+    }
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
     type: "submit",
     disabled: loading,
-    className: "btn-verify"
-  }, loading ? 'Vérification...' : 'Vérifier')), error && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "error-message"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "error-icon"
-  }, "\u26A0\uFE0F"), error), message && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: benevoleCalled ? "benevole-message" : "success-message"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "success-icon"
-  }, benevoleCalled ? "🔔" : "✅"), message));
+    style: {
+      flex: 1,
+      padding: '15px 30px',
+      background: loading ? '#ccc' : 'linear-gradient(135deg, #667eea, #764ba2)',
+      color: 'white',
+      border: 'none',
+      borderRadius: '10px',
+      fontSize: '1.1rem',
+      fontWeight: '600',
+      cursor: loading ? 'not-allowed' : 'pointer',
+      transition: 'all 0.3s',
+      minWidth: '150px'
+    }
+  }, loading ? 'Vérification...' : 'Vérifier'), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
+    type: "button",
+    onClick: handleAppelerBenevole,
+    disabled: loading,
+    style: {
+      flex: 1,
+      padding: '15px 30px',
+      background: '#ff6b6b',
+      color: 'white',
+      border: 'none',
+      borderRadius: '10px',
+      fontSize: '1.1rem',
+      fontWeight: '600',
+      cursor: 'pointer',
+      transition: 'all 0.3s',
+      minWidth: '150px'
+    }
+  }, "\uD83D\uDD14 Appeler b\xE9n\xE9vole"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
+    onClick: handleRetourAccueil,
+    style: {
+      width: '100%',
+      padding: '12px',
+      background: 'transparent',
+      color: '#667eea',
+      border: '2px solid #667eea',
+      borderRadius: '10px',
+      fontSize: '1rem',
+      cursor: 'pointer',
+      transition: 'all 0.3s',
+      marginTop: '10px'
+    }
+  }, "\u2190 Retour \xE0 l'accueil"), error && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    style: {
+      marginTop: '20px',
+      padding: '15px',
+      background: '#ff6b6b',
+      color: 'white',
+      borderRadius: '10px',
+      display: 'flex',
+      alignItems: 'center',
+      gap: '10px'
+    }
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
+    style: {
+      fontSize: '1.2rem'
+    }
+  }, "\u26A0\uFE0F"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", null, error)), message && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    style: {
+      marginTop: '20px',
+      padding: '15px',
+      background: benevoleCalled ? '#ff9500' : '#4CAF50',
+      color: 'white',
+      borderRadius: '10px',
+      display: 'flex',
+      alignItems: 'center',
+      gap: '10px'
+    }
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
+    style: {
+      fontSize: '1.2rem'
+    }
+  }, benevoleCalled ? "🔔" : "✅"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", null, message))));
 }
 
 /***/ }),
@@ -47920,6 +47982,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _utils_soundUtils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/soundUtils */ "./src/utils/soundUtils.js");
 /* harmony import */ var _utils_ageCalculation__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils/ageCalculation */ "./src/utils/ageCalculation.js");
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function _regenerator() { /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/babel/babel/blob/main/packages/babel-helpers/LICENSE */ var e, t, r = "function" == typeof Symbol ? Symbol : {}, n = r.iterator || "@@iterator", o = r.toStringTag || "@@toStringTag"; function i(r, n, o, i) { var c = n && n.prototype instanceof Generator ? n : Generator, u = Object.create(c.prototype); return _regeneratorDefine2(u, "_invoke", function (r, n, o) { var i, c, u, f = 0, p = o || [], y = !1, G = { p: 0, n: 0, v: e, a: d, f: d.bind(e, 4), d: function d(t, r) { return i = t, c = 0, u = e, G.n = r, a; } }; function d(r, n) { for (c = r, u = n, t = 0; !y && f && !o && t < p.length; t++) { var o, i = p[t], d = G.p, l = i[2]; r > 3 ? (o = l === n) && (u = i[(c = i[4]) ? 5 : (c = 3, 3)], i[4] = i[5] = e) : i[0] <= d && ((o = r < 2 && d < i[1]) ? (c = 0, G.v = n, G.n = i[1]) : d < l && (o = r < 3 || i[0] > n || n > l) && (i[4] = r, i[5] = n, G.n = l, c = 0)); } if (o || r > 1) return a; throw y = !0, n; } return function (o, p, l) { if (f > 1) throw TypeError("Generator is already running"); for (y && 1 === p && d(p, l), c = p, u = l; (t = c < 2 ? e : u) || !y;) { i || (c ? c < 3 ? (c > 1 && (G.n = -1), d(c, u)) : G.n = u : G.v = u); try { if (f = 2, i) { if (c || (o = "next"), t = i[o]) { if (!(t = t.call(i, u))) throw TypeError("iterator result is not an object"); if (!t.done) return t; u = t.value, c < 2 && (c = 0); } else 1 === c && (t = i.return) && t.call(i), c < 2 && (u = TypeError("The iterator does not provide a '" + o + "' method"), c = 1); i = e; } else if ((t = (y = G.n < 0) ? u : r.call(n, G)) !== a) break; } catch (t) { i = e, c = 1, u = t; } finally { f = 1; } } return { value: t, done: y }; }; }(r, o, i), !0), u; } var a = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} t = Object.getPrototypeOf; var c = [][n] ? t(t([][n]())) : (_regeneratorDefine2(t = {}, n, function () { return this; }), t), u = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(c); function f(e) { return Object.setPrototypeOf ? Object.setPrototypeOf(e, GeneratorFunctionPrototype) : (e.__proto__ = GeneratorFunctionPrototype, _regeneratorDefine2(e, o, "GeneratorFunction")), e.prototype = Object.create(u), e; } return GeneratorFunction.prototype = GeneratorFunctionPrototype, _regeneratorDefine2(u, "constructor", GeneratorFunctionPrototype), _regeneratorDefine2(GeneratorFunctionPrototype, "constructor", GeneratorFunction), GeneratorFunction.displayName = "GeneratorFunction", _regeneratorDefine2(GeneratorFunctionPrototype, o, "GeneratorFunction"), _regeneratorDefine2(u), _regeneratorDefine2(u, o, "Generator"), _regeneratorDefine2(u, n, function () { return this; }), _regeneratorDefine2(u, "toString", function () { return "[object Generator]"; }), (_regenerator = function _regenerator() { return { w: i, m: f }; })(); }
+function _regeneratorDefine2(e, r, n, t) { var i = Object.defineProperty; try { i({}, "", {}); } catch (e) { i = 0; } _regeneratorDefine2 = function _regeneratorDefine(e, r, n, t) { function o(r, n) { _regeneratorDefine2(e, r, function (e) { return this._invoke(r, n, e); }); } r ? i ? i(e, r, { value: n, enumerable: !t, configurable: !t, writable: !t }) : e[r] = n : (o("next", 0), o("throw", 1), o("return", 2)); }, _regeneratorDefine2(e, r, n, t); }
+function asyncGeneratorStep(n, t, e, r, o, a, c) { try { var i = n[a](c), u = i.value; } catch (n) { return void e(n); } i.done ? t(u) : Promise.resolve(u).then(r, o); }
+function _asyncToGenerator(n) { return function () { var t = this, e = arguments; return new Promise(function (r, o) { var a = n.apply(t, e); function _next(n) { asyncGeneratorStep(a, r, o, _next, _throw, "next", n); } function _throw(n) { asyncGeneratorStep(a, r, o, _next, _throw, "throw", n); } _next(void 0); }); }; }
 function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
 function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
 function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
@@ -47935,6 +48001,9 @@ function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
 
 
 
+
+// ✅ GECORRIGEERDE API BASE URL
+var API_BASE_URL = 'http://localhost:3001';
 function NonMemberForm() {
   var nav = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_1__.useNavigate)();
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({
@@ -47955,13 +48024,17 @@ function NonMemberForm() {
     _useState6 = _slicedToArray(_useState5, 2),
     tarifPreview = _useState6[0],
     setTarifPreview = _useState6[1];
+  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+    _useState8 = _slicedToArray(_useState7, 2),
+    loading = _useState8[0],
+    setLoading = _useState8[1];
   var onChange = function onChange(e) {
     var _e$target = e.target,
       name = _e$target.name,
       value = _e$target.value;
     setForm(_objectSpread(_objectSpread({}, form), {}, _defineProperty({}, name, value)));
 
-    // **NIEUWE FUNCTIONALITEIT: Preview du tarif en temps réel**
+    // Preview du tarif en temps réel
     if (name === 'dateNaissance' && value) {
       try {
         var _calculateAgeAndTarif = (0,_utils_ageCalculation__WEBPACK_IMPORTED_MODULE_3__.calculateAgeAndTarif)(value),
@@ -47980,80 +48053,147 @@ function NonMemberForm() {
       setTarifPreview(null);
     }
   };
-  var next = function next(e) {
-    e.preventDefault();
-    if (!form.nom || !form.prenom || !form.email) {
-      setErr('Champs obligatoires manquants');
-      (0,_utils_soundUtils__WEBPACK_IMPORTED_MODULE_2__.playBuzzerSound)();
-      return;
-    }
-    if (!form.dateNaissance) {
-      setErr('La date de naissance est obligatoire pour calculer le tarif');
-      (0,_utils_soundUtils__WEBPACK_IMPORTED_MODULE_2__.playBuzzerSound)();
-      return;
-    }
+  var next = /*#__PURE__*/function () {
+    var _ref = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee(e) {
+      var _calculateAgeAndTarif2, age, tarif, description, category, nonMemberData, response, _t, _t2;
+      return _regenerator().w(function (_context) {
+        while (1) switch (_context.p = _context.n) {
+          case 0:
+            e.preventDefault();
+            setLoading(true);
+            setErr('');
+            if (!(!form.nom || !form.prenom || !form.email)) {
+              _context.n = 1;
+              break;
+            }
+            setErr('Champs obligatoires manquants');
+            (0,_utils_soundUtils__WEBPACK_IMPORTED_MODULE_2__.playBuzzerSound)();
+            setLoading(false);
+            return _context.a(2);
+          case 1:
+            if (form.dateNaissance) {
+              _context.n = 2;
+              break;
+            }
+            setErr('La date de naissance est obligatoire pour calculer le tarif');
+            (0,_utils_soundUtils__WEBPACK_IMPORTED_MODULE_2__.playBuzzerSound)();
+            setLoading(false);
+            return _context.a(2);
+          case 2:
+            _context.p = 2;
+            // Calcul du tarif basé sur l'âge
+            _calculateAgeAndTarif2 = (0,_utils_ageCalculation__WEBPACK_IMPORTED_MODULE_3__.calculateAgeAndTarif)(form.dateNaissance), age = _calculateAgeAndTarif2.age, tarif = _calculateAgeAndTarif2.tarif, description = _calculateAgeAndTarif2.description, category = _calculateAgeAndTarif2.category;
+            console.log('=== TARIF CALCULATION ===');
+            console.log('Date de naissance:', form.dateNaissance);
+            console.log('Âge calculé:', age);
+            console.log('Tarif calculé:', tarif);
+            console.log('Catégorie:', category);
 
-    // **CALCUL DU TARIF BASÉ SUR L'ÂGE**
-    var _calculateAgeAndTarif2 = (0,_utils_ageCalculation__WEBPACK_IMPORTED_MODULE_3__.calculateAgeAndTarif)(form.dateNaissance),
-      age = _calculateAgeAndTarif2.age,
-      tarif = _calculateAgeAndTarif2.tarif,
-      description = _calculateAgeAndTarif2.description,
-      category = _calculateAgeAndTarif2.category;
-    console.log('=== TARIF CALCULATION ===');
-    console.log('Date de naissance:', form.dateNaissance);
-    console.log('Âge calculé:', age);
-    console.log('Tarif calculé:', tarif);
-    console.log('Catégorie:', category);
-
-    // Navigation avec toutes les données nécessaires
-    nav('/niveau', {
-      state: {
-        form: form,
-        age: age,
-        tarif: tarif,
-        tarifDescription: description,
-        tarifCategory: category
-      }
-    });
-  };
+            // Optionnel: Sauvegarder dans non-members voor tracking
+            nonMemberData = _objectSpread(_objectSpread({}, form), {}, {
+              age: age,
+              tarif: tarif,
+              tarifDescription: description,
+              tarifCategory: category,
+              status: 'form_completed'
+            });
+            _context.p = 3;
+            _context.n = 4;
+            return fetch("".concat(API_BASE_URL, "/non-members"), {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(nonMemberData)
+            });
+          case 4:
+            response = _context.v;
+            if (response.ok) {
+              console.log('✅ Non-member data saved for tracking');
+            } else {
+              console.warn('⚠️ Could not save non-member data, but continuing...');
+            }
+            _context.n = 6;
+            break;
+          case 5:
+            _context.p = 5;
+            _t = _context.v;
+            console.warn('⚠️ Save error, but continuing...', _t);
+          case 6:
+            // Navigation naar niveau pagina met alle data
+            nav('/niveau', {
+              state: {
+                form: form,
+                age: age,
+                tarif: tarif,
+                tarifDescription: description,
+                tarifCategory: category
+              }
+            });
+            _context.n = 8;
+            break;
+          case 7:
+            _context.p = 7;
+            _t2 = _context.v;
+            console.error('Error in form processing:', _t2);
+            setErr('Erreur lors du traitement du formulaire');
+            (0,_utils_soundUtils__WEBPACK_IMPORTED_MODULE_2__.playBuzzerSound)();
+          case 8:
+            _context.p = 8;
+            setLoading(false);
+            return _context.f(8);
+          case 9:
+            return _context.a(2);
+        }
+      }, _callee, null, [[3, 5], [2, 7, 8, 9]]);
+    }));
+    return function next(_x) {
+      return _ref.apply(this, arguments);
+    };
+  }();
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     style: {
+      minHeight: '100vh',
+      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
       padding: '20px',
-      maxWidth: '500px',
-      margin: '0 auto',
-      fontFamily: 'Arial, sans-serif'
+      fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif"
     }
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     style: {
-      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-      color: 'white',
-      padding: '30px',
-      borderRadius: '12px',
-      marginBottom: '30px',
-      textAlign: 'center'
+      background: 'rgba(255, 255, 255, 0.95)',
+      padding: '40px',
+      borderRadius: '20px',
+      boxShadow: '0 20px 60px rgba(0, 0, 0, 0.3)',
+      width: '100%',
+      maxWidth: '600px'
     }
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h2", {
     style: {
-      margin: 0,
-      fontSize: '28px'
+      color: '#333',
+      marginBottom: '30px',
+      fontSize: '2rem',
+      fontWeight: '300',
+      textAlign: 'center'
     }
-  }, "Inscription non-membre")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("form", {
-    onSubmit: next,
-    style: {
-      background: 'white',
-      padding: '30px',
-      borderRadius: '12px',
-      boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
-    }
+  }, "Inscription non-membre"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("form", {
+    onSubmit: next
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     style: {
+      display: 'grid',
+      gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+      gap: '20px',
       marginBottom: '20px'
     }
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
     style: {
       display: 'block',
-      marginBottom: '5px',
-      fontWeight: 'bold'
+      marginBottom: '8px',
+      fontSize: '1.1rem',
+      color: '#555',
+      fontWeight: '500'
     }
   }, "Nom *"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
     type: "text",
@@ -48061,29 +48201,29 @@ function NonMemberForm() {
     value: form.nom,
     onChange: onChange,
     required: true,
+    disabled: loading,
     style: {
       width: '100%',
-      padding: '12px',
-      border: '2px solid #dee2e6',
-      borderRadius: '6px',
-      fontSize: '16px',
-      transition: 'border-color 0.3s ease'
+      padding: '15px',
+      border: '2px solid #ddd',
+      borderRadius: '10px',
+      fontSize: '1.1rem',
+      transition: 'border-color 0.3s',
+      boxSizing: 'border-box'
     },
     onFocus: function onFocus(e) {
-      return e.target.style.borderColor = '#007bff';
+      return e.target.style.borderColor = '#667eea';
     },
     onBlur: function onBlur(e) {
-      return e.target.style.borderColor = '#dee2e6';
+      return e.target.style.borderColor = '#ddd';
     }
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    style: {
-      marginBottom: '20px'
-    }
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
     style: {
       display: 'block',
-      marginBottom: '5px',
-      fontWeight: 'bold'
+      marginBottom: '8px',
+      fontSize: '1.1rem',
+      color: '#555',
+      fontWeight: '500'
     }
   }, "Pr\xE9nom *"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
     type: "text",
@@ -48091,29 +48231,33 @@ function NonMemberForm() {
     value: form.prenom,
     onChange: onChange,
     required: true,
+    disabled: loading,
     style: {
       width: '100%',
-      padding: '12px',
-      border: '2px solid #dee2e6',
-      borderRadius: '6px',
-      fontSize: '16px',
-      transition: 'border-color 0.3s ease'
+      padding: '15px',
+      border: '2px solid #ddd',
+      borderRadius: '10px',
+      fontSize: '1.1rem',
+      transition: 'border-color 0.3s',
+      boxSizing: 'border-box'
     },
     onFocus: function onFocus(e) {
-      return e.target.style.borderColor = '#007bff';
+      return e.target.style.borderColor = '#667eea';
     },
     onBlur: function onBlur(e) {
-      return e.target.style.borderColor = '#dee2e6';
+      return e.target.style.borderColor = '#ddd';
     }
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+  }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     style: {
       marginBottom: '20px'
     }
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
     style: {
       display: 'block',
-      marginBottom: '5px',
-      fontWeight: 'bold'
+      marginBottom: '8px',
+      fontSize: '1.1rem',
+      color: '#555',
+      fontWeight: '500'
     }
   }, "Email *"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
     type: "email",
@@ -48121,58 +48265,65 @@ function NonMemberForm() {
     value: form.email,
     onChange: onChange,
     required: true,
+    disabled: loading,
     style: {
       width: '100%',
-      padding: '12px',
-      border: '2px solid #dee2e6',
-      borderRadius: '6px',
-      fontSize: '16px',
-      transition: 'border-color 0.3s ease'
+      padding: '15px',
+      border: '2px solid #ddd',
+      borderRadius: '10px',
+      fontSize: '1.1rem',
+      transition: 'border-color 0.3s',
+      boxSizing: 'border-box'
     },
     onFocus: function onFocus(e) {
-      return e.target.style.borderColor = '#007bff';
+      return e.target.style.borderColor = '#667eea';
     },
     onBlur: function onBlur(e) {
-      return e.target.style.borderColor = '#dee2e6';
+      return e.target.style.borderColor = '#ddd';
     }
   })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     style: {
+      display: 'grid',
+      gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+      gap: '20px',
       marginBottom: '20px'
     }
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
     style: {
       display: 'block',
-      marginBottom: '5px',
-      fontWeight: 'bold'
+      marginBottom: '8px',
+      fontSize: '1.1rem',
+      color: '#555',
+      fontWeight: '500'
     }
   }, "T\xE9l\xE9phone"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
     type: "tel",
     name: "telephone",
     value: form.telephone,
     onChange: onChange,
+    disabled: loading,
     style: {
       width: '100%',
-      padding: '12px',
-      border: '2px solid #dee2e6',
-      borderRadius: '6px',
-      fontSize: '16px',
-      transition: 'border-color 0.3s ease'
+      padding: '15px',
+      border: '2px solid #ddd',
+      borderRadius: '10px',
+      fontSize: '1.1rem',
+      transition: 'border-color 0.3s',
+      boxSizing: 'border-box'
     },
     onFocus: function onFocus(e) {
-      return e.target.style.borderColor = '#007bff';
+      return e.target.style.borderColor = '#667eea';
     },
     onBlur: function onBlur(e) {
-      return e.target.style.borderColor = '#dee2e6';
+      return e.target.style.borderColor = '#ddd';
     }
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    style: {
-      marginBottom: '20px'
-    }
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
     style: {
       display: 'block',
-      marginBottom: '5px',
-      fontWeight: 'bold'
+      marginBottom: '8px',
+      fontSize: '1.1rem',
+      color: '#555',
+      fontWeight: '500'
     }
   }, "Date de naissance *"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
     type: "date",
@@ -48180,109 +48331,97 @@ function NonMemberForm() {
     value: form.dateNaissance,
     onChange: onChange,
     required: true,
-    max: new Date().toISOString().split('T')[0] // Pas de dates futures
-    ,
+    disabled: loading,
     style: {
       width: '100%',
-      padding: '12px',
-      border: '2px solid #dee2e6',
-      borderRadius: '6px',
-      fontSize: '16px',
-      transition: 'border-color 0.3s ease'
+      padding: '15px',
+      border: '2px solid #ddd',
+      borderRadius: '10px',
+      fontSize: '1.1rem',
+      transition: 'border-color 0.3s',
+      boxSizing: 'border-box'
     },
     onFocus: function onFocus(e) {
-      return e.target.style.borderColor = '#007bff';
+      return e.target.style.borderColor = '#667eea';
     },
     onBlur: function onBlur(e) {
-      return e.target.style.borderColor = '#dee2e6';
+      return e.target.style.borderColor = '#ddd';
     }
-  })), tarifPreview && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+  }))), tarifPreview && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     style: {
-      background: tarifPreview.tarif === 0 ? 'linear-gradient(135deg, #28a745 0%, #20c997 100%)' : tarifPreview.tarif === 8 ? 'linear-gradient(135deg, #ffc107 0%, #fd7e14 100%)' : 'linear-gradient(135deg, #007bff 0%, #0056b3 100%)',
-      color: tarifPreview.tarif === 8 ? 'black' : 'white',
+      background: 'linear-gradient(135deg, #4CAF50, #45a049)',
+      color: 'white',
       padding: '20px',
-      borderRadius: '8px',
+      borderRadius: '15px',
       marginBottom: '20px',
       textAlign: 'center'
     }
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h4", {
     style: {
       margin: '0 0 10px 0',
-      fontSize: '18px'
+      fontSize: '1.3rem'
     }
   }, "Tarif calcul\xE9 : ", tarifPreview.tarif === 0 ? 'GRATUIT' : "".concat(tarifPreview.tarif, "\u20AC")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
     style: {
-      margin: '0 0 5px 0',
-      fontSize: '14px'
+      margin: '5px 0',
+      opacity: 0.9
     }
   }, "\xC2ge : ", tarifPreview.age, " ans"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
     style: {
-      margin: 0,
-      fontSize: '12px',
+      margin: '5px 0',
       opacity: 0.9
     }
   }, tarifPreview.description)), err && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     style: {
-      background: '#f8d7da',
-      color: '#721c24',
-      padding: '12px',
-      borderRadius: '6px',
       marginBottom: '20px',
-      border: '1px solid #f5c6cb'
+      padding: '15px',
+      background: '#ff6b6b',
+      color: 'white',
+      borderRadius: '10px',
+      textAlign: 'center'
     }
   }, err), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     style: {
       display: 'flex',
-      gap: '15px'
+      gap: '15px',
+      flexWrap: 'wrap'
     }
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
     type: "button",
     onClick: function onClick() {
       return nav('/');
     },
+    disabled: loading,
     style: {
       flex: 1,
-      padding: '15px',
-      background: '#f8f9fa',
-      color: '#6c757d',
-      border: '2px solid #dee2e6',
-      borderRadius: '8px',
-      fontSize: '16px',
+      padding: '15px 30px',
+      background: 'transparent',
+      color: '#667eea',
+      border: '2px solid #667eea',
+      borderRadius: '10px',
+      fontSize: '1.1rem',
+      fontWeight: '600',
       cursor: 'pointer',
-      transition: 'all 0.3s ease'
-    },
-    onMouseOver: function onMouseOver(e) {
-      e.target.style.background = '#e9ecef';
-      e.target.style.borderColor = '#adb5bd';
-    },
-    onMouseOut: function onMouseOut(e) {
-      e.target.style.background = '#f8f9fa';
-      e.target.style.borderColor = '#dee2e6';
+      transition: 'all 0.3s',
+      minWidth: '150px'
     }
-  }, "Annuler"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
+  }, "\u2190 Retour"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
     type: "submit",
+    disabled: loading,
     style: {
-      flex: 1,
-      padding: '15px',
-      background: 'linear-gradient(135deg, #007bff 0%, #0056b3 100%)',
+      flex: 2,
+      padding: '15px 30px',
+      background: loading ? '#ccc' : 'linear-gradient(135deg, #667eea, #764ba2)',
       color: 'white',
       border: 'none',
-      borderRadius: '8px',
-      fontSize: '16px',
-      fontWeight: 'bold',
-      cursor: 'pointer',
-      transition: 'all 0.3s ease',
-      boxShadow: '0 4px 12px rgba(0, 123, 255, 0.3)'
-    },
-    onMouseOver: function onMouseOver(e) {
-      e.target.style.transform = 'translateY(-2px)';
-      e.target.style.boxShadow = '0 6px 16px rgba(0, 123, 255, 0.4)';
-    },
-    onMouseOut: function onMouseOut(e) {
-      e.target.style.transform = 'translateY(0)';
-      e.target.style.boxShadow = '0 4px 12px rgba(0, 123, 255, 0.3)';
+      borderRadius: '10px',
+      fontSize: '1.1rem',
+      fontWeight: '600',
+      cursor: loading ? 'not-allowed' : 'pointer',
+      transition: 'all 0.3s',
+      minWidth: '150px'
     }
-  }, "Continuer"))));
+  }, loading ? 'Traitement...' : 'Continuer →')))));
 }
 
 /***/ }),
@@ -48316,6 +48455,9 @@ function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
 
 
 
+
+// ✅ GECORRIGEERDE API BASE URL - WAS 4000, NU 3001
+var API_BASE_URL = 'http://localhost:3001';
 function PaymentPage() {
   var _useLocation = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_1__.useLocation)(),
     state = _useLocation.state; // presenceId + montant
@@ -48332,10 +48474,17 @@ function PaymentPage() {
     _useState6 = _slicedToArray(_useState5, 2),
     isValidated = _useState6[0],
     setIsValidated = _useState6[1];
+  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(true),
+    _useState8 = _slicedToArray(_useState7, 2),
+    loading = _useState8[0],
+    setLoading = _useState8[1];
 
   // Poll elke 4 s of de betaling is gevalideerd
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
-    if (!(state !== null && state !== void 0 && state.presenceId)) return navigate('/');
+    if (!(state !== null && state !== void 0 && state.presenceId)) {
+      navigate('/');
+      return;
+    }
     var checkPaymentStatus = /*#__PURE__*/function () {
       var _ref = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee() {
         var res, _t;
@@ -48344,18 +48493,19 @@ function PaymentPage() {
             case 0:
               _context.p = 0;
               _context.n = 1;
-              return axios__WEBPACK_IMPORTED_MODULE_2__["default"].get("http://localhost:4000/presences/".concat(state.presenceId));
+              return axios__WEBPACK_IMPORTED_MODULE_2__["default"].get("".concat(API_BASE_URL, "/presences/").concat(state.presenceId));
             case 1:
               res = _context.v;
               if (res.data.success) {
                 setPresenceData(res.data.presence);
+                setLoading(false);
                 if (['Payé', 'Pay'].includes(res.data.presence.status)) {
                   if (!isValidated) {
                     setIsValidated(true);
                     (0,_utils_soundUtils__WEBPACK_IMPORTED_MODULE_3__.playSuccessSound)();
                     setTimeout(function () {
                       return navigate('/');
-                    }, 2000);
+                    }, 3000);
                   }
                 }
               }
@@ -48365,6 +48515,8 @@ function PaymentPage() {
               _context.p = 2;
               _t = _context.v;
               console.error('Erreur vérification statut:', _t);
+              setError('Impossible de vérifier le statut du paiement');
+              setLoading(false);
             case 3:
               return _context.a(2);
           }
@@ -48388,224 +48540,253 @@ function PaymentPage() {
     (0,_utils_soundUtils__WEBPACK_IMPORTED_MODULE_3__.playBellSound)();
     // Optionnel: ajouter une logique pour notifier les bénévoles
   };
+  var handleRetourAccueil = function handleRetourAccueil() {
+    navigate('/');
+  };
   if (!(state !== null && state !== void 0 && state.presenceId)) return null;
 
   // Si le paiement est validé
   if (isValidated || (presenceData === null || presenceData === void 0 ? void 0 : presenceData.status) === 'Payé' || (presenceData === null || presenceData === void 0 ? void 0 : presenceData.status) === 'Pay') {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
       style: {
-        padding: '40px',
-        textAlign: 'center',
-        fontFamily: 'Arial, sans-serif',
-        maxWidth: '600px',
-        margin: '0 auto'
+        minHeight: '100vh',
+        background: 'linear-gradient(135deg, #4CAF50 0%, #45a049 100%)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '20px',
+        fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif"
       }
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
       style: {
-        background: 'linear-gradient(135deg, #28a745 0%, #20c997 100%)',
-        color: 'white',
-        padding: '30px',
-        borderRadius: '12px',
+        background: 'rgba(255, 255, 255, 0.95)',
+        padding: '40px',
+        borderRadius: '20px',
+        boxShadow: '0 20px 60px rgba(0, 0, 0, 0.3)',
+        width: '100%',
+        maxWidth: '600px',
+        textAlign: 'center'
+      }
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+      style: {
+        fontSize: '4rem',
         marginBottom: '20px'
       }
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h2", {
+    }, "\u2705"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h2", {
       style: {
-        fontSize: '32px',
-        marginBottom: '15px'
+        color: '#4CAF50',
+        marginBottom: '20px',
+        fontSize: '2rem'
       }
-    }, "\u2705 Paiement valid\xE9 !"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
+    }, "Paiement valid\xE9 !"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
       style: {
-        fontSize: '18px'
+        fontSize: '1.2rem',
+        marginBottom: '15px',
+        color: '#333'
       }
     }, "Votre paiement de ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("strong", null, state.montant, "\u20AC"), " a \xE9t\xE9 confirm\xE9."), (presenceData === null || presenceData === void 0 ? void 0 : presenceData.methodePaiement) && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
       style: {
-        fontSize: '16px',
-        marginTop: '10px'
+        fontSize: '1.1rem',
+        marginBottom: '20px',
+        color: '#666'
       }
-    }, "Mode de paiement : ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("strong", null, presenceData.methodePaiement))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
+    }, "Mode de paiement : ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("strong", null, presenceData.methodePaiement)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
       style: {
-        color: '#666',
-        fontSize: '16px'
+        background: '#e8f5e8',
+        padding: '15px',
+        borderRadius: '10px',
+        marginBottom: '20px',
+        color: '#2e7d32'
       }
-    }, "Redirection automatique vers la page d'accueil..."));
+    }, "Redirection automatique vers la page d'accueil dans 3 secondes..."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
+      onClick: handleRetourAccueil,
+      style: {
+        padding: '15px 30px',
+        background: 'linear-gradient(135deg, #4CAF50, #45a049)',
+        color: 'white',
+        border: 'none',
+        borderRadius: '10px',
+        fontSize: '1.1rem',
+        fontWeight: '600',
+        cursor: 'pointer',
+        transition: 'all 0.3s'
+      }
+    }, "\uD83C\uDFE0 Retour imm\xE9diat \xE0 l'accueil")));
   }
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     style: {
-      padding: '40px',
-      fontFamily: 'Arial, sans-serif',
-      maxWidth: '600px',
-      margin: '0 auto'
+      minHeight: '100vh',
+      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: '20px',
+      fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif"
     }
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     style: {
-      background: 'linear-gradient(135deg, #ffc107 0%, #fd7e14 100%)',
-      color: 'white',
-      padding: '30px',
-      borderRadius: '12px',
-      marginBottom: '30px',
+      background: 'rgba(255, 255, 255, 0.95)',
+      padding: '40px',
+      borderRadius: '20px',
+      boxShadow: '0 20px 60px rgba(0, 0, 0, 0.3)',
+      width: '100%',
+      maxWidth: '700px',
       textAlign: 'center'
     }
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h2", {
     style: {
-      fontSize: '28px',
-      marginBottom: '10px'
+      color: '#333',
+      marginBottom: '20px',
+      fontSize: '2rem',
+      fontWeight: '300'
     }
   }, "\uD83D\uDCB0 Montant \xE0 r\xE9gler : ", state.montant, "\u20AC"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
     style: {
-      fontSize: '16px',
-      opacity: 0.9
+      fontSize: '1.2rem',
+      marginBottom: '30px',
+      color: '#666'
     }
-  }, "En attente de validation par un b\xE9n\xE9vole")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+  }, "En attente de validation par un b\xE9n\xE9vole"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     style: {
-      background: '#e3f2fd',
-      border: '2px solid #2196f3',
-      borderRadius: '12px',
-      padding: '25px',
       marginBottom: '30px'
     }
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h3", {
     style: {
-      color: '#1976d2',
-      marginBottom: '20px',
-      textAlign: 'center'
+      color: '#667eea',
+      marginBottom: '20px'
     }
   }, "\uD83C\uDFEA Pr\xE9sentez-vous \xE0 l'accueil"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     style: {
-      textAlign: 'center',
+      background: '#f8f9fa',
+      padding: '20px',
+      borderRadius: '15px',
       marginBottom: '20px'
     }
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
     style: {
-      color: '#1565c0',
-      marginBottom: '15px',
-      fontSize: '16px'
+      marginBottom: '20px',
+      color: '#333',
+      lineHeight: '1.6'
     }
   }, "Un b\xE9n\xE9vole va vous aider \xE0 finaliser votre paiement avec l'un des modes suivants :"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     style: {
-      display: 'flex',
-      justifyContent: 'space-around',
-      flexWrap: 'wrap',
-      gap: '15px',
-      marginTop: '20px'
+      display: 'grid',
+      gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
+      gap: '15px'
     }
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     style: {
-      padding: '15px 20px',
-      background: '#28a745',
-      color: 'white',
-      borderRadius: '8px',
-      minWidth: '100px',
-      textAlign: 'center',
-      boxShadow: '0 2px 4px rgba(0,0,0,0.2)'
+      padding: '15px',
+      background: 'white',
+      borderRadius: '10px',
+      border: '2px solid #4CAF50'
     }
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     style: {
-      fontSize: '24px',
+      fontSize: '2rem',
       marginBottom: '5px'
     }
   }, "\uD83D\uDCB5"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     style: {
-      fontWeight: 'bold'
+      fontWeight: '600'
     }
   }, "Esp\xE8ces")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     style: {
-      padding: '15px 20px',
-      background: '#007bff',
-      color: 'white',
-      borderRadius: '8px',
-      minWidth: '100px',
-      textAlign: 'center',
-      boxShadow: '0 2px 4px rgba(0,0,0,0.2)'
+      padding: '15px',
+      background: 'white',
+      borderRadius: '10px',
+      border: '2px solid #2196F3'
     }
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     style: {
-      fontSize: '24px',
+      fontSize: '2rem',
       marginBottom: '5px'
     }
   }, "\uD83D\uDCB3"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     style: {
-      fontWeight: 'bold'
+      fontWeight: '600'
     }
   }, "Carte bancaire")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     style: {
-      padding: '15px 20px',
-      background: '#ffc107',
-      color: 'black',
-      borderRadius: '8px',
-      minWidth: '100px',
-      textAlign: 'center',
-      boxShadow: '0 2px 4px rgba(0,0,0,0.2)'
+      padding: '15px',
+      background: 'white',
+      borderRadius: '10px',
+      border: '2px solid #ff9500'
     }
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     style: {
-      fontSize: '24px',
+      fontSize: '2rem',
       marginBottom: '5px'
     }
   }, "\uD83D\uDCDD"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     style: {
-      fontWeight: 'bold'
+      fontWeight: '600'
     }
-  }, "Ch\xE8que")))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+  }, "Ch\xE8que"))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     style: {
-      textAlign: 'center',
-      marginTop: '25px'
+      background: '#e3f2fd',
+      padding: '15px',
+      borderRadius: '10px',
+      marginBottom: '20px',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      gap: '10px'
+    }
+  }, loading ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    style: {
+      width: '20px',
+      height: '20px',
+      border: '2px solid #2196F3',
+      borderTop: '2px solid transparent',
+      borderRadius: '50%',
+      animation: 'spin 1s linear infinite'
+    }
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", null, "V\xE9rification du statut du paiement en cours...")) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", null, "\u23F3 En attente de validation par un b\xE9n\xE9vole")), error && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    style: {
+      marginBottom: '20px',
+      padding: '15px',
+      background: '#ff6b6b',
+      color: 'white',
+      borderRadius: '10px'
+    }
+  }, error), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    style: {
+      display: 'flex',
+      gap: '15px',
+      flexWrap: 'wrap'
     }
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
+    onClick: handleRetourAccueil,
+    style: {
+      flex: 1,
+      padding: '15px 30px',
+      background: 'transparent',
+      color: '#667eea',
+      border: '2px solid #667eea',
+      borderRadius: '10px',
+      fontSize: '1.1rem',
+      fontWeight: '600',
+      cursor: 'pointer',
+      transition: 'all 0.3s',
+      minWidth: '150px'
+    }
+  }, "\uD83C\uDFE0 Retour \xE0 l'accueil"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
     onClick: handleContactVolunteer,
     style: {
-      background: 'linear-gradient(135deg, #17a2b8 0%, #138496 100%)',
+      flex: 1,
+      padding: '15px 30px',
+      background: 'linear-gradient(135deg, #ff9500, #ff8c00)',
       color: 'white',
       border: 'none',
-      padding: '15px 30px',
-      borderRadius: '8px',
-      fontSize: '16px',
-      fontWeight: 'bold',
+      borderRadius: '10px',
+      fontSize: '1.1rem',
+      fontWeight: '600',
       cursor: 'pointer',
-      transition: 'all 0.3s ease',
-      boxShadow: '0 4px 12px rgba(23, 162, 184, 0.3)'
-    },
-    onMouseOver: function onMouseOver(e) {
-      e.target.style.transform = 'translateY(-2px)';
-      e.target.style.boxShadow = '0 6px 16px rgba(23, 162, 184, 0.4)';
-    },
-    onMouseOut: function onMouseOut(e) {
-      e.target.style.transform = 'translateY(0)';
-      e.target.style.boxShadow = '0 4px 12px rgba(23, 162, 184, 0.3)';
+      transition: 'all 0.3s',
+      minWidth: '150px'
     }
-  }, "\uD83D\uDD14 Appeler un b\xE9n\xE9vole"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    style: {
-      background: '#f8f9fa',
-      padding: '20px',
-      borderRadius: '8px',
-      textAlign: 'center',
-      border: '1px solid #dee2e6'
-    }
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    style: {
-      width: '40px',
-      height: '40px',
-      border: '4px solid #f3f3f3',
-      borderTop: '4px solid #ffc107',
-      borderRadius: '50%',
-      animation: 'spin 1s linear infinite',
-      margin: '0 auto 15px'
-    }
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
-    style: {
-      color: '#666',
-      fontSize: '14px',
-      margin: 0
-    }
-  }, "V\xE9rification du statut du paiement en cours...")), error && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    style: {
-      background: '#f8d7da',
-      color: '#721c24',
-      padding: '15px',
-      borderRadius: '8px',
-      marginTop: '20px',
-      textAlign: 'center'
-    }
-  }, error), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("style", null, "\n        @keyframes spin {\n          0% { transform: rotate(0deg); }\n          100% { transform: rotate(360deg); }\n        }\n      "));
+  }, "\uD83D\uDD14 Appeler b\xE9n\xE9vole")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("style", null, "\n                    @keyframes spin {\n                        0% { transform: rotate(0deg); }\n                        100% { transform: rotate(360deg); }\n                    }\n                ")));
 }
 
 /***/ }),
