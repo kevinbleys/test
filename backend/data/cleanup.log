@@ -627,3 +627,12 @@
 [2025-08-11T00:00:00.997Z] CLEANUP: Log bestand OK: export.log (0.01MB)
 [2025-08-11T00:00:00.999Z] CLEANUP: === CLEANUP LOG BESTANDEN BEËINDIGD ===
 [2025-08-11T00:00:01.000Z] CLEANUP: 🧹 DAGELIJKSE CLEANUP VOLTOOID
+[2025-08-30T07:32:55.924Z] CLEANUP: 🔧 Manual cleanup initiated
+[2025-08-30T07:32:55.933Z] CLEANUP: 🧹 Starting cleanup process
+[2025-08-30T07:32:55.936Z] CLEANUP: 📁 Found 5 backup files
+[2025-08-30T07:32:55.938Z] CLEANUP: 📝 Keeping recent backup: members_backup_1754823941344.json
+[2025-08-30T07:32:55.940Z] CLEANUP: 📝 Keeping recent backup: members_backup_1754827541234.json
+[2025-08-30T07:32:55.942Z] CLEANUP: 📝 Keeping recent backup: members_backup_1754831141546.json
+[2025-08-30T07:32:55.944Z] CLEANUP: 📝 Keeping recent backup: members_backup_1754834741545.json
+[2025-08-30T07:32:55.959Z] CLEANUP: 📝 Keeping recent backup: members_backup_1754838341523.json
+[2025-08-30T07:32:55.960Z] CLEANUP: ✅ Cleanup completed: 0 files deleted

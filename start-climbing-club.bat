@@ -1,63 +1,80 @@
 @echo off
-title Climbing Club Software Launcher
+title Climbing Club Software - Final Version
 color 0A
 
 echo.
-echo     ======================================
-echo       CLIMBING CLUB SOFTWARE LAUNCHER
-echo     ======================================
+echo     ==========================================
+echo       CLIMBING CLUB SOFTWARE - STARTUP
+echo     ==========================================
 echo.
 
-REM Check if ports are already in use
-echo Checking if services are already running...
-netstat -an | find ":3001" >nul
-if not errorlevel 1 (
-    echo ⚠️ Port 3001 already in use - Backend might be running
-)
+REM Kill existing processes to prevent conflicts
+echo 1. Cleaning up existing processes...
+taskkill /F /IM node.exe >nul 2>&1
+timeout /t 2 /nobreak >nul
 
-netstat -an | find ":3000" >nul  
-if not errorlevel 1 (
-    echo ⚠️ Port 3000 already in use - Frontend might be running
-)
-
-echo.
-echo Starting Climbing Club Software...
-echo.
-
-REM Start backend in background
-echo 1. Starting Backend (Port 3001)...
+REM Start Backend (Port 3001) - MINIMIZED
+echo 2. Starting Backend Server (Port 3001) in background...
 cd backend
-start "Backend Server" cmd /k "echo Backend Server Started && node server.js"
+start "Backend" /min cmd /c "echo ✅ Backend Server Starting && node server.js && pause"
 cd ..
 
-REM Wait a bit for backend to start
-timeout /t 3 /nobreak >nul
+REM Wait for backend to start
+echo   Waiting for backend to initialize...
+timeout /t 6 /nobreak >nul
 
-REM Start frontend if it exists  
+REM Start Tablet UI Frontend (Port 3000) - MINIMIZED
+echo 3. Starting Tablet UI Frontend (Port 3000) in background...
 if exist tablet-ui (
-    echo 2. Starting Frontend (Port 3000)...
     cd tablet-ui
-    start "Frontend Server" cmd /k "echo Frontend Server Started && npm start"
+    if exist package.json (
+        call npm install --silent >nul 2>&1
+        start "Tablet UI" /min cmd /c "echo ✅ Tablet UI Starting && npm start && pause"
+    ) else (
+        start "Tablet UI" /min cmd /c "echo ✅ Tablet UI Static && npx http-server -p 3000 -c-1 && pause"
+    )
     cd ..
 ) else (
-    echo 2. Frontend directory not found, skipping...
+    echo   ❌ tablet-ui directory not found
 )
 
-REM Wait a bit more
-timeout /t 3 /nobreak >nul
+REM Start Admin Dashboard (Port 3002) - MINIMIZED BUT NO BROWSER OPENING
+echo 4. Starting Admin Dashboard (Port 3002) in background only...
+if exist admin-dashboard (
+    cd admin-dashboard
+    if exist package.json (
+        call npm install --silent >nul 2>&1
+        start "Admin Dashboard" /min cmd /c "echo ✅ Admin Dashboard Starting && npm start && pause"
+    )
+    cd ..
+)
 
-REM Open admin interface
-echo 3. Opening Admin Interface...
+REM Wait for all services to start
+echo 5. Waiting for all services to initialize...
+timeout /t 8 /nobreak >nul
+
+REM Open ONLY the required interfaces - NO localhost:3002
+echo 6. Opening web interfaces...
+echo   Opening Admin Interface...
 start "Admin Interface" http://localhost:3001/admin
 
+timeout /t 3 /nobreak >nul
+echo   Opening Tablet Interface...
+start "Tablet Interface" http://localhost:3000
+
 echo.
-echo ✅ Climbing Club Software Started!
+echo ✅ ALL SERVICES STARTED!
 echo.
-echo Services running:
-echo • Backend: http://localhost:3001
-echo • Admin: http://localhost:3001/admin  
-echo • Frontend: http://localhost:3000 (if available)
+echo 📊 Opened in Browser:
+echo   • Admin Interface:    http://localhost:3001/admin ✅
+echo   • Tablet Interface:   http://localhost:3000       ✅
+echo.
+echo 📊 Running in Background Only:
+echo   • Admin Dashboard:    http://localhost:3002       (not opened)
+echo.
+echo 💡 Services are running minimized in background.
+echo 💡 Close minimized windows = services stop!
+echo 💡 To stop all: stop-climbing-club.bat
 echo.
 echo Press any key to close this launcher...
-echo (Services will continue running in background)
 pause >nul
