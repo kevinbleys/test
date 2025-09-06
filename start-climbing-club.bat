@@ -1,11 +1,13 @@
 @echo off
-title Climbing Club Software - Final Version
+title Climbing Club Software - Clean Version (No Admin Dashboard)
 color 0A
 
 echo.
 echo     ==========================================
-echo       CLIMBING CLUB SOFTWARE - STARTUP
+echo       CLIMBING CLUB SOFTWARE - CLEAN START
 echo     ==========================================
+echo.
+echo Starting Backend + Tablet UI only (no admin-dashboard)
 echo.
 
 REM Kill existing processes to prevent conflicts
@@ -16,7 +18,7 @@ timeout /t 2 /nobreak >nul
 REM Start Backend (Port 3001) - MINIMIZED
 echo 2. Starting Backend Server (Port 3001) in background...
 cd backend
-start "Backend" /min cmd /c "echo ✅ Backend Server Starting && node server.js && pause"
+start "Backend" /min cmd /c "echo ✅ Backend + Admin Interface Starting && node server.js && pause"
 cd ..
 
 REM Wait for backend to start
@@ -38,23 +40,12 @@ if exist tablet-ui (
     echo   ❌ tablet-ui directory not found
 )
 
-REM Start Admin Dashboard (Port 3002) - MINIMIZED BUT NO BROWSER OPENING
-echo 4. Starting Admin Dashboard (Port 3002) in background only...
-if exist admin-dashboard (
-    cd admin-dashboard
-    if exist package.json (
-        call npm install --silent >nul 2>&1
-        start "Admin Dashboard" /min cmd /c "echo ✅ Admin Dashboard Starting && npm start && pause"
-    )
-    cd ..
-)
-
-REM Wait for all services to start
-echo 5. Waiting for all services to initialize...
+REM Wait for services to start
+echo 4. Waiting for services to initialize...
 timeout /t 8 /nobreak >nul
 
-REM Open ONLY the required interfaces - NO localhost:3002
-echo 6. Opening web interfaces...
+REM Open the required interfaces
+echo 5. Opening web interfaces...
 echo   Opening Admin Interface...
 start "Admin Interface" http://localhost:3001/admin
 
@@ -63,18 +54,18 @@ echo   Opening Tablet Interface...
 start "Tablet Interface" http://localhost:3000
 
 echo.
-echo ✅ ALL SERVICES STARTED!
+echo ✅ CLEAN SYSTEM STARTED!
 echo.
-echo 📊 Opened in Browser:
-echo   • Admin Interface:    http://localhost:3001/admin ✅
-echo   • Tablet Interface:   http://localhost:3000       ✅
+echo 📊 Active Services:
+echo   • Backend + Admin:    http://localhost:3001 + /admin ✅
+echo   • Tablet Interface:   http://localhost:3000           ✅
 echo.
-echo 📊 Running in Background Only:
-echo   • Admin Dashboard:    http://localhost:3002       (not opened)
+echo 📊 Removed/Not Used:
+echo   • admin-dashboard:    localhost:3002 (eliminated)
 echo.
-echo 💡 Services are running minimized in background.
-echo 💡 Close minimized windows = services stop!
-echo 💡 To stop all: stop-climbing-club.bat
+echo 💡 Simplified system - only essential components running.
+echo 💡 Admin functionality available at localhost:3001/admin
+echo 💡 No more unwanted browser windows opening!
 echo.
 echo Press any key to close this launcher...
 pause >nul

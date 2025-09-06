@@ -230,5 +230,50 @@
         "dateValidation": "2025-08-28T14:48:03.983Z"
       }
     ]
+  },
+  {
+    "date": "2025-08-30",
+    "presences": [
+      {
+        "id": "1756543444379",
+        "type": "adherent",
+        "nom": "bleys",
+        "prenom": "kevin",
+        "date": "2025-08-30T08:44:04.379Z",
+        "status": "adherent"
+      },
+      {
+        "id": "1756543481605",
+        "type": "non-adherent",
+        "nom": "truong",
+        "prenom": "thomas",
+        "date": "2025-08-30T08:44:41.605Z",
+        "email": "truong.thomas@free.fr",
+        "telephone": "0782917804",
+        "dateNaissance": "1986-02-02",
+        "tarif": 10,
+        "niveau": "2",
+        "assuranceAccepted": true,
+        "status": "Payé",
+        "methodePaiement": "Especes",
+        "dateValidation": "2025-08-30T08:44:53.537Z"
+      },
+      {
+        "id": "1756565895232",
+        "type": "adherent",
+        "nom": "bresson",
+        "prenom": "camille",
+        "date": "2025-08-30T14:58:15.232Z",
+        "status": "adherent"
+      },
+      {
+        "id": "1756565906890",
+        "type": "adherent",
+        "nom": "clarens",
+        "prenom": "isaure",
+        "date": "2025-08-30T14:58:26.890Z",
+        "status": "adherent"
+      }
+    ]
   }
 ]

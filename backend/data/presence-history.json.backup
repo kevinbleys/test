@@ -129,5 +129,106 @@
         "status": "adherent"
       }
     ]
+  },
+  {
+    "date": "2025-08-29",
+    "presences": [
+      {
+        "id": "1754892941212",
+        "type": "non-adherent",
+        "nom": "TRUONG",
+        "prenom": "Youen",
+        "date": "2025-08-11T06:15:41.212Z",
+        "status": "Payé",
+        "tarif": 8,
+        "methodePaiement": "Especes",
+        "email": "truong.thomas@free.fr",
+        "telephone": "0782917804",
+        "dateNaissance": "2015-10-10",
+        "niveau": "2",
+        "assuranceAccepted": true,
+        "dateValidation": "2025-08-11T06:16:12.178Z"
+      },
+      {
+        "id": "1754893013592",
+        "type": "adherent",
+        "nom": "bresson",
+        "prenom": "camille",
+        "date": "2025-08-11T06:16:53.592Z",
+        "status": "adherent"
+      },
+      {
+        "id": "1756382507023",
+        "type": "adherent",
+        "nom": "bleys",
+        "prenom": "kevin",
+        "date": "2025-08-28T12:01:47.023Z",
+        "status": "adherent"
+      },
+      {
+        "id": "1756387958923",
+        "type": "adherent",
+        "nom": "bleys",
+        "prenom": "kevin",
+        "date": "2025-08-28T13:32:38.923Z",
+        "status": "adherent"
+      },
+      {
+        "id": "1756389853775",
+        "type": "adherent",
+        "nom": "bleys",
+        "prenom": "kevin",
+        "date": "2025-08-28T14:04:13.775Z",
+        "status": "adherent"
+      },
+      {
+        "id": "1756389910380",
+        "type": "non-adherent",
+        "nom": "truong",
+        "prenom": "thomas",
+        "date": "2025-08-28T14:05:10.380Z",
+        "email": "truong.thomas@free.fr",
+        "telephone": "0782917804",
+        "dateNaissance": "1999-01-02",
+        "tarif": 10,
+        "niveau": "2",
+        "assuranceAccepted": true,
+        "status": "Payé",
+        "methodePaiement": "Especes",
+        "dateValidation": "2025-08-28T14:28:20.566Z"
+      },
+      {
+        "id": "1756391395909",
+        "type": "non-adherent",
+        "nom": "TRUONG",
+        "prenom": "Youen",
+        "date": "2025-08-28T14:29:55.909Z",
+        "email": "truong.thomas@free.fr",
+        "telephone": "0782917804",
+        "dateNaissance": "2010-01-10",
+        "tarif": 8,
+        "niveau": "2",
+        "assuranceAccepted": true,
+        "status": "Payé",
+        "methodePaiement": "CB",
+        "dateValidation": "2025-08-28T14:30:24.497Z"
+      },
+      {
+        "id": "1756392459234",
+        "type": "non-adherent",
+        "nom": "TRUONG",
+        "prenom": "Youen",
+        "date": "2025-08-28T14:47:39.234Z",
+        "email": "truong.thomas@free.fr",
+        "telephone": "0782917804",
+        "dateNaissance": "2010-10-10",
+        "tarif": 8,
+        "niveau": "1",
+        "assuranceAccepted": true,
+        "status": "Payé",
+        "methodePaiement": "CB",
+        "dateValidation": "2025-08-28T14:48:03.983Z"
+      }
+    ]
   }
 ]
