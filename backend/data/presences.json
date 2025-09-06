@@ -1,1 +1,35 @@
-[]
+[
+  {
+    "id": "1757184112698",
+    "type": "adherent",
+    "nom": "bleys",
+    "prenom": "kevin",
+    "date": "2025-09-06T18:41:52.698Z",
+    "status": "adherent"
+  },
+  {
+    "id": "1757184125029",
+    "type": "adherent",
+    "nom": "clarens",
+    "prenom": "isaure",
+    "date": "2025-09-06T18:42:05.029Z",
+    "status": "adherent"
+  },
+  {
+    "id": "1757184442074",
+    "type": "non-adherent",
+    "nom": "rgfg",
+    "prenom": "regerg",
+    "date": "2025-09-06T18:47:22.075Z",
+    "season": "2025-2026",
+    "email": "bleysjoke@gmail.com",
+    "telephone": "0562409746",
+    "dateNaissance": "2000-02-02",
+    "tarif": 10,
+    "niveau": "1",
+    "assuranceAccepted": true,
+    "status": "Payé",
+    "dateValidation": "2025-09-06T18:47:32.758Z",
+    "methodePaiement": "Especes"
+  }
+]

@@ -4143,3 +4143,31 @@
 [2025-08-10T15:05:41.844Z] Synchronisation réussie: 636 membres synchronisés
 [2025-08-10T15:05:41.848Z] === Synchronisation PEPsup terminée ===
 [2025-08-10T15:05:41.851Z] Script voltooid: 636 leden gesynchroniseerd
+[2025-09-06T18:42:30.445Z] Using legacy members format
+[2025-09-06T18:45:40.876Z] Using legacy members format
+[2025-09-06T18:46:28.160Z] Using legacy members format
+[2025-09-06T18:46:41.411Z] Using legacy members format
+[2025-09-06T18:54:03.877Z] Script gestart vanuit command line
+[2025-09-06T18:54:03.881Z] === Synchronisation PEPsup démarrée voor seizoen 2025-2026 ===
+[2025-09-06T18:54:04.181Z] Internet verbinding OK
+[2025-09-06T18:54:10.418Z] 📊 FILTERING RESULTS:
+[2025-09-06T18:54:10.421Z]    Total members in database: 651
+[2025-09-06T18:54:10.423Z]    Current season (2025-2026): 468
+[2025-09-06T18:54:10.425Z]    Old/inactive members: 183
+[2025-09-06T18:54:10.429Z] Backup gemaakt: C:\Users\kevin\Documents\logiciel_escalade_original\backend\data\members_backup_1757184850427.json
+[2025-09-06T18:54:10.452Z] ✅ Synchronisation réussie: 468 current members synchronized
+[2025-09-06T18:54:10.454Z] 🗓️ Season: 2025-2026
+[2025-09-06T18:54:10.456Z] === Synchronisation PEPsup terminée ===
+[2025-09-06T18:54:10.458Z] Script voltooid: 468 current season members synchronized
+[2025-09-06T18:56:08.342Z] Script gestart vanuit command line
+[2025-09-06T18:56:08.346Z] === Synchronisation PEPsup démarrée voor seizoen 2025-2026 ===
+[2025-09-06T18:56:08.623Z] Internet verbinding OK
+[2025-09-06T18:56:12.685Z] 📊 FILTERING RESULTS:
+[2025-09-06T18:56:12.688Z]    Total members in database: 651
+[2025-09-06T18:56:12.690Z]    Current season (2025-2026): 468
+[2025-09-06T18:56:12.691Z]    Old/inactive members: 183
+[2025-09-06T18:56:12.695Z] Backup gemaakt: C:\Users\kevin\Documents\logiciel_escalade_original\backend\data\members_backup_1757184972693.json
+[2025-09-06T18:56:12.719Z] ✅ Synchronisation réussie: 468 current members synchronized
+[2025-09-06T18:56:12.721Z] 🗓️ Season: 2025-2026
+[2025-09-06T18:56:12.723Z] === Synchronisation PEPsup terminée ===
+[2025-09-06T18:56:12.725Z] Script voltooid: 468 current season members synchronized
