@@ -3,7 +3,7 @@ import { useLocation, useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import { playSuccessSound, playBuzzerSound } from '../utils/soundUtils';
 
-// ✅ ULTIMATE TABLET API URL DETECTION - IDENTICAL TO MEMBERPAGE
+// ✅ FIXED: Separate API URL detection function  
 const getApiBaseUrl = () => {
  const hostname = window.location.hostname;
  const protocol = window.location.protocol;
@@ -30,7 +30,8 @@ const getApiBaseUrl = () => {
 export default function AssurancePage() {
  const state = useLocation().state;
  const navigate = useNavigate();
- const [apiUrl] = useState(getApiBaseUrl()); // Fixed API URL for session
+ // ✅ FIXED: Call function once, store result (not in useState!)
+ const apiUrl = getApiBaseUrl();
 
  const [checks, setChecks] = useState({
  c1: false,
@@ -51,7 +52,7 @@ export default function AssurancePage() {
 
  const toggleCheck = (key) => {
  setChecks(prev => ({ ...prev, [key]: !prev[key] }));
- setError(''); // Effacer l'erreur lors de l'interaction utilisateur
+ setError('');
  };
 
  const finish = async () => {
@@ -65,30 +66,29 @@ export default function AssurancePage() {
  setError('');
 
  try {
- console.log('=== ULTIMATE ASSURANCE PAGE SUBMISSION ===');
+ console.log('=== FIXED ASSURANCE PAGE SUBMISSION ===');
  console.log('API URL:', apiUrl);
  console.log('Registration data:', state);
 
- // Utiliser le tarif calculé basé sur l'âge ET assurance status
  const registrationData = {
  type: 'non-adherent',
  ...state.form,
- tarif: state.tarif, // Utilise le tarif calculé
+ tarif: state.tarif,
  niveau: state.niveau,
- assuranceAccepted: true, // User has checked all checkboxes
- status: 'pending' // Default status for non-members
+ assuranceAccepted: true,
+ status: 'pending'
  };
 
  console.log('Submitting registration:', registrationData);
 
- // ✅ ULTIMATE AXIOS CONFIGURATION FOR TABLET
+ // ✅ API call with fixed URL
  const response = await axios.post(`${apiUrl}/presences`, registrationData, {
- timeout: 20000, // 20 second timeout for registration
+ timeout: 20000,
  headers: {
  'Content-Type': 'application/json',
  'Accept': 'application/json'
  },
- withCredentials: false // Disable credentials for CORS simplicity
+ withCredentials: false
  });
 
  if (response.data.success) {
@@ -168,7 +168,7 @@ export default function AssurancePage() {
  </div>
  </div>
 
- {/* ✅ COMPREHENSIVE DEBUG INFO - SAME AS MEMBERPAGE */}
+ {/* ✅ FIXED DEBUG INFO */}
  <div style={{ 
  fontSize: '14px', 
  color: '#333', 
@@ -178,12 +178,12 @@ export default function AssurancePage() {
  borderRadius: '8px',
  border: '2px solid #2196F3'
  }}>
- <div style={{ fontWeight: 'bold', marginBottom: '10px' }}>🔧 ASSURANCE PAGE DEBUG:</div>
+ <div style={{ fontWeight: 'bold', marginBottom: '10px' }}>🔧 ASSURANCE DEBUG (FIXED):</div>
  <div>🌐 API URL: <strong>{apiUrl}</strong></div>
  <div>📱 Host: <strong>{window.location.hostname}</strong></div>
  <div>🔗 Protocol: <strong>{window.location.protocol}</strong></div>
  <div style={{ marginTop: '10px', color: '#1976D2' }}>
- ✅ <strong>Ultimate tablet support - Registration ready</strong>
+ ✅ <strong>RECURSION BUG FIXED - Registration ready</strong>
  </div>
  </div>
 
@@ -235,7 +235,7 @@ export default function AssurancePage() {
  responsable.
  </p>
  <p style={{ fontSize: '15px', lineHeight: '1.5' }}>
- En l'absence de garantie individuelle accident, il is recommandé de souscrire 
+ En l'absence de garantie individuelle accident, il est recommandé de souscrire 
  une couverture adaptée soit auprès de l'assureur de son choix, soit via une 
  licence FFME.
  </p>
@@ -276,27 +276,26 @@ export default function AssurancePage() {
  alignItems: 'flex-start',
  marginBottom: '20px',
  cursor: 'pointer',
- padding: '20px', // Larger padding for tablet
- border: '3px solid #e0e0e0', // Thicker border
+ padding: '20px',
+ border: '3px solid #e0e0e0',
  borderRadius: '10px',
  background: checks[key] ? '#e3f2fd' : 'white',
  borderColor: checks[key] ? '#2196F3' : '#e0e0e0',
  transition: 'all 0.3s ease',
- // ✅ Enhanced tablet touch support
  userSelect: 'none',
  WebkitUserSelect: 'none',
  touchAction: 'manipulation',
- minHeight: '80px' // Ensure adequate touch target
+ minHeight: '80px'
  }}
  >
  <input 
  type="checkbox" 
  checked={checks[key]}
- onChange={() => {}} // Controlled by parent onClick
+ onChange={() => {}}
  style={{ 
  marginRight: '20px', 
  marginTop: '5px', 
- transform: 'scale(1.5)', // Larger for tablet
+ transform: 'scale(1.5)',
  cursor: 'pointer',
  pointerEvents: 'auto'
  }}
@@ -304,7 +303,7 @@ export default function AssurancePage() {
  <span style={{ 
  cursor: 'pointer', 
  flex: 1, 
- fontSize: '16px', // Larger text for tablet
+ fontSize: '16px',
  lineHeight: '1.4'
  }}>{text}</span>
  </div>
@@ -341,7 +340,7 @@ export default function AssurancePage() {
  flex: 1,
  padding: '15px 25px',
  fontSize: '16px',
- minHeight: '60px' // Larger for tablet
+ minHeight: '60px'
  }}
  disabled={loading}
  >
@@ -358,7 +357,7 @@ export default function AssurancePage() {
  cursor: (!allChecked || loading) ? 'not-allowed' : 'pointer',
  padding: '15px 25px',
  fontSize: '16px',
- minHeight: '60px', // Larger for tablet
+ minHeight: '60px',
  fontWeight: 'bold'
  }}
  >

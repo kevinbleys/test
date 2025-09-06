@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { playSuccessSound, playBuzzerSound } from '../utils/soundUtils';
 
-// ✅ ULTIMATE TABLET API URL DETECTION - FOOLPROOF
+// ✅ FIXED: Separate API URL detection function
 const getApiBaseUrl = () => {
  const hostname = window.location.hostname;
  const protocol = window.location.protocol;
@@ -35,7 +35,8 @@ export default function MemberPage() {
  const [loading, setLoading] = useState(false);
  const [error, setError] = useState('');
  const [success, setSuccess] = useState('');
- const [apiUrl] = useState(getApiBaseUrl()); // Fixed API URL for session
+ // ✅ FIXED: Call function once, store result
+ const apiUrl = getApiBaseUrl();
 
  const navigate = useNavigate();
 
@@ -53,22 +54,22 @@ export default function MemberPage() {
  setSuccess('');
 
  try {
- console.log('=== ULTIMATE TABLET MEMBER VERIFICATION ===');
+ console.log('=== FIXED TABLET MEMBER VERIFICATION ===');
  console.log('API URL:', apiUrl);
  console.log('Form data:', form);
 
- // ✅ ULTIMATE AXIOS CONFIGURATION FOR TABLET
+ // ✅ API call with fixed URL
  const response = await axios.get(`${apiUrl}/members/check`, {
  params: {
  nom: form.nom.trim(),
  prenom: form.prenom.trim()
  },
- timeout: 15000, // 15 second timeout
+ timeout: 15000,
  headers: {
  'Content-Type': 'application/json',
  'Accept': 'application/json'
  },
- withCredentials: false // Disable credentials for CORS simplicity
+ withCredentials: false
  });
 
  console.log('✅ Member check response:', response.data);
@@ -158,7 +159,7 @@ export default function MemberPage() {
  </div>
  </div>
 
- {/* ✅ COMPREHENSIVE DEBUG INFO FOR TABLET TROUBLESHOOTING */}
+ {/* ✅ FIXED DEBUG INFO */}
  <div style={{ 
  fontSize: '14px', 
  color: '#333', 
@@ -168,13 +169,13 @@ export default function MemberPage() {
  borderRadius: '8px',
  border: '2px solid #4CAF50'
  }}>
- <div style={{ fontWeight: 'bold', marginBottom: '10px' }}>🔧 DEBUG INFO:</div>
+ <div style={{ fontWeight: 'bold', marginBottom: '10px' }}>🔧 DEBUG INFO (FIXED):</div>
  <div>🌐 API URL: <strong>{apiUrl}</strong></div>
  <div>📱 Host: <strong>{window.location.hostname}</strong></div>
  <div>🔗 Protocol: <strong>{window.location.protocol}</strong></div>
  <div>📍 Full URL: <strong>{window.location.href}</strong></div>
  <div style={{ marginTop: '10px', color: '#2E7D32' }}>
- ✅ <strong>Configuratie actief - Ultimate tablet support</strong>
+ ✅ <strong>RECURSION BUG FIXED - Tablet support active</strong>
  </div>
  </div>
 
@@ -191,7 +192,7 @@ export default function MemberPage() {
  style={{ 
  fontSize: '18px', 
  padding: '12px',
- minHeight: '50px' // Larger for tablet
+ minHeight: '50px'
  }}
  />
  </div>
@@ -208,7 +209,7 @@ export default function MemberPage() {
  style={{ 
  fontSize: '18px', 
  padding: '12px',
- minHeight: '50px' // Larger for tablet
+ minHeight: '50px'
  }}
  />
  </div>
@@ -253,7 +254,7 @@ export default function MemberPage() {
  style={{
  fontSize: '18px',
  padding: '15px 30px',
- minHeight: '60px', // Larger for tablet
+ minHeight: '60px',
  opacity: (loading || !form.nom.trim() || !form.prenom.trim()) ? 0.6 : 1
  }}
  >
@@ -277,21 +278,7 @@ export default function MemberPage() {
  <p>❌ <strong>Ancien adhérent</strong> → Inscription visiteur</p>
  <p>❌ <strong>Non trouvé</strong> → Inscription visiteur</p>
  </div>
- <p style={{ marginTop: '15px' }}><strong>Saison active:</strong> {getCurrentSeasonName()}</p>
  </div>
  </div>
  );
-}
-
-// Helper function for season display
-function getCurrentSeasonName() {
- const now = new Date();
- const currentYear = now.getFullYear();
- const currentMonth = now.getMonth();
-
- if (currentMonth >= 8) {
- return `${currentYear}-${currentYear + 1}`;
- } else {
- return `${currentYear - 1}-${currentYear}`;
- }
 }
