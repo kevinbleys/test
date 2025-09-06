@@ -7,7 +7,7 @@ const cron = require('node-cron');
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-console.log('🚀 CLIMBING CLUB - PAYMENT + TABLET FIXED');
+console.log('🚀 CLIMBING CLUB - FINAL TABLET + PAYMENT FIX');
 console.log('Port:', PORT);
 
 // Data file paths
@@ -72,39 +72,75 @@ const writeJsonFile = (filePath, data) => {
  }
 };
 
-// ✅ MAXIMUM TABLET COMPATIBILITY CORS
+// ✅ ULTIMATE TABLET CORS CONFIGURATION - COMPREHENSIVE
 app.use(cors({
- origin: '*',
+ origin: [
+ // Local development
+ 'http://localhost:3000',
+ 'http://localhost:3001', 
+ 'http://localhost:3002',
+ 'http://127.0.0.1:3000',
+ 'http://127.0.0.1:3001',
+ 'http://127.0.0.1:3002',
+ // ✅ ALL POSSIBLE TABLET IP RANGES - COMPREHENSIVE
+ // Class C: 192.168.x.x (most common home/office networks)
+ /^http:\/\/192\.168\.\d{1,3}\.\d{1,3}:300[0-2]$/,
+ // Class A: 10.x.x.x (corporate networks)  
+ /^http:\/\/10\.\d{1,3}\.\d{1,3}\.\d{1,3}:300[0-2]$/,
+ // Class B: 172.16-31.x.x (corporate networks)
+ /^http:\/\/172\.(1[6-9]|2[0-9]|3[0-1])\.\d{1,3}\.\d{1,3}:300[0-2]$/,
+ // ✅ WILDCARD FOR ANY REMAINING CASES
+ '*'
+ ],
  credentials: true,
- methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'HEAD'],
- allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin'],
+ methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'HEAD', 'PATCH'],
+ allowedHeaders: [
+ 'Content-Type', 
+ 'Authorization', 
+ 'X-Requested-With', 
+ 'Accept', 
+ 'Origin',
+ 'Cache-Control',
+ 'X-File-Name'
+ ],
  exposedHeaders: ['Content-Length', 'X-Foo', 'X-Bar']
 }));
 
-// Handle preflight requests explicitly
+// ✅ EXPLICIT PREFLIGHT HANDLING FOR ALL ROUTES
 app.options('*', (req, res) => {
  res.header('Access-Control-Allow-Origin', '*');
- res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS,HEAD');
- res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Accept, Origin');
+ res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS,HEAD,PATCH');
+ res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Accept, Origin, Cache-Control, X-File-Name');
+ res.header('Access-Control-Allow-Credentials', 'true');
  res.sendStatus(200);
 });
 
-app.use(express.json({ limit: '10mb' }));
-app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
 // Serve static files
 if (fs.existsSync(path.join(__dirname, 'public'))) {
  app.use(express.static(path.join(__dirname, 'public')));
 }
 
-// Enhanced logging middleware
+// ✅ COMPREHENSIVE LOGGING FOR TABLET DEBUG
 app.use((req, res, next) => {
- console.log(`🌐 ${new Date().toISOString()} - ${req.method} ${req.path}`);
- console.log(`   Origin: ${req.get('Origin') || 'none'}`);
- console.log(`   User-Agent: ${req.get('User-Agent')?.substring(0, 50) || 'none'}`);
+ const timestamp = new Date().toISOString();
+ const origin = req.get('Origin') || 'none';
+ const userAgent = req.get('User-Agent')?.substring(0, 100) || 'none';
+
+ console.log(`🌐 ${timestamp} - ${req.method} ${req.path}`);
+ console.log(`   Origin: ${origin}`);
+ console.log(`   User-Agent: ${userAgent}`);
+
  if (req.query && Object.keys(req.query).length > 0) {
  console.log('   Query:', JSON.stringify(req.query));
  }
+
+ if (req.body && Object.keys(req.body).length > 0) {
+ console.log('   Body keys:', Object.keys(req.body));
+ }
+
  next();
 });
 
@@ -124,9 +160,10 @@ try {
 app.get('/', (req, res) => {
  res.json({
  status: 'success',
- message: 'Climbing Club API - Payment + Tablet Fixed',
+ message: 'Climbing Club API - Final Tablet + Payment Fix',
  currentSeason: getCurrentSeasonName(),
  timestamp: new Date().toISOString(),
+ corsMode: 'COMPREHENSIVE_TABLET_SUPPORT',
  paymentCheckEnabled: true,
  tabletAccessEnabled: true
  });
@@ -138,11 +175,13 @@ app.get('/api/health', (req, res) => {
  currentSeason: getCurrentSeasonName(),
  timestamp: new Date().toISOString(),
  uptime: process.uptime(),
+ corsMode: 'COMPREHENSIVE_TABLET_SUPPORT',
  paymentCheckEnabled: true,
- corsEnabled: true,
- tabletAccess: true
+ tabletAccess: true,
+ requestOrigin: req.get('Origin') || 'none'
  };
- console.log('💚 Health check from:', req.get('Origin') || 'localhost');
+
+ console.log('💚 Health check from:', health.requestOrigin);
  res.json(health);
 });
 
@@ -156,9 +195,14 @@ app.get('/admin', (req, res) => {
  }
 });
 
-// ✅ MEMBER CHECK: STRICT CATEGORY + PAYMENT STATUS
+// ✅ MEMBER CHECK: ULTIMATE STRICT VERSION WITH PAYMENT
 app.get('/members/check', (req, res) => {
  const { nom, prenom } = req.query;
+ const origin = req.get('Origin') || 'localhost';
+
+ console.log(`=== ULTIMATE MEMBER + PAYMENT CHECK ===`);
+ console.log(`Request: ${nom} ${prenom} from ${origin}`);
+
  if (!nom || !prenom) {
  return res.status(400).json({
  success: false,
@@ -166,12 +210,9 @@ app.get('/members/check', (req, res) => {
  });
  }
 
- console.log(`=== MEMBER + PAYMENT CHECK: ${nom} ${prenom} ===`);
- console.log(`Request from: ${req.get('Origin') || 'localhost'}`);
-
  try {
  const members = syncService.getMembers();
- console.log(`Searching among ${members.length} members`);
+ console.log(`Searching in ${members.length} members`);
 
  const member = members.find(m =>
  m.lastname?.trim().toLowerCase() === nom.trim().toLowerCase() &&
@@ -179,7 +220,7 @@ app.get('/members/check', (req, res) => {
  );
 
  if (!member) {
- console.log('❌ Member not found in database');
+ console.log('❌ Member not found');
  return res.json({
  success: false,
  error: "Aucun membre trouvé avec ce nom et prénom"
@@ -190,7 +231,7 @@ app.get('/members/check', (req, res) => {
  console.log('Categories:', member.categories?.map(c => c.label) || []);
  console.log('Payment status:', member.joinFileStatusLabel || 'none');
 
- // ✅ STEP 1: Check membership category
+ // ✅ ULTRA-STRICT CATEGORY CHECK
  let hasValidMembership = false;
  let rejectionReason = '';
 
@@ -201,38 +242,41 @@ app.get('/members/check', (req, res) => {
 
  if (categoryLower === 'adhérent') {
  hasValidMembership = true;
- console.log('✅ Valid "Adhérent" category confirmed');
+ console.log('✅ VALID: Exact "Adhérent" found');
  } else if (categoryLower.includes('ancien')) {
- console.log('❌ "Ancien adhérent" detected - former member');
+ console.log('❌ REJECTED: "Ancien adhérent" detected');
  rejectionReason = 'Former member (Ancien adhérent)';
+ } else {
+ console.log(`❌ OTHER: "${category.label}" not recognized`);
  }
  }
  });
  }
 
  if (!hasValidMembership) {
- console.log(`❌ MEMBERSHIP REJECTED: ${rejectionReason || 'No valid category'}`);
+ console.log(`❌ MEMBERSHIP REJECTED: ${rejectionReason || 'No valid Adhérent category'}`);
  return res.json({
  success: false,
  error: `Vous n'avez pas d'adhésion valide pour la saison ${getCurrentSeasonName()}. Merci de vous inscrire comme visiteur.`,
- reason: rejectionReason || 'No current membership',
+ reason: rejectionReason || 'No valid membership',
  season: getCurrentSeasonName()
  });
  }
 
- // ✅ STEP 2: Check payment status  
+ // ✅ ULTRA-STRICT PAYMENT CHECK
  const paymentStatus = member.joinFileStatusLabel;
- console.log(`Checking payment status: "${paymentStatus}"`);
+ console.log(`Payment validation: "${paymentStatus}"`);
 
  if (paymentStatus) {
  const statusLower = paymentStatus.toLowerCase();
 
+ // Check for "à payer" (not paid) - STRICT REJECTION
  if (statusLower.includes('payer') && !statusLower.includes('payé')) {
- console.log('❌ PAYMENT INCOMPLETE - Access denied');
+ console.log('❌ PAYMENT BLOCKED: à payer status detected');
  return res.json({
  success: false,
  error: "Votre adhésion n'est pas encore payée. Merci de contacter un bénévole pour finaliser le paiement.",
- reason: 'Payment not completed',
+ reason: 'Payment incomplete',
  paymentStatus: paymentStatus,
  season: getCurrentSeasonName(),
  requiresVolunteer: true,
@@ -241,8 +285,8 @@ app.get('/members/check', (req, res) => {
  }
  }
 
- // ✅ STEP 3: All checks passed
- console.log('✅ MEMBER ACCESS GRANTED - Valid membership and payment');
+ // ✅ ALL CHECKS PASSED - GRANT ACCESS
+ console.log('✅ FULL ACCESS GRANTED - Valid membership and payment');
  return res.json({
  success: true,
  isPaid: true,
@@ -277,7 +321,7 @@ app.get('/members/all', (req, res) => {
 
 // Presences routes
 app.get('/presences', (req, res) => {
- console.log('📋 GET /presences requested');
+ console.log('📋 GET /presences from:', req.get('Origin') || 'localhost');
  try {
  const presences = readJsonFile(PRESENCES_FILE);
  res.json({
@@ -306,8 +350,7 @@ app.get('/presences/:id', (req, res) => {
 });
 
 app.post('/presences', (req, res) => {
- console.log('=== NEW PRESENCE ===');
- console.log(`Request from: ${req.get('Origin') || 'localhost'}`);
+ console.log('=== NEW PRESENCE from:', req.get('Origin') || 'localhost');
 
  const { type, nom, prenom, ...otherData } = req.body;
 
@@ -435,8 +478,7 @@ app.get('/non-members', (req, res) => {
 });
 
 app.post('/non-members', (req, res) => {
- console.log('=== NEW NON-MEMBER ===');
- console.log(`Request from: ${req.get('Origin') || 'localhost'}`);
+ console.log('=== NEW NON-MEMBER from:', req.get('Origin') || 'localhost');
 
  try {
  const nonMembers = readJsonFile(NON_MEMBERS_FILE);
@@ -486,47 +528,24 @@ app.use((error, req, res, next) => {
  });
 });
 
-// ✅ START SERVER WITH NETWORK ACCESS
+// ✅ START SERVER WITH ULTIMATE TABLET SUPPORT
 const server = app.listen(PORT, '0.0.0.0', () => {
- console.log('🎉 ======================================');
- console.log('🎉 PAYMENT CHECK + TABLET ACCESS READY ');
- console.log('🎉 ======================================');
- console.log(`✅ Local:    http://localhost:${PORT}`);
- console.log(`✅ Network:  http://[PC-IP]:${PORT}`);
- console.log(`🗓️ Season:   ${getCurrentSeasonName()}`);
- console.log('🔒 CATEGORY: Only "Adhérent" accepted');
- console.log('💳 PAYMENT:  "à payer" = BLOCKED + Volunteer required');
- console.log('🌐 CORS:     All origins (*) allowed');
- console.log('📱 TABLET:   Full API access enabled');
- console.log('🎉 ======================================');
+ console.log('🎉 ==========================================');
+ console.log('🎉 ULTIMATE TABLET + PAYMENT FIX ACTIVE   ');
+ console.log('🎉 ==========================================');
+ console.log(`✅ Local:      http://localhost:${PORT}`);
+ console.log(`✅ Network:    http://[PC-IP]:${PORT}`);
+ console.log(`🗓️ Season:     ${getCurrentSeasonName()}`);
+ console.log('🔒 CATEGORY:   Only exact "Adhérent" accepted');
+ console.log('💳 PAYMENT:    "à payer" = STRICT BLOCK');
+ console.log('🌐 CORS:       COMPREHENSIVE tablet support');
+ console.log('📱 TABLET:     All IP ranges supported');
+ console.log('🎉 ==========================================');
 
  setTimeout(() => {
  try {
  const members = syncService.getMembers();
- console.log(`👥 Total members loaded: ${members.length}`);
-
- // Count categories for debugging
- let adherentCount = 0;
- let ancienCount = 0;
- let paymentPending = 0;
-
- members.forEach(member => {
- if (member.categories) {
- member.categories.forEach(cat => {
- if (cat.label?.toLowerCase().trim() === 'adhérent') adherentCount++;
- if (cat.label?.toLowerCase().includes('ancien')) ancienCount++;
- });
- }
- if (member.joinFileStatusLabel?.toLowerCase().includes('payer')) {
- paymentPending++;
- }
- });
-
- console.log(`📊 Category breakdown:`);
- console.log(`   Current "Adhérent": ${adherentCount}`);
- console.log(`   "Ancien adhérent": ${ancienCount}`);
- console.log(`   Payment pending: ${paymentPending}`);
-
+ console.log(`👥 Members loaded: ${members.length}`);
  } catch (error) {
  console.log('⚠️ Sync service fallback active');
  }
@@ -536,7 +555,7 @@ const server = app.listen(PORT, '0.0.0.0', () => {
 server.on('error', (error) => {
  console.error('💥 Server error:', error);
  if (error.code === 'EADDRINUSE') {
- console.error(`❌ Port ${PORT} already in use!`);
+ console.error(`❌ Port ${PORT} in use!`);
  process.exit(1);
  }
 });

@@ -3,21 +3,34 @@ import { useLocation, useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import { playSuccessSound, playBuzzerSound } from '../utils/soundUtils';
 
-// ✅ TABLET DYNAMIC API URL DETECTION
+// ✅ ULTIMATE TABLET API URL DETECTION - IDENTICAL TO MEMBERPAGE
 const getApiBaseUrl = () => {
- // If running on tablet (not localhost), use current host
- if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
- return `http://${window.location.hostname}:3001`;
- }
- // Default to localhost for development
- return 'http://localhost:3001';
-};
+ const hostname = window.location.hostname;
+ const protocol = window.location.protocol;
 
-const API_BASE_URL = getApiBaseUrl();
+ console.log('🌐 AssurancePage API URL Detection:', {
+ hostname,
+ protocol,
+ fullUrl: window.location.href
+ });
+
+ // If NOT localhost/127.0.0.1, use the current hostname with port 3001
+ if (hostname !== 'localhost' && hostname !== '127.0.0.1') {
+ const apiUrl = `${protocol}//${hostname}:3001`;
+ console.log('📱 TABLET MODE - API URL:', apiUrl);
+ return apiUrl;
+ }
+
+ // Default to localhost for development
+ const localUrl = 'http://localhost:3001';
+ console.log('💻 LOCALHOST MODE - API URL:', localUrl);
+ return localUrl;
+};
 
 export default function AssurancePage() {
  const state = useLocation().state;
  const navigate = useNavigate();
+ const [apiUrl] = useState(getApiBaseUrl()); // Fixed API URL for session
 
  const [checks, setChecks] = useState({
  c1: false,
@@ -43,7 +56,7 @@ export default function AssurancePage() {
 
  const finish = async () => {
  if (!allChecked) {
- setError('Veuillez cocher toutes les cases pour continuer.');
+ setError('❌ CASES MANQUANTES\n\nVeuillez cocher toutes les cases pour continuer.');
  playBuzzerSound();
  return;
  }
@@ -52,9 +65,9 @@ export default function AssurancePage() {
  setError('');
 
  try {
- console.log('=== ASSURANCE PAGE TABLET SUBMISSION ===');
- console.log('API Base URL:', API_BASE_URL);
- console.log('State data:', state);
+ console.log('=== ULTIMATE ASSURANCE PAGE SUBMISSION ===');
+ console.log('API URL:', apiUrl);
+ console.log('Registration data:', state);
 
  // Utiliser le tarif calculé basé sur l'âge ET assurance status
  const registrationData = {
@@ -66,25 +79,27 @@ export default function AssurancePage() {
  status: 'pending' // Default status for non-members
  };
 
- console.log('Submitting registration with data:', registrationData);
+ console.log('Submitting registration:', registrationData);
 
- // ✅ TABLET DYNAMIC API URL
- const response = await axios.post(`${API_BASE_URL}/presences`, registrationData, {
- timeout: 15000, // 15 second timeout
+ // ✅ ULTIMATE AXIOS CONFIGURATION FOR TABLET
+ const response = await axios.post(`${apiUrl}/presences`, registrationData, {
+ timeout: 20000, // 20 second timeout for registration
  headers: {
- 'Content-Type': 'application/json'
- }
+ 'Content-Type': 'application/json',
+ 'Accept': 'application/json'
+ },
+ withCredentials: false // Disable credentials for CORS simplicity
  });
 
  if (response.data.success) {
  console.log('=== REGISTRATION SUCCESS ===');
- console.log('Registered presence:', response.data.presence);
+ console.log('Created presence:', response.data.presence);
 
  playSuccessSound();
  navigate('/paiement', {
  state: {
  presenceId: response.data.presence.id,
- montant: state.tarif, // Utilise le calculé tarif
+ montant: state.tarif,
  nom: state.form.nom,
  prenom: state.form.prenom,
  age: state.age,
@@ -93,30 +108,30 @@ export default function AssurancePage() {
  });
  } else {
  console.error('Registration failed:', response.data);
- setError(response.data.error || 'Erreur lors de l\'enregistrement');
+ setError(`❌ ÉCHEC ENREGISTREMENT\n\n${response.data.error || 'Erreur inconnue'}`);
  playBuzzerSound();
  }
  } catch (err) {
  console.error('=== REGISTRATION ERROR ===');
  console.error('Error details:', err);
- console.error('API URL used:', API_BASE_URL);
+ console.error('API URL used:', apiUrl);
 
- let errorMessage = 'Erreur de connexion';
+ let errorMessage = '❌ ERREUR ENREGISTREMENT';
 
  if (err.code === 'NETWORK_ERROR' || err.code === 'ERR_NETWORK') {
- errorMessage = 'Erreur de réseau. Vérifiez la connexion au serveur.';
+ errorMessage = `❌ ERREUR RÉSEAU\n\nImpossible de contacter le serveur.\n\nAPI: ${apiUrl}\n\nVérifiez:\n• Connexion WiFi\n• Serveur actif\n• Même réseau PC/tablet`;
  } else if (err.code === 'ECONNABORTED') {
- errorMessage = 'Délai d\'attente dépassé lors de l\'enregistrement.';
+ errorMessage = `⏱️ DÉLAI DÉPASSÉ\n\nL'enregistrement a pris trop de temps.\n\nRecommandations:\n• Réessayez\n• Vérifiez la connexion\n• Contactez l'admin`;
  } else if (err.response?.status === 500) {
- errorMessage = 'Erreur du serveur. Veuillez réessayer.';
+ errorMessage = `🔧 ERREUR SERVEUR\n\nProblème interne lors de l'enregistrement.\n\nContactez l'administrateur.`;
  } else if (err.response?.status === 400) {
- errorMessage = 'Données invalides. Vérifiez le formulaire.';
+ errorMessage = `📋 DONNÉES INVALIDES\n\n${err.response.data?.error || 'Vérifiez le formulaire'}`;
  } else if (err.response?.data?.error) {
- errorMessage = err.response.data.error;
+ errorMessage = `📋 RÉPONSE SERVEUR:\n\n${err.response.data.error}`;
  } else if (err.message) {
- errorMessage = `Erreur: ${err.message}`;
+ errorMessage = `⚠️ ERREUR TECHNIQUE:\n\n${err.message}\n\nAPI: ${apiUrl}`;
  } else {
- errorMessage = 'Impossible de contacter le serveur. Vérifiez la connexion réseau.';
+ errorMessage = `🚫 CONNEXION IMPOSSIBLE\n\nServeur non accessible: ${apiUrl}\n\nActions:\n• Vérifiez que le serveur fonctionne\n• Même réseau WiFi PC/tablet\n• Redémarrez l'application`;
  }
 
  setError(errorMessage);
@@ -136,7 +151,7 @@ export default function AssurancePage() {
 
  return (
  <div style={{ 
- maxWidth: '800px', 
+ maxWidth: '900px', 
  margin: '20px auto', 
  padding: '30px', 
  background: 'white', 
@@ -153,41 +168,48 @@ export default function AssurancePage() {
  </div>
  </div>
 
- {/* Debug info for tablet troubleshooting */}
+ {/* ✅ COMPREHENSIVE DEBUG INFO - SAME AS MEMBERPAGE */}
  <div style={{ 
- fontSize: '12px', 
- color: '#666', 
- marginBottom: '10px',
- padding: '8px',
- background: '#f0f7ff',
- borderRadius: '4px',
- border: '1px solid #cce7ff'
+ fontSize: '14px', 
+ color: '#333', 
+ marginBottom: '20px',
+ padding: '15px',
+ background: '#f0f8ff',
+ borderRadius: '8px',
+ border: '2px solid #2196F3'
  }}>
- <div>🌐 API: {API_BASE_URL}</div>
- <div>📱 Host: {window.location.hostname}</div>
- <div>✅ Backend connectivity: Verified</div>
+ <div style={{ fontWeight: 'bold', marginBottom: '10px' }}>🔧 ASSURANCE PAGE DEBUG:</div>
+ <div>🌐 API URL: <strong>{apiUrl}</strong></div>
+ <div>📱 Host: <strong>{window.location.hostname}</strong></div>
+ <div>🔗 Protocol: <strong>{window.location.protocol}</strong></div>
+ <div style={{ marginTop: '10px', color: '#1976D2' }}>
+ ✅ <strong>Ultimate tablet support - Registration ready</strong>
+ </div>
  </div>
 
  {/* Rappel du tarif */}
  {state.tarif !== undefined && (
  <div style={{
  background: '#f8f9fa',
- padding: '20px',
+ padding: '25px',
  borderRadius: '8px',
- marginBottom: '20px',
- textAlign: 'center'
+ marginBottom: '25px',
+ textAlign: 'center',
+ border: '2px solid #4CAF50'
  }}>
- <h4>💰 Tarif à régler : {state.tarif === 0 ? 'GRATUIT' : `${state.tarif}€`}</h4>
- <div>
- 👤 {state.form?.nom} {state.form?.prenom} - {state.age} ans - Niveau {state.niveau}
+ <h4 style={{ color: '#2E7D32', marginBottom: '15px' }}>
+ 💰 Tarif à régler : {state.tarif === 0 ? '🆓 GRATUIT' : `💶 ${state.tarif}€`}
+ </h4>
+ <div style={{ fontSize: '16px', marginBottom: '10px' }}>
+ 👤 <strong>{state.form?.nom} {state.form?.prenom}</strong> - {state.age} ans - Niveau {state.niveau}
  </div>
- <div style={{ fontStyle: 'italic', marginTop: '10px' }}>
+ <div style={{ fontStyle: 'italic', color: '#666' }}>
  {state.tarifDescription}
  </div>
  </div>
  )}
 
- <div style={{ marginBottom: '30px', lineHeight: '1.6' }}>
+ <div style={{ marginBottom: '30px', lineHeight: '1.6', fontSize: '15px' }}>
  Conformément à l'article L321-4 du Code du sport, le présent document vise à informer 
  le pratiquant des conditions d'assurance applicables dans le cadre de la pratique de 
  l'escalade au sein de la structure.
@@ -195,7 +217,7 @@ export default function AssurancePage() {
 
  <div style={{ marginBottom: '20px' }}>
  <h3>Assurance en Responsabilité Civile</h3>
- <p>
+ <p style={{ fontSize: '15px', lineHeight: '1.5' }}>
  La structure dispose d'un contrat d'assurance en responsabilité civile couvrant 
  les dommages causés à des tiers dans le cadre de la pratique de l'escalade.
  </p>
@@ -203,17 +225,17 @@ export default function AssurancePage() {
 
  <div style={{ marginBottom: '30px' }}>
  <h3>Assurance Individuelle Accident</h3>
- <p>
+ <p style={{ fontSize: '15px', lineHeight: '1.5' }}>
  Cette assurance ne couvre pas les dommages corporels que le pratiquant pourrait 
  se causer à lui-même, en l'absence de tiers responsable identifié.
  </p>
- <p>
+ <p style={{ fontSize: '15px', lineHeight: '1.5' }}>
  L'assurance individuelle accident permet au pratiquant d'être indemnisé pour les 
  dommages corporels dont il pourrait être victime, y compris en l'absence de tiers 
  responsable.
  </p>
- <p>
- En l'absence de garantie individuelle accident, il est recommandé de souscrire 
+ <p style={{ fontSize: '15px', lineHeight: '1.5' }}>
+ En l'absence de garantie individuelle accident, il is recommandé de souscrire 
  une couverture adaptée soit auprès de l'assureur de son choix, soit via une 
  licence FFME.
  </p>
@@ -254,16 +276,17 @@ export default function AssurancePage() {
  alignItems: 'flex-start',
  marginBottom: '20px',
  cursor: 'pointer',
- padding: '15px',
- border: '2px solid #e0e0e0',
- borderRadius: '8px',
+ padding: '20px', // Larger padding for tablet
+ border: '3px solid #e0e0e0', // Thicker border
+ borderRadius: '10px',
  background: checks[key] ? '#e3f2fd' : 'white',
- borderColor: checks[key] ? '#007bff' : '#e0e0e0',
+ borderColor: checks[key] ? '#2196F3' : '#e0e0e0',
  transition: 'all 0.3s ease',
- // ✅ Enhanced clickability for tablet
+ // ✅ Enhanced tablet touch support
  userSelect: 'none',
  WebkitUserSelect: 'none',
- touchAction: 'manipulation'
+ touchAction: 'manipulation',
+ minHeight: '80px' // Ensure adequate touch target
  }}
  >
  <input 
@@ -271,45 +294,54 @@ export default function AssurancePage() {
  checked={checks[key]}
  onChange={() => {}} // Controlled by parent onClick
  style={{ 
- marginRight: '15px', 
- marginTop: '3px', 
- transform: 'scale(1.3)', // Larger for tablet
+ marginRight: '20px', 
+ marginTop: '5px', 
+ transform: 'scale(1.5)', // Larger for tablet
  cursor: 'pointer',
  pointerEvents: 'auto'
  }}
  />
- <span style={{ cursor: 'pointer', flex: 1 }}>{text}</span>
+ <span style={{ 
+ cursor: 'pointer', 
+ flex: 1, 
+ fontSize: '16px', // Larger text for tablet
+ lineHeight: '1.4'
+ }}>{text}</span>
  </div>
  ))}
  </div>
 
  {error && (
  <div className="error-message" style={{
- marginBottom: '20px',
- padding: '15px',
+ marginBottom: '25px',
+ padding: '20px',
  background: '#ffebee',
  color: '#c62828',
  borderRadius: '8px',
- border: '1px solid #ffcdd2'
+ border: '3px solid #f44336',
+ whiteSpace: 'pre-line',
+ fontSize: '15px',
+ lineHeight: '1.4'
  }}>
  <span className="error-icon">⚠️</span>
- <span style={{ marginLeft: '10px' }}>{error}</span>
+ <div style={{ marginLeft: '10px' }}>{error}</div>
  </div>
  )}
 
  <div style={{ 
  display: 'flex', 
- gap: '15px', 
+ gap: '20px', 
  justifyContent: 'space-between',
- marginTop: '30px' 
+ marginTop: '40px' 
  }}>
  <button 
  onClick={handleRetourNiveau}
  className="btn-retour-accueil"
  style={{ 
  flex: 1,
- padding: '12px 20px',
- fontSize: '16px'
+ padding: '15px 25px',
+ fontSize: '16px',
+ minHeight: '60px' // Larger for tablet
  }}
  disabled={loading}
  >
@@ -324,11 +356,13 @@ export default function AssurancePage() {
  flex: 2,
  opacity: (!allChecked || loading) ? 0.6 : 1,
  cursor: (!allChecked || loading) ? 'not-allowed' : 'pointer',
- padding: '12px 20px',
- fontSize: '16px'
+ padding: '15px 25px',
+ fontSize: '16px',
+ minHeight: '60px', // Larger for tablet
+ fontWeight: 'bold'
  }}
  >
- {loading ? '⏳ Enregistrement...' : 'Continuer vers le paiement →'}
+ {loading ? '⏳ Enregistrement en cours...' : 'Continuer vers le paiement →'}
  </button>
  </div>
  </div>

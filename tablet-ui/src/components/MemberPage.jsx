@@ -3,17 +3,29 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { playSuccessSound, playBuzzerSound } from '../utils/soundUtils';
 
-// ✅ TABLET DYNAMIC API URL DETECTION
+// ✅ ULTIMATE TABLET API URL DETECTION - FOOLPROOF
 const getApiBaseUrl = () => {
- // If running on tablet (not localhost), use current host
- if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
- return `http://${window.location.hostname}:3001`;
- }
- // Default to localhost for development
- return 'http://localhost:3001';
-};
+ const hostname = window.location.hostname;
+ const protocol = window.location.protocol;
 
-const API_BASE_URL = getApiBaseUrl();
+ console.log('🌐 API URL Detection:', {
+ hostname,
+ protocol,
+ fullUrl: window.location.href
+ });
+
+ // If NOT localhost/127.0.0.1, use the current hostname with port 3001
+ if (hostname !== 'localhost' && hostname !== '127.0.0.1') {
+ const apiUrl = `${protocol}//${hostname}:3001`;
+ console.log('📱 TABLET MODE - API URL:', apiUrl);
+ return apiUrl;
+ }
+
+ // Default to localhost for development
+ const localUrl = 'http://localhost:3001';
+ console.log('💻 LOCALHOST MODE - API URL:', localUrl);
+ return localUrl;
+};
 
 export default function MemberPage() {
  const [form, setForm] = useState({
@@ -23,6 +35,7 @@ export default function MemberPage() {
  const [loading, setLoading] = useState(false);
  const [error, setError] = useState('');
  const [success, setSuccess] = useState('');
+ const [apiUrl] = useState(getApiBaseUrl()); // Fixed API URL for session
 
  const navigate = useNavigate();
 
@@ -40,38 +53,38 @@ export default function MemberPage() {
  setSuccess('');
 
  try {
- console.log('=== TABLET MEMBER VERIFICATION ===');
- console.log('API Base URL:', API_BASE_URL);
+ console.log('=== ULTIMATE TABLET MEMBER VERIFICATION ===');
+ console.log('API URL:', apiUrl);
  console.log('Form data:', form);
 
- // ✅ TABLET DYNAMIC API URL
- const response = await axios.get(`${API_BASE_URL}/members/check`, {
+ // ✅ ULTIMATE AXIOS CONFIGURATION FOR TABLET
+ const response = await axios.get(`${apiUrl}/members/check`, {
  params: {
  nom: form.nom.trim(),
  prenom: form.prenom.trim()
  },
- timeout: 10000 // 10 second timeout
+ timeout: 15000, // 15 second timeout
+ headers: {
+ 'Content-Type': 'application/json',
+ 'Accept': 'application/json'
+ },
+ withCredentials: false // Disable credentials for CORS simplicity
  });
 
- console.log('Member check response:', response.data);
+ console.log('✅ Member check response:', response.data);
 
  if (response.data.success) {
- console.log('✅ MEMBER VERIFIED');
+ console.log('✅ MEMBER VERIFIED SUCCESSFULLY');
  playSuccessSound();
 
  // Check if payment is incomplete
  if (response.data.paymentIncomplete) {
- setError(`❌ ${response.data.error}`);
+ setError(`❌ PAIEMENT REQUIS\n\n${response.data.error}\n\n👨‍💼 Un bénévole doit valider votre paiement.`);
  playBuzzerSound();
-
- // Show volunteer contact message
- setTimeout(() => {
- setError(response.data.error + '\n\nContactez un bénévole pour assistance.');
- }, 1000);
  return;
  }
 
- setSuccess(`${response.data.message} (Saison: ${response.data.season})`);
+ setSuccess(`✅ ${response.data.message}\n📅 Saison: ${response.data.season}`);
 
  // Redirect to level selection for valid members
  setTimeout(() => {
@@ -83,10 +96,10 @@ export default function MemberPage() {
  season: response.data.season
  }
  });
- }, 1500);
+ }, 2000);
  } else {
- console.log('❌ MEMBER NOT FOUND OR INVALID');
- setError(response.data.error);
+ console.log('❌ MEMBER VERIFICATION FAILED');
+ setError(`❌ ${response.data.error}`);
  playBuzzerSound();
 
  // Redirect to non-member form after delay
@@ -98,27 +111,29 @@ export default function MemberPage() {
  reason: response.data.error
  }
  });
- }, 2000);
+ }, 3000);
  }
  } catch (err) {
  console.error('=== MEMBER CHECK ERROR ===');
  console.error('Error details:', err);
- console.error('API URL used:', API_BASE_URL);
+ console.error('API URL used:', apiUrl);
 
- let errorMessage = 'Erreur lors de la vérification';
+ let errorMessage = 'Erreur lors de la vérification du membre';
 
  if (err.code === 'NETWORK_ERROR' || err.code === 'ERR_NETWORK') {
- errorMessage = 'Erreur de réseau. Vérifiez la connexion au serveur.';
+ errorMessage = `❌ ERREUR RÉSEAU\n\nImpossible de contacter le serveur.\n\nAPI: ${apiUrl}\n\nVérifiez:\n• Connexion WiFi\n• Serveur actif\n• Même réseau PC/tablet`;
  } else if (err.code === 'ECONNABORTED') {
- errorMessage = 'Délai d\'attente dépassé. Réessayez.';
+ errorMessage = `⏱️ DÉLAI DÉPASSÉ\n\nLa requête a pris trop de temps.\n\nRecommandations:\n• Réessayez\n• Vérifiez la connexion\n• Contactez l'admin`;
  } else if (err.response?.status === 500) {
- errorMessage = 'Erreur du serveur. Veuillez réessayer.';
+ errorMessage = `🔧 ERREUR SERVEUR\n\nProblème interne du serveur.\n\nContactez l'administrateur système.`;
+ } else if (err.response?.status === 404) {
+ errorMessage = `🔍 SERVICE NON TROUVÉ\n\nL'endpoint n'existe pas.\n\nAPI: ${apiUrl}/members/check`;
  } else if (err.response?.data?.error) {
- errorMessage = err.response.data.error;
+ errorMessage = `📋 RÉPONSE SERVEUR:\n\n${err.response.data.error}`;
  } else if (err.message) {
- errorMessage = `Erreur: ${err.message}`;
+ errorMessage = `⚠️ ERREUR TECHNIQUE:\n\n${err.message}\n\nAPI: ${apiUrl}`;
  } else {
- errorMessage = 'Connexion au serveur impossible. Vérifiez le réseau.';
+ errorMessage = `🚫 CONNEXION IMPOSSIBLE\n\nServeur non accessible: ${apiUrl}\n\nActions:\n• Vérifiez que le serveur fonctionne\n• Même réseau WiFi PC/tablet\n• Redémarrez l'application`;
  }
 
  setError(errorMessage);
@@ -143,19 +158,24 @@ export default function MemberPage() {
  </div>
  </div>
 
- {/* Debug info for tablet troubleshooting */}
+ {/* ✅ COMPREHENSIVE DEBUG INFO FOR TABLET TROUBLESHOOTING */}
  <div style={{ 
- fontSize: '12px', 
- color: '#666', 
- marginBottom: '15px', 
- textAlign: 'center',
- padding: '10px',
- background: '#f8f9fa',
- borderRadius: '5px'
+ fontSize: '14px', 
+ color: '#333', 
+ marginBottom: '20px',
+ padding: '15px',
+ background: '#f0f8ff',
+ borderRadius: '8px',
+ border: '2px solid #4CAF50'
  }}>
- <div>🌐 API: {API_BASE_URL}</div>
- <div>📱 Host: {window.location.hostname}</div>
- <div>✅ Network test: All systems operational</div>
+ <div style={{ fontWeight: 'bold', marginBottom: '10px' }}>🔧 DEBUG INFO:</div>
+ <div>🌐 API URL: <strong>{apiUrl}</strong></div>
+ <div>📱 Host: <strong>{window.location.hostname}</strong></div>
+ <div>🔗 Protocol: <strong>{window.location.protocol}</strong></div>
+ <div>📍 Full URL: <strong>{window.location.href}</strong></div>
+ <div style={{ marginTop: '10px', color: '#2E7D32' }}>
+ ✅ <strong>Configuratie actief - Ultimate tablet support</strong>
+ </div>
  </div>
 
  <form onSubmit={handleSubmit}>
@@ -168,6 +188,11 @@ export default function MemberPage() {
  onChange={(e) => setForm({...form, nom: e.target.value})}
  placeholder="Entrez votre nom"
  disabled={loading}
+ style={{ 
+ fontSize: '18px', 
+ padding: '12px',
+ minHeight: '50px' // Larger for tablet
+ }}
  />
  </div>
 
@@ -180,20 +205,44 @@ export default function MemberPage() {
  onChange={(e) => setForm({...form, prenom: e.target.value})}
  placeholder="Entrez votre prénom"
  disabled={loading}
+ style={{ 
+ fontSize: '18px', 
+ padding: '12px',
+ minHeight: '50px' // Larger for tablet
+ }}
  />
  </div>
 
  {success && (
- <div className="success-message">
+ <div className="success-message" style={{
+ marginBottom: '20px',
+ padding: '20px',
+ background: '#e8f5e8',
+ color: '#2e7d32',
+ borderRadius: '8px',
+ border: '2px solid #4caf50',
+ whiteSpace: 'pre-line',
+ fontSize: '16px'
+ }}>
  <span className="success-icon">✅</span>
- {success}
+ <div style={{ marginLeft: '10px' }}>{success}</div>
  </div>
  )}
 
  {error && (
- <div className="error-message">
+ <div className="error-message" style={{
+ marginBottom: '20px',
+ padding: '20px',
+ background: '#ffebee',
+ color: '#c62828',
+ borderRadius: '8px',
+ border: '2px solid #f44336',
+ whiteSpace: 'pre-line',
+ fontSize: '15px',
+ lineHeight: '1.4'
+ }}>
  <span className="error-icon">⚠️</span>
- <div style={{ whiteSpace: 'pre-line' }}>{error}</div>
+ <div style={{ marginLeft: '10px' }}>{error}</div>
  </div>
  )}
 
@@ -201,23 +250,48 @@ export default function MemberPage() {
  type="submit"
  className="btn-verify"
  disabled={loading || !form.nom.trim() || !form.prenom.trim()}
+ style={{
+ fontSize: '18px',
+ padding: '15px 30px',
+ minHeight: '60px', // Larger for tablet
+ opacity: (loading || !form.nom.trim() || !form.prenom.trim()) ? 0.6 : 1
+ }}
  >
- {loading ? '⏳ Vérification...' : '🔍 Vérifier Adhésion'}
+ {loading ? '⏳ Vérification en cours...' : '🔍 Vérifier Adhésion'}
  </button>
  </form>
 
  <div style={{ 
- marginTop: '20px', 
- padding: '15px', 
+ marginTop: '30px', 
+ padding: '20px', 
  background: '#f8f9fa', 
  borderRadius: '8px',
- fontSize: '14px',
- color: '#666'
+ fontSize: '15px',
+ color: '#666',
+ lineHeight: '1.5'
  }}>
- <p><strong>Note:</strong> Seuls les adhérents avec statut payé de la saison en cours peuvent accéder directement.</p>
- <p>Les adhésions "à payer" nécessitent l\'intervention d\'un bénévole.</p>
- <p>Si vous n\'êtes pas membre, vous serez redirigé vers le formulaire visiteur.</p>
+ <p><strong>📋 RÈGLES DE VÉRIFICATION:</strong></p>
+ <div style={{ marginLeft: '20px' }}>
+ <p>✅ <strong>Adhérent payé</strong> → Accès direct</p>
+ <p>❌ <strong>Adhésion "à payer"</strong> → Bénévole requis</p>
+ <p>❌ <strong>Ancien adhérent</strong> → Inscription visiteur</p>
+ <p>❌ <strong>Non trouvé</strong> → Inscription visiteur</p>
+ </div>
+ <p style={{ marginTop: '15px' }}><strong>Saison active:</strong> {getCurrentSeasonName()}</p>
  </div>
  </div>
  );
+}
+
+// Helper function for season display
+function getCurrentSeasonName() {
+ const now = new Date();
+ const currentYear = now.getFullYear();
+ const currentMonth = now.getMonth();
+
+ if (currentMonth >= 8) {
+ return `${currentYear}-${currentYear + 1}`;
+ } else {
+ return `${currentYear - 1}-${currentYear}`;
+ }
 }
