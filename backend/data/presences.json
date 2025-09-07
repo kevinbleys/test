@@ -41,5 +41,49 @@
     "season": "2025-2026",
     "niveau": "Non spécifié",
     "status": "adherent"
+  },
+  {
+    "id": "1757230187827",
+    "type": "non-adherent",
+    "nom": "bleys",
+    "prenom": "KEVIN",
+    "date": "2025-09-07T07:29:47.827Z",
+    "season": "2025-2026",
+    "email": "kevinbleys65@gmail.com",
+    "telephone": "0562409746",
+    "dateNaissance": "2000-02-02",
+    "niveau": "1",
+    "assuranceAccepted": true,
+    "status": "Payé",
+    "tarif": 10,
+    "dateValidation": "2025-09-07T07:29:57.710Z",
+    "methodePaiement": "Espèces"
+  },
+  {
+    "id": "1757230272187",
+    "type": "adherent",
+    "nom": "Bleys",
+    "prenom": "Kevin",
+    "date": "2025-09-07T07:31:12.187Z",
+    "season": "2025-2026",
+    "niveau": "Non spécifié",
+    "status": "adherent"
+  },
+  {
+    "id": "1757230309396",
+    "type": "non-adherent",
+    "nom": "Ddgd",
+    "prenom": "Chrfh",
+    "date": "2025-09-07T07:31:49.396Z",
+    "season": "2025-2026",
+    "email": "bleysjoke@gmail.com",
+    "telephone": "0681202378",
+    "dateNaissance": "2004-09-16",
+    "niveau": "1",
+    "assuranceAccepted": true,
+    "status": "Payé",
+    "tarif": 10,
+    "dateValidation": "2025-09-07T07:31:56.838Z",
+    "methodePaiement": "Espèces"
   }
 ]

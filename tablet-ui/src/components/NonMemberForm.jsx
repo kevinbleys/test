@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { playSuccessSound, playBuzzerSound } from '../utils/soundUtils';
+import { playBuzzerSound } from '../utils/soundUtils';
 
-// ✅ FIXED: Dynamic API URL detection
+// ✅ KEEP: Dynamic API URL detection (WORKING!)
 const getApiBaseUrl = () => {
   const hostname = window.location.hostname;
   const protocol = window.location.protocol;
@@ -16,21 +16,20 @@ const getApiBaseUrl = () => {
 export default function NonMemberForm() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { form: memberForm, memberCheckFailed } = location.state || {};
+  const { form: memberForm, memberCheckFailed, reason } = location.state || {};
 
   const [form, setForm] = useState({
     nom: memberForm?.nom || '',
     prenom: memberForm?.prenom || '',
     email: '',
     telephone: '',
-    dateNaissance: '',
-    assuranceAccepted: false
+    dateNaissance: ''
+    // ✅ REMOVED: assuranceAccepted - belongs in AssurancePage!
   });
 
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
     if (!form.nom.trim() || !form.prenom.trim()) {
@@ -39,153 +38,148 @@ export default function NonMemberForm() {
       return;
     }
 
-    if (!form.assuranceAccepted) {
-      setError('Veuillez accepter les conditions d\'assurance');
+    if (!form.dateNaissance) {
+      setError('Date de naissance est requise pour calculer le tarif');
       playBuzzerSound();
       return;
     }
 
-    setLoading(true);
-    setError('');
-
-    try {
-      const API_BASE_URL = getApiBaseUrl(); // ✅ FIXED: Dynamic API URL
-      console.log('🌐 NonMemberForm using API URL:', API_BASE_URL);
-
-      const nonMemberData = {
-        ...form,
-        type: 'non-adherent',
-        dateCreated: new Date().toISOString()
-      };
-
-      const response = await fetch(`${API_BASE_URL}/non-members`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(nonMemberData),
-      });
-
-      const result = await response.json();
-
-      if (result.success) {
-        playSuccessSound();
-        navigate('/success', {
-          state: {
-            type: 'non-adherent',
-            nom: form.nom,
-            prenom: form.prenom,
-            message: 'Inscription visiteur enregistrée avec succès'
-          }
-        });
-      } else {
-        setError(result.error || 'Erreur lors de l\'enregistrement');
-        playBuzzerSound();
+    // ✅ RESTORED: Navigate to niveau page (original flow)
+    navigate('/niveau', {
+      state: {
+        form: form,
+        type: 'non-adherent'
       }
-    } catch (err) {
-      console.error('Non-member registration error:', err);
-      setError(`Erreur de connexion. API: ${getApiBaseUrl()}`);
-      playBuzzerSound();
-    } finally {
-      setLoading(false);
-    }
+    });
+  };
+
+  const handleRetourAccueil = () => {
+    navigate('/');
   };
 
   return (
     <div className="non-member-form">
-      {/* DEBUG INFO */}
-      <div style={{padding: '10px', background: '#fff3cd', marginBottom: '15px', borderRadius: '5px', fontSize: '12px'}}>
-        <div><strong>🔧 NonMemberForm DEBUG:</strong></div>
-        <div>🌐 API URL: <strong>{getApiBaseUrl()}</strong></div>
-        <div>📱 Host: <strong>{window.location.hostname}</strong></div>
+      {/* ✅ RESTORED: Original header with retour button */}
+      <div className="header-section">
+        <h2>Inscription Visiteur</h2>
+        <div className="header-buttons">
+          <button onClick={handleRetourAccueil} className="btn-retour-accueil">
+            🏠 Retour Accueil
+          </button>
+        </div>
       </div>
 
-      <h2>Inscription Visiteur</h2>
+      {/* DEBUG INFO - Small and unobtrusive */}
+      <div style={{ 
+        fontSize: '12px', 
+        color: '#666', 
+        marginBottom: '15px',
+        padding: '8px',
+        background: '#f8f9fa',
+        borderRadius: '4px',
+        opacity: 0.7
+      }}>
+        API: {getApiBaseUrl()} | Host: {window.location.hostname}
+      </div>
 
+      {/* ✅ RESTORED: Member check failed message */}
       {memberCheckFailed && (
         <div className="info-message">
+          <span className="info-icon">ℹ️</span>
           Aucune adhésion trouvée. Veuillez vous inscrire comme visiteur.
+          {reason && (
+            <div className="info-detail">
+              Détail: {reason}
+            </div>
+          )}
         </div>
       )}
 
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label>Nom de famille *:</label>
+          <label htmlFor="nom">Nom de famille *:</label>
           <input
+            id="nom"
             type="text"
             value={form.nom}
             onChange={(e) => setForm({...form, nom: e.target.value})}
-            disabled={loading}
+            placeholder="Votre nom de famille"
             required
           />
         </div>
 
         <div className="form-group">
-          <label>Prénom *:</label>
+          <label htmlFor="prenom">Prénom *:</label>
           <input
+            id="prenom"
             type="text"
             value={form.prenom}
             onChange={(e) => setForm({...form, prenom: e.target.value})}
-            disabled={loading}
+            placeholder="Votre prénom"
             required
           />
         </div>
 
         <div className="form-group">
-          <label>Email:</label>
+          <label htmlFor="email">Email:</label>
           <input
+            id="email"
             type="email"
             value={form.email}
             onChange={(e) => setForm({...form, email: e.target.value})}
-            disabled={loading}
+            placeholder="votre@email.com"
           />
         </div>
 
         <div className="form-group">
-          <label>Téléphone:</label>
+          <label htmlFor="telephone">Téléphone:</label>
           <input
+            id="telephone"
             type="tel"
             value={form.telephone}
             onChange={(e) => setForm({...form, telephone: e.target.value})}
-            disabled={loading}
+            placeholder="06 12 34 56 78"
           />
         </div>
 
         <div className="form-group">
-          <label>Date de naissance:</label>
+          <label htmlFor="dateNaissance">Date de naissance *:</label>
           <input
+            id="dateNaissance"
             type="date"
             value={form.dateNaissance}
             onChange={(e) => setForm({...form, dateNaissance: e.target.value})}
-            disabled={loading}
+            required
           />
         </div>
 
-        <div className="form-group">
-          <label className="checkbox-label">
-            <input
-              type="checkbox"
-              checked={form.assuranceAccepted}
-              onChange={(e) => setForm({...form, assuranceAccepted: e.target.checked})}
-              disabled={loading}
-            />
-            J'accepte les conditions d'assurance *
-          </label>
-        </div>
-
+        {/* ✅ RESTORED: Error message styling */}
         {error && (
           <div className="error-message">
+            <span className="error-icon">⚠️</span>
             {error}
           </div>
         )}
 
+        {/* ✅ RESTORED: Original button styling */}
         <button 
           type="submit" 
-          disabled={loading || !form.nom.trim() || !form.prenom.trim() || !form.assuranceAccepted}
+          className="btn-continue"
+          disabled={!form.nom.trim() || !form.prenom.trim() || !form.dateNaissance}
         >
-          {loading ? 'Enregistrement...' : 'S\'inscrire comme visiteur'}
+          Continuer → Choisir Niveau
         </button>
       </form>
+
+      {/* ✅ RESTORED: Info section */}
+      <div className="info-section">
+        <p><strong>Prochaines étapes:</strong></p>
+        <ol>
+          <li>Choisir votre niveau d'escalade</li>
+          <li>Accepter les conditions d'assurance</li>
+          <li>Finaliser le paiement</li>
+        </ol>
+      </div>
     </div>
   );
 }
