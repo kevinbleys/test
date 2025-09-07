@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { playSuccessSound, playBuzzerSound } from '../utils/soundUtils';
 
-// ✅ FIXED: Dynamic API URL detection
+// ✅ ONLY CHANGE: Dynamic API URL detection
 const getApiBaseUrl = () => {
   const hostname = window.location.hostname;
   const protocol = window.location.protocol;
@@ -21,6 +21,7 @@ export default function MemberCheck() {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -34,12 +35,12 @@ export default function MemberCheck() {
 
     setLoading(true);
     setError('');
+    setSuccess('');
 
     try {
-      const API_BASE_URL = getApiBaseUrl(); // ✅ FIXED: Dynamic API URL
-      console.log('🌐 MemberCheck using API URL:', API_BASE_URL);
+      const apiUrl = getApiBaseUrl(); // ✅ ONLY CHANGE: Dynamic API
 
-      const checkResponse = await axios.get(`${API_BASE_URL}/members/check`, {
+      const checkResponse = await axios.get(`${apiUrl}/members/check`, {
         params: {
           nom: form.nom.trim(),
           prenom: form.prenom.trim()
@@ -49,44 +50,40 @@ export default function MemberCheck() {
 
       if (checkResponse.data.success) {
         playSuccessSound();
+        setSuccess(`✅ Vérification réussie! Vous pouvez aller grimper. 🧗‍♀️`);
 
-        // Create presence for validated member
+        // ✅ ORIGINAL: Create presence for validated member
         const presenceData = {
           type: 'adherent',
           nom: form.nom.trim(),
           prenom: form.prenom.trim(),
-          niveau: 'Non spécifié'
+          niveau: 'Adhérent vérifié'
         };
 
-        const presenceResponse = await axios.post(`${API_BASE_URL}/presences`, presenceData, {
+        await axios.post(`${apiUrl}/presences`, presenceData, {
           timeout: 15000,
           headers: { 'Content-Type': 'application/json' }
         });
 
-        if (presenceResponse.data.success) {
-          navigate('/success', {
+        // ✅ ORIGINAL: Auto redirect to home after success
+        setTimeout(() => {
+          navigate('/', {
             state: {
-              type: 'adherent',
-              nom: form.nom,
-              prenom: form.prenom,
-              message: checkResponse.data.message
+              successMessage: `Bienvenue ${form.prenom} ${form.nom}!`,
+              memberVerified: true
             }
           });
-        } else {
-          setError('Erreur lors de l\'enregistrement de la présence');
-          playBuzzerSound();
-        }
+        }, 3000);
+
       } else {
         setError(checkResponse.data.error);
         playBuzzerSound();
       }
     } catch (err) {
       console.error('Member check error:', err);
-      let errorMessage = 'Erreur de connexion';
 
-      if (err.code === 'NETWORK_ERROR' || err.code === 'ERR_NETWORK') {
-        errorMessage = `Erreur réseau. API: ${getApiBaseUrl()}`;
-      } else if (err.response?.data?.error) {
+      let errorMessage = 'Erreur de connexion';
+      if (err.response?.data?.error) {
         errorMessage = err.response.data.error;
       }
 
@@ -97,20 +94,24 @@ export default function MemberCheck() {
     }
   };
 
+  const handleRetourAccueil = () => {
+    navigate('/');
+  };
+
   return (
     <div className="member-check">
-      {/* DEBUG INFO */}
-      <div style={{padding: '10px', background: '#f0f8ff', marginBottom: '15px', borderRadius: '5px', fontSize: '12px'}}>
-        <div><strong>🔧 MemberCheck DEBUG:</strong></div>
-        <div>🌐 API URL: <strong>{getApiBaseUrl()}</strong></div>
-        <div>📱 Host: <strong>{window.location.hostname}</strong></div>
+      <div className="header-section">
+        <h2>Vérification Membre</h2>
+        <div className="header-buttons">
+          <button onClick={handleRetourAccueil} className="btn-retour-accueil">
+            🏠 Retour Accueil
+          </button>
+        </div>
       </div>
-
-      <h2>Vérification Membre</h2>
 
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label>Nom de famille:</label>
+          <label>Nom:</label>
           <input
             type="text"
             value={form.nom}
@@ -129,17 +130,29 @@ export default function MemberCheck() {
           />
         </div>
 
+        {success && (
+          <div className="success-message">
+            <span className="success-icon">✅</span>
+            {success}
+            <div className="redirect-message">
+              Redirection vers l'accueil dans quelques secondes...
+            </div>
+          </div>
+        )}
+
         {error && (
           <div className="error-message">
+            <span className="error-icon">⚠️</span>
             {error}
           </div>
         )}
 
         <button 
           type="submit" 
+          className="btn-verify"
           disabled={loading || !form.nom.trim() || !form.prenom.trim()}
         >
-          {loading ? 'Vérification...' : 'Vérifier'}
+          {loading ? '⏳ Vérification...' : '🔍 Vérifier'}
         </button>
       </form>
     </div>

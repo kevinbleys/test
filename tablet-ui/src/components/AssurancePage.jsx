@@ -3,7 +3,6 @@ import { useLocation, useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import { playSuccessSound, playBuzzerSound } from '../utils/soundUtils';
 
-// ✅ KEEP: Dynamic API URL detection (WORKING!)
 const getApiBaseUrl = () => {
   const hostname = window.location.hostname;
   const protocol = window.location.protocol;
@@ -27,7 +26,6 @@ export default function AssurancePage() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  // ✅ RESTORED: Redirect check
   if (!state?.form) {
     navigate('/non-member');
     return null;
@@ -51,10 +49,8 @@ export default function AssurancePage() {
     setError('');
 
     try {
-      const apiUrl = getApiBaseUrl(); // ✅ KEEP: Dynamic API
-      console.log('🌐 AssurancePage API URL:', apiUrl);
+      const apiUrl = getApiBaseUrl();
 
-      // ✅ RESTORED: Create presence with calculated tarif
       const registrationData = {
         type: 'non-adherent',
         ...state.form,
@@ -64,22 +60,15 @@ export default function AssurancePage() {
         status: 'pending'
       };
 
-      console.log('Creating presence:', registrationData);
-
       const response = await axios.post(`${apiUrl}/presences`, registrationData, {
         timeout: 15000,
         headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        withCredentials: false
+          'Content-Type': 'application/json'
+        }
       });
 
       if (response.data.success) {
-        console.log('Presence created:', response.data.presence);
         playSuccessSound();
-
-        // ✅ RESTORED: Navigate to payment page
         navigate('/paiement', {
           state: {
             presenceId: response.data.presence.id,
@@ -91,21 +80,12 @@ export default function AssurancePage() {
           }
         });
       } else {
-        console.error('Registration failed:', response.data);
         setError(response.data.error || 'Erreur lors de l\'enregistrement');
         playBuzzerSound();
       }
     } catch (err) {
       console.error('Registration error:', err);
-
-      let errorMessage = 'Erreur de connexion';
-      if (err.response?.data?.error) {
-        errorMessage = err.response.data.error;
-      } else if (err.message) {
-        errorMessage = `Erreur: ${err.message}`;
-      }
-
-      setError(errorMessage);
+      setError('Erreur de connexion');
       playBuzzerSound();
     } finally {
       setLoading(false);
@@ -122,7 +102,6 @@ export default function AssurancePage() {
 
   return (
     <div className="assurance-page">
-      {/* ✅ RESTORED: Original header */}
       <div className="header-section">
         <h2>Information relative à l'assurance du pratiquant</h2>
         <div className="header-buttons">
@@ -132,20 +111,6 @@ export default function AssurancePage() {
         </div>
       </div>
 
-      {/* DEBUG INFO - Small and unobtrusive */}
-      <div style={{ 
-        fontSize: '12px', 
-        color: '#666', 
-        marginBottom: '15px',
-        padding: '8px',
-        background: '#f8f9fa',
-        borderRadius: '4px',
-        opacity: 0.7
-      }}>
-        API: {getApiBaseUrl()} | Host: {window.location.hostname}
-      </div>
-
-      {/* ✅ RESTORED: Tarif summary */}
       {state.tarif !== undefined && (
         <div className="tarif-summary">
           <h3>💰 Tarif à régler : {state.tarif === 0 ? 'GRATUIT' : `${state.tarif}€`}</h3>
@@ -158,7 +123,6 @@ export default function AssurancePage() {
         </div>
       )}
 
-      {/* ✅ RESTORED: Assurance info text */}
       <div className="assurance-info">
         <p>
           Conformément à l'article L321-4 du Code du sport, le présent document vise à informer 
@@ -189,7 +153,6 @@ export default function AssurancePage() {
         </p>
       </div>
 
-      {/* ✅ RESTORED: Checkbox list */}
       <div className="checkbox-list">
         {[
           {
@@ -232,7 +195,6 @@ export default function AssurancePage() {
         ))}
       </div>
 
-      {/* ✅ RESTORED: Error message */}
       {error && (
         <div className="error-message">
           <span className="error-icon">⚠️</span>
@@ -240,20 +202,20 @@ export default function AssurancePage() {
         </div>
       )}
 
-      {/* ✅ RESTORED: Action buttons */}
       <div className="action-buttons">
         <button 
           onClick={handleRetourNiveau}
-          className="btn-retour"
+          className="btn-retour-accueil"
           disabled={loading}
         >
           ← Retour Niveau
         </button>
 
+        {/* ✅ TRY: btn-primary class */}
         <button 
           onClick={finish}
           disabled={!allChecked || loading}
-          className="btn-continue"
+          className="btn-retour-accueil"
         >
           {loading ? '⏳ Enregistrement...' : 'Continuer vers le paiement →'}
         </button>

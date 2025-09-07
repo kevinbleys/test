@@ -2,17 +2,6 @@ import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { playBuzzerSound } from '../utils/soundUtils';
 
-// ✅ KEEP: Dynamic API URL detection (WORKING!)
-const getApiBaseUrl = () => {
-  const hostname = window.location.hostname;
-  const protocol = window.location.protocol;
-
-  if (hostname !== 'localhost' && hostname !== '127.0.0.1') {
-    return `${protocol}//${hostname}:3001`;
-  }
-  return 'http://localhost:3001';
-};
-
 export default function NonMemberForm() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -24,7 +13,6 @@ export default function NonMemberForm() {
     email: '',
     telephone: '',
     dateNaissance: ''
-    // ✅ REMOVED: assuranceAccepted - belongs in AssurancePage!
   });
 
   const [error, setError] = useState('');
@@ -44,7 +32,6 @@ export default function NonMemberForm() {
       return;
     }
 
-    // ✅ RESTORED: Navigate to niveau page (original flow)
     navigate('/niveau', {
       state: {
         form: form,
@@ -59,7 +46,6 @@ export default function NonMemberForm() {
 
   return (
     <div className="non-member-form">
-      {/* ✅ RESTORED: Original header with retour button */}
       <div className="header-section">
         <h2>Inscription Visiteur</h2>
         <div className="header-buttons">
@@ -69,20 +55,6 @@ export default function NonMemberForm() {
         </div>
       </div>
 
-      {/* DEBUG INFO - Small and unobtrusive */}
-      <div style={{ 
-        fontSize: '12px', 
-        color: '#666', 
-        marginBottom: '15px',
-        padding: '8px',
-        background: '#f8f9fa',
-        borderRadius: '4px',
-        opacity: 0.7
-      }}>
-        API: {getApiBaseUrl()} | Host: {window.location.hostname}
-      </div>
-
-      {/* ✅ RESTORED: Member check failed message */}
       {memberCheckFailed && (
         <div className="info-message">
           <span className="info-icon">ℹ️</span>
@@ -97,19 +69,19 @@ export default function NonMemberForm() {
 
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label htmlFor="nom">Nom de famille *:</label>
+          <label htmlFor="nom">Nom:</label>
           <input
             id="nom"
             type="text"
             value={form.nom}
             onChange={(e) => setForm({...form, nom: e.target.value})}
-            placeholder="Votre nom de famille"
+            placeholder="Votre nom"
             required
           />
         </div>
 
         <div className="form-group">
-          <label htmlFor="prenom">Prénom *:</label>
+          <label htmlFor="prenom">Prénom:</label>
           <input
             id="prenom"
             type="text"
@@ -143,7 +115,7 @@ export default function NonMemberForm() {
         </div>
 
         <div className="form-group">
-          <label htmlFor="dateNaissance">Date de naissance *:</label>
+          <label htmlFor="dateNaissance">Date de naissance:</label>
           <input
             id="dateNaissance"
             type="date"
@@ -153,7 +125,6 @@ export default function NonMemberForm() {
           />
         </div>
 
-        {/* ✅ RESTORED: Error message styling */}
         {error && (
           <div className="error-message">
             <span className="error-icon">⚠️</span>
@@ -161,17 +132,16 @@ export default function NonMemberForm() {
           </div>
         )}
 
-        {/* ✅ RESTORED: Original button styling */}
+        {/* ✅ TRY: btn-primary class */}
         <button 
           type="submit" 
-          className="btn-continue"
+          className="btn-retour-accueil"
           disabled={!form.nom.trim() || !form.prenom.trim() || !form.dateNaissance}
         >
-          Continuer → Choisir Niveau
+          Continuer
         </button>
       </form>
 
-      {/* ✅ RESTORED: Info section */}
       <div className="info-section">
         <p><strong>Prochaines étapes:</strong></p>
         <ol>

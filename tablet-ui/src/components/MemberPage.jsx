@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { playSuccessSound, playBuzzerSound } from '../utils/soundUtils';
 
-// ✅ KEEP: Dynamic API URL detection (WORKING!)
+// ✅ ONLY CHANGE: Dynamic API URL detection
 const getApiBaseUrl = () => {
  const hostname = window.location.hostname;
  const protocol = window.location.protocol;
@@ -39,68 +39,43 @@ export default function MemberPage() {
  setSuccess('');
 
  try {
- const apiUrl = getApiBaseUrl(); // ✅ KEEP: Dynamic API
- console.log('🌐 MemberPage API URL:', apiUrl);
+ const apiUrl = getApiBaseUrl(); // ✅ ONLY CHANGE: Dynamic API
 
  const response = await axios.get(`${apiUrl}/members/check`, {
  params: {
  nom: form.nom.trim(),
  prenom: form.prenom.trim()
  },
- timeout: 15000,
- headers: {
- 'Content-Type': 'application/json',
- 'Accept': 'application/json'
- },
- withCredentials: false
+ timeout: 15000
  });
 
- console.log('Member check response:', response.data);
-
  if (response.data.success) {
- console.log('✅ MEMBER VERIFIED');
  playSuccessSound();
 
- // ✅ RESTORED: Check payment status
+ // Check if payment is incomplete
  if (response.data.paymentIncomplete) {
- setError(response.data.error);
+ setError(`❌ ${response.data.error}`);
  playBuzzerSound();
  return;
  }
 
- // ✅ RESTORED: Success message
- setSuccess(`✅ ${response.data.message}`);
+ setSuccess(`✅ Vérification réussie! Vous pouvez aller grimper. 🧗‍♀️`);
 
- // ✅ RESTORED: Create presence for member
- const presenceData = {
- type: 'adherent',
- nom: form.nom.trim(),
- prenom: form.prenom.trim(),
- niveau: 'Adhérent vérifié'
- };
-
- const presenceResponse = await axios.post(`${apiUrl}/presences`, presenceData, {
- timeout: 15000,
- headers: { 'Content-Type': 'application/json' }
- });
-
- if (presenceResponse.data.success) {
- // ✅ RESTORED: Redirect to home after success
+ // ✅ RESTORED: Auto redirect to home after 3 seconds
  setTimeout(() => {
  navigate('/', {
  state: {
- successMessage: 'Membre vérifié avec succès!',
- memberName: `${form.nom} ${form.prenom}`
+ successMessage: `Bienvenue ${form.prenom} ${form.nom}!`,
+ memberVerified: true
  }
  });
- }, 2000);
- }
+ }, 3000);
+
  } else {
- console.log('❌ MEMBER VERIFICATION FAILED');
- setError(response.data.error);
+ setError(`❌ ${response.data.error}`);
  playBuzzerSound();
 
- // ✅ RESTORED: Redirect to non-member after delay
+ // Redirect to non-member form after delay  
  setTimeout(() => {
  navigate('/non-member', {
  state: {
@@ -136,7 +111,6 @@ export default function MemberPage() {
  };
 
  const handleAppelerBenevole = () => {
- // ✅ RESTORED: Appeler bénévole functionality
  navigate('/benevole-help', {
  state: {
  nom: form.nom,
@@ -148,7 +122,6 @@ export default function MemberPage() {
 
  return (
  <div className="member-check">
- {/* ✅ RESTORED: Original header with buttons */}
  <div className="header-section">
  <h2>Vérification Membre</h2>
  <div className="header-buttons">
@@ -161,22 +134,9 @@ export default function MemberPage() {
  </div>
  </div>
 
- {/* DEBUG INFO - Small and unobtrusive */}
- <div style={{ 
- fontSize: '12px', 
- color: '#666', 
- marginBottom: '15px',
- padding: '8px',
- background: '#f8f9fa',
- borderRadius: '4px',
- opacity: 0.7
- }}>
- API: {getApiBaseUrl()} | Host: {window.location.hostname}
- </div>
-
  <form onSubmit={handleSubmit}>
  <div className="form-group">
- <label htmlFor="nom">Nom de famille:</label>
+ <label htmlFor="nom">Nom:</label>
  <input
  id="nom"
  type="text"
@@ -199,24 +159,22 @@ export default function MemberPage() {
  />
  </div>
 
- {/* ✅ RESTORED: Success message styling */}
  {success && (
  <div className="success-message">
  <span className="success-icon">✅</span>
  {success}
- <div className="success-submessage">
+ <div className="redirect-message">
  Redirection vers l'accueil dans quelques secondes...
  </div>
  </div>
  )}
 
- {/* ✅ RESTORED: Error message styling */}
  {error && (
  <div className="error-message">
  <span className="error-icon">⚠️</span>
- <div style={{ whiteSpace: 'pre-line' }}>{error}</div>
+ <div>{error}</div>
  {error.includes('payer') && (
- <div className="error-help">
+ <div className="error-actions">
  <button onClick={handleAppelerBenevole} className="btn-help">
  📞 Contacter un bénévole
  </button>
@@ -230,11 +188,10 @@ export default function MemberPage() {
  className="btn-verify"
  disabled={loading || !form.nom.trim() || !form.prenom.trim()}
  >
- {loading ? '⏳ Vérification...' : '🔍 Vérifier Adhésion'}
+ {loading ? '⏳ Vérification...' : '🔍 Vérifier'}
  </button>
  </form>
 
- {/* ✅ RESTORED: Info section */}
  <div className="info-section">
  <p><strong>Note:</strong> Seuls les adhérents avec statut payé peuvent accéder directement.</p>
  <p>Si vous n'êtes pas membre, vous serez redirigé vers l'inscription visiteur.</p>
