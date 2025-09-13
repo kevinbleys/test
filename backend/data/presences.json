@@ -148,33 +148,37 @@
     "methodePaiement": "CB"
   },
   {
-    "id": "1757244938375",
+    "id": "1757246723223",
     "type": "non-adherent",
     "nom": "bleys",
     "prenom": "KEVIN",
-    "date": "2025-09-07T11:35:38.375Z",
-    "season": "2025-2026",
-    "email": "kevinbleys65@gmail.com",
-    "telephone": "0562409746",
-    "dateNaissance": "2000-02-02",
-    "niveau": "2",
-    "assuranceAccepted": true,
-    "status": "pending",
-    "tarif": 10
-  },
-  {
-    "id": "1757245459464",
-    "type": "non-adherent",
-    "nom": "bleys",
-    "prenom": "KEVIN",
-    "date": "2025-09-07T11:44:19.464Z",
+    "date": "2025-09-07T12:05:23.223Z",
     "season": "2025-2026",
     "email": "",
     "telephone": "",
     "dateNaissance": "1983-03-02",
     "niveau": "2",
     "assuranceAccepted": true,
-    "status": "pending",
-    "tarif": 10
+    "status": "Payé",
+    "tarif": 10,
+    "dateValidation": "2025-09-07T12:05:41.586Z",
+    "methodePaiement": "Especes"
+  },
+  {
+    "id": "1757247849047",
+    "type": "non-adherent",
+    "nom": "Bleys",
+    "prenom": "Joke",
+    "date": "2025-09-07T12:24:09.047Z",
+    "season": "2025-2026",
+    "email": "bleysjoke@gmail.com",
+    "telephone": "0681202378",
+    "dateNaissance": "1994-09-07",
+    "niveau": "1",
+    "assuranceAccepted": true,
+    "status": "Payé",
+    "tarif": 10,
+    "dateValidation": "2025-09-07T12:24:42.041Z",
+    "methodePaiement": "Especes"
   }
 ]

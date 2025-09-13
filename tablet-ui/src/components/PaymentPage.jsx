@@ -54,7 +54,7 @@ export default function PaymentPage() {
         if (response.data.success) {
           const newStatus = response.data.presence.status;
 
-          // ✅ Handle payment success
+          // Handle payment success
           if (newStatus === 'Payé' && paymentStatus !== 'Payé') {
             playSuccessSound();
             setPaymentStatus(newStatus);
@@ -68,7 +68,7 @@ export default function PaymentPage() {
               });
             }, 2000);
           }
-          // ✅ NEW: Handle payment cancellation
+          // Handle payment cancellation
           else if ((newStatus === 'Annulé' || newStatus === 'Cancelled') && paymentStatus !== 'Annulé' && paymentStatus !== 'Cancelled') {
             playBuzzerSound();
             setPaymentStatus(newStatus);
@@ -139,10 +139,7 @@ export default function PaymentPage() {
               return amount === 0 ? 'GRATUIT' : `${amount}€`;
             })()}
           </div>
-          {/* Debug info - remove in production */}
-          <div style={{fontSize: '12px', color: '#666', marginTop: '10px'}}>
-            Debug: montant={state.montant}, tarif={state.tarif}, presence={presenceInfo?.tarif}
-          </div>
+          {/* ✅ REMOVED: Debug info no longer displayed */}
         </div>
 
         <div className="payment-status">
@@ -168,7 +165,7 @@ export default function PaymentPage() {
             </div>
           )}
 
-          {/* ✅ NEW: Cancellation status */}
+          {/* Cancellation status */}
           {(paymentStatus === 'Annulé' || paymentStatus === 'Cancelled') && (
             <div className="status-cancelled">
               <span className="status-icon">❌</span>
