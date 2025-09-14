@@ -1,4 +1,4 @@
-/* ✅ ORIGINELE STYLING HERSTELD - Groene/Blauwe Afgeronde Vakken */
+/* ✅ CORRECTED STYLES.CSS - Voor jouw exacte setup */
 
 /* Reset and Base Styles */
 * {
@@ -114,7 +114,7 @@ body {
   line-height: 1.4;
 }
 
-/* ✅ SUCCESS/ERROR MESSAGES - ORIGINELE STYLING BEHOUDEN */
+/* ✅ SUCCESS/ERROR MESSAGES */
 .success-message-home {
   background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
   border: 3px solid #28a745;
@@ -182,7 +182,7 @@ body {
   border: 1px solid rgba(21, 87, 36, 0.2);
 }
 
-/* ✅ INFO FOOTER - ORIGINELE STYLING */
+/* ✅ INFO FOOTER */
 .info-footer {
   background: rgba(255,255,255,0.1);
   border-radius: 15px;
@@ -197,8 +197,8 @@ body {
   line-height: 1.5;
 }
 
-/* ✅ FORM PAGES - ORIGINELE STYLING */
-.member-page, .non-member-form, .level-page, .assurance-page, .payment-page {
+/* ✅ FORM PAGES */
+.member-page, .non-member-form, .level-page, .assurance-page, .payment-page, .returning-visitor-choice, .returning-visitor-form {
   background: white;
   border-radius: 20px;
   margin: 20px auto;
@@ -206,6 +206,10 @@ body {
   max-width: 600px;
   box-shadow: 0 10px 30px rgba(0,0,0,0.2);
   min-height: 70vh;
+}
+
+.returning-visitor-choice {
+  max-width: 900px;
 }
 
 .header-section {
@@ -242,7 +246,7 @@ body {
   box-shadow: 0 5px 15px rgba(108, 117, 125, 0.4);
 }
 
-/* ✅ FORM ELEMENTS - ORIGINELE STYLING */
+/* ✅ FORM ELEMENTS */
 .form-group {
   margin-bottom: 25px;
   text-align: left;
@@ -273,7 +277,7 @@ body {
   box-shadow: 0 0 10px rgba(76, 175, 80, 0.2);
 }
 
-/* ✅ BUTTONS - ORIGINELE GROENE/BLAUWE STYLING */
+/* ✅ BUTTONS */
 .btn-verify, .btn-submit, .btn-continue {
   background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
   color: white;
@@ -302,38 +306,61 @@ body {
   box-shadow: none;
 }
 
-/* ✅ NIVEAU BUTTONS - ORIGINELE BLAUWE STYLING */
-.niveau-buttons {
+/* ✅ RETURNING VISITOR CHOICE STYLING */
+.choice-buttons {
   display: flex;
-  flex-direction: column;
-  gap: 15px;
-  margin: 30px 0;
+  gap: 30px;
+  justify-content: center;
+  margin: 40px 0;
 }
 
-.btn-niveau {
-  background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);
-  color: white;
-  border: none;
-  border-radius: 15px;
-  padding: 20px;
-  font-size: 1.1rem;
+.btn-choice {
+  flex: 1;
+  max-width: 350px;
+  padding: 30px;
+  background: white;
+  border: 3px solid #e0e0e0;
+  border-radius: 20px;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 3px 10px rgba(33, 150, 243, 0.3);
+  text-align: center;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
 
-.btn-niveau:hover {
-  background: linear-gradient(135deg, #1976D2 0%, #1565C0 100%);
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(33, 150, 243, 0.4);
+.btn-choice:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
 }
 
-.btn-niveau.selected {
-  background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
-  box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4);
+.btn-choice.btn-returning:hover {
+  background: linear-gradient(135deg, #e8f5e8 0%, #d4edda 100%);
+  border-color: #28a745;
 }
 
-/* ✅ ERROR/SUCCESS MESSAGES - ENHANCED MET ORIGINELE KLEUREN */
+.btn-choice.btn-first-visit:hover {
+  background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+  border-color: #2196F3;
+}
+
+.choice-icon {
+  font-size: 48px;
+  margin-bottom: 15px;
+}
+
+.choice-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.choice-description {
+  font-size: 14px;
+  color: #666;
+  line-height: 1.4;
+}
+
+/* ✅ ERROR/SUCCESS MESSAGES ENHANCED */
 .error-message, .error-message-enhanced {
   background: linear-gradient(135deg, #f8d7da 0%, #f1aeb5 100%);
   border: 3px solid #dc3545;
@@ -396,126 +423,6 @@ body {
   animation: countdownProgress 8s linear;
 }
 
-/* ✅ NIEUWE COMPONENTS - MET ORIGINELE STYLING */
-.returning-visitor-choice {
-  background: white;
-  border-radius: 20px;
-  margin: 20px auto;
-  padding: 40px;
-  max-width: 900px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-}
-
-.choice-buttons {
-  display: flex;
-  gap: 30px;
-  justify-content: center;
-  margin: 40px 0;
-}
-
-.btn-choice {
-  flex: 1;
-  max-width: 350px;
-  padding: 30px;
-  background: white;
-  border: 3px solid #e0e0e0;
-  border-radius: 20px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  text-align: center;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-}
-
-.btn-choice:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-}
-
-.btn-choice.btn-returning:hover {
-  background: linear-gradient(135deg, #e8f5e8 0%, #d4edda 100%);
-  border-color: #28a745;
-}
-
-.btn-choice.btn-first-visit:hover {
-  background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
-  border-color: #2196F3;
-}
-
-.choice-icon {
-  font-size: 48px;
-  margin-bottom: 15px;
-}
-
-.choice-title {
-  font-size: 18px;
-  font-weight: bold;
-  margin-bottom: 10px;
-  color: #333;
-}
-
-.choice-description {
-  font-size: 14px;
-  color: #666;
-  line-height: 1.4;
-}
-
-/* ✅ PAYMENT PAGE - ENHANCED MET ORIGINELE STYLING */
-.payment-info {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 30px;
-  margin: 30px 0;
-}
-
-.participant-info, .amount-info {
-  background: #f8f9fa;
-  padding: 25px;
-  border-radius: 15px;
-  border: 2px solid #e9ecef;
-}
-
-.participant-info h3, .amount-info h3 {
-  color: #333;
-  margin-bottom: 20px;
-  font-size: 1.3rem;
-}
-
-.amount-display {
-  font-size: 36px;
-  font-weight: bold;
-  color: #28a745;
-  text-align: center;
-  padding: 20px;
-  background: white;
-  border-radius: 12px;
-  margin: 15px 0;
-  border: 2px solid #28a745;
-}
-
-.status-paid-enhanced {
-  background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
-  border: 3px solid #28a745;
-  border-radius: 20px;
-  padding: 40px;
-  text-align: center;
-  box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
-  animation: paymentSuccess 1s ease-out;
-}
-
-.status-paid-enhanced h3 {
-  color: #155724;
-  font-size: 32px;
-  margin-bottom: 20px;
-}
-
-.success-details {
-  background: rgba(255,255,255,0.8);
-  padding: 25px;
-  border-radius: 15px;
-  margin: 25px 0;
-  text-align: left;
-}
-
 /* ✅ INFO SECTIONS */
 .info-section {
   background: rgba(33, 150, 243, 0.1);
@@ -561,20 +468,6 @@ body {
   }
   75% { 
     transform: scale(1.1) rotate(5deg); 
-  }
-}
-
-@keyframes paymentSuccess {
-  0% {
-    transform: scale(0.8);
-    opacity: 0;
-  }
-  50% {
-    transform: scale(1.05);
-  }
-  100% {
-    transform: scale(1);
-    opacity: 1;
   }
 }
 
@@ -625,11 +518,6 @@ body {
     max-width: none;
   }
 
-  .payment-info {
-    grid-template-columns: 1fr;
-    gap: 20px;
-  }
-
   .success-message-home,
   .error-message-home {
     flex-direction: column;
@@ -646,10 +534,6 @@ body {
     font-size: 56px;
   }
 
-  .amount-display {
-    font-size: 28px;
-  }
-
   .header h1 {
     font-size: 2.2rem;
   }
@@ -664,7 +548,7 @@ body {
     padding: 20px 15px;
   }
 
-  .member-page, .non-member-form, .level-page, .assurance-page, .payment-page, .returning-visitor-choice {
+  .member-page, .non-member-form, .level-page, .assurance-page, .payment-page, .returning-visitor-choice, .returning-visitor-form {
     margin: 10px;
     padding: 25px 20px;
   }

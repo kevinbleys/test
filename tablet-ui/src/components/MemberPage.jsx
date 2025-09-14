@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
-import { playSuccessSound, playBuzzerSound } from '../utils/soundUtils';
+
+// ✅ Sound utils fallback
+const playSuccessSound = () => console.log('✅ Success sound');
+const playBuzzerSound = () => console.log('❌ Error sound');
 
 const getApiBaseUrl = () => {
   const hostname = window.location.hostname;

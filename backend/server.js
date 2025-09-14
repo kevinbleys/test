@@ -4,16 +4,17 @@ const fs = require('fs');
 const path = require('path');
 const { getMembers, getSeasonInfo } = require('./sync-service');
 
-// ✅ Enhanced data manager import
+// ✅ Enhanced data manager import with fallback
 let dataManager;
 try {
     dataManager = require('./enhanced-data-manager');
     console.log('✅ Enhanced data manager loaded');
 } catch (error) {
     console.log('⚠️ Enhanced data manager not found, using fallback');
-    // Fallback functions if enhanced-data-manager doesn't exist
     dataManager = {
-        logAccessAttempt: () => console.log('Access attempt logged (fallback)'),
+        logAccessAttempt: (type, nom, prenom, status, details, req) => {
+            console.log(`📝 Access attempt (fallback): ${type} - ${nom} ${prenom} - ${status}`);
+        },
         calculateTarif: (dateNaissance) => {
             if (!dateNaissance) return 12;
             const today = new Date();
@@ -41,7 +42,9 @@ try {
             if (age < 26) return `Étudiant (${age} ans)`;
             if (age >= 65) return `Senior (${age} ans)`;
             return `Adulte (${age} ans)`;
-        }
+        },
+        getAccessAttempts: () => [],
+        getReturningVisitors: () => []
     };
 }
 
@@ -52,6 +55,9 @@ const PORT = process.env.PORT || 3001;
 app.use(cors());
 app.use(express.json());
 
+// ✅ ADMIN STATIC FILES
+app.use('/admin', express.static(path.join(__dirname, 'admin')));
+
 // Data file paths
 const presencesFile = path.join(__dirname, 'data', 'presences.json');
 
@@ -61,7 +67,7 @@ if (!fs.existsSync(dataDir)) {
     fs.mkdirSync(dataDir, { recursive: true });
 }
 
-// Initialize presences file if it doesn't exist
+// Initialize presences file
 if (!fs.existsSync(presencesFile)) {
     fs.writeFileSync(presencesFile, JSON.stringify([], null, 2));
 }
@@ -94,33 +100,19 @@ function generateId() {
     return Math.random().toString(36).substr(2, 9);
 }
 
-// ✅ EXISTING ROUTES (preserved from your original)
+// ✅ ROUTES
 
-// Basic health check
+// Health check
 app.get('/', (req, res) => {
-    res.json({ message: 'Climbing club backend is running!' });
-});
-
-// Get members (from sync-service)
-app.get('/members', (req, res) => {
-    try {
-        const members = getMembers();
-        res.json({ success: true, members, count: members.length });
-    } catch (error) {
-        console.error('Error getting members:', error);
-        res.status(500).json({ success: false, error: 'Erreur lors de la récupération des membres' });
-    }
-});
-
-// Get season info
-app.get('/season-info', (req, res) => {
-    try {
-        const seasonInfo = getSeasonInfo();
-        res.json({ success: true, ...seasonInfo });
-    } catch (error) {
-        console.error('Error getting season info:', error);
-        res.status(500).json({ success: false, error: 'Erreur lors de la récupération des informations' });
-    }
+    res.json({ 
+        message: 'Climbing club backend is running!',
+        timestamp: new Date().toISOString(),
+        features: {
+            enhancedDataManager: !!dataManager.logAccessAttempt,
+            membersLoaded: getMembers().length,
+            adminPanel: true
+        }
+    });
 });
 
 // ✅ ORIGINAL member check (preserved)
@@ -148,10 +140,10 @@ app.get('/members/check', async (req, res) => {
             });
         }
 
-        // Check if member has unpaid status
-        const hasUnpaidStatus = member.categories?.some(cat => 
-            cat.label?.toLowerCase().includes('pas') && cat.label?.toLowerCase().includes('payé')
-        );
+        const hasUnpaidStatus = member.categories?.some(cat => {
+            const label = cat.label?.toLowerCase() || '';
+            return label.includes('pas') && (label.includes('payé') || label.includes('paye'));
+        });
 
         if (hasUnpaidStatus) {
             return res.json({
@@ -175,7 +167,7 @@ app.get('/members/check', async (req, res) => {
     }
 });
 
-// ✅ ENHANCED member check with logging (fixed syntax)
+// ✅ ENHANCED member check with detailed debugging
 app.get('/members/check-enhanced', async (req, res) => {
     const { nom, prenom } = req.query;
 
@@ -187,15 +179,44 @@ app.get('/members/check-enhanced', async (req, res) => {
     }
 
     try {
+        console.log(`🔍 Enhanced member check: "${nom}" "${prenom}"`);
+
         const members = getMembers();
-        const member = members.find(m => 
-            m.nom?.toLowerCase().trim() === nom.toLowerCase().trim() && 
-            m.prenom?.toLowerCase().trim() === prenom.toLowerCase().trim()
-        );
+        console.log(`📊 Total members loaded: ${members.length}`);
+
+        // Enhanced search with debugging
+        const member = members.find(m => {
+            const memberNom = m.nom?.toLowerCase().trim() || '';
+            const memberPrenom = m.prenom?.toLowerCase().trim() || '';
+            const searchNom = nom.toLowerCase().trim();
+            const searchPrenom = prenom.toLowerCase().trim();
+
+            const match = memberNom === searchNom && memberPrenom === searchPrenom;
+
+            // Debug for specific names
+            if (searchNom.includes('bleys') || searchPrenom.includes('kevin')) {
+                console.log(`🔍 Checking: "${memberNom}" "${memberPrenom}" vs "${searchNom}" "${searchPrenom}" → ${match}`);
+            }
+
+            return match;
+        });
 
         if (!member) {
-            // ✅ FIXED: Proper string escaping
-            dataManager.logAccessAttempt('member_fail', nom, prenom, 'membre_non_existant', 'Member not found in database', req);
+            // Show similar names for debugging
+            const similarMembers = members.filter(m => {
+                const memberNom = m.nom?.toLowerCase() || '';
+                const memberPrenom = m.prenom?.toLowerCase() || '';
+                const searchNom = nom.toLowerCase();
+                const searchPrenom = prenom.toLowerCase();
+
+                return memberNom.includes(searchNom.substring(0, 3)) || 
+                       memberPrenom.includes(searchPrenom.substring(0, 3));
+            }).slice(0, 5);
+
+            console.log(`❌ Member not found. Similar:`, similarMembers.map(m => `${m.nom} ${m.prenom}`));
+
+            dataManager.logAccessAttempt('member_fail', nom, prenom, 'membre_non_existant', 
+                `Total: ${members.length}, Similar: ${similarMembers.length}`, req);
 
             return res.json({
                 success: false,
@@ -203,13 +224,17 @@ app.get('/members/check-enhanced', async (req, res) => {
             });
         }
 
-        // Check if member has unpaid status
-        const hasUnpaidStatus = member.categories?.some(cat => 
-            cat.label?.toLowerCase().includes('pas') && cat.label?.toLowerCase().includes('payé')
-        );
+        console.log(`✅ Member found: ${member.nom} ${member.prenom}`);
+
+        // Payment status check
+        const hasUnpaidStatus = member.categories?.some(cat => {
+            const label = cat.label?.toLowerCase() || '';
+            return label.includes('pas') && (label.includes('payé') || label.includes('paye'));
+        });
 
         if (hasUnpaidStatus) {
-            dataManager.logAccessAttempt('member_fail', nom, prenom, 'membre_pas_encore_paye', 'Member found but payment incomplete', req);
+            dataManager.logAccessAttempt('member_fail', nom, prenom, 'membre_pas_encore_paye', 
+                JSON.stringify({ categories: member.categories }), req);
 
             return res.json({
                 success: false,
@@ -219,7 +244,8 @@ app.get('/members/check-enhanced', async (req, res) => {
         }
 
         // Success
-        dataManager.logAccessAttempt('member_success', nom, prenom, 'success', 'Member verified successfully', req);
+        dataManager.logAccessAttempt('member_success', nom, prenom, 'success', 
+            JSON.stringify({ memberFound: true }), req);
 
         res.json({ 
             success: true, 
@@ -227,17 +253,48 @@ app.get('/members/check-enhanced', async (req, res) => {
         });
 
     } catch (error) {
-        console.error('Error in enhanced member check:', error);
+        console.error('❌ Enhanced member check error:', error);
         dataManager.logAccessAttempt('member_fail', nom, prenom, 'system_error', error.message, req);
 
         res.status(500).json({ 
             success: false, 
-            error: 'Erreur système lors de la vérification. Contactez un bénévole.' 
+            error: 'Erreur système. Contactez un bénévole.' 
         });
     }
 });
 
-// ✅ ORIGINAL presences creation (preserved)
+// ✅ DEBUG endpoint for troubleshooting
+app.get('/debug/members', (req, res) => {
+    try {
+        const members = getMembers();
+        const seasonInfo = getSeasonInfo();
+
+        // Find test members
+        const testMembers = members.filter(m => {
+            const fullName = `${m.nom || ''} ${m.prenom || ''}`.toLowerCase();
+            return fullName.includes('bleys') || fullName.includes('kevin');
+        });
+
+        res.json({
+            success: true,
+            totalMembers: members.length,
+            seasonInfo: seasonInfo,
+            testMembers: testMembers,
+            sampleMembers: members.slice(0, 5).map(m => ({
+                nom: m.nom,
+                prenom: m.prenom,
+                categories: m.categories?.map(c => c.label)
+            }))
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            error: error.message
+        });
+    }
+});
+
+// ✅ ORIGINAL presence creation
 app.post('/presences', (req, res) => {
     try {
         const { type, nom, prenom, dateNaissance, email, telephone, niveau, tarif, assuranceAccepted } = req.body;
@@ -281,16 +338,16 @@ app.post('/presences', (req, res) => {
     }
 });
 
-// ✅ ENHANCED presences creation (fixed tariff calculation)
+// ✅ ENHANCED presence creation with FIXED tariff calculation
 app.post('/presences-enhanced', (req, res) => {
     try {
         const { type, nom, prenom, dateNaissance, email, telephone, niveau, assuranceAccepted, isReturningVisitor } = req.body;
 
-        // ✅ FIXED: Always calculate tariff from birth date
+        // ✅ ALWAYS calculate tariff from birthdate
         const tarif = dataManager.calculateTarif(dateNaissance);
         const tarifCategory = dataManager.getTarifCategory(dateNaissance);
 
-        console.log(`💰 Calculated tariff for ${nom} ${prenom}: ${tarif}€ (${tarifCategory})`);
+        console.log(`💰 Enhanced presence - Calculated tariff for ${nom} ${prenom}: ${tarif}€ (${tarifCategory})`);
 
         const presence = {
             id: generateId(),
@@ -301,7 +358,7 @@ app.post('/presences-enhanced', (req, res) => {
             email: email || '',
             telephone: telephone || '',
             niveau,
-            tarif, // ✅ FIXED: Use calculated tariff
+            tarif, // ✅ FIXED: Always use calculated tariff
             tarifCategory,
             assuranceAccepted,
             status: 'pending',
@@ -313,20 +370,16 @@ app.post('/presences-enhanced', (req, res) => {
         presences.push(presence);
 
         if (writePresences(presences)) {
-            // Auto-save returning visitor data for non-members
-            if (type === 'non-adherent' && dataManager.saveReturningVisitor) {
+            // Auto-save returning visitor
+            if (type === 'non-adherent' && dataManager.saveReturningVisitor && !isReturningVisitor) {
                 dataManager.saveReturningVisitor({
-                    nom,
-                    prenom,
-                    dateNaissance,
-                    email: email || '',
-                    telephone: telephone || '',
-                    niveau,
-                    tarif
+                    nom, prenom, dateNaissance,
+                    email: email || '', telephone: telephone || '',
+                    niveau, tarif
                 });
             }
 
-            console.log(`✅ Presence created: ${nom} ${prenom} - ${tarif}€`);
+            console.log(`✅ Enhanced presence created: ${nom} ${prenom} - ${tarif}€`);
 
             res.json({
                 success: true,
@@ -396,9 +449,7 @@ app.post('/presences/:id/status', (req, res) => {
     }
 });
 
-// ✅ NEW ENHANCED ROUTES (if enhanced-data-manager exists)
-
-// Search returning visitors
+// ✅ RETURNING VISITORS routes
 app.get('/returning-visitors/search', (req, res) => {
     const { nom, prenom, dateNaissance } = req.query;
 
@@ -414,33 +465,21 @@ app.get('/returning-visitors/search', (req, res) => {
             const visitor = dataManager.findReturningVisitor(nom, prenom, dateNaissance);
 
             if (visitor) {
-                console.log(`🔄 Found returning visitor: ${nom} ${prenom} (visit #${visitor.visit_count || 1})`);
-
                 const currentTarif = dataManager.calculateTarif(dateNaissance);
                 const tarifCategory = dataManager.getTarifCategory(dateNaissance);
 
                 res.json({
                     success: true,
                     visitor: {
-                        id: visitor.id,
-                        nom: visitor.nom,
-                        prenom: visitor.prenom,
-                        dateNaissance: visitor.dateNaissance,
-                        email: visitor.email,
-                        telephone: visitor.telephone,
-                        lastNiveau: visitor.last_niveau,
-                        currentTarif: currentTarif,
-                        tarifCategory: tarifCategory,
-                        visitCount: visitor.visit_count || 1,
-                        firstVisit: visitor.first_visit,
-                        lastVisit: visitor.last_visit
+                        ...visitor,
+                        currentTarif,
+                        tarifCategory
                     }
                 });
             } else {
-                console.log(`❌ No returning visitor found: ${nom} ${prenom}`);
                 res.json({
                     success: false,
-                    error: 'Aucune visite précédente trouvée pour ces informations.'
+                    error: 'Aucune visite précédente trouvée'
                 });
             }
         } else {
@@ -458,25 +497,61 @@ app.get('/returning-visitors/search', (req, res) => {
     }
 });
 
+// ✅ ADMIN API routes
+app.get('/admin/api/presences', (req, res) => {
+    try {
+        const presences = readPresences();
+        res.json({
+            success: true,
+            data: presences,
+            count: presences.length
+        });
+    } catch (error) {
+        console.error('Error getting presences for admin:', error);
+        res.status(500).json({ success: false, error: 'Erreur serveur' });
+    }
+});
+
+app.post('/admin/api/presences/:id/status', (req, res) => {
+    try {
+        const { status } = req.body;
+        const { id } = req.params;
+
+        const presences = readPresences();
+        const presenceIndex = presences.findIndex(p => p.id === id);
+
+        if (presenceIndex >= 0) {
+            presences[presenceIndex].status = status;
+            presences[presenceIndex].updated_at = new Date().toISOString();
+            presences[presenceIndex].updated_by = 'admin';
+
+            if (writePresences(presences)) {
+                console.log(`✅ Admin updated presence ${id} status to: ${status}`);
+                res.json({
+                    success: true,
+                    presence: presences[presenceIndex]
+                });
+            } else {
+                res.status(500).json({ success: false, error: 'Erreur sauvegarde' });
+            }
+        } else {
+            res.status(404).json({ success: false, error: 'Présence non trouvée' });
+        }
+    } catch (error) {
+        console.error('Error updating presence from admin:', error);
+        res.status(500).json({ success: false, error: 'Erreur serveur' });
+    }
+});
+
 // Export access attempts
 app.get('/export/access-attempts', (req, res) => {
     try {
         if (dataManager.getAccessAttempts) {
             const attempts = dataManager.getAccessAttempts();
-
-            console.log(`📊 Exporting ${attempts.length} access attempts`);
-
             res.json({
                 success: true,
                 data: attempts,
-                count: attempts.length,
-                summary: {
-                    total: attempts.length,
-                    member_success: attempts.filter(a => a.status === 'success').length,
-                    membre_non_existant: attempts.filter(a => a.status === 'membre_non_existant').length,
-                    membre_pas_encore_paye: attempts.filter(a => a.status === 'membre_pas_encore_paye').length,
-                    system_errors: attempts.filter(a => a.status === 'system_error').length
-                }
+                count: attempts.length
             });
         } else {
             res.json({
@@ -488,62 +563,39 @@ app.get('/export/access-attempts', (req, res) => {
         }
     } catch (error) {
         console.error('Error exporting access attempts:', error);
-        res.status(500).json({ error: 'Erreur lors de l\'export' });
+        res.status(500).json({ error: 'Erreur export' });
     }
 });
 
-// Export returning visitors
-app.get('/export/returning-visitors', (req, res) => {
+// Get all members
+app.get('/members', (req, res) => {
     try {
-        if (dataManager.getReturningVisitors) {
-            const visitors = dataManager.getReturningVisitors();
-
-            console.log(`📊 Exporting ${visitors.length} returning visitors`);
-
-            res.json({
-                success: true,
-                data: visitors,
-                count: visitors.length
-            });
-        } else {
-            res.json({
-                success: true,
-                data: [],
-                count: 0,
-                message: 'Enhanced features not available'
-            });
-        }
+        const members = getMembers();
+        res.json({ success: true, members, count: members.length });
     } catch (error) {
-        console.error('Error exporting returning visitors:', error);
-        res.status(500).json({ error: 'Erreur lors de l\'export' });
+        console.error('Error getting members:', error);
+        res.status(500).json({ success: false, error: 'Erreur membres' });
     }
 });
 
-// Get all presences (for admin)
-app.get('/presences', (req, res) => {
+// Get season info
+app.get('/season-info', (req, res) => {
     try {
-        const presences = readPresences();
-        res.json({
-            success: true,
-            data: presences,
-            count: presences.length
-        });
+        const seasonInfo = getSeasonInfo();
+        res.json({ success: true, ...seasonInfo });
     } catch (error) {
-        console.error('Error getting all presences:', error);
-        res.status(500).json({ success: false, error: 'Erreur serveur' });
+        console.error('Error getting season info:', error);
+        res.status(500).json({ success: false, error: 'Erreur saison' });
     }
 });
 
 // Start server
 app.listen(PORT, () => {
     console.log(`\n🚀 Backend server running on port ${PORT}`);
-    console.log(`📊 Season info:`, getSeasonInfo());
-    console.log(`👥 Members loaded:`, getMembers().length);
-    if (dataManager.logAccessAttempt) {
-        console.log('✅ Enhanced features available');
-    } else {
-        console.log('⚠️ Enhanced features in fallback mode');
-    }
+    console.log(`📊 Members loaded: ${getMembers().length}`);
+    console.log(`✅ Enhanced features: ${!!dataManager.logAccessAttempt ? 'Available' : 'Fallback mode'}`);
+    console.log(`🔗 Admin panel: http://localhost:${PORT}/admin`);
+    console.log(`🔗 Debug members: http://localhost:${PORT}/debug/members`);
 });
 
 module.exports = app;

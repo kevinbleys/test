@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { playSuccessSound, playBuzzerSound } from '../utils/soundUtils';
+
+// ✅ Sound utils fallback
+const playSuccessSound = () => console.log('✅ Success sound');
+const playBuzzerSound = () => console.log('❌ Error sound');
 
 const getApiBaseUrl = () => {
   const hostname = window.location.hostname;
@@ -98,7 +101,7 @@ export default function ReturningVisitorForm() {
         }
       } else {
         // ✅ Not found - show error with retry option
-        setError('Aucune visite précédente trouvée pour ces informations.\n\nVérifiez l'orthographe ou utilisez "première visite".');
+        setError('Aucune visite précédente trouvée pour ces informations.\n\nVérifiez l\'orthographe ou utilisez "première visite".');
         playBuzzerSound();
       }
     } catch (err) {
@@ -129,12 +132,9 @@ export default function ReturningVisitorForm() {
         </div>
       </div>
 
-      <div className="info-message">
-        <span className="info-icon">🔄</span>
-        <div>
-          <strong>Accès rapide</strong>
-          <p>Entrez vos informations pour retrouver vos données précédentes et aller directement au paiement.</p>
-        </div>
+      <div className="info-section">
+        <p><strong>🔄 Accès rapide</strong></p>
+        <p>Entrez vos informations pour retrouver vos données précédentes et aller directement au paiement.</p>
       </div>
 
       <form onSubmit={handleSubmit}>
@@ -183,12 +183,13 @@ export default function ReturningVisitorForm() {
           </div>
         )}
 
-        <div className="action-buttons">
+        <div style={{ display: 'flex', gap: '15px', marginTop: '30px' }}>
           <button 
             type="button"
             onClick={handleBackToChoice}
             className="btn-retour-accueil"
             disabled={loading}
+            style={{ width: 'auto', flex: '0 0 auto' }}
           >
             ← Retour au choix
           </button>
@@ -197,6 +198,7 @@ export default function ReturningVisitorForm() {
             type="submit" 
             className="btn-verify"
             disabled={loading || !form.nom.trim() || !form.prenom.trim() || !form.dateNaissance}
+            style={{ flex: '1' }}
           >
             {loading ? '⏳ Recherche...' : '🔍 Rechercher et continuer'}
           </button>
