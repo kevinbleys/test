@@ -43,14 +43,30 @@ export default function MemberPage() {
     try {
       const apiUrl = getApiBaseUrl();
 
-      // ✅ FEATURE 1: Use enhanced endpoint that logs failures
-      const response = await axios.get(`${apiUrl}/members/check-enhanced`, {
-        params: {
-          nom: form.nom.trim(),
-          prenom: form.prenom.trim()
-        },
-        timeout: 15000
-      });
+      // ✅ Try enhanced endpoint first, fallback to original
+      let endpoint = '/members/check-enhanced';
+      let response;
+
+      try {
+        response = await axios.get(`${apiUrl}${endpoint}`, {
+          params: {
+            nom: form.nom.trim(),
+            prenom: form.prenom.trim()
+          },
+          timeout: 15000
+        });
+      } catch (enhancedError) {
+        // Fallback to original endpoint
+        console.log('Enhanced endpoint failed, using original');
+        endpoint = '/members/check';
+        response = await axios.get(`${apiUrl}${endpoint}`, {
+          params: {
+            nom: form.nom.trim(),
+            prenom: form.prenom.trim()
+          },
+          timeout: 15000
+        });
+      }
 
       if (response.data.success) {
         playSuccessSound();
@@ -66,7 +82,7 @@ export default function MemberPage() {
               memberVerified: true
             }
           });
-        }, 8000); // Increased from 2000 to 8000ms
+        }, 8000); // 8 seconds
 
       } else {
         // Enhanced error messages
@@ -107,7 +123,7 @@ export default function MemberPage() {
 
       {/* Enhanced success message display */}
       {successMessage && (
-        <div className="success-message-prominent">
+        <div className="success-message-home">
           <span className="success-icon">🎉</span>
           <div className="success-content">
             <strong>Bienvenue !</strong>
