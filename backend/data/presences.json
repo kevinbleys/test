@@ -180,5 +180,15 @@
     "tarif": 10,
     "dateValidation": "2025-09-07T12:24:42.041Z",
     "methodePaiement": "Especes"
+  },
+  {
+    "id": "1757863975246",
+    "type": "adherent",
+    "nom": "bleys",
+    "prenom": "kevin",
+    "date": "2025-09-14T15:32:55.246Z",
+    "season": "2025-2026",
+    "niveau": "Adhérent vérifié",
+    "status": "adherent"
   }
 ]
