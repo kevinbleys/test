@@ -1,509 +1,388 @@
-/* ===== ORIGINELE STYLES BEHOUDEN ===== */
+/* ✅ Enhanced CSS for all 3 features */
 
-/* Styles améliorés pour la section header */
-.header-section {
- display: flex;
- justify-content: space-between;
- align-items: center;
- margin-bottom: 30px;
- padding-bottom: 15px;
- border-bottom: 2px solid #e0e0e0;
+/* Returning Visitor Choice Page */
+.returning-visitor-choice {
+  max-width: 900px;
+  margin: 20px auto;
+  padding: 30px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
 }
 
-.header-section h2 {
- margin: 0;
- color: #333;
- font-size: 28px;
- font-weight: 600;
+.choice-buttons {
+  display: flex;
+  gap: 30px;
+  justify-content: center;
+  margin: 40px 0;
 }
 
-.header-buttons {
- display: flex;
- gap: 15px;
- align-items: center;
+.btn-choice {
+  flex: 1;
+  max-width: 350px;
+  padding: 30px;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border: 3px solid #dee2e6;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
 }
 
-/* Styles pour le bouton "Appeler un bénévole" */
-.btn-appeler-benevole {
- background: linear-gradient(135deg, #ff6b6b 0%, #ff4757 100%);
- color: white;
- border: none;
- padding: 12px 20px;
- border-radius: 8px;
- font-size: 16px;
- font-weight: 600;
- cursor: pointer;
- transition: all 0.3s ease;
- box-shadow: 0 2px 8px rgba(255, 107, 107, 0.3);
- display: flex;
- align-items: center;
- gap: 8px;
- text-transform: uppercase;
- letter-spacing: 0.5px;
+.btn-choice:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
 }
 
-.btn-appeler-benevole:hover {
- background: linear-gradient(135deg, #ff5252 0%, #ff3742 100%);
- transform: translateY(-2px);
- box-shadow: 0 4px 12px rgba(255, 107, 107, 0.4);
+.btn-choice.btn-returning:hover {
+  background: linear-gradient(135deg, #e8f5e8 0%, #d4edda 100%);
+  border-color: #28a745;
 }
 
-.btn-appeler-benevole:active {
- transform: translateY(0);
- box-shadow: 0 2px 6px rgba(255, 107, 107, 0.3);
+.btn-choice.btn-first-visit:hover {
+  background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+  border-color: #007bff;
 }
 
-.btn-appeler-benevole:disabled {
- background: #cccccc;
- cursor: not-allowed;
- transform: none;
- box-shadow: none;
+.choice-icon {
+  font-size: 48px;
+  margin-bottom: 15px;
 }
 
-/* Styles pour le bouton retour à l'accueil */
-.btn-retour-accueil {
- background: linear-gradient(135deg, #6b73ff 0%, #000dff 100%);
- color: white;
- border: none;
- padding: 12px 20px;
- border-radius: 8px;
- font-size: 16px;
- font-weight: 500;
- cursor: pointer;
- transition: all 0.3s ease;
- box-shadow: 0 2px 8px rgba(107, 115, 255, 0.3);
- display: flex;
- align-items: center;
- gap: 8px;
+.choice-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #2c3e50;
 }
 
-.btn-retour-accueil:hover {
- background: linear-gradient(135deg, #5a64e8 0%, #000bcc 100%);
- transform: translateY(-2px);
- box-shadow: 0 4px 12px rgba(107, 115, 255, 0.4);
+.choice-description {
+  font-size: 14px;
+  color: #6c757d;
+  line-height: 1.4;
 }
 
-.btn-retour-accueil:active {
- transform: translateY(0);
- box-shadow: 0 2px 6px rgba(107, 115, 255, 0.3);
+/* Returning Visitor Form */
+.returning-visitor-form {
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 30px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
 }
 
-.btn-retour-accueil:disabled {
- background: #cccccc;
- cursor: not-allowed;
- transform: none;
- box-shadow: none;
+.info-message {
+  background: linear-gradient(135deg, #e8f4fd 0%, #d1ecf1 100%);
+  border: 2px solid #bee5eb;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 30px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
 }
 
-/* Styles pour le message bénévole */
-.benevole-message {
- background-color: #fff3cd;
- color: #856404;
- padding: 15px 20px;
- border-radius: 8px;
- margin-top: 20px;
- border: 2px solid #ffeaa7;
- font-weight: 600;
- display: flex;
- align-items: center;
- gap: 10px;
- animation: bellRing 0.5s ease-in-out;
+.info-icon {
+  font-size: 32px;
+  flex-shrink: 0;
 }
 
-/* Animation pour le message bénévole */
-@keyframes bellRing {
- 0%, 100% { transform: translateX(0); }
- 25% { transform: translateX(-3px) rotate(-5deg); }
- 75% { transform: translateX(3px) rotate(5deg); }
+.help-section {
+  background: #f8f9fa;
+  border-left: 4px solid #6c757d;
+  padding: 20px;
+  border-radius: 5px;
+  margin-top: 30px;
 }
 
-/* Styles améliorés pour les messages d'erreur et de succès */
-.error-message {
- background-color: #f8d7da;
- color: #721c24;
- padding: 15px 20px;
- border-radius: 8px;
- margin-top: 20px;
- border: 2px solid #f5c6cb;
- font-weight: 500;
- display: flex;
- align-items: center;
- gap: 10px;
- animation: shake 0.5s ease-in-out;
+/* ✅ FEATURE 3: Enhanced Success Messages */
+.success-message-enhanced {
+  background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+  border: 3px solid #28a745;
+  border-radius: 15px;
+  padding: 40px;
+  margin: 30px 0;
+  text-align: center;
+  animation: successSlideIn 0.5s ease-out;
+}
+
+.success-animation {
+  font-size: 72px;
+  margin-bottom: 20px;
+  animation: bounceSuccess 2s ease-in-out infinite;
+}
+
+.success-message-enhanced h3 {
+  color: #155724;
+  margin-bottom: 20px;
+  font-size: 28px;
+}
+
+.countdown {
+  margin-top: 25px;
+  color: #6c757d;
+  font-size: 14px;
+}
+
+.countdown-bar {
+  width: 100%;
+  height: 4px;
+  background: #e9ecef;
+  border-radius: 2px;
+  margin-bottom: 10px;
+  overflow: hidden;
+  position: relative;
+}
+
+.countdown-bar::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  background: linear-gradient(90deg, #28a745, #20c997);
+  animation: countdownProgress 8s linear;
+}
+
+/* Enhanced Error Messages */
+.error-message-enhanced {
+  background: linear-gradient(135deg, #f8d7da 0%, #f1aeb5 100%);
+  border: 3px solid #dc3545;
+  border-radius: 15px;
+  padding: 25px;
+  margin: 25px 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
 }
 
 .error-icon {
- font-size: 24px;
- flex-shrink: 0;
+  font-size: 32px;
+  flex-shrink: 0;
+  color: #721c24;
 }
 
-.success-message {
- background-color: #d1edff;
- color: #0c5460;
- padding: 15px 20px;
- border-radius: 8px;
- margin-top: 20px;
- border: 2px solid #b6d4fe;
- font-weight: 500;
- display: flex;
- align-items: center;
- gap: 10px;
- animation: slideIn 0.3s ease-in-out;
+.error-content {
+  flex: 1;
+  color: #721c24;
+}
+
+/* Enhanced Payment Page */
+.status-paid-enhanced {
+  background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+  border: 3px solid #28a745;
+  border-radius: 15px;
+  padding: 40px;
+  text-align: center;
+  animation: paymentSuccess 1s ease-out;
+}
+
+.status-paid-enhanced h3 {
+  color: #155724;
+  font-size: 32px;
+  margin-bottom: 20px;
+}
+
+.success-details {
+  background: rgba(255,255,255,0.8);
+  padding: 25px;
+  border-radius: 12px;
+  margin: 25px 0;
+  text-align: left;
+}
+
+.access-info {
+  margin: 15px 0;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.access-info div {
+  margin: 8px 0;
+}
+
+/* Enhanced Home Page Messages */
+.success-message-home {
+  background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+  border: 3px solid #28a745;
+  border-radius: 15px;
+  padding: 30px;
+  margin: 30px 0;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  animation: slideInFromTop 0.6s ease-out;
+}
+
+.success-message-home.member-verified {
+  background: linear-gradient(135deg, #cce7ff 0%, #b3d9ff 100%);
+  border-color: #007bff;
+}
+
+.success-message-home.payment-confirmed {
+  background: linear-gradient(135deg, #fff4cd 0%, #ffeaa7 100%);
+  border-color: #ffc107;
 }
 
 .success-icon {
- font-size: 24px;
- flex-shrink: 0;
+  font-size: 48px;
+  flex-shrink: 0;
 }
 
-/* Animation pour les messages d'erreur */
-@keyframes shake {
- 0%, 100% { transform: translateX(0); }
- 10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
- 20%, 40%, 60%, 80% { transform: translateX(5px); }
+.success-content {
+  flex: 1;
 }
 
-/* Animation pour les messages de succès */
-@keyframes slideIn {
- from {
- opacity: 0;
- transform: translateY(-20px);
- }
- to {
- opacity: 1;
- transform: translateY(0);
- }
+.success-content strong {
+  display: block;
+  font-size: 22px;
+  margin-bottom: 10px;
+  color: #155724;
 }
 
-/* Styles pour le bouton de vérification */
-.btn-verify {
- background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
- color: white;
- border: none;
- padding: 15px 30px;
- border-radius: 8px;
- font-size: 18px;
- font-weight: 600;
- cursor: pointer;
- transition: all 0.3s ease;
- width: 100%;
- margin-top: 20px;
- box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3);
+.badge {
+  display: inline-block;
+  background: rgba(21, 87, 36, 0.1);
+  color: #155724;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: bold;
+  margin-top: 15px;
+  border: 1px solid rgba(21, 87, 36, 0.2);
 }
 
-.btn-verify:hover {
- background: linear-gradient(135deg, #218838 0%, #1abc9c 100%);
- transform: translateY(-2px);
- box-shadow: 0 4px 12px rgba(40, 167, 69, 0.4);
+.error-message-home {
+  background: linear-gradient(135deg, #f8d7da 0%, #f1aeb5 100%);
+  border: 3px solid #dc3545;
+  border-radius: 15px;
+  padding: 30px;
+  margin: 30px 0;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  animation: shakeError 0.6s ease-in-out;
 }
 
-.btn-verify:disabled {
- background: #6c757d;
- cursor: not-allowed;
- transform: none;
- box-shadow: none;
+/* Payment Info Enhancements */
+.returning-visitor-info {
+  background: linear-gradient(135deg, #e8f4fd 0%, #d1ecf1 100%);
+  border: 2px solid #bee5eb;
+  padding: 15px;
+  border-radius: 8px;
+  margin-top: 15px;
 }
 
-/* Styles pour la section membre-check */
-.member-check {
- max-width: 600px;
- margin: 0 auto;
- padding: 30px;
- background: white;
- border-radius: 12px;
- box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+.tarif-category {
+  font-size: 14px;
+  color: #6c757d;
+  margin-top: 5px;
+  font-style: italic;
 }
 
-.form-group {
- margin-bottom: 20px;
+.amount-display {
+  font-size: 36px;
+  font-weight: bold;
+  color: #28a745;
+  text-align: center;
+  padding: 20px;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-radius: 10px;
+  margin: 15px 0;
 }
 
-.form-group label {
- display: block;
- margin-bottom: 8px;
- font-weight: 600;
- color: #333;
- font-size: 16px;
+/* ✅ Animations */
+@keyframes successSlideIn {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
-.form-group input {
- width: 100%;
- padding: 12px 15px;
- border: 2px solid #e0e0e0;
- border-radius: 8px;
- font-size: 16px;
- transition: border-color 0.3s ease;
- box-sizing: border-box;
+@keyframes bounceSuccess {
+  0%, 100% { 
+    transform: scale(1) rotate(0deg); 
+  }
+  25% { 
+    transform: scale(1.1) rotate(-5deg); 
+  }
+  75% { 
+    transform: scale(1.1) rotate(5deg); 
+  }
 }
 
-.form-group input:focus {
- outline: none;
- border-color: #6b73ff;
- box-shadow: 0 0 0 3px rgba(107, 115, 255, 0.1);
+@keyframes paymentSuccess {
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
-.form-group input:disabled {
- background-color: #f8f9fa;
- cursor: not-allowed;
+@keyframes countdownProgress {
+  from { 
+    width: 0%; 
+  }
+  to { 
+    width: 100%; 
+  }
 }
 
-/* ===== CHECKBOX & RADIO FIXES - VOLLEDIG KLIKBAAR ===== */
-
-/* Fix voor ALLE input types - checkbox en radio */
-input[type="checkbox"], 
-input[type="radio"] {
-    /* NIET display: none gebruiken - dat maakt ze onklikbaar! */
-    position: relative !important;
-    opacity: 1 !important;
-    width: auto !important;
-    height: auto !important;
-    margin: 0 10px 0 0 !important;
-    cursor: pointer !important;
-    transform: scale(1.3) !important;
-    z-index: 10 !important;
-
-    /* Zorg dat ze zichtbaar en klikbaar blijven */
-    pointer-events: auto !important;
-    visibility: visible !important;
+@keyframes slideInFromTop {
+  from {
+    transform: translateY(-100px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
-/* Container styling voor checkbox/radio items */
-.checkbox-item, 
-.radio-item {
-    position: relative;
-    display: flex !important;
-    align-items: flex-start;
-    margin-bottom: 20px;
-    cursor: pointer;
-    padding: 15px;
-    border: 2px solid #e0e0e0;
-    border-radius: 8px;
-    background: white;
-    transition: all 0.3s ease;
-    user-select: none;
+@keyframes shakeError {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-8px); }
+  75% { transform: translateX(8px); }
 }
 
-.checkbox-item:hover,
-.radio-item:hover {
-    background-color: #f8f9fa;
-    border-color: #007bff;
-    box-shadow: 0 2px 8px rgba(0, 123, 255, 0.1);
-}
-
-/* Selected state */
-.checkbox-item:has(input:checked),
-.radio-item:has(input:checked) {
-    background-color: #e3f2fd;
-    border-color: #007bff;
-    box-shadow: 0 2px 12px rgba(0, 123, 255, 0.2);
-}
-
-/* Text styling binnen items */
-.checkbox-item span,
-.checkbox-item label,
-.radio-item span, 
-.radio-item label {
-    flex: 1;
-    line-height: 1.5;
-    font-size: 16px;
-    color: #333;
-    cursor: pointer;
-    margin-left: 10px;
-}
-
-/* Details styling */
-.checkbox-item .details,
-.radio-item .details {
-    margin-top: 10px;
-    padding-left: 35px;
-}
-
-.checkbox-item .details p,
-.radio-item .details p {
-    margin: 5px 0;
-    font-size: 14px;
-    color: #666;
-    line-height: 1.4;
-}
-
-.checkbox-item .details ul,
-.radio-item .details ul {
-    margin: 5px 0;
-    padding-left: 20px;
-}
-
-.checkbox-item .details li,
-.radio-item .details li {
-    font-size: 14px;
-    color: #666;
-    margin-bottom: 5px;
-    line-height: 1.4;
-}
-
-/* Link styling binnen checkbox/radio items */
-.checkbox-item a,
-.radio-item a {
-    color: #007bff;
-    text-decoration: underline;
-}
-
-.checkbox-item a:hover,
-.radio-item a:hover {
-    color: #0056b3;
-}
-
-/* Focus state voor accessibility */
-.checkbox-item input:focus,
-.radio-item input:focus {
-    outline: 2px solid #007bff;
-    outline-offset: 2px;
-}
-
-/* ===== REGLEMENT PAGE STYLES ===== */
-.reglement-page {
- max-width: 1200px;
- margin: 20px auto;
- padding: 30px;
- background: #fff;
- border-radius: 12px;
- box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
- font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
- min-height: calc(100vh - 40px);
-}
-
-.reglement-header {
- display: flex;
- justify-content: space-between;
- align-items: center;
- margin-bottom: 25px;
- padding: 20px;
- background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
- border-radius: 8px;
- border-bottom: 3px solid #2c3e50;
-}
-
-.reglement-header h1 {
- font-size: 32px;
- font-weight: 700;
- color: #2c3e50;
- margin: 0;
- text-transform: uppercase;
- letter-spacing: 1px;
-}
-
-.btn-close {
- border: none;
- background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
- color: #fff;
- width: 45px;
- height: 45px;
- border-radius: 50%;
- font-size: 22px;
- font-weight: bold;
- cursor: pointer;
- transition: all 0.3s ease;
- box-shadow: 0 2px 8px rgba(231, 76, 60, 0.3);
- display: flex;
- align-items: center;
- justify-content: center;
-}
-
-.btn-close:hover {
- background: linear-gradient(135deg, #c0392b 0%, #a93226 100%);
- transform: scale(1.1) rotate(90deg);
- box-shadow: 0 4px 12px rgba(231, 76, 60, 0.5);
-}
-
-/* Responsive design voor tablets */
+/* Responsive Design */
 @media (max-width: 768px) {
- .header-section {
- flex-direction: column;
- gap: 15px;
- text-align: center;
- }
+  .choice-buttons {
+    flex-direction: column;
+    gap: 20px;
+  }
 
- .header-buttons {
- flex-direction: column;
- width: 100%;
- gap: 10px;
- }
+  .btn-choice {
+    max-width: none;
+  }
 
- .btn-appeler-benevole,
- .btn-retour-accueil {
- width: 100%;
- justify-content: center;
- }
+  .success-message-home,
+  .error-message-home {
+    flex-direction: column;
+    text-align: center;
+    padding: 25px;
+  }
 
- .member-check {
- margin: 20px;
- padding: 20px;
- }
+  .success-icon {
+    font-size: 36px;
+  }
 
- .error-message,
- .success-message,
- .benevole-message {
- flex-direction: column;
- text-align: center;
- gap: 8px;
- }
+  .success-animation {
+    font-size: 56px;
+  }
 
- .error-icon,
- .success-icon {
- font-size: 20px;
- }
-
- /* Responsive voor checkbox/radio items */
- .checkbox-item,
- .radio-item {
- padding: 12px;
- margin-bottom: 15px;
- }
-
- .checkbox-item span,
- .checkbox-item label,
- .radio-item span,
- .radio-item label {
- font-size: 14px;
- }
-
- input[type="checkbox"], 
- input[type="radio"] {
- transform: scale(1.1) !important;
- }
-}
-
-/* Voor zeer kleine schermen */
-@media (max-width: 480px) {
- .header-section h2 {
- font-size: 24px;
- }
-
- .btn-appeler-benevole,
- .btn-retour-accueil {
- font-size: 14px;
- padding: 10px 16px;
- }
-
- .member-check {
- margin: 10px;
- padding: 15px;
- }
-
- .checkbox-item,
- .radio-item {
- padding: 10px;
- margin-bottom: 12px;
- }
-
- .checkbox-item span,
- .checkbox-item label,
- .radio-item span,
- .radio-item label {
- font-size: 13px;
- }
-
- input[type="checkbox"], 
- input[type="radio"] {
- transform: scale(1.0) !important;
- }
+  .amount-display {
+    font-size: 28px;
+  }
 }

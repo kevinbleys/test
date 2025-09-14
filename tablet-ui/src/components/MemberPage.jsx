@@ -1,201 +1,191 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { playSuccessSound, playBuzzerSound } from '../utils/soundUtils';
 
-// ✅ ONLY CHANGE: Dynamic API URL detection
 const getApiBaseUrl = () => {
- const hostname = window.location.hostname;
- const protocol = window.location.protocol;
+  const hostname = window.location.hostname;
+  const protocol = window.location.protocol;
 
- if (hostname !== 'localhost' && hostname !== '127.0.0.1') {
- return `${protocol}//${hostname}:3001`;
- }
- return 'http://localhost:3001';
+  if (hostname !== 'localhost' && hostname !== '127.0.0.1') {
+    return `${protocol}//${hostname}:3001`;
+  }
+  return 'http://localhost:3001';
 };
 
 export default function MemberPage() {
- const [form, setForm] = useState({
- nom: '',
- prenom: ''
- });
- const [loading, setLoading] = useState(false);
- const [error, setError] = useState('');
- const [success, setSuccess] = useState('');
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { successMessage } = location.state || {};
 
- const navigate = useNavigate();
+  const [form, setForm] = useState({
+    nom: '',
+    prenom: ''
+  });
 
- const handleSubmit = async (e) => {
- e.preventDefault();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [successMsg, setSuccessMsg] = useState('');
 
- if (!form.nom.trim() || !form.prenom.trim()) {
- setError('Veuillez remplir tous les champs');
- playBuzzerSound();
- return;
- }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
- setLoading(true);
- setError('');
- setSuccess('');
+    if (!form.nom.trim() || !form.prenom.trim()) {
+      setError('Nom et prénom sont requis');
+      playBuzzerSound();
+      return;
+    }
 
- try {
- const apiUrl = getApiBaseUrl(); // ✅ ONLY CHANGE: Dynamic API
+    setLoading(true);
+    setError('');
+    setSuccessMsg('');
 
- const response = await axios.get(`${apiUrl}/members/check`, {
- params: {
- nom: form.nom.trim(),
- prenom: form.prenom.trim()
- },
- timeout: 15000
- });
+    try {
+      const apiUrl = getApiBaseUrl();
 
- if (response.data.success) {
- playSuccessSound();
+      // ✅ FEATURE 1: Use enhanced endpoint that logs failures
+      const response = await axios.get(`${apiUrl}/members/check-enhanced`, {
+        params: {
+          nom: form.nom.trim(),
+          prenom: form.prenom.trim()
+        },
+        timeout: 15000
+      });
 
- // Check if payment is incomplete
- if (response.data.paymentIncomplete) {
- setError(`❌ ${response.data.error}`);
- playBuzzerSound();
- return;
- }
+      if (response.data.success) {
+        playSuccessSound();
 
- setSuccess(`✅ Vérification réussie! Vous pouvez aller grimper. 🧗‍♀️`);
+        // ✅ FEATURE 3: Enhanced success message - longer and clearer
+        setSuccessMsg('✅ Vérification réussie ! Votre adhésion est valide.\n\n🧗‍♀️ Vous pouvez maintenant accéder à l\'escalade.\n\nÉquipez-vous et amusez-vous bien !');
 
- // ✅ RESTORED: Auto redirect to home after 3 seconds
- setTimeout(() => {
- navigate('/', {
- state: {
- successMessage: `Bienvenue ${form.prenom} ${form.nom}!`,
- memberVerified: true
- }
- });
- }, 3000);
+        // ✅ FEATURE 3: Longer display time - 8 seconds instead of 2
+        setTimeout(() => {
+          navigate('/', {
+            state: {
+              successMessage: '🎉 Membre vérifié avec succès !\n\nProfitez bien de votre session d\'escalade ! Bonne grimpe ! 🧗‍♀️',
+              memberVerified: true
+            }
+          });
+        }, 8000); // Increased from 2000 to 8000ms
 
- } else {
- setError(`❌ ${response.data.error}`);
- playBuzzerSound();
+      } else {
+        // Enhanced error messages
+        let errorMsg = response.data.error;
 
- // Redirect to non-member form after delay  
- setTimeout(() => {
- navigate('/non-member', {
- state: {
- form: form,
- memberCheckFailed: true,
- reason: response.data.error
- }
- });
- }, 3000);
- }
- } catch (err) {
- console.error('Member check error:', err);
+        if (response.data.paymentIncomplete) {
+          errorMsg += '\n\n🤝 Un bénévole peut vous aider à résoudre ce problème à l\'accueil.';
+        } else {
+          errorMsg += '\n\n💡 Vérifiez l\'orthographe de votre nom et prénom.\n\n🤝 Si le problème persiste, contactez un bénévole.';
+        }
 
- let errorMessage = 'Erreur lors de la vérification du membre';
+        setError(errorMsg);
+        playBuzzerSound();
+      }
+    } catch (err) {
+      console.error('Member verification error:', err);
+      setError('❌ Erreur de connexion.\n\nVeuillez réessayer ou contacter un bénévole à l\'accueil.');
+      playBuzzerSound();
+    } finally {
+      setLoading(false);
+    }
+  };
 
- if (err.code === 'NETWORK_ERROR' || err.code === 'ERR_NETWORK') {
- errorMessage = 'Erreur de réseau. Vérifiez la connexion.';
- } else if (err.response?.data?.error) {
- errorMessage = err.response.data.error;
- } else if (err.message) {
- errorMessage = `Erreur: ${err.message}`;
- }
+  const handleRetourAccueil = () => {
+    navigate('/');
+  };
 
- setError(errorMessage);
- playBuzzerSound();
- } finally {
- setLoading(false);
- }
- };
+  return (
+    <div className="member-page">
+      <div className="header-section">
+        <h2>Vérification Adhérent</h2>
+        <div className="header-buttons">
+          <button onClick={handleRetourAccueil} className="btn-retour-accueil">
+            🏠 Retour Accueil
+          </button>
+        </div>
+      </div>
 
- const handleRetourAccueil = () => {
- navigate('/');
- };
+      {/* Enhanced success message display */}
+      {successMessage && (
+        <div className="success-message-prominent">
+          <span className="success-icon">🎉</span>
+          <div className="success-content">
+            <strong>Bienvenue !</strong>
+            <div style={{ whiteSpace: 'pre-line' }}>{successMessage}</div>
+          </div>
+        </div>
+      )}
 
- const handleAppelerBenevole = () => {
- navigate('/benevole-help', {
- state: {
- nom: form.nom,
- prenom: form.prenom,
- issue: 'Problème de vérification membre'
- }
- });
- };
+      {/* ✅ FEATURE 3: Enhanced in-page success message */}
+      {successMsg && (
+        <div className="success-message-enhanced">
+          <div className="success-animation">✅</div>
+          <div className="success-content">
+            <h3>Vérification réussie !</h3>
+            <div style={{ whiteSpace: 'pre-line', fontSize: '16px', lineHeight: '1.5' }}>
+              {successMsg}
+            </div>
+            <div className="countdown">
+              <div className="countdown-bar"></div>
+              Redirection automatique dans quelques secondes...
+            </div>
+          </div>
+        </div>
+      )}
 
- return (
- <div className="member-check">
- <div className="header-section">
- <h2>Vérification Membre</h2>
- <div className="header-buttons">
- <button onClick={handleRetourAccueil} className="btn-retour-accueil">
- 🏠 Retour Accueil
- </button>
- <button onClick={handleAppelerBenevole} className="btn-appeler-benevole">
- 📞 Appeler Bénévole
- </button>
- </div>
- </div>
+      <form onSubmit={handleSubmit}>
+        <div className="form-group">
+          <label htmlFor="nom">Nom :</label>
+          <input
+            id="nom"
+            type="text"
+            value={form.nom}
+            onChange={(e) => setForm({...form, nom: e.target.value})}
+            placeholder="Votre nom de famille"
+            required
+            disabled={loading || successMsg}
+            autoComplete="family-name"
+          />
+        </div>
 
- <form onSubmit={handleSubmit}>
- <div className="form-group">
- <label htmlFor="nom">Nom:</label>
- <input
- id="nom"
- type="text"
- value={form.nom}
- onChange={(e) => setForm({...form, nom: e.target.value})}
- placeholder="Entrez votre nom"
- disabled={loading}
- />
- </div>
+        <div className="form-group">
+          <label htmlFor="prenom">Prénom :</label>
+          <input
+            id="prenom"
+            type="text"
+            value={form.prenom}
+            onChange={(e) => setForm({...form, prenom: e.target.value})}
+            placeholder="Votre prénom"
+            required
+            disabled={loading || successMsg}
+            autoComplete="given-name"
+          />
+        </div>
 
- <div className="form-group">
- <label htmlFor="prenom">Prénom:</label>
- <input
- id="prenom"
- type="text"
- value={form.prenom}
- onChange={(e) => setForm({...form, prenom: e.target.value})}
- placeholder="Entrez votre prénom"
- disabled={loading}
- />
- </div>
+        {error && (
+          <div className="error-message-enhanced">
+            <span className="error-icon">⚠️</span>
+            <div className="error-content">
+              <div style={{ whiteSpace: 'pre-line', fontSize: '15px', lineHeight: '1.4' }}>
+                {error}
+              </div>
+            </div>
+          </div>
+        )}
 
- {success && (
- <div className="success-message">
- <span className="success-icon">✅</span>
- {success}
- <div className="redirect-message">
- Redirection vers l'accueil dans quelques secondes...
- </div>
- </div>
- )}
+        <button 
+          type="submit" 
+          className="btn-verify"
+          disabled={loading || !form.nom.trim() || !form.prenom.trim() || successMsg}
+        >
+          {loading ? '⏳ Vérification...' : successMsg ? '✅ Vérifié' : 'Vérifier mon adhésion'}
+        </button>
+      </form>
 
- {error && (
- <div className="error-message">
- <span className="error-icon">⚠️</span>
- <div>{error}</div>
- {error.includes('payer') && (
- <div className="error-actions">
- <button onClick={handleAppelerBenevole} className="btn-help">
- 📞 Contacter un bénévole
- </button>
- </div>
- )}
- </div>
- )}
-
- <button 
- type="submit"
- className="btn-verify"
- disabled={loading || !form.nom.trim() || !form.prenom.trim()}
- >
- {loading ? '⏳ Vérification...' : '🔍 Vérifier'}
- </button>
- </form>
-
- <div className="info-section">
- <p><strong>Note:</strong> Seuls les adhérents avec statut payé peuvent accéder directement.</p>
- <p>Si vous n'êtes pas membre, vous serez redirigé vers l'inscription visiteur.</p>
- </div>
- </div>
- );
+      <div className="info-section">
+        <p><strong>ℹ️ Information :</strong></p>
+        <p>Entrez votre nom et prénom exactement comme lors de votre inscription au club.</p>
+      </div>
+    </div>
+  );
 }

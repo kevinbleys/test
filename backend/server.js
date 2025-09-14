@@ -21,6 +21,292 @@ const PRESENCE_HISTORY_FILE = path.join(DATA_DIR, 'presence-history.json');
 // 📄 BACKEND ROUTES - Add to your server.js
 // Enhanced routes for JSON-based setup
 
+// ✅ Add to your server.js - Enhanced routes for all 3 features
+// ✅ FEATURE 1: Enhanced member check with failure logging
+app.get('/members/check-enhanced', async (req, res) => {
+    const { nom, prenom } = req.query;
+
+    if (!nom || !prenom) {
+        return res.status(400).json({ 
+            success: false, 
+            error: 'Nom et prénom sont requis' 
+        });
+    }
+
+    try {
+        // Use your existing member check logic
+        const members = getMembers(); // Your existing function from sync-service
+        const member = members.find(m => 
+            m.nom?.toLowerCase().trim() === nom.toLowerCase().trim() && 
+            m.prenom?.toLowerCase().trim() === prenom.toLowerCase().trim()
+        );
+
+        if (!member) {
+            // ✅ LOG FAILURE: Member not found
+            dataManager.logAccessAttempt('member_fail', nom, prenom, 'membre_non_existant', 'Member not found in database', req);
+
+            return res.json({
+                success: false,
+                error: 'Membre non trouvé dans la base de données. Vérifiez l'orthographe ou contactez un bénévole.'
+            });
+        }
+
+        // Check if member has unpaid status
+        const hasUnpaidStatus = member.categories?.some(cat => 
+            cat.label?.toLowerCase().includes('pas') && cat.label?.toLowerCase().includes('payé')
+        );
+
+        if (hasUnpaidStatus) {
+            // ✅ LOG FAILURE: Payment incomplete
+            dataManager.logAccessAttempt('member_fail', nom, prenom, 'membre_pas_encore_paye', 'Member found but payment incomplete', req);
+
+            return res.json({
+                success: false,
+                error: 'Votre adhésion n'est pas encore réglée. Veuillez contacter un bénévole à l'accueil.',
+                paymentIncomplete: true
+            });
+        }
+
+        // ✅ LOG SUCCESS: Member verified
+        dataManager.logAccessAttempt('member_success', nom, prenom, 'success', 'Member verified successfully', req);
+
+        res.json({ 
+            success: true, 
+            message: 'Membre vérifié avec succès ! Vous pouvez accéder à l'escalade.'
+        });
+
+    } catch (error) {
+        console.error('Error in enhanced member check:', error);
+        dataManager.logAccessAttempt('member_fail', nom, prenom, 'system_error', error.message, req);
+
+        res.status(500).json({ 
+            success: false, 
+            error: 'Erreur système lors de la vérification. Contactez un bénévole.' 
+        });
+    }
+});
+
+// ✅ FEATURE 2: Search returning visitors
+app.get('/returning-visitors/search', (req, res) => {
+    const { nom, prenom, dateNaissance } = req.query;
+
+    if (!nom || !prenom || !dateNaissance) {
+        return res.status(400).json({ 
+            success: false, 
+            error: 'Nom, prénom et date de naissance requis' 
+        });
+    }
+
+    try {
+        const visitor = dataManager.findReturningVisitor(nom, prenom, dateNaissance);
+
+        if (visitor) {
+            console.log(`🔄 Found returning visitor: ${nom} ${prenom} (visit #${visitor.visit_count})`);
+
+            // Calculate current tariff (age might have changed)
+            const currentTarif = dataManager.calculateTarif(dateNaissance);
+            const tarifCategory = dataManager.getTarifCategory(dateNaissance);
+
+            res.json({
+                success: true,
+                visitor: {
+                    id: visitor.id,
+                    nom: visitor.nom,
+                    prenom: visitor.prenom,
+                    dateNaissance: visitor.dateNaissance,
+                    email: visitor.email,
+                    telephone: visitor.telephone,
+                    lastNiveau: visitor.last_niveau,
+                    currentTarif: currentTarif,
+                    tarifCategory: tarifCategory,
+                    visitCount: visitor.visit_count,
+                    firstVisit: visitor.first_visit,
+                    lastVisit: visitor.last_visit
+                }
+            });
+        } else {
+            console.log(`❌ No returning visitor found: ${nom} ${prenom}`);
+            res.json({
+                success: false,
+                error: 'Aucune visite précédente trouvée pour ces informations.'
+            });
+        }
+    } catch (error) {
+        console.error('Error searching returning visitor:', error);
+        res.status(500).json({ 
+            success: false, 
+            error: 'Erreur lors de la recherche' 
+        });
+    }
+});
+
+// ✅ ENHANCED: Presence creation with proper tariff calculation
+app.post('/presences-enhanced', (req, res) => {
+    try {
+        const { type, nom, prenom, dateNaissance, email, telephone, niveau, assuranceAccepted, isReturningVisitor } = req.body;
+
+        // ✅ FIXED: Always calculate tariff from birth date
+        const tarif = dataManager.calculateTarif(dateNaissance);
+        const tarifCategory = dataManager.getTarifCategory(dateNaissance);
+
+        console.log(`💰 Calculated tariff for ${nom} ${prenom}: ${tarif}€ (${tarifCategory})`);
+
+        // Create presence record
+        const presenceData = {
+            id: uuidv4(),
+            type,
+            nom: nom.trim(),
+            prenom: prenom.trim(),
+            dateNaissance,
+            email: email || '',
+            telephone: telephone || '',
+            niveau,
+            tarif, // ✅ FIXED: Use calculated tariff
+            tarifCategory,
+            assuranceAccepted,
+            status: 'pending',
+            timestamp: new Date().toISOString(),
+            isReturningVisitor: isReturningVisitor || false
+        };
+
+        // Save to presences file (you might need to create this)
+        const presencesFile = path.join(__dirname, 'data', 'presences.json');
+        let presences = [];
+        if (fs.existsSync(presencesFile)) {
+            presences = JSON.parse(fs.readFileSync(presencesFile, 'utf8'));
+        }
+        presences.push(presenceData);
+        fs.writeFileSync(presencesFile, JSON.stringify(presences, null, 2));
+
+        // ✅ FEATURE 2: Auto-save returning visitor data for non-members
+        if (type === 'non-adherent') {
+            dataManager.saveReturningVisitor({
+                nom,
+                prenom,
+                dateNaissance,
+                email: email || '',
+                telephone: telephone || '',
+                niveau,
+                tarif
+            });
+        }
+
+        console.log(`✅ Presence created: ${nom} ${prenom} - ${tarif}€`);
+
+        res.json({
+            success: true,
+            presence: presenceData,
+            message: 'Présence enregistrée avec succès'
+        });
+
+    } catch (error) {
+        console.error('Error creating enhanced presence:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Erreur lors de l'enregistrement'
+        });
+    }
+});
+
+// ✅ Get presence by ID (for payment polling)
+app.get('/presences/:id', (req, res) => {
+    try {
+        const presencesFile = path.join(__dirname, 'data', 'presences.json');
+        if (!fs.existsSync(presencesFile)) {
+            return res.status(404).json({ success: false, error: 'Présence non trouvée' });
+        }
+
+        const presences = JSON.parse(fs.readFileSync(presencesFile, 'utf8'));
+        const presence = presences.find(p => p.id === req.params.id);
+
+        if (presence) {
+            res.json({ success: true, presence });
+        } else {
+            res.status(404).json({ success: false, error: 'Présence non trouvée' });
+        }
+    } catch (error) {
+        console.error('Error getting presence:', error);
+        res.status(500).json({ success: false, error: 'Erreur serveur' });
+    }
+});
+
+// ✅ Update presence status (for payment validation)
+app.post('/presences/:id/status', (req, res) => {
+    try {
+        const { status } = req.body;
+        const presencesFile = path.join(__dirname, 'data', 'presences.json');
+
+        if (!fs.existsSync(presencesFile)) {
+            return res.status(404).json({ success: false, error: 'Présence non trouvée' });
+        }
+
+        const presences = JSON.parse(fs.readFileSync(presencesFile, 'utf8'));
+        const presenceIndex = presences.findIndex(p => p.id === req.params.id);
+
+        if (presenceIndex >= 0) {
+            presences[presenceIndex].status = status;
+            presences[presenceIndex].updated_at = new Date().toISOString();
+
+            fs.writeFileSync(presencesFile, JSON.stringify(presences, null, 2));
+
+            console.log(`✅ Presence ${req.params.id} status updated to: ${status}`);
+
+            res.json({
+                success: true,
+                presence: presences[presenceIndex],
+                message: 'Statut mis à jour avec succès'
+            });
+        } else {
+            res.status(404).json({ success: false, error: 'Présence non trouvée' });
+        }
+    } catch (error) {
+        console.error('Error updating presence status:', error);
+        res.status(500).json({ success: false, error: 'Erreur serveur' });
+    }
+});
+
+// ✅ FEATURE 1: Export access attempts for Excel
+app.get('/export/access-attempts', (req, res) => {
+    try {
+        const attempts = dataManager.getAccessAttempts();
+
+        console.log(`📊 Exporting ${attempts.length} access attempts`);
+
+        res.json({
+            success: true,
+            data: attempts,
+            count: attempts.length,
+            summary: {
+                total: attempts.length,
+                member_success: attempts.filter(a => a.status === 'success').length,
+                membre_non_existant: attempts.filter(a => a.status === 'membre_non_existant').length,
+                membre_pas_encore_paye: attempts.filter(a => a.status === 'membre_pas_encore_paye').length,
+                system_errors: attempts.filter(a => a.status === 'system_error').length
+            }
+        });
+    } catch (error) {
+        console.error('Error exporting access attempts:', error);
+        res.status(500).json({ error: 'Erreur lors de l'export' });
+    }
+});
+
+// ✅ Export returning visitors
+app.get('/export/returning-visitors', (req, res) => {
+    try {
+        const visitors = dataManager.getReturningVisitors();
+
+        console.log(`📊 Exporting ${visitors.length} returning visitors`);
+
+        res.json({
+            success: true,
+            data: visitors,
+            count: visitors.length
+        });
+    } catch (error) {
+        console.error('Error exporting returning visitors:', error);
+        res.status(500).json({ error: 'Erreur lors de l'export' });
+    }
+});
 // ✅ FEATURE 1: Enhanced member check with failure logging
 app.get('/members/check-enhanced', async (req, res) => {
     const { nom, prenom } = req.query;
@@ -284,64 +570,6 @@ app.post('/presences/:id/valider', (req, res) => {
             success: false,
             error: 'Erreur lors de la mise à jour'
         });
-    }
-});
-
-// ✅ FEATURE 1: Export access attempts for Excel
-app.get('/export/access-attempts', (req, res) => {
-    try {
-        const attempts = dataManager.getAccessAttempts();
-
-        // Format for Excel export
-        const exportData = attempts.map(attempt => ({
-            date_time: new Date(attempt.timestamp).toLocaleString('fr-FR'),
-            type: attempt.type,
-            nom: attempt.nom,
-            prenom: attempt.prenom,
-            status: attempt.status,
-            details: attempt.details,
-            ip_address: attempt.ip_address
-        }));
-
-        console.log(`📊 Exporting ${exportData.length} access attempts`);
-        res.json({
-            success: true,
-            data: exportData,
-            count: exportData.length
-        });
-    } catch (error) {
-        console.error('❌ Error exporting access attempts:', error);
-        res.status(500).json({ error: 'Erreur lors de l\'export' });
-    }
-});
-
-// ✅ Export returning visitors
-app.get('/export/returning-visitors', (req, res) => {
-    try {
-        const visitors = dataManager.getReturningVisitors();
-
-        const exportData = visitors.map(visitor => ({
-            nom: visitor.nom,
-            prenom: visitor.prenom,
-            dateNaissance: visitor.dateNaissance,
-            email: visitor.email,
-            telephone: visitor.telephone,
-            last_level: visitor.last_level,
-            last_tarif: visitor.last_tarif,
-            visit_count: visitor.visit_count,
-            first_visit: new Date(visitor.first_visit).toLocaleDateString('fr-FR'),
-            last_visit: new Date(visitor.last_visit).toLocaleDateString('fr-FR')
-        }));
-
-        console.log(`📊 Exporting ${exportData.length} returning visitors`);
-        res.json({
-            success: true,
-            data: exportData,
-            count: exportData.length
-        });
-    } catch (error) {
-        console.error('❌ Error exporting returning visitors:', error);
-        res.status(500).json({ error: 'Erreur lors de l\'export' });
     }
 });
 

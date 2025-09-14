@@ -1,14 +1,9 @@
-// 📄 enhanced-data-manager.js
-// JSON-based data management voor enhanced features
-
 const fs = require('fs');
 const path = require('path');
 const { v4: uuidv4 } = require('uuid');
 
-// Data file paths
+// Data file paths - aangepast voor jouw setup
 const DATA_DIR = path.join(__dirname, 'data');
-const MEMBERS_FILE = path.join(DATA_DIR, 'members.json');
-const PRESENCES_FILE = path.join(DATA_DIR, 'presences.json');
 const ACCESS_ATTEMPTS_FILE = path.join(DATA_DIR, 'access-attempts.json');
 const RETURNING_VISITORS_FILE = path.join(DATA_DIR, 'returning-visitors.json');
 
@@ -17,20 +12,16 @@ if (!fs.existsSync(DATA_DIR)) {
     fs.mkdirSync(DATA_DIR, { recursive: true });
 }
 
-// Initialize data files if they don't exist
+// Initialize empty JSON files if they don't exist
 function initializeDataFiles() {
-    const files = [
-        { path: ACCESS_ATTEMPTS_FILE, default: [] },
-        { path: RETURNING_VISITORS_FILE, default: [] },
-        { path: PRESENCES_FILE, default: [] }
-    ];
-
-    files.forEach(({ path, default: defaultData }) => {
-        if (!fs.existsSync(path)) {
-            fs.writeFileSync(path, JSON.stringify(defaultData, null, 2));
-            console.log(`✅ Created: ${path}`);
-        }
-    });
+    if (!fs.existsSync(ACCESS_ATTEMPTS_FILE)) {
+        fs.writeFileSync(ACCESS_ATTEMPTS_FILE, JSON.stringify([], null, 2));
+        console.log('✅ Created access-attempts.json');
+    }
+    if (!fs.existsSync(RETURNING_VISITORS_FILE)) {
+        fs.writeFileSync(RETURNING_VISITORS_FILE, JSON.stringify([], null, 2));
+        console.log('✅ Created returning-visitors.json');
+    }
 }
 
 // Read JSON file safely
@@ -58,7 +49,7 @@ function writeJSONFile(filePath, data) {
     }
 }
 
-// ✅ FEATURE 1: Access Attempts Logging
+// ✅ FEATURE 1: Log member access attempts (success + failures)
 function logAccessAttempt(type, nom, prenom, status, details = null, req = null) {
     try {
         const attempts = readJSONFile(ACCESS_ATTEMPTS_FILE);
@@ -66,39 +57,39 @@ function logAccessAttempt(type, nom, prenom, status, details = null, req = null)
         const attempt = {
             id: uuidv4(),
             timestamp: new Date().toISOString(),
+            date: new Date().toLocaleDateString('fr-FR'),
+            time: new Date().toLocaleTimeString('fr-FR'),
             type, // 'member_success', 'member_fail', 'non_member'
             nom: nom.trim(),
             prenom: prenom.trim(),
-            status, // 'success', 'membre_non_existant', 'membre_pas_encore_paye', 'pending', 'paid', 'cancelled'
-            details,
-            session_id: uuidv4(),
-            ip_address: req ? (req.ip || req.connection.remoteAddress || 'unknown') : null,
-            user_agent: req ? req.get('User-Agent') : null
+            status, // 'success', 'membre_non_existant', 'membre_pas_encore_paye', 'pending', 'paid'
+            details: details || '',
+            ip_address: req ? (req.ip || req.connection.remoteAddress || 'unknown') : 'unknown'
         };
 
         attempts.push(attempt);
 
-        // Keep only last 1000 attempts to prevent file from growing too large
-        if (attempts.length > 1000) {
-            attempts.splice(0, attempts.length - 1000);
+        // Keep only last 500 attempts to prevent file from growing too large
+        if (attempts.length > 500) {
+            attempts.splice(0, attempts.length - 500);
         }
 
         writeJSONFile(ACCESS_ATTEMPTS_FILE, attempts);
-        console.log(`📝 Logged access attempt: ${type} - ${nom} ${prenom} - ${status}`);
+        console.log(`📝 Logged: ${type} - ${nom} ${prenom} - ${status}`);
 
-        return attempt.session_id;
+        return attempt.id;
     } catch (error) {
         console.error('Error logging access attempt:', error);
         return null;
     }
 }
 
-// Get all access attempts
+// Get all access attempts for Excel export
 function getAccessAttempts() {
     return readJSONFile(ACCESS_ATTEMPTS_FILE);
 }
 
-// ✅ FEATURE 2: Returning Visitors Management
+// ✅ FEATURE 2: Returning visitor management
 function saveReturningVisitor(visitorData) {
     try {
         const visitors = readJSONFile(RETURNING_VISITORS_FILE);
@@ -114,24 +105,36 @@ function saveReturningVisitor(visitorData) {
             // Update existing visitor
             visitors[existingIndex] = {
                 ...visitors[existingIndex],
-                ...visitorData,
+                email: visitorData.email || visitors[existingIndex].email,
+                telephone: visitorData.telephone || visitors[existingIndex].telephone,
+                last_niveau: visitorData.niveau,
+                last_tarif: visitorData.tarif,
                 last_visit: new Date().toISOString(),
-                visit_count: (visitors[existingIndex].visit_count || 1) + 1
+                visit_count: (visitors[existingIndex].visit_count || 1) + 1,
+                updated_at: new Date().toISOString()
             };
+            console.log(`🔄 Updated returning visitor: ${visitorData.nom} ${visitorData.prenom} (visit #${visitors[existingIndex].visit_count})`);
         } else {
             // Add new visitor
             const newVisitor = {
                 id: uuidv4(),
-                ...visitorData,
+                nom: visitorData.nom.trim(),
+                prenom: visitorData.prenom.trim(),
+                dateNaissance: visitorData.dateNaissance,
+                email: visitorData.email || '',
+                telephone: visitorData.telephone || '',
+                last_niveau: visitorData.niveau,
+                last_tarif: visitorData.tarif,
                 first_visit: new Date().toISOString(),
                 last_visit: new Date().toISOString(),
-                visit_count: 1
+                visit_count: 1,
+                created_at: new Date().toISOString()
             };
             visitors.push(newVisitor);
+            console.log(`✅ Added new returning visitor: ${visitorData.nom} ${visitorData.prenom}`);
         }
 
-        writeJSONFile(RETURNING_VISITORS_FILE, visitors);
-        return true;
+        return writeJSONFile(RETURNING_VISITORS_FILE, visitors);
     } catch (error) {
         console.error('Error saving returning visitor:', error);
         return false;
@@ -149,17 +152,7 @@ function findReturningVisitor(nom, prenom, dateNaissance) {
             v.dateNaissance === dateNaissance
         );
 
-        if (visitor) {
-            // Update visit count and last visit
-            const visitorIndex = visitors.findIndex(v => v.id === visitor.id);
-            if (visitorIndex >= 0) {
-                visitors[visitorIndex].last_visit = new Date().toISOString();
-                visitors[visitorIndex].visit_count = (visitors[visitorIndex].visit_count || 1) + 1;
-                writeJSONFile(RETURNING_VISITORS_FILE, visitors);
-            }
-        }
-
-        return visitor;
+        return visitor || null;
     } catch (error) {
         console.error('Error finding returning visitor:', error);
         return null;
@@ -171,73 +164,50 @@ function getReturningVisitors() {
     return readJSONFile(RETURNING_VISITORS_FILE);
 }
 
-// ✅ ENHANCED: Presences with logging
-function savePresence(presenceData, sessionId = null) {
+// ✅ Tariff calculation helper (FIXED)
+function calculateTarif(dateNaissance) {
+    if (!dateNaissance) return 12; // Default adult price
+
     try {
-        const presences = readJSONFile(PRESENCES_FILE);
+        const today = new Date();
+        const birthDate = new Date(dateNaissance);
+        let age = today.getFullYear() - birthDate.getFullYear();
+        const monthDiff = today.getMonth() - birthDate.getMonth();
 
-        const presence = {
-            id: uuidv4(),
-            timestamp: new Date().toISOString(),
-            ...presenceData,
-            session_id: sessionId
-        };
-
-        presences.push(presence);
-        writeJSONFile(PRESENCES_FILE, presences);
-
-        // Auto-save to returning visitors if it's a non-member
-        if (presenceData.type === 'non-adherent' && !presenceData.isReturningVisitor) {
-            saveReturningVisitor({
-                nom: presenceData.nom,
-                prenom: presenceData.prenom,
-                dateNaissance: presenceData.dateNaissance,
-                email: presenceData.email || '',
-                telephone: presenceData.telephone || '',
-                last_level: presenceData.niveau,
-                last_tarif: presenceData.tarif
-            });
+        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+            age--;
         }
 
-        return presence;
+        // Tariff logic
+        if (age < 18) return 8;      // Jeune
+        if (age < 26) return 10;     // Étudiant
+        if (age >= 65) return 10;    // Senior
+        return 12;                   // Adulte
     } catch (error) {
-        console.error('Error saving presence:', error);
-        return null;
+        console.error('Error calculating tariff:', error);
+        return 12; // Default
     }
 }
 
-// Get all presences
-function getPresences() {
-    return readJSONFile(PRESENCES_FILE);
-}
+function getTarifCategory(dateNaissance) {
+    if (!dateNaissance) return 'Adulte (26-64 ans)';
 
-// Update presence status
-function updatePresenceStatus(presenceId, status) {
     try {
-        const presences = readJSONFile(PRESENCES_FILE);
-        const presenceIndex = presences.findIndex(p => p.id === presenceId);
+        const today = new Date();
+        const birthDate = new Date(dateNaissance);
+        let age = today.getFullYear() - birthDate.getFullYear();
+        const monthDiff = today.getMonth() - birthDate.getMonth();
 
-        if (presenceIndex >= 0) {
-            presences[presenceIndex].status = status;
-            presences[presenceIndex].updated_at = new Date().toISOString();
-            writeJSONFile(PRESENCES_FILE, presences);
-
-            // Update access attempts if session_id exists
-            if (presences[presenceIndex].session_id) {
-                const attempts = readJSONFile(ACCESS_ATTEMPTS_FILE);
-                const attemptIndex = attempts.findIndex(a => a.session_id === presences[presenceIndex].session_id);
-                if (attemptIndex >= 0) {
-                    attempts[attemptIndex].status = status;
-                    writeJSONFile(ACCESS_ATTEMPTS_FILE, attempts);
-                }
-            }
-
-            return presences[presenceIndex];
+        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+            age--;
         }
-        return null;
+
+        if (age < 18) return `Jeune (${age} ans)`;
+        if (age < 26) return `Étudiant (${age} ans)`;
+        if (age >= 65) return `Senior (${age} ans)`;
+        return `Adulte (${age} ans)`;
     } catch (error) {
-        console.error('Error updating presence status:', error);
-        return null;
+        return 'Adulte';
     }
 }
 
@@ -250,13 +220,8 @@ module.exports = {
     saveReturningVisitor,
     findReturningVisitor,
     getReturningVisitors,
-    savePresence,
-    getPresences,
-    updatePresenceStatus,
-    readJSONFile,
-    writeJSONFile,
-    MEMBERS_FILE,
-    PRESENCES_FILE,
+    calculateTarif,
+    getTarifCategory,
     ACCESS_ATTEMPTS_FILE,
     RETURNING_VISITORS_FILE
 };
