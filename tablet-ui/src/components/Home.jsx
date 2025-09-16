@@ -1,17 +1,14 @@
 import React from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
-export default function HomePage() {
+export default function Home() {
   const navigate = useNavigate();
-  const location = useLocation();
-  const { successMessage, errorMessage, paymentConfirmed, memberVerified, paymentCancelled } = location.state || {};
 
   const handleMemberClick = () => {
     navigate('/member');
   };
 
   const handleNonMemberClick = () => {
-    // ✅ FEATURE 2: Redirect to visitor choice instead of direct non-member
     navigate('/visitor-choice');
   };
 
@@ -22,31 +19,7 @@ export default function HomePage() {
         <p>Système d'accès à la salle d'escalade</p>
       </div>
 
-      {/* ✅ FEATURE 3: Enhanced success/error messages */}
-      {successMessage && (
-        <div className={`success-message-home ${memberVerified ? 'member-verified' : ''} ${paymentConfirmed ? 'payment-confirmed' : ''}`}>
-          <div className="success-icon">🎉</div>
-          <div className="success-content">
-            <strong>Parfait !</strong>
-            <div style={{ whiteSpace: 'pre-line', fontSize: '16px', lineHeight: '1.4' }}>
-              {successMessage}
-            </div>
-            {memberVerified && <div className="badge">✅ Adhérent vérifié</div>}
-            {paymentConfirmed && <div className="badge">💳 Paiement confirmé</div>}
-          </div>
-        </div>
-      )}
-
-      {errorMessage && (
-        <div className={`error-message-home ${paymentCancelled ? 'payment-cancelled' : ''}`}>
-          <div className="error-icon">⚠️</div>
-          <div className="error-content">
-            <div style={{ whiteSpace: 'pre-line', fontSize: '15px', lineHeight: '1.4' }}>
-              {errorMessage}
-            </div>
-          </div>
-        </div>
-      )}
+      {/* ✅ FIX: Removed success message display */}
 
       <div className="main-choices">
         <button 
@@ -64,13 +37,13 @@ export default function HomePage() {
         >
           <div className="btn-icon">🎯</div>
           <div className="btn-title">Je ne suis pas membre du club</div>
-          <div className="btn-description">Inscription visiteur • Accès rapide si déjà venu</div>
+          <div className="btn-description">Inscription visiteur</div>
         </button>
       </div>
 
       <div className="info-footer">
         <p><strong>ℹ️ Information :</strong></p>
-        <p>Si vous avez une adhésion active, choisissez "membre du club". Sinon, choisissez "visiteur" - vous aurez une option rapide si vous êtes déjà venu.</p>
+        <p>Choisissez votre situation pour accéder à l'escalade.</p>
       </div>
     </div>
   );

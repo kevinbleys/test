@@ -201,8 +201,9 @@
     "telephone": "0562409746",
     "niveau": "2",
     "assuranceAccepted": true,
-    "status": "pending",
-    "timestamp": "2025-09-14T17:39:16.520Z"
+    "status": "Payé",
+    "timestamp": "2025-09-14T17:39:16.520Z",
+    "updated_at": "2025-09-14T20:20:51.341Z"
   },
   {
     "id": "mpnizy80g",
@@ -214,7 +215,72 @@
     "telephone": "0562409746",
     "niveau": "2",
     "assuranceAccepted": true,
-    "status": "pending",
-    "timestamp": "2025-09-14T17:42:08.030Z"
+    "status": "Payé",
+    "timestamp": "2025-09-14T17:42:08.030Z",
+    "updated_at": "2025-09-14T20:20:52.593Z"
+  },
+  {
+    "id": "gg4nl0i4c",
+    "type": "non-adherent",
+    "nom": "bleys",
+    "prenom": "joke",
+    "dateNaissance": "2016-02-03",
+    "email": "bleysjoke@gmail.com",
+    "telephone": "0562409746",
+    "niveau": "Expert",
+    "tarif": 8,
+    "tarifCategory": "Jeune (9 ans)",
+    "assuranceAccepted": true,
+    "status": "Payé",
+    "timestamp": "2025-09-14T18:10:24.100Z",
+    "isReturningVisitor": false,
+    "updated_at": "2025-09-14T20:20:53.263Z"
+  },
+  {
+    "id": "5x76ojvdf",
+    "type": "non-adherent",
+    "nom": "bleys",
+    "prenom": "joke",
+    "dateNaissance": "2016-02-03",
+    "email": "bleysjoke@gmail.com",
+    "telephone": "0562409746",
+    "niveau": "Expert",
+    "tarif": 8,
+    "assuranceAccepted": true,
+    "status": "Payé",
+    "timestamp": "2025-09-14T20:20:23.067Z",
+    "updated_at": "2025-09-14T20:20:54.003Z"
+  },
+  {
+    "id": "b41v1ktvj",
+    "type": "non-adherent",
+    "nom": "bleys",
+    "prenom": "joke",
+    "dateNaissance": "2016-03-02",
+    "email": "bleysjoke@gmail.com",
+    "telephone": "0562409746",
+    "niveau": "Expert",
+    "tarif": 8,
+    "assuranceAccepted": true,
+    "status": "Payé",
+    "timestamp": "2025-09-15T06:04:23.682Z",
+    "updated_at": "2025-09-15T06:08:05.270Z"
+  },
+  {
+    "id": "1758036354472",
+    "type": "non-adherent",
+    "nom": "bleys",
+    "prenom": "joke",
+    "date": "2025-09-16T15:25:54.472Z",
+    "season": "2025-2026",
+    "email": "bleysjoke@gmail.com",
+    "telephone": "0562409746",
+    "dateNaissance": "1983-03-02",
+    "niveau": "2",
+    "assuranceAccepted": true,
+    "status": "Payé",
+    "tarif": 10,
+    "dateValidation": "2025-09-16T15:26:09.294Z",
+    "methodePaiement": "Especes"
   }
 ]

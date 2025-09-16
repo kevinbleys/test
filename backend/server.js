@@ -1,601 +1,549 @@
 const express = require('express');
 const cors = require('cors');
-const fs = require('fs');
 const path = require('path');
-const { getMembers, getSeasonInfo } = require('./sync-service');
-
-// ✅ Enhanced data manager import with fallback
-let dataManager;
-try {
-    dataManager = require('./enhanced-data-manager');
-    console.log('✅ Enhanced data manager loaded');
-} catch (error) {
-    console.log('⚠️ Enhanced data manager not found, using fallback');
-    dataManager = {
-        logAccessAttempt: (type, nom, prenom, status, details, req) => {
-            console.log(`📝 Access attempt (fallback): ${type} - ${nom} ${prenom} - ${status}`);
-        },
-        calculateTarif: (dateNaissance) => {
-            if (!dateNaissance) return 12;
-            const today = new Date();
-            const birthDate = new Date(dateNaissance);
-            let age = today.getFullYear() - birthDate.getFullYear();
-            const monthDiff = today.getMonth() - birthDate.getMonth();
-            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
-                age--;
-            }
-            if (age < 18) return 8;
-            if (age < 26) return 10;
-            if (age >= 65) return 10;
-            return 12;
-        },
-        getTarifCategory: (dateNaissance) => {
-            if (!dateNaissance) return 'Adulte (26-64 ans)';
-            const today = new Date();
-            const birthDate = new Date(dateNaissance);
-            let age = today.getFullYear() - birthDate.getFullYear();
-            const monthDiff = today.getMonth() - birthDate.getMonth();
-            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
-                age--;
-            }
-            if (age < 18) return `Jeune (${age} ans)`;
-            if (age < 26) return `Étudiant (${age} ans)`;
-            if (age >= 65) return `Senior (${age} ans)`;
-            return `Adulte (${age} ans)`;
-        },
-        getAccessAttempts: () => [],
-        getReturningVisitors: () => []
-    };
-}
+const fs = require('fs');
+const cron = require('node-cron');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// Middleware
-app.use(cors());
-app.use(express.json());
-
-// ✅ ADMIN STATIC FILES
-app.use('/admin', express.static(path.join(__dirname, 'admin')));
+console.log('🚀 CLIMBING CLUB - PAYMENT + TABLET FIXED');
+console.log('Port:', PORT);
 
 // Data file paths
-const presencesFile = path.join(__dirname, 'data', 'presences.json');
+const DATA_DIR = path.join(__dirname, 'data');
+const PRESENCES_FILE = path.join(DATA_DIR, 'presences.json');
+const NON_MEMBERS_FILE = path.join(DATA_DIR, 'non-members.json');
+const PRESENCE_HISTORY_FILE = path.join(DATA_DIR, 'presence-history.json');
 
-// Ensure data directory exists
-const dataDir = path.join(__dirname, 'data');
-if (!fs.existsSync(dataDir)) {
-    fs.mkdirSync(dataDir, { recursive: true });
+// Season helper
+function getCurrentSeasonName() {
+ const now = new Date();
+ const currentYear = now.getFullYear();
+ const currentMonth = now.getMonth();
+
+ if (currentMonth >= 8) {
+ return `${currentYear}-${currentYear + 1}`;
+ } else {
+ return `${currentYear - 1}-${currentYear}`;
+ }
 }
 
-// Initialize presences file
-if (!fs.existsSync(presencesFile)) {
-    fs.writeFileSync(presencesFile, JSON.stringify([], null, 2));
+// Ensure data directories exist
+if (!fs.existsSync(DATA_DIR)) {
+ fs.mkdirSync(DATA_DIR, { recursive: true });
 }
 
-// Helper functions
-function readPresences() {
-    try {
-        if (fs.existsSync(presencesFile)) {
-            const data = fs.readFileSync(presencesFile, 'utf8');
-            return JSON.parse(data);
-        }
-        return [];
-    } catch (error) {
-        console.error('Error reading presences:', error);
-        return [];
-    }
+// Initialize data files
+const initDataFile = (filePath, defaultData = []) => {
+ try {
+ if (!fs.existsSync(filePath)) {
+ fs.writeFileSync(filePath, JSON.stringify(defaultData, null, 2));
+ console.log(`✅ Initialized ${path.basename(filePath)}`);
+ }
+ } catch (error) {
+ console.error(`❌ Failed to initialize ${path.basename(filePath)}:`, error);
+ }
+};
+
+initDataFile(PRESENCES_FILE);
+initDataFile(NON_MEMBERS_FILE);
+initDataFile(PRESENCE_HISTORY_FILE);
+
+// File operations
+const readJsonFile = (filePath) => {
+ try {
+ if (!fs.existsSync(filePath)) return [];
+ const data = fs.readFileSync(filePath, 'utf8');
+ return JSON.parse(data) || [];
+ } catch (error) {
+ console.error(`Error reading ${path.basename(filePath)}:`, error);
+ return [];
+ }
+};
+
+const writeJsonFile = (filePath, data) => {
+ try {
+ fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+ return true;
+ } catch (error) {
+ console.error(`Error writing ${path.basename(filePath)}:`, error);
+ return false;
+ }
+};
+
+// ✅ MAXIMUM TABLET COMPATIBILITY CORS
+app.use(cors({
+ origin: '*',
+ credentials: true,
+ methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'HEAD'],
+ allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin'],
+ exposedHeaders: ['Content-Length', 'X-Foo', 'X-Bar']
+}));
+
+// Handle preflight requests explicitly
+app.options('*', (req, res) => {
+ res.header('Access-Control-Allow-Origin', '*');
+ res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS,HEAD');
+ res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Accept, Origin');
+ res.sendStatus(200);
+});
+
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+
+// Serve static files
+if (fs.existsSync(path.join(__dirname, 'public'))) {
+ app.use(express.static(path.join(__dirname, 'public')));
 }
 
-function writePresences(presences) {
-    try {
-        fs.writeFileSync(presencesFile, JSON.stringify(presences, null, 2));
-        return true;
-    } catch (error) {
-        console.error('Error writing presences:', error);
-        return false;
-    }
+// Enhanced logging middleware
+app.use((req, res, next) => {
+ console.log(`🌐 ${new Date().toISOString()} - ${req.method} ${req.path}`);
+ console.log(`   Origin: ${req.get('Origin') || 'none'}`);
+ console.log(`   User-Agent: ${req.get('User-Agent')?.substring(0, 50) || 'none'}`);
+ if (req.query && Object.keys(req.query).length > 0) {
+ console.log('   Query:', JSON.stringify(req.query));
+ }
+ next();
+});
+
+// Sync service with fallback
+let syncService = null;
+try {
+ syncService = require('./sync-service');
+ console.log('✅ Sync service loaded');
+} catch (error) {
+ console.warn('⚠️ Using fallback sync service');
+ syncService = {
+ getMembers: () => []
+ };
 }
 
-function generateId() {
-    return Math.random().toString(36).substr(2, 9);
-}
-
-// ✅ ROUTES
-
-// Health check
+// Basic routes
 app.get('/', (req, res) => {
-    res.json({ 
-        message: 'Climbing club backend is running!',
-        timestamp: new Date().toISOString(),
-        features: {
-            enhancedDataManager: !!dataManager.logAccessAttempt,
-            membersLoaded: getMembers().length,
-            adminPanel: true
-        }
-    });
+ res.json({
+ status: 'success',
+ message: 'Climbing Club API - Payment + Tablet Fixed',
+ currentSeason: getCurrentSeasonName(),
+ timestamp: new Date().toISOString(),
+ paymentCheckEnabled: true,
+ tabletAccessEnabled: true
+ });
 });
 
-// ✅ ORIGINAL member check (preserved)
-app.get('/members/check', async (req, res) => {
-    const { nom, prenom } = req.query;
-
-    if (!nom || !prenom) {
-        return res.status(400).json({ 
-            success: false, 
-            error: 'Nom et prénom sont requis' 
-        });
-    }
-
-    try {
-        const members = getMembers();
-        const member = members.find(m => 
-            m.nom?.toLowerCase().trim() === nom.toLowerCase().trim() && 
-            m.prenom?.toLowerCase().trim() === prenom.toLowerCase().trim()
-        );
-
-        if (!member) {
-            return res.json({
-                success: false,
-                error: 'Membre non trouvé dans la base de données'
-            });
-        }
-
-        const hasUnpaidStatus = member.categories?.some(cat => {
-            const label = cat.label?.toLowerCase() || '';
-            return label.includes('pas') && (label.includes('payé') || label.includes('paye'));
-        });
-
-        if (hasUnpaidStatus) {
-            return res.json({
-                success: false,
-                error: 'Votre adhésion n\'est pas encore réglée. Veuillez contacter un bénévole.',
-                paymentIncomplete: true
-            });
-        }
-
-        res.json({ 
-            success: true, 
-            message: 'Membre vérifié avec succès'
-        });
-
-    } catch (error) {
-        console.error('Error in member check:', error);
-        res.status(500).json({ 
-            success: false, 
-            error: 'Erreur système lors de la vérification' 
-        });
-    }
+app.get('/api/health', (req, res) => {
+ const health = {
+ status: 'healthy',
+ currentSeason: getCurrentSeasonName(),
+ timestamp: new Date().toISOString(),
+ uptime: process.uptime(),
+ paymentCheckEnabled: true,
+ corsEnabled: true,
+ tabletAccess: true
+ };
+ console.log('💚 Health check from:', req.get('Origin') || 'localhost');
+ res.json(health);
 });
 
-// ✅ ENHANCED member check with detailed debugging
-app.get('/members/check-enhanced', async (req, res) => {
-    const { nom, prenom } = req.query;
-
-    if (!nom || !prenom) {
-        return res.status(400).json({ 
-            success: false, 
-            error: 'Nom et prénom sont requis' 
-        });
-    }
-
-    try {
-        console.log(`🔍 Enhanced member check: "${nom}" "${prenom}"`);
-
-        const members = getMembers();
-        console.log(`📊 Total members loaded: ${members.length}`);
-
-        // Enhanced search with debugging
-        const member = members.find(m => {
-            const memberNom = m.nom?.toLowerCase().trim() || '';
-            const memberPrenom = m.prenom?.toLowerCase().trim() || '';
-            const searchNom = nom.toLowerCase().trim();
-            const searchPrenom = prenom.toLowerCase().trim();
-
-            const match = memberNom === searchNom && memberPrenom === searchPrenom;
-
-            // Debug for specific names
-            if (searchNom.includes('bleys') || searchPrenom.includes('kevin')) {
-                console.log(`🔍 Checking: "${memberNom}" "${memberPrenom}" vs "${searchNom}" "${searchPrenom}" → ${match}`);
-            }
-
-            return match;
-        });
-
-        if (!member) {
-            // Show similar names for debugging
-            const similarMembers = members.filter(m => {
-                const memberNom = m.nom?.toLowerCase() || '';
-                const memberPrenom = m.prenom?.toLowerCase() || '';
-                const searchNom = nom.toLowerCase();
-                const searchPrenom = prenom.toLowerCase();
-
-                return memberNom.includes(searchNom.substring(0, 3)) || 
-                       memberPrenom.includes(searchPrenom.substring(0, 3));
-            }).slice(0, 5);
-
-            console.log(`❌ Member not found. Similar:`, similarMembers.map(m => `${m.nom} ${m.prenom}`));
-
-            dataManager.logAccessAttempt('member_fail', nom, prenom, 'membre_non_existant', 
-                `Total: ${members.length}, Similar: ${similarMembers.length}`, req);
-
-            return res.json({
-                success: false,
-                error: 'Membre non trouvé dans la base de données. Vérifiez l\'orthographe ou contactez un bénévole.'
-            });
-        }
-
-        console.log(`✅ Member found: ${member.nom} ${member.prenom}`);
-
-        // Payment status check
-        const hasUnpaidStatus = member.categories?.some(cat => {
-            const label = cat.label?.toLowerCase() || '';
-            return label.includes('pas') && (label.includes('payé') || label.includes('paye'));
-        });
-
-        if (hasUnpaidStatus) {
-            dataManager.logAccessAttempt('member_fail', nom, prenom, 'membre_pas_encore_paye', 
-                JSON.stringify({ categories: member.categories }), req);
-
-            return res.json({
-                success: false,
-                error: 'Votre adhésion n\'est pas encore réglée. Veuillez contacter un bénévole à l\'accueil.',
-                paymentIncomplete: true
-            });
-        }
-
-        // Success
-        dataManager.logAccessAttempt('member_success', nom, prenom, 'success', 
-            JSON.stringify({ memberFound: true }), req);
-
-        res.json({ 
-            success: true, 
-            message: 'Membre vérifié avec succès ! Vous pouvez accéder à l\'escalade.'
-        });
-
-    } catch (error) {
-        console.error('❌ Enhanced member check error:', error);
-        dataManager.logAccessAttempt('member_fail', nom, prenom, 'system_error', error.message, req);
-
-        res.status(500).json({ 
-            success: false, 
-            error: 'Erreur système. Contactez un bénévole.' 
-        });
-    }
+// Admin route
+app.get('/admin', (req, res) => {
+ const adminPath = path.join(__dirname, 'public', 'admin.html');
+ if (fs.existsSync(adminPath)) {
+ res.sendFile(adminPath);
+ } else {
+ res.json({ message: 'Admin interface not found' });
+ }
 });
 
-// ✅ DEBUG endpoint for troubleshooting
-app.get('/debug/members', (req, res) => {
-    try {
-        const members = getMembers();
-        const seasonInfo = getSeasonInfo();
+// ✅ MEMBER CHECK: STRICT CATEGORY + PAYMENT STATUS
+app.get('/members/check', (req, res) => {
+ const { nom, prenom } = req.query;
+ if (!nom || !prenom) {
+ return res.status(400).json({
+ success: false,
+ error: "Paramètres 'nom' et 'prenom' requis"
+ });
+ }
 
-        // Find test members
-        const testMembers = members.filter(m => {
-            const fullName = `${m.nom || ''} ${m.prenom || ''}`.toLowerCase();
-            return fullName.includes('bleys') || fullName.includes('kevin');
-        });
+ console.log(`=== MEMBER + PAYMENT CHECK: ${nom} ${prenom} ===`);
+ console.log(`Request from: ${req.get('Origin') || 'localhost'}`);
 
-        res.json({
-            success: true,
-            totalMembers: members.length,
-            seasonInfo: seasonInfo,
-            testMembers: testMembers,
-            sampleMembers: members.slice(0, 5).map(m => ({
-                nom: m.nom,
-                prenom: m.prenom,
-                categories: m.categories?.map(c => c.label)
-            }))
-        });
-    } catch (error) {
-        res.status(500).json({
-            success: false,
-            error: error.message
-        });
-    }
+ try {
+ const members = syncService.getMembers();
+ console.log(`Searching among ${members.length} members`);
+
+ const member = members.find(m =>
+ m.lastname?.trim().toLowerCase() === nom.trim().toLowerCase() &&
+ m.firstname?.trim().toLowerCase() === prenom.trim().toLowerCase()
+ );
+
+ if (!member) {
+ console.log('❌ Member not found in database');
+ return res.json({
+ success: false,
+ error: "Aucun membre trouvé avec ce nom et prénom"
+ });
+ }
+
+ console.log('✅ Member found:', member.firstname, member.lastname);
+ console.log('Categories:', member.categories?.map(c => c.label) || []);
+ console.log('Payment status:', member.joinFileStatusLabel || 'none');
+
+ // ✅ STEP 1: Check membership category
+ let hasValidMembership = false;
+ let rejectionReason = '';
+
+ if (Array.isArray(member.categories)) {
+ member.categories.forEach(category => {
+ if (typeof category.label === 'string') {
+ const categoryLower = category.label.toLowerCase().trim();
+
+ if (categoryLower === 'adhérent') {
+ hasValidMembership = true;
+ console.log('✅ Valid "Adhérent" category confirmed');
+ } else if (categoryLower.includes('ancien')) {
+ console.log('❌ "Ancien adhérent" detected - former member');
+ rejectionReason = 'Former member (Ancien adhérent)';
+ }
+ }
+ });
+ }
+
+ if (!hasValidMembership) {
+ console.log(`❌ MEMBERSHIP REJECTED: ${rejectionReason || 'No valid category'}`);
+ return res.json({
+ success: false,
+ error: `Vous n'avez pas d'adhésion valide pour la saison ${getCurrentSeasonName()}. Merci de vous inscrire comme visiteur.`,
+ reason: rejectionReason || 'No current membership',
+ season: getCurrentSeasonName()
+ });
+ }
+
+ // ✅ STEP 2: Check payment status  
+ const paymentStatus = member.joinFileStatusLabel;
+ console.log(`Checking payment status: "${paymentStatus}"`);
+
+ if (paymentStatus) {
+ const statusLower = paymentStatus.toLowerCase();
+
+ if (statusLower.includes('payer') && !statusLower.includes('payé')) {
+ console.log('❌ PAYMENT INCOMPLETE - Access denied');
+ return res.json({
+ success: false,
+ error: "Votre adhésion n'est pas encore payée. Merci de contacter un bénévole pour finaliser le paiement.",
+ reason: 'Payment not completed',
+ paymentStatus: paymentStatus,
+ season: getCurrentSeasonName(),
+ requiresVolunteer: true,
+ paymentIncomplete: true
+ });
+ }
+ }
+
+ // ✅ STEP 3: All checks passed
+ console.log('✅ MEMBER ACCESS GRANTED - Valid membership and payment');
+ return res.json({
+ success: true,
+ isPaid: true,
+ message: `Adhésion reconnue pour la saison ${getCurrentSeasonName()}. Bienvenue !`,
+ membre: member,
+ season: getCurrentSeasonName(),
+ paymentStatus: paymentStatus || 'Confirmed'
+ });
+
+ } catch (error) {
+ console.error('❌ Member check error:', error);
+ return res.status(500).json({
+ success: false,
+ error: 'Erreur lors de la vérification du membre'
+ });
+ }
 });
 
-// ✅ ORIGINAL presence creation
-app.post('/presences', (req, res) => {
-    try {
-        const { type, nom, prenom, dateNaissance, email, telephone, niveau, tarif, assuranceAccepted } = req.body;
-
-        const presence = {
-            id: generateId(),
-            type,
-            nom: nom?.trim(),
-            prenom: prenom?.trim(),
-            dateNaissance,
-            email: email || '',
-            telephone: telephone || '',
-            niveau,
-            tarif,
-            assuranceAccepted,
-            status: 'pending',
-            timestamp: new Date().toISOString()
-        };
-
-        const presences = readPresences();
-        presences.push(presence);
-
-        if (writePresences(presences)) {
-            res.json({
-                success: true,
-                presence: presence,
-                message: 'Présence enregistrée avec succès'
-            });
-        } else {
-            res.status(500).json({
-                success: false,
-                error: 'Erreur lors de l\'enregistrement'
-            });
-        }
-    } catch (error) {
-        console.error('Error creating presence:', error);
-        res.status(500).json({
-            success: false,
-            error: 'Erreur lors de l\'enregistrement'
-        });
-    }
+app.get('/members/all', (req, res) => {
+ try {
+ const members = syncService.getMembers();
+ res.json({
+ success: true,
+ members,
+ count: members.length,
+ season: getCurrentSeasonName()
+ });
+ } catch (error) {
+ res.status(500).json({ success: false, error: error.message });
+ }
 });
 
-// ✅ ENHANCED presence creation with FIXED tariff calculation
-app.post('/presences-enhanced', (req, res) => {
-    try {
-        const { type, nom, prenom, dateNaissance, email, telephone, niveau, assuranceAccepted, isReturningVisitor } = req.body;
-
-        // ✅ ALWAYS calculate tariff from birthdate
-        const tarif = dataManager.calculateTarif(dateNaissance);
-        const tarifCategory = dataManager.getTarifCategory(dateNaissance);
-
-        console.log(`💰 Enhanced presence - Calculated tariff for ${nom} ${prenom}: ${tarif}€ (${tarifCategory})`);
-
-        const presence = {
-            id: generateId(),
-            type,
-            nom: nom?.trim(),
-            prenom: prenom?.trim(),
-            dateNaissance,
-            email: email || '',
-            telephone: telephone || '',
-            niveau,
-            tarif, // ✅ FIXED: Always use calculated tariff
-            tarifCategory,
-            assuranceAccepted,
-            status: 'pending',
-            timestamp: new Date().toISOString(),
-            isReturningVisitor: isReturningVisitor || false
-        };
-
-        const presences = readPresences();
-        presences.push(presence);
-
-        if (writePresences(presences)) {
-            // Auto-save returning visitor
-            if (type === 'non-adherent' && dataManager.saveReturningVisitor && !isReturningVisitor) {
-                dataManager.saveReturningVisitor({
-                    nom, prenom, dateNaissance,
-                    email: email || '', telephone: telephone || '',
-                    niveau, tarif
-                });
-            }
-
-            console.log(`✅ Enhanced presence created: ${nom} ${prenom} - ${tarif}€`);
-
-            res.json({
-                success: true,
-                presence: presence,
-                message: 'Présence enregistrée avec succès'
-            });
-        } else {
-            res.status(500).json({
-                success: false,
-                error: 'Erreur lors de l\'enregistrement'
-            });
-        }
-    } catch (error) {
-        console.error('Error creating enhanced presence:', error);
-        res.status(500).json({
-            success: false,
-            error: 'Erreur lors de l\'enregistrement'
-        });
-    }
+// Presences routes
+app.get('/presences', (req, res) => {
+ console.log('📋 GET /presences requested');
+ try {
+ const presences = readJsonFile(PRESENCES_FILE);
+ res.json({
+ success: true,
+ presences,
+ count: presences.length
+ });
+ } catch (error) {
+ res.status(500).json({ success: false, error: 'Server error' });
+ }
 });
 
-// Get presence by ID
 app.get('/presences/:id', (req, res) => {
-    try {
-        const presences = readPresences();
-        const presence = presences.find(p => p.id === req.params.id);
+ try {
+ const presences = readJsonFile(PRESENCES_FILE);
+ const presence = presences.find(p => p.id === req.params.id);
 
-        if (presence) {
-            res.json({ success: true, presence });
-        } else {
-            res.status(404).json({ success: false, error: 'Présence non trouvée' });
-        }
-    } catch (error) {
-        console.error('Error getting presence:', error);
-        res.status(500).json({ success: false, error: 'Erreur serveur' });
-    }
+ if (!presence) {
+ return res.status(404).json({ success: false, error: 'Not found' });
+ }
+
+ res.json({ success: true, presence });
+ } catch (error) {
+ res.status(500).json({ success: false, error: 'Server error' });
+ }
 });
 
-// Update presence status
-app.post('/presences/:id/status', (req, res) => {
-    try {
-        const { status } = req.body;
-        const presences = readPresences();
-        const presenceIndex = presences.findIndex(p => p.id === req.params.id);
+app.post('/presences', (req, res) => {
+ console.log('=== NEW PRESENCE ===');
+ console.log(`Request from: ${req.get('Origin') || 'localhost'}`);
 
-        if (presenceIndex >= 0) {
-            presences[presenceIndex].status = status;
-            presences[presenceIndex].updated_at = new Date().toISOString();
+ const { type, nom, prenom, ...otherData } = req.body;
 
-            if (writePresences(presences)) {
-                console.log(`✅ Presence ${req.params.id} status updated to: ${status}`);
+ if (!type || !nom || !prenom) {
+ return res.status(400).json({
+ success: false,
+ error: 'Type, nom, prenom requis'
+ });
+ }
 
-                res.json({
-                    success: true,
-                    presence: presences[presenceIndex],
-                    message: 'Statut mis à jour avec succès'
-                });
-            } else {
-                res.status(500).json({ success: false, error: 'Erreur lors de la mise à jour' });
-            }
-        } else {
-            res.status(404).json({ success: false, error: 'Présence non trouvée' });
-        }
-    } catch (error) {
-        console.error('Error updating presence status:', error);
-        res.status(500).json({ success: false, error: 'Erreur serveur' });
-    }
+ try {
+ const presences = readJsonFile(PRESENCES_FILE);
+ const newPresence = {
+ id: Date.now().toString(),
+ type,
+ nom: nom.trim(),
+ prenom: prenom.trim(),
+ date: new Date().toISOString(),
+ season: getCurrentSeasonName(),
+ ...otherData
+ };
+
+ if (type === 'adherent') {
+ newPresence.status = 'adherent';
+ } else {
+ newPresence.status = 'pending';
+ newPresence.tarif = otherData.tarif || 10;
+ }
+
+ presences.push(newPresence);
+
+ if (writeJsonFile(PRESENCES_FILE, presences)) {
+ console.log('✅ Presence created:', newPresence.id);
+ res.json({
+ success: true,
+ message: 'Présence enregistrée avec succès',
+ presence: newPresence
+ });
+ } else {
+ throw new Error('Write failed');
+ }
+ } catch (error) {
+ console.error('❌ Presence error:', error);
+ res.status(500).json({
+ success: false,
+ error: 'Erreur lors de l\'enregistrement'
+ });
+ }
 });
 
-// ✅ RETURNING VISITORS routes
-app.get('/returning-visitors/search', (req, res) => {
-    const { nom, prenom, dateNaissance } = req.query;
+app.post('/presences/:id/valider', (req, res) => {
+ try {
+ const presences = readJsonFile(PRESENCES_FILE);
+ const index = presences.findIndex(p => p.id === req.params.id);
 
-    if (!nom || !prenom || !dateNaissance) {
-        return res.status(400).json({ 
-            success: false, 
-            error: 'Nom, prénom et date de naissance requis' 
-        });
-    }
+ if (index === -1) {
+ return res.status(404).json({ success: false, error: 'Not found' });
+ }
 
-    try {
-        if (dataManager.findReturningVisitor) {
-            const visitor = dataManager.findReturningVisitor(nom, prenom, dateNaissance);
+ presences[index].status = 'Payé';
+ presences[index].dateValidation = new Date().toISOString();
 
-            if (visitor) {
-                const currentTarif = dataManager.calculateTarif(dateNaissance);
-                const tarifCategory = dataManager.getTarifCategory(dateNaissance);
+ if (req.body.montant) presences[index].tarif = req.body.montant;
+ if (req.body.methodePaiement) presences[index].methodePaiement = req.body.methodePaiement;
 
-                res.json({
-                    success: true,
-                    visitor: {
-                        ...visitor,
-                        currentTarif,
-                        tarifCategory
-                    }
-                });
-            } else {
-                res.json({
-                    success: false,
-                    error: 'Aucune visite précédente trouvée'
-                });
-            }
-        } else {
-            res.status(501).json({
-                success: false,
-                error: 'Enhanced features not available'
-            });
-        }
-    } catch (error) {
-        console.error('Error searching returning visitor:', error);
-        res.status(500).json({ 
-            success: false, 
-            error: 'Erreur lors de la recherche' 
-        });
-    }
+ if (writeJsonFile(PRESENCES_FILE, presences)) {
+ res.json({ success: true, presence: presences[index] });
+ } else {
+ throw new Error('Write failed');
+ }
+ } catch (error) {
+ res.status(500).json({ success: false, error: 'Server error' });
+ }
 });
 
-// ✅ ADMIN API routes
-app.get('/admin/api/presences', (req, res) => {
-    try {
-        const presences = readPresences();
-        res.json({
-            success: true,
-            data: presences,
-            count: presences.length
-        });
-    } catch (error) {
-        console.error('Error getting presences for admin:', error);
-        res.status(500).json({ success: false, error: 'Erreur serveur' });
-    }
+app.delete('/presences/:id', (req, res) => {
+ try {
+ const presences = readJsonFile(PRESENCES_FILE);
+ const filtered = presences.filter(p => p.id !== req.params.id);
+
+ if (writeJsonFile(PRESENCES_FILE, filtered)) {
+ res.json({ success: true });
+ } else {
+ throw new Error('Write failed');
+ }
+ } catch (error) {
+ res.status(500).json({ success: false, error: 'Server error' });
+ }
 });
 
-app.post('/admin/api/presences/:id/status', (req, res) => {
-    try {
-        const { status } = req.body;
-        const { id } = req.params;
+// Stats
+app.get('/api/stats/today', (req, res) => {
+ try {
+ const presences = readJsonFile(PRESENCES_FILE);
+ const today = new Date().toISOString().split('T')[0];
+ const todayPresences = presences.filter(p => p.date?.startsWith(today));
 
-        const presences = readPresences();
-        const presenceIndex = presences.findIndex(p => p.id === id);
-
-        if (presenceIndex >= 0) {
-            presences[presenceIndex].status = status;
-            presences[presenceIndex].updated_at = new Date().toISOString();
-            presences[presenceIndex].updated_by = 'admin';
-
-            if (writePresences(presences)) {
-                console.log(`✅ Admin updated presence ${id} status to: ${status}`);
-                res.json({
-                    success: true,
-                    presence: presences[presenceIndex]
-                });
-            } else {
-                res.status(500).json({ success: false, error: 'Erreur sauvegarde' });
-            }
-        } else {
-            res.status(404).json({ success: false, error: 'Présence non trouvée' });
-        }
-    } catch (error) {
-        console.error('Error updating presence from admin:', error);
-        res.status(500).json({ success: false, error: 'Erreur serveur' });
-    }
+ res.json({
+ success: true,
+ stats: {
+ date: today,
+ total: todayPresences.length,
+ adherents: todayPresences.filter(p => p.type === 'adherent').length,
+ nonAdherents: todayPresences.filter(p => p.type === 'non-adherent').length,
+ season: getCurrentSeasonName()
+ }
+ });
+ } catch (error) {
+ res.status(500).json({ success: false, error: 'Server error' });
+ }
 });
 
-// Export access attempts
-app.get('/export/access-attempts', (req, res) => {
-    try {
-        if (dataManager.getAccessAttempts) {
-            const attempts = dataManager.getAccessAttempts();
-            res.json({
-                success: true,
-                data: attempts,
-                count: attempts.length
-            });
-        } else {
-            res.json({
-                success: true,
-                data: [],
-                count: 0,
-                message: 'Enhanced logging not available'
-            });
-        }
-    } catch (error) {
-        console.error('Error exporting access attempts:', error);
-        res.status(500).json({ error: 'Erreur export' });
-    }
+// Non-members routes
+app.get('/non-members', (req, res) => {
+ try {
+ const nonMembers = readJsonFile(NON_MEMBERS_FILE);
+ res.json({
+ success: true,
+ nonMembers,
+ count: nonMembers.length
+ });
+ } catch (error) {
+ res.status(500).json({ success: false, error: 'Server error' });
+ }
 });
 
-// Get all members
-app.get('/members', (req, res) => {
-    try {
-        const members = getMembers();
-        res.json({ success: true, members, count: members.length });
-    } catch (error) {
-        console.error('Error getting members:', error);
-        res.status(500).json({ success: false, error: 'Erreur membres' });
-    }
+app.post('/non-members', (req, res) => {
+ console.log('=== NEW NON-MEMBER ===');
+ console.log(`Request from: ${req.get('Origin') || 'localhost'}`);
+
+ try {
+ const nonMembers = readJsonFile(NON_MEMBERS_FILE);
+ const newNonMember = {
+ id: Date.now().toString(),
+ ...req.body,
+ dateCreated: new Date().toISOString(),
+ season: getCurrentSeasonName()
+ };
+
+ nonMembers.push(newNonMember);
+
+ if (writeJsonFile(NON_MEMBERS_FILE, nonMembers)) {
+ res.json({
+ success: true,
+ message: 'Non-membre enregistré avec succès',
+ nonMember: newNonMember
+ });
+ } else {
+ throw new Error('Write failed');
+ }
+ } catch (error) {
+ console.error('❌ Non-member error:', error);
+ res.status(500).json({
+ success: false,
+ error: 'Erreur lors de l\'enregistrement'
+ });
+ }
 });
 
-// Get season info
-app.get('/season-info', (req, res) => {
-    try {
-        const seasonInfo = getSeasonInfo();
-        res.json({ success: true, ...seasonInfo });
-    } catch (error) {
-        console.error('Error getting season info:', error);
-        res.status(500).json({ success: false, error: 'Erreur saison' });
-    }
+// 404 handler
+app.use((req, res) => {
+ console.log(`❌ 404 - ${req.method} ${req.path} from ${req.get('Origin') || 'unknown'}`);
+ res.status(404).json({
+ error: 'Endpoint non trouvé',
+ path: req.path,
+ method: req.method
+ });
 });
 
-// Start server
-app.listen(PORT, () => {
-    console.log(`\n🚀 Backend server running on port ${PORT}`);
-    console.log(`📊 Members loaded: ${getMembers().length}`);
-    console.log(`✅ Enhanced features: ${!!dataManager.logAccessAttempt ? 'Available' : 'Fallback mode'}`);
-    console.log(`🔗 Admin panel: http://localhost:${PORT}/admin`);
-    console.log(`🔗 Debug members: http://localhost:${PORT}/debug/members`);
+// Error handler
+app.use((error, req, res, next) => {
+ console.error('💥 Global error:', error);
+ res.status(500).json({
+ error: 'Erreur serveur',
+ message: error.message
+ });
+});
+
+// ✅ START SERVER WITH NETWORK ACCESS
+const server = app.listen(PORT, '0.0.0.0', () => {
+ console.log('🎉 ======================================');
+ console.log('🎉 PAYMENT CHECK + TABLET ACCESS READY ');
+ console.log('🎉 ======================================');
+ console.log(`✅ Local:    http://localhost:${PORT}`);
+ console.log(`✅ Network:  http://[PC-IP]:${PORT}`);
+ console.log(`🗓️ Season:   ${getCurrentSeasonName()}`);
+ console.log('🔒 CATEGORY: Only "Adhérent" accepted');
+ console.log('💳 PAYMENT:  "à payer" = BLOCKED + Volunteer required');
+ console.log('🌐 CORS:     All origins (*) allowed');
+ console.log('📱 TABLET:   Full API access enabled');
+ console.log('🎉 ======================================');
+
+ setTimeout(() => {
+ try {
+ const members = syncService.getMembers();
+ console.log(`👥 Total members loaded: ${members.length}`);
+
+ // Count categories for debugging
+ let adherentCount = 0;
+ let ancienCount = 0;
+ let paymentPending = 0;
+
+ members.forEach(member => {
+ if (member.categories) {
+ member.categories.forEach(cat => {
+ if (cat.label?.toLowerCase().trim() === 'adhérent') adherentCount++;
+ if (cat.label?.toLowerCase().includes('ancien')) ancienCount++;
+ });
+ }
+ if (member.joinFileStatusLabel?.toLowerCase().includes('payer')) {
+ paymentPending++;
+ }
+ });
+
+ console.log(`📊 Category breakdown:`);
+ console.log(`   Current "Adhérent": ${adherentCount}`);
+ console.log(`   "Ancien adhérent": ${ancienCount}`);
+ console.log(`   Payment pending: ${paymentPending}`);
+
+ } catch (error) {
+ console.log('⚠️ Sync service fallback active');
+ }
+ }, 1000);
+});
+
+server.on('error', (error) => {
+ console.error('💥 Server error:', error);
+ if (error.code === 'EADDRINUSE') {
+ console.error(`❌ Port ${PORT} already in use!`);
+ process.exit(1);
+ }
+});
+
+process.on('SIGINT', () => {
+ console.log('📴 Shutting down...');
+ server.close(() => process.exit(0));
 });
 
 module.exports = app;

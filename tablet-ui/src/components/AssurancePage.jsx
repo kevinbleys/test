@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useLocation, useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
+import { playSuccessSound, playBuzzerSound } from '../utils/soundUtils';
 
+// ✅ ONLY CHANGE: Dynamic API URL detection
 const getApiBaseUrl = () => {
   const hostname = window.location.hostname;
   const protocol = window.location.protocol;
@@ -13,60 +15,34 @@ const getApiBaseUrl = () => {
 };
 
 export default function AssurancePage() {
+  const state = useLocation().state;
   const navigate = useNavigate();
-  const location = useLocation();
-  const { nom, prenom, dateNaissance, email, telephone, niveau } = location.state || {};
 
-  const [assuranceAccepted, setAssuranceAccepted] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [checks, setChecks] = useState({
+    c1: false,
+    c2: false,
+    c3: false,
+    c4: false
+  });
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  // ✅ FIXED: Calculate tariff on frontend for immediate display
-  const calculateTarif = (dateNaissance) => {
-    if (!dateNaissance) return 12;
+  if (!state?.form) {
+    navigate('/non-member');
+    return null;
+  }
 
-    const today = new Date();
-    const birthDate = new Date(dateNaissance);
-    let age = today.getFullYear() - birthDate.getFullYear();
-    const monthDiff = today.getMonth() - birthDate.getMonth();
+  const allChecked = Object.values(checks).every(Boolean);
 
-    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
-      age--;
-    }
-
-    if (age < 18) return 8;      // Jeune
-    if (age < 26) return 10;     // Étudiant  
-    if (age >= 65) return 10;    // Senior
-    return 12;                   // Adulte
+  const toggleCheck = (key) => {
+    setChecks(prev => ({ ...prev, [key]: !prev[key] }));
+    setError('');
   };
 
-  const getTarifCategory = (dateNaissance) => {
-    if (!dateNaissance) return 'Adulte (26-64 ans)';
-
-    const today = new Date();
-    const birthDate = new Date(dateNaissance);
-    let age = today.getFullYear() - birthDate.getFullYear();
-    const monthDiff = today.getMonth() - birthDate.getMonth();
-
-    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
-      age--;
-    }
-
-    if (age < 18) return `Jeune (${age} ans)`;
-    if (age < 26) return `Étudiant (${age} ans)`;
-    if (age >= 65) return `Senior (${age} ans)`;
-    return `Adulte (${age} ans)`;
-  };
-
-  // ✅ FIXED: Calculate tariff immediately
-  const tarif = calculateTarif(dateNaissance);
-  const tarifCategory = getTarifCategory(dateNaissance);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    if (!assuranceAccepted) {
-      setError('Vous devez accepter les conditions d\'assurance pour continuer');
+  const finish = async () => {
+    if (!allChecked) {
+      setError('Veuillez cocher toutes les cases pour continuer.');
+      playBuzzerSound();
       return;
     }
 
@@ -74,24 +50,18 @@ export default function AssurancePage() {
     setError('');
 
     try {
-      const apiUrl = getApiBaseUrl();
+      const apiUrl = getApiBaseUrl(); // ✅ ONLY CHANGE: Dynamic API
 
-      // ✅ FIXED: Use enhanced endpoint with proper tariff calculation
-      const presenceData = {
+      const registrationData = {
         type: 'non-adherent',
-        nom,
-        prenom,
-        dateNaissance,
-        email,
-        telephone,
-        niveau,
-        assuranceAccepted,
-        // ✅ DON'T pass tarif - let backend calculate it
+        ...state.form,
+        tarif: state.tarif,
+        niveau: state.niveau,
+        assuranceAccepted: true,
+        status: 'pending'
       };
 
-      console.log('🔄 Creating presence with data:', presenceData);
-
-      const response = await axios.post(`${apiUrl}/presences-enhanced`, presenceData, {
+      const response = await axios.post(`${apiUrl}/presences`, registrationData, {
         timeout: 15000,
         headers: {
           'Content-Type': 'application/json'
@@ -99,30 +69,25 @@ export default function AssurancePage() {
       });
 
       if (response.data.success) {
-        const presence = response.data.presence;
-
-        console.log('✅ Presence created:', presence);
-        console.log('💰 Calculated tariff:', presence.tarif);
-
-        // Navigate to payment with backend-calculated tariff
+        playSuccessSound();
         navigate('/paiement', {
           state: {
-            presenceId: presence.id,
-            montant: presence.tarif, // ✅ Use backend-calculated tarif
-            tarif: presence.tarif,
-            nom: presence.nom,
-            prenom: presence.prenom,
-            age: presence.tarifCategory,
-            tarifCategory: presence.tarifCategory,
-            niveau: presence.niveau
+            presenceId: response.data.presence.id,
+            montant: state.tarif,
+            nom: state.form.nom,
+            prenom: state.form.prenom,
+            age: state.age,
+            tarifCategory: state.tarifCategory
           }
         });
       } else {
         setError(response.data.error || 'Erreur lors de l\'enregistrement');
+        playBuzzerSound();
       }
     } catch (err) {
-      console.error('Error creating presence:', err);
-      setError('Erreur de connexion. Veuillez réessayer.');
+      console.error('Registration error:', err);
+      setError('Erreur de connexion');
+      playBuzzerSound();
     } finally {
       setLoading(false);
     }
@@ -132,29 +97,14 @@ export default function AssurancePage() {
     navigate('/');
   };
 
-  const handleRetour = () => {
-    navigate(-1);
+  const handleRetourNiveau = () => {
+    navigate('/niveau', { state });
   };
-
-  // Don't render if missing required data
-  if (!nom || !prenom || !dateNaissance) {
-    return (
-      <div className="assurance-page">
-        <div className="error-message">
-          <span className="error-icon">⚠️</span>
-          Données manquantes. Veuillez recommencer l'inscription.
-        </div>
-        <button onClick={handleRetourAccueil} className="btn-retour-accueil">
-          🏠 Retour Accueil
-        </button>
-      </div>
-    );
-  }
 
   return (
     <div className="assurance-page">
       <div className="header-section">
-        <h2>Assurance & Finalisation</h2>
+        <h2>Information relative à l'assurance du pratiquant</h2>
         <div className="header-buttons">
           <button onClick={handleRetourAccueil} className="btn-retour-accueil">
             🏠 Retour Accueil
@@ -162,81 +112,113 @@ export default function AssurancePage() {
         </div>
       </div>
 
-      <div className="summary-info">
-        <h3>📋 Récapitulatif de votre inscription</h3>
-        <div className="info-grid">
-          <div><strong>Nom:</strong> {nom}</div>
-          <div><strong>Prénom:</strong> {prenom}</div>
-          <div><strong>Date de naissance:</strong> {new Date(dateNaissance).toLocaleDateString('fr-FR')}</div>
-          <div><strong>Email:</strong> {email || 'Non renseigné'}</div>
-          <div><strong>Téléphone:</strong> {telephone || 'Non renseigné'}</div>
-          <div><strong>Niveau:</strong> {niveau}</div>
+      {state.tarif !== undefined && (
+        <div className="tarif-summary">
+          <h3>💰 Tarif à régler : {state.tarif === 0 ? 'GRATUIT' : `${state.tarif}€`}</h3>
+          <div className="tarif-details">
+            👤 {state.form?.nom} {state.form?.prenom} - {state.age} ans - Niveau {state.niveau}
+          </div>
+          <div className="tarif-description">
+            {state.tarifDescription}
+          </div>
         </div>
+      )}
 
-        {/* ✅ FIXED: Show calculated tariff immediately */}
-        <div className="tarif-display">
-          <div className="tarif-amount">💰 Tarif: <strong>{tarif}€</strong></div>
-          <div className="tarif-category">📊 Catégorie: {tarifCategory}</div>
-        </div>
+      <div className="assurance-info">
+        <p>
+          Conformément à l'article L321-4 du Code du sport, le présent document vise à informer 
+          le pratiquant des conditions d'assurance applicables dans le cadre de la pratique de 
+          l'escalade au sein de la structure.
+        </p>
+
+        <h3>Assurance en Responsabilité Civile</h3>
+        <p>
+          La structure dispose d'un contrat d'assurance en responsabilité civile couvrant 
+          les dommages causés à des tiers dans le cadre de la pratique de l'escalade.
+        </p>
+
+        <h3>Assurance Individuelle Accident</h3>
+        <p>
+          Cette assurance ne couvre pas les dommages corporels que le pratiquant pourrait 
+          se causer à lui-même, en l'absence de tiers responsable identifié.
+        </p>
+        <p>
+          L'assurance individuelle accident permet au pratiquant d'être indemnisé pour les 
+          dommages corporels dont il pourrait être victime, y compris en l'absence de tiers 
+          responsable.
+        </p>
+        <p>
+          En l'absence de garantie individuelle accident, il est recommandé de souscrire 
+          une couverture adaptée soit auprès de l'assureur de son choix, soit via une 
+          licence FFME.
+        </p>
       </div>
 
-      <form onSubmit={handleSubmit}>
-        <div className="assurance-section">
-          <h3>📄 Conditions d'assurance</h3>
-          <div className="assurance-text">
-            <p>En cochant cette case, je déclare :</p>
-            <ul>
-              <li>Être en bonne santé physique pour pratiquer l'escalade</li>
-              <li>Pratiquer cette activité sous ma propre responsabilité</li>
-              <li>Avoir pris connaissance des règles de sécurité</li>
-              <li>Accepter que le club ne puisse être tenu responsable des accidents</li>
-            </ul>
-          </div>
-
-          <div className="checkbox-group">
-            <label className="checkbox-label">
-              <input
-                type="checkbox"
-                checked={assuranceAccepted}
-                onChange={(e) => setAssuranceAccepted(e.target.checked)}
-                disabled={loading}
-              />
-              <span className="checkmark"></span>
-              J'accepte les conditions d'assurance et de responsabilité
-            </label>
-          </div>
-        </div>
-
-        {error && (
-          <div className="error-message">
-            <span className="error-icon">⚠️</span>
-            {error}
-          </div>
-        )}
-
-        <div className="action-buttons">
-          <button 
-            type="button"
-            onClick={handleRetour}
-            className="btn-retour-accueil"
-            disabled={loading}
+      <div className="checkbox-list">
+        {[
+          {
+            key: 'c1',
+            text: "Je reconnais avoir été informé(e) des conditions d'assurance applicables dans le cadre de la pratique de l'escalade au sein de cette structure."
+          },
+          {
+            key: 'c2', 
+            text: "Je reconnais avoir été informé(e) de l'existence et de l'intérêt d'une assurance individuelle accident."
+          },
+          {
+            key: 'c3',
+            text: "Je reconnais avoir été informé(e) de la possibilité de souscrire une assurance complémentaire adaptée à mes besoins, notamment via une licence FFME en club ou hors club."
+          },
+          {
+            key: 'c4',
+            text: (
+              <>
+                J'ai pris connaissance du{' '}
+                <Link to="/reglement" target="_blank" rel="noopener noreferrer">
+                  Règlement intérieur
+                </Link>
+                {' '}et je m'engage à le respecter.
+              </>
+            )
+          }
+        ].map(({ key, text }) => (
+          <div 
+            key={key} 
+            className={`checkbox-item ${checks[key] ? 'checked' : ''}`}
+            onClick={() => toggleCheck(key)}
           >
-            ← Retour
-          </button>
+            <input 
+              type="checkbox" 
+              checked={checks[key]}
+              onChange={() => {}}
+            />
+            <span className="checkbox-text">{text}</span>
+          </div>
+        ))}
+      </div>
 
-          <button 
-            type="submit" 
-            className="btn-continue"
-            disabled={loading || !assuranceAccepted}
-          >
-            {loading ? '⏳ Enregistrement...' : `Continuer vers le paiement (${tarif}€)`}
-          </button>
+      {error && (
+        <div className="error-message">
+          <span className="error-icon">⚠️</span>
+          {error}
         </div>
-      </form>
+      )}
 
-      <div className="info-section">
-        <p><strong>ℹ️ Information :</strong></p>
-        <p>Après validation, vous serez dirigé vers la page de paiement où un bénévole confirmera votre règlement.</p>
+      <div className="action-buttons">
+        <button 
+          onClick={handleRetourNiveau}
+          className="btn-retour"
+          disabled={loading}
+        >
+          ← Retour Niveau
+        </button>
+
+        <button 
+          onClick={finish}
+          disabled={!allChecked || loading}
+          className="btn-continue"
+        >
+          {loading ? '⏳ Enregistrement...' : 'Continuer vers le paiement →'}
+        </button>
       </div>
     </div>
   );

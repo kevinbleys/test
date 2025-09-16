@@ -1,6 +1,5 @@
-/* ✅ CORRECTED STYLES.CSS - Voor jouw exacte setup */
+/* ✅ ORIGINELE STYLING VOLLEDIG HERSTELD */
 
-/* Reset and Base Styles */
 * {
   margin: 0;
   padding: 0;
@@ -114,7 +113,239 @@ body {
   line-height: 1.4;
 }
 
-/* ✅ SUCCESS/ERROR MESSAGES */
+/* ✅ INFO FOOTER */
+.info-footer {
+  background: rgba(255,255,255,0.1);
+  border-radius: 15px;
+  padding: 25px;
+  color: white;
+  backdrop-filter: blur(10px);
+  margin-top: 40px;
+}
+
+.info-footer p {
+  margin: 8px 0;
+  line-height: 1.5;
+}
+
+/* ✅ FORM PAGES - ORIGINELE STYLING */
+.member-page, .non-member-form, .level-page, .assurance-page, .payment-page, .returning-visitor-choice, .returning-visitor-form {
+  background: white;
+  border-radius: 20px;
+  margin: 20px auto;
+  padding: 40px;
+  max-width: 600px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  min-height: 70vh;
+}
+
+.returning-visitor-choice {
+  max-width: 900px;
+}
+
+.header-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.header-section h2 {
+  color: #333;
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+.btn-retour-accueil {
+  background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%);
+  color: white;
+  border: none;
+  border-radius: 15px;
+  padding: 12px 20px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 10px rgba(108, 117, 125, 0.3);
+}
+
+.btn-retour-accueil:hover {
+  background: linear-gradient(135deg, #5a6268 0%, #495057 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(108, 117, 125, 0.4);
+}
+
+/* ✅ FORM ELEMENTS - ORIGINELE STYLING */
+.form-group {
+  margin-bottom: 25px;
+  text-align: left;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #333;
+  font-size: 1.1rem;
+}
+
+.form-group input, .form-group select, .form-group textarea {
+  width: 100%;
+  padding: 15px;
+  border: 2px solid #e0e0e0;
+  border-radius: 15px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background: #fafafa;
+}
+
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+  outline: none;
+  border-color: #4CAF50;
+  background: white;
+  box-shadow: 0 0 10px rgba(76, 175, 80, 0.2);
+}
+
+/* ✅ BUTTONS - ORIGINELE GROENE/BLAUWE STYLING */
+.btn-verify, .btn-submit, .btn-continue {
+  background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+  color: white;
+  border: none;
+  border-radius: 15px;
+  padding: 18px 30px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 20px;
+  transition: all 0.3s ease;
+  box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
+}
+
+.btn-verify:hover, .btn-submit:hover, .btn-continue:hover {
+  background: linear-gradient(135deg, #45a049 0%, #3d8b40 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(76, 175, 80, 0.4);
+}
+
+.btn-verify:disabled, .btn-submit:disabled, .btn-continue:disabled {
+  background: #cccccc;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* ✅ NIVEAU BUTTONS - ORIGINELE BLAUWE STYLING */
+.niveau-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin: 30px 0;
+}
+
+.btn-niveau {
+  background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);
+  color: white;
+  border: none;
+  border-radius: 15px;
+  padding: 20px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 10px rgba(33, 150, 243, 0.3);
+  text-align: left;
+}
+
+.btn-niveau:hover {
+  background: linear-gradient(135deg, #1976D2 0%, #1565C0 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(33, 150, 243, 0.4);
+}
+
+.btn-niveau.selected {
+  background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+  box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4);
+}
+
+/* ✅ ERROR/SUCCESS MESSAGES */
+.error-message {
+  background: linear-gradient(135deg, #f8d7da 0%, #f1aeb5 100%);
+  border: 3px solid #dc3545;
+  border-radius: 15px;
+  padding: 20px;
+  margin: 20px 0;
+  color: #721c24;
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  box-shadow: 0 3px 10px rgba(220, 53, 69, 0.3);
+}
+
+.success-message {
+  background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+  border: 3px solid #28a745;
+  border-radius: 15px;
+  padding: 20px;
+  margin: 20px 0;
+  color: #155724;
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  box-shadow: 0 3px 10px rgba(40, 167, 69, 0.3);
+}
+
+.success-message-enhanced {
+  background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+  border: 3px solid #28a745;
+  border-radius: 20px;
+  padding: 40px;
+  margin: 30px 0;
+  text-align: center;
+  box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
+  animation: successSlideIn 0.5s ease-out;
+}
+
+.success-animation {
+  font-size: 72px;
+  margin-bottom: 20px;
+  animation: bounceSuccess 2s ease-in-out infinite;
+}
+
+.success-message-enhanced h3 {
+  color: #155724;
+  margin-bottom: 20px;
+  font-size: 28px;
+}
+
+.countdown {
+  margin-top: 25px;
+  color: #6c757d;
+  font-size: 14px;
+}
+
+.countdown-bar {
+  width: 100%;
+  height: 4px;
+  background: #e9ecef;
+  border-radius: 2px;
+  margin-bottom: 10px;
+  overflow: hidden;
+  position: relative;
+}
+
+.countdown-bar::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  background: linear-gradient(90deg, #28a745, #20c997);
+  animation: countdownProgress 8s linear;
+}
+
+/* SUCCESS/ERROR MESSAGES HOME */
 .success-message-home {
   background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
   border: 3px solid #28a745;
@@ -182,131 +413,22 @@ body {
   border: 1px solid rgba(21, 87, 36, 0.2);
 }
 
-/* ✅ INFO FOOTER */
-.info-footer {
-  background: rgba(255,255,255,0.1);
-  border-radius: 15px;
-  padding: 25px;
-  color: white;
-  backdrop-filter: blur(10px);
-  margin-top: 40px;
-}
-
-.info-footer p {
-  margin: 8px 0;
-  line-height: 1.5;
-}
-
-/* ✅ FORM PAGES */
-.member-page, .non-member-form, .level-page, .assurance-page, .payment-page, .returning-visitor-choice, .returning-visitor-form {
-  background: white;
-  border-radius: 20px;
-  margin: 20px auto;
-  padding: 40px;
-  max-width: 600px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-  min-height: 70vh;
-}
-
-.returning-visitor-choice {
-  max-width: 900px;
-}
-
-.header-section {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 40px;
-  padding-bottom: 20px;
-  border-bottom: 2px solid #f0f0f0;
-}
-
-.header-section h2 {
-  color: #333;
-  font-size: 2rem;
-  font-weight: 600;
-}
-
-.btn-retour-accueil {
-  background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%);
-  color: white;
-  border: none;
-  border-radius: 15px;
-  padding: 12px 20px;
-  cursor: pointer;
-  font-size: 0.9rem;
-  font-weight: 500;
-  transition: all 0.3s ease;
-  box-shadow: 0 3px 10px rgba(108, 117, 125, 0.3);
-}
-
-.btn-retour-accueil:hover {
-  background: linear-gradient(135deg, #5a6268 0%, #495057 100%);
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(108, 117, 125, 0.4);
-}
-
-/* ✅ FORM ELEMENTS */
-.form-group {
-  margin-bottom: 25px;
+/* ✅ INFO SECTIONS */
+.info-section {
+  background: rgba(33, 150, 243, 0.1);
+  border-left: 4px solid #2196F3;
+  padding: 20px;
+  border-radius: 10px;
+  margin-top: 30px;
   text-align: left;
 }
 
-.form-group label {
-  display: block;
-  margin-bottom: 8px;
-  font-weight: 600;
+.info-section p {
+  margin: 5px 0;
   color: #333;
-  font-size: 1.1rem;
 }
 
-.form-group input, .form-group select, .form-group textarea {
-  width: 100%;
-  padding: 15px;
-  border: 2px solid #e0e0e0;
-  border-radius: 15px;
-  font-size: 1rem;
-  transition: all 0.3s ease;
-  background: #fafafa;
-}
-
-.form-group input:focus, .form-group select:focus, .form-group textarea:focus {
-  outline: none;
-  border-color: #4CAF50;
-  background: white;
-  box-shadow: 0 0 10px rgba(76, 175, 80, 0.2);
-}
-
-/* ✅ BUTTONS */
-.btn-verify, .btn-submit, .btn-continue {
-  background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
-  color: white;
-  border: none;
-  border-radius: 15px;
-  padding: 18px 30px;
-  font-size: 1.1rem;
-  font-weight: 600;
-  cursor: pointer;
-  width: 100%;
-  margin-top: 20px;
-  transition: all 0.3s ease;
-  box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
-}
-
-.btn-verify:hover, .btn-submit:hover, .btn-continue:hover {
-  background: linear-gradient(135deg, #45a049 0%, #3d8b40 100%);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(76, 175, 80, 0.4);
-}
-
-.btn-verify:disabled, .btn-submit:disabled, .btn-continue:disabled {
-  background: #cccccc;
-  cursor: not-allowed;
-  transform: none;
-  box-shadow: none;
-}
-
-/* ✅ RETURNING VISITOR CHOICE STYLING */
+/* ✅ NIEUWE COMPONENTS STYLING - MINIMAL */
 .choice-buttons {
   display: flex;
   gap: 30px;
@@ -358,93 +480,6 @@ body {
   font-size: 14px;
   color: #666;
   line-height: 1.4;
-}
-
-/* ✅ ERROR/SUCCESS MESSAGES ENHANCED */
-.error-message, .error-message-enhanced {
-  background: linear-gradient(135deg, #f8d7da 0%, #f1aeb5 100%);
-  border: 3px solid #dc3545;
-  border-radius: 15px;
-  padding: 20px;
-  margin: 20px 0;
-  color: #721c24;
-  display: flex;
-  align-items: flex-start;
-  gap: 15px;
-  box-shadow: 0 3px 10px rgba(220, 53, 69, 0.3);
-}
-
-.success-message-enhanced {
-  background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
-  border: 3px solid #28a745;
-  border-radius: 20px;
-  padding: 40px;
-  margin: 30px 0;
-  text-align: center;
-  box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
-  animation: successSlideIn 0.5s ease-out;
-}
-
-.success-animation {
-  font-size: 72px;
-  margin-bottom: 20px;
-  animation: bounceSuccess 2s ease-in-out infinite;
-}
-
-.success-message-enhanced h3 {
-  color: #155724;
-  margin-bottom: 20px;
-  font-size: 28px;
-}
-
-.countdown {
-  margin-top: 25px;
-  color: #6c757d;
-  font-size: 14px;
-}
-
-.countdown-bar {
-  width: 100%;
-  height: 4px;
-  background: #e9ecef;
-  border-radius: 2px;
-  margin-bottom: 10px;
-  overflow: hidden;
-  position: relative;
-}
-
-.countdown-bar::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0;
-  height: 100%;
-  background: linear-gradient(90deg, #28a745, #20c997);
-  animation: countdownProgress 8s linear;
-}
-
-/* ✅ INFO SECTIONS */
-.info-section {
-  background: rgba(33, 150, 243, 0.1);
-  border-left: 4px solid #2196F3;
-  padding: 20px;
-  border-radius: 10px;
-  margin-top: 30px;
-  text-align: left;
-}
-
-.info-section p {
-  margin: 5px 0;
-  color: #333;
-}
-
-.help-section {
-  background: rgba(108, 117, 125, 0.1);
-  border-left: 4px solid #6c757d;
-  padding: 20px;
-  border-radius: 10px;
-  margin-top: 30px;
-  text-align: center;
 }
 
 /* ✅ ANIMATIONS */
