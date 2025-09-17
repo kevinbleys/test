@@ -206,7 +206,7 @@ export default function AssurancePage() {
       <div className="action-buttons">
         <button 
           onClick={handleRetourNiveau}
-          className="btn-retour"
+          className="btn-continue"
           disabled={loading}
         >
           ← Retour Niveau
