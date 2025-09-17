@@ -1,5 +1,49 @@
 /* ✅ ORIGINELE STYLING VOLLEDIG HERSTELD */
 
+.assurance-page .checkbox-item {
+  background: white;
+  border: 2px solid #e0e0e0;
+  border-radius: 15px;
+  padding: 20px;
+  margin: 15px 0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+}
+
+.assurance-page .checkbox-item:hover {
+  border-color: #2196F3;
+  box-shadow: 0 4px 12px rgba(33, 150, 243, 0.2);
+  transform: translateY(-1px);
+}
+
+.assurance-page .checkbox-item input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  flex-shrink: 0;
+}
+
+.assurance-page .checkbox-item span {
+  flex: 1;
+  line-height: 1.4;
+  color: #333;
+}
+
+/* ALLEEN reglement link */
+.assurance-page .reglement-link {
+  color: #2196F3;
+  text-decoration: underline;
+  font-weight: 500;
+}
+
+.assurance-page .reglement-link:hover {
+  color: #1976D2;
+}
+
 * {
   margin: 0;
   padding: 0;
