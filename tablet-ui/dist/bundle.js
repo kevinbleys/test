@@ -9752,23 +9752,23 @@ const isIterable = (thing) => thing != null && isFunction(thing[iterator]);
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/dist/cjs.js!./src/components/Home.css":
-/*!***********************************************************************!*\
-  !*** ./node_modules/css-loader/dist/cjs.js!./src/components/Home.css ***!
-  \***********************************************************************/
+/***/ "./node_modules/css-loader/dist/cjs.js!./src/Styles.css":
+/*!**************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js!./src/Styles.css ***!
+  \**************************************************************/
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../node_modules/css-loader/dist/runtime/sourceMaps.js */ "./node_modules/css-loader/dist/runtime/sourceMaps.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../node_modules/css-loader/dist/runtime/sourceMaps.js */ "./node_modules/css-loader/dist/runtime/sourceMaps.js");
 /* harmony import */ var _node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
 /* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__);
 // Imports
 
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "/* Styles pour la page d'accueil */\r\n.home-container {\r\n  display: flex;\r\n  flex-direction: column;\r\n  align-items: center;\r\n  justify-content: center;\r\n  min-height: 100vh;\r\n  padding: 2rem;\r\n  background-color: #f8f9fa;\r\n}\r\n\r\n.home-container h1 {\r\n  margin-bottom: 3rem;\r\n  color: #343a40;\r\n  text-align: center;\r\n  font-size: 2.5rem;\r\n}\r\n\r\n.buttons-container {\r\n  display: flex;\r\n  flex-direction: column;\r\n  gap: 1.5rem;\r\n  width: 100%;\r\n  max-width: 400px;\r\n}\r\n\r\n.main-button {\r\n  padding: 1.5rem;\r\n  font-size: 1.2rem;\r\n  border: none;\r\n  border-radius: 10px;\r\n  cursor: pointer;\r\n  font-weight: bold;\r\n  transition: transform 0.2s, box-shadow 0.2s;\r\n}\r\n\r\n.main-button:hover {\r\n  transform: translateY(-5px);\r\n  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);\r\n}\r\n\r\n.member-button {\r\n  background-color: #4CAF50;\r\n  color: white;\r\n}\r\n\r\n.non-member-button {\r\n  background-color: #2196F3;\r\n  color: white;\r\n}\r\n\r\n.admin-link-container {\r\n  margin-top: 3rem;\r\n}\r\n\r\n.admin-link {\r\n  color: #6c757d;\r\n  background: none;\r\n  border: none;\r\n  text-decoration: underline;\r\n  cursor: pointer;\r\n  font-size: 14px;\r\n}\r\n\r\n.admin-link:hover {\r\n  color: #343a40;\r\n}\r\n\r\n/* Modal d'authentification admin */\r\n.admin-modal-overlay {\r\n  position: fixed;\r\n  top: 0;\r\n  left: 0;\r\n  width: 100%;\r\n  height: 100%;\r\n  background-color: rgba(0, 0, 0, 0.5);\r\n  display: flex;\r\n  justify-content: center;\r\n  align-items: center;\r\n  z-index: 1000;\r\n}\r\n\r\n.admin-modal {\r\n  background-color: white;\r\n  padding: 2rem;\r\n  border-radius: 10px;\r\n  width: 90%;\r\n  max-width: 400px;\r\n  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);\r\n}\r\n\r\n.admin-modal h2 {\r\n  margin-top: 0;\r\n  margin-bottom: 1rem;\r\n  color: #343a40;\r\n  text-align: center;\r\n}\r\n\r\n.admin-modal p {\r\n  margin-bottom: 1.5rem;\r\n  color: #6c757d;\r\n  text-align: center;\r\n}\r\n\r\n.admin-modal input {\r\n  width: 100%;\r\n  padding: 10px;\r\n  margin-bottom: 1.5rem;\r\n  border: 1px solid #ddd;\r\n  border-radius: 5px;\r\n  font-size: 16px;\r\n}\r\n\r\n.password-error {\r\n  color: #d32f2f;\r\n  margin-bottom: 1rem;\r\n  font-size: 14px;\r\n  text-align: center;\r\n}\r\n\r\n.modal-buttons {\r\n  display: flex;\r\n  justify-content: space-between;\r\n  gap: 1rem;\r\n}\r\n\r\n.modal-buttons button {\r\n  flex: 1;\r\n  padding: 10px;\r\n  border: none;\r\n  border-radius: 5px;\r\n  cursor: pointer;\r\n  font-weight: bold;\r\n}\r\n\r\n.modal-buttons button:first-child {\r\n  background-color: #f1f1f1;\r\n  color: #333;\r\n}\r\n\r\n.modal-buttons button:last-child {\r\n  background-color: #2196F3;\r\n  color: white;\r\n}\r\n\r\n/* Responsive adjustments */\r\n@media (max-width: 768px) {\r\n  .home-container h1 {\r\n    font-size: 2rem;\r\n  }\r\n  \r\n  .main-button {\r\n    padding: 1.2rem;\r\n    font-size: 1rem;\r\n  }\r\n}\r\n\r\n@media (max-width: 480px) {\r\n  .home-container {\r\n    padding: 1rem;\r\n  }\r\n  \r\n  .home-container h1 {\r\n    font-size: 1.8rem;\r\n    margin-bottom: 2rem;\r\n  }\r\n  \r\n  .buttons-container {\r\n    max-width: 300px;\r\n  }\r\n}\r\n", "",{"version":3,"sources":["webpack://./src/components/Home.css"],"names":[],"mappings":"AAAA,kCAAkC;AAClC;EACE,aAAa;EACb,sBAAsB;EACtB,mBAAmB;EACnB,uBAAuB;EACvB,iBAAiB;EACjB,aAAa;EACb,yBAAyB;AAC3B;;AAEA;EACE,mBAAmB;EACnB,cAAc;EACd,kBAAkB;EAClB,iBAAiB;AACnB;;AAEA;EACE,aAAa;EACb,sBAAsB;EACtB,WAAW;EACX,WAAW;EACX,gBAAgB;AAClB;;AAEA;EACE,eAAe;EACf,iBAAiB;EACjB,YAAY;EACZ,mBAAmB;EACnB,eAAe;EACf,iBAAiB;EACjB,2CAA2C;AAC7C;;AAEA;EACE,2BAA2B;EAC3B,yCAAyC;AAC3C;;AAEA;EACE,yBAAyB;EACzB,YAAY;AACd;;AAEA;EACE,yBAAyB;EACzB,YAAY;AACd;;AAEA;EACE,gBAAgB;AAClB;;AAEA;EACE,cAAc;EACd,gBAAgB;EAChB,YAAY;EACZ,0BAA0B;EAC1B,eAAe;EACf,eAAe;AACjB;;AAEA;EACE,cAAc;AAChB;;AAEA,mCAAmC;AACnC;EACE,eAAe;EACf,MAAM;EACN,OAAO;EACP,WAAW;EACX,YAAY;EACZ,oCAAoC;EACpC,aAAa;EACb,uBAAuB;EACvB,mBAAmB;EACnB,aAAa;AACf;;AAEA;EACE,uBAAuB;EACvB,aAAa;EACb,mBAAmB;EACnB,UAAU;EACV,gBAAgB;EAChB,yCAAyC;AAC3C;;AAEA;EACE,aAAa;EACb,mBAAmB;EACnB,cAAc;EACd,kBAAkB;AACpB;;AAEA;EACE,qBAAqB;EACrB,cAAc;EACd,kBAAkB;AACpB;;AAEA;EACE,WAAW;EACX,aAAa;EACb,qBAAqB;EACrB,sBAAsB;EACtB,kBAAkB;EAClB,eAAe;AACjB;;AAEA;EACE,cAAc;EACd,mBAAmB;EACnB,eAAe;EACf,kBAAkB;AACpB;;AAEA;EACE,aAAa;EACb,8BAA8B;EAC9B,SAAS;AACX;;AAEA;EACE,OAAO;EACP,aAAa;EACb,YAAY;EACZ,kBAAkB;EAClB,eAAe;EACf,iBAAiB;AACnB;;AAEA;EACE,yBAAyB;EACzB,WAAW;AACb;;AAEA;EACE,yBAAyB;EACzB,YAAY;AACd;;AAEA,2BAA2B;AAC3B;EACE;IACE,eAAe;EACjB;;EAEA;IACE,eAAe;IACf,eAAe;EACjB;AACF;;AAEA;EACE;IACE,aAAa;EACf;;EAEA;IACE,iBAAiB;IACjB,mBAAmB;EACrB;;EAEA;IACE,gBAAgB;EAClB;AACF","sourcesContent":["/* Styles pour la page d'accueil */\r\n.home-container {\r\n  display: flex;\r\n  flex-direction: column;\r\n  align-items: center;\r\n  justify-content: center;\r\n  min-height: 100vh;\r\n  padding: 2rem;\r\n  background-color: #f8f9fa;\r\n}\r\n\r\n.home-container h1 {\r\n  margin-bottom: 3rem;\r\n  color: #343a40;\r\n  text-align: center;\r\n  font-size: 2.5rem;\r\n}\r\n\r\n.buttons-container {\r\n  display: flex;\r\n  flex-direction: column;\r\n  gap: 1.5rem;\r\n  width: 100%;\r\n  max-width: 400px;\r\n}\r\n\r\n.main-button {\r\n  padding: 1.5rem;\r\n  font-size: 1.2rem;\r\n  border: none;\r\n  border-radius: 10px;\r\n  cursor: pointer;\r\n  font-weight: bold;\r\n  transition: transform 0.2s, box-shadow 0.2s;\r\n}\r\n\r\n.main-button:hover {\r\n  transform: translateY(-5px);\r\n  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);\r\n}\r\n\r\n.member-button {\r\n  background-color: #4CAF50;\r\n  color: white;\r\n}\r\n\r\n.non-member-button {\r\n  background-color: #2196F3;\r\n  color: white;\r\n}\r\n\r\n.admin-link-container {\r\n  margin-top: 3rem;\r\n}\r\n\r\n.admin-link {\r\n  color: #6c757d;\r\n  background: none;\r\n  border: none;\r\n  text-decoration: underline;\r\n  cursor: pointer;\r\n  font-size: 14px;\r\n}\r\n\r\n.admin-link:hover {\r\n  color: #343a40;\r\n}\r\n\r\n/* Modal d'authentification admin */\r\n.admin-modal-overlay {\r\n  position: fixed;\r\n  top: 0;\r\n  left: 0;\r\n  width: 100%;\r\n  height: 100%;\r\n  background-color: rgba(0, 0, 0, 0.5);\r\n  display: flex;\r\n  justify-content: center;\r\n  align-items: center;\r\n  z-index: 1000;\r\n}\r\n\r\n.admin-modal {\r\n  background-color: white;\r\n  padding: 2rem;\r\n  border-radius: 10px;\r\n  width: 90%;\r\n  max-width: 400px;\r\n  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);\r\n}\r\n\r\n.admin-modal h2 {\r\n  margin-top: 0;\r\n  margin-bottom: 1rem;\r\n  color: #343a40;\r\n  text-align: center;\r\n}\r\n\r\n.admin-modal p {\r\n  margin-bottom: 1.5rem;\r\n  color: #6c757d;\r\n  text-align: center;\r\n}\r\n\r\n.admin-modal input {\r\n  width: 100%;\r\n  padding: 10px;\r\n  margin-bottom: 1.5rem;\r\n  border: 1px solid #ddd;\r\n  border-radius: 5px;\r\n  font-size: 16px;\r\n}\r\n\r\n.password-error {\r\n  color: #d32f2f;\r\n  margin-bottom: 1rem;\r\n  font-size: 14px;\r\n  text-align: center;\r\n}\r\n\r\n.modal-buttons {\r\n  display: flex;\r\n  justify-content: space-between;\r\n  gap: 1rem;\r\n}\r\n\r\n.modal-buttons button {\r\n  flex: 1;\r\n  padding: 10px;\r\n  border: none;\r\n  border-radius: 5px;\r\n  cursor: pointer;\r\n  font-weight: bold;\r\n}\r\n\r\n.modal-buttons button:first-child {\r\n  background-color: #f1f1f1;\r\n  color: #333;\r\n}\r\n\r\n.modal-buttons button:last-child {\r\n  background-color: #2196F3;\r\n  color: white;\r\n}\r\n\r\n/* Responsive adjustments */\r\n@media (max-width: 768px) {\r\n  .home-container h1 {\r\n    font-size: 2rem;\r\n  }\r\n  \r\n  .main-button {\r\n    padding: 1.2rem;\r\n    font-size: 1rem;\r\n  }\r\n}\r\n\r\n@media (max-width: 480px) {\r\n  .home-container {\r\n    padding: 1rem;\r\n  }\r\n  \r\n  .home-container h1 {\r\n    font-size: 1.8rem;\r\n    margin-bottom: 2rem;\r\n  }\r\n  \r\n  .buttons-container {\r\n    max-width: 300px;\r\n  }\r\n}\r\n"],"sourceRoot":""}]);
+___CSS_LOADER_EXPORT___.push([module.id, "/* ✅ ORIGINELE STYLING VOLLEDIG HERSTELD */\n\n.assurance-page .checkbox-item {\n  background: white;\n  border: 2px solid #e0e0e0;\n  border-radius: 15px;\n  padding: 20px;\n  margin: 15px 0;\n  cursor: pointer;\n  transition: all 0.3s ease;\n  box-shadow: 0 2px 8px rgba(0,0,0,0.1);\n  display: flex;\n  align-items: flex-start;\n  gap: 15px;\n}\n\n.assurance-page .checkbox-item:hover {\n  border-color: #2196F3;\n  box-shadow: 0 4px 12px rgba(33, 150, 243, 0.2);\n  transform: translateY(-1px);\n}\n\n.assurance-page .checkbox-item input[type=\"checkbox\"] {\n  width: 20px;\n  height: 20px;\n  margin: 0;\n  flex-shrink: 0;\n}\n\n.assurance-page .checkbox-item span {\n  flex: 1;\n  line-height: 1.4;\n  color: #333;\n}\n\n/* ALLEEN reglement link */\n.assurance-page .reglement-link {\n  color: #2196F3;\n  text-decoration: underline;\n  font-weight: 500;\n}\n\n.assurance-page .reglement-link:hover {\n  color: #1976D2;\n}\n\n* {\n  margin: 0;\n  padding: 0;\n  box-sizing: border-box;\n}\n\nbody {\n  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',\n    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',\n    sans-serif;\n  -webkit-font-smoothing: antialiased;\n  -moz-osx-font-smoothing: grayscale;\n  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);\n  min-height: 100vh;\n}\n\n.App {\n  text-align: center;\n  min-height: 100vh;\n}\n\n/* ✅ ORIGINELE HOME PAGE STYLING */\n.home-page {\n  padding: 40px 20px;\n  max-width: 1200px;\n  margin: 0 auto;\n  min-height: 100vh;\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n}\n\n.header {\n  margin-bottom: 60px;\n}\n\n.header h1 {\n  color: white;\n  font-size: 3rem;\n  margin-bottom: 20px;\n  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);\n  font-weight: 700;\n}\n\n.header p {\n  color: rgba(255,255,255,0.9);\n  font-size: 1.2rem;\n  text-shadow: 1px 1px 2px rgba(0,0,0,0.3);\n}\n\n/* ✅ ORIGINELE GROENE/BLAUWE HOOFDKNOPPEN */\n.main-choices {\n  display: flex;\n  gap: 40px;\n  justify-content: center;\n  margin: 60px 0;\n  flex-wrap: wrap;\n}\n\n.btn-main {\n  background: white;\n  border: none;\n  border-radius: 20px;\n  padding: 40px 30px;\n  min-width: 300px;\n  cursor: pointer;\n  box-shadow: 0 10px 30px rgba(0,0,0,0.2);\n  transition: all 0.3s ease;\n  text-align: center;\n}\n\n.btn-main:hover {\n  transform: translateY(-5px);\n  box-shadow: 0 15px 40px rgba(0,0,0,0.3);\n}\n\n.btn-main.btn-member {\n  background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);\n  color: white;\n}\n\n.btn-main.btn-member:hover {\n  background: linear-gradient(135deg, #45a049 0%, #3d8b40 100%);\n}\n\n.btn-main.btn-non-member {\n  background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);\n  color: white;\n}\n\n.btn-main.btn-non-member:hover {\n  background: linear-gradient(135deg, #1976D2 0%, #1565C0 100%);\n}\n\n.btn-icon {\n  font-size: 3rem;\n  margin-bottom: 20px;\n  display: block;\n}\n\n.btn-title {\n  font-size: 1.4rem;\n  font-weight: bold;\n  margin-bottom: 15px;\n  line-height: 1.3;\n}\n\n.btn-description {\n  font-size: 1rem;\n  opacity: 0.9;\n  line-height: 1.4;\n}\n\n/* ✅ INFO FOOTER */\n.info-footer {\n  background: rgba(255,255,255,0.1);\n  border-radius: 15px;\n  padding: 25px;\n  color: white;\n  backdrop-filter: blur(10px);\n  margin-top: 40px;\n}\n\n.info-footer p {\n  margin: 8px 0;\n  line-height: 1.5;\n}\n\n/* ✅ FORM PAGES - ORIGINELE STYLING */\n.member-page, .non-member-form, .level-page, .assurance-page, .payment-page, .returning-visitor-choice, .returning-visitor-form {\n  background: white;\n  border-radius: 20px;\n  margin: 20px auto;\n  padding: 40px;\n  max-width: 600px;\n  box-shadow: 0 10px 30px rgba(0,0,0,0.2);\n  min-height: 70vh;\n}\n\n.returning-visitor-choice {\n  max-width: 900px;\n}\n\n.header-section {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  margin-bottom: 40px;\n  padding-bottom: 20px;\n  border-bottom: 2px solid #f0f0f0;\n}\n\n.header-section h2 {\n  color: #333;\n  font-size: 2rem;\n  font-weight: 600;\n}\n\n.btn-retour-accueil {\n  background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%);\n  color: white;\n  border: none;\n  border-radius: 15px;\n  padding: 12px 20px;\n  cursor: pointer;\n  font-size: 0.9rem;\n  font-weight: 500;\n  transition: all 0.3s ease;\n  box-shadow: 0 3px 10px rgba(108, 117, 125, 0.3);\n}\n\n.btn-retour-accueil:hover {\n  background: linear-gradient(135deg, #5a6268 0%, #495057 100%);\n  transform: translateY(-2px);\n  box-shadow: 0 5px 15px rgba(108, 117, 125, 0.4);\n}\n\n/* ✅ FORM ELEMENTS - ORIGINELE STYLING */\n.form-group {\n  margin-bottom: 25px;\n  text-align: left;\n}\n\n.form-group label {\n  display: block;\n  margin-bottom: 8px;\n  font-weight: 600;\n  color: #333;\n  font-size: 1.1rem;\n}\n\n.form-group input, .form-group select, .form-group textarea {\n  width: 100%;\n  padding: 15px;\n  border: 2px solid #e0e0e0;\n  border-radius: 15px;\n  font-size: 1rem;\n  transition: all 0.3s ease;\n  background: #fafafa;\n}\n\n.form-group input:focus, .form-group select:focus, .form-group textarea:focus {\n  outline: none;\n  border-color: #4CAF50;\n  background: white;\n  box-shadow: 0 0 10px rgba(76, 175, 80, 0.2);\n}\n\n/* ✅ BUTTONS - ORIGINELE GROENE/BLAUWE STYLING */\n.btn-verify, .btn-submit, .btn-continue {\n  background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);\n  color: white;\n  border: none;\n  border-radius: 15px;\n  padding: 18px 30px;\n  font-size: 1.1rem;\n  font-weight: 600;\n  cursor: pointer;\n  width: 100%;\n  margin-top: 20px;\n  transition: all 0.3s ease;\n  box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);\n}\n\n.btn-verify:hover, .btn-submit:hover, .btn-continue:hover {\n  background: linear-gradient(135deg, #45a049 0%, #3d8b40 100%);\n  transform: translateY(-2px);\n  box-shadow: 0 8px 20px rgba(76, 175, 80, 0.4);\n}\n\n.btn-verify:disabled, .btn-submit:disabled, .btn-continue:disabled {\n  background: #cccccc;\n  cursor: not-allowed;\n  transform: none;\n  box-shadow: none;\n}\n\n/* ✅ NIVEAU BUTTONS - ORIGINELE BLAUWE STYLING */\n.niveau-buttons {\n  display: flex;\n  flex-direction: column;\n  gap: 15px;\n  margin: 30px 0;\n}\n\n.btn-niveau {\n  background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);\n  color: white;\n  border: none;\n  border-radius: 15px;\n  padding: 20px;\n  font-size: 1.1rem;\n  cursor: pointer;\n  transition: all 0.3s ease;\n  box-shadow: 0 3px 10px rgba(33, 150, 243, 0.3);\n  text-align: left;\n}\n\n.btn-niveau:hover {\n  background: linear-gradient(135deg, #1976D2 0%, #1565C0 100%);\n  transform: translateY(-2px);\n  box-shadow: 0 5px 15px rgba(33, 150, 243, 0.4);\n}\n\n.btn-niveau.selected {\n  background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);\n  box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4);\n}\n\n/* ✅ ERROR/SUCCESS MESSAGES */\n.error-message {\n  background: linear-gradient(135deg, #f8d7da 0%, #f1aeb5 100%);\n  border: 3px solid #dc3545;\n  border-radius: 15px;\n  padding: 20px;\n  margin: 20px 0;\n  color: #721c24;\n  display: flex;\n  align-items: flex-start;\n  gap: 15px;\n  box-shadow: 0 3px 10px rgba(220, 53, 69, 0.3);\n}\n\n.success-message {\n  background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);\n  border: 3px solid #28a745;\n  border-radius: 15px;\n  padding: 20px;\n  margin: 20px 0;\n  color: #155724;\n  display: flex;\n  align-items: flex-start;\n  gap: 15px;\n  box-shadow: 0 3px 10px rgba(40, 167, 69, 0.3);\n}\n\n.success-message-enhanced {\n  background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);\n  border: 3px solid #28a745;\n  border-radius: 20px;\n  padding: 40px;\n  margin: 30px 0;\n  text-align: center;\n  box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);\n  animation: successSlideIn 0.5s ease-out;\n}\n\n.success-animation {\n  font-size: 72px;\n  margin-bottom: 20px;\n  animation: bounceSuccess 2s ease-in-out infinite;\n}\n\n.success-message-enhanced h3 {\n  color: #155724;\n  margin-bottom: 20px;\n  font-size: 28px;\n}\n\n.countdown {\n  margin-top: 25px;\n  color: #6c757d;\n  font-size: 14px;\n}\n\n.countdown-bar {\n  width: 100%;\n  height: 4px;\n  background: #e9ecef;\n  border-radius: 2px;\n  margin-bottom: 10px;\n  overflow: hidden;\n  position: relative;\n}\n\n.countdown-bar::after {\n  content: '';\n  position: absolute;\n  left: 0;\n  top: 0;\n  height: 100%;\n  background: linear-gradient(90deg, #28a745, #20c997);\n  animation: countdownProgress 8s linear;\n}\n\n/* SUCCESS/ERROR MESSAGES HOME */\n.success-message-home {\n  background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);\n  border: 3px solid #28a745;\n  border-radius: 20px;\n  padding: 30px;\n  margin: 30px 0;\n  display: flex;\n  align-items: center;\n  gap: 20px;\n  box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);\n  animation: slideInFromTop 0.6s ease-out;\n}\n\n.success-message-home.member-verified {\n  background: linear-gradient(135deg, #cce7ff 0%, #b3d9ff 100%);\n  border-color: #007bff;\n  box-shadow: 0 5px 15px rgba(0, 123, 255, 0.3);\n}\n\n.success-message-home.payment-confirmed {\n  background: linear-gradient(135deg, #fff4cd 0%, #ffeaa7 100%);\n  border-color: #ffc107;\n  box-shadow: 0 5px 15px rgba(255, 193, 7, 0.3);\n}\n\n.error-message-home {\n  background: linear-gradient(135deg, #f8d7da 0%, #f1aeb5 100%);\n  border: 3px solid #dc3545;\n  border-radius: 20px;\n  padding: 30px;\n  margin: 30px 0;\n  display: flex;\n  align-items: center;\n  gap: 20px;\n  box-shadow: 0 5px 15px rgba(220, 53, 69, 0.3);\n  animation: shakeError 0.6s ease-in-out;\n}\n\n.success-icon, .error-icon {\n  font-size: 48px;\n  flex-shrink: 0;\n}\n\n.success-content, .error-content {\n  flex: 1;\n  text-align: left;\n}\n\n.success-content strong {\n  display: block;\n  font-size: 22px;\n  margin-bottom: 10px;\n  color: #155724;\n}\n\n.badge {\n  display: inline-block;\n  background: rgba(21, 87, 36, 0.1);\n  color: #155724;\n  padding: 8px 16px;\n  border-radius: 15px;\n  font-size: 14px;\n  font-weight: bold;\n  margin-top: 15px;\n  border: 1px solid rgba(21, 87, 36, 0.2);\n}\n\n/* ✅ INFO SECTIONS */\n.info-section {\n  background: rgba(33, 150, 243, 0.1);\n  border-left: 4px solid #2196F3;\n  padding: 20px;\n  border-radius: 10px;\n  margin-top: 30px;\n  text-align: left;\n}\n\n.info-section p {\n  margin: 5px 0;\n  color: #333;\n}\n\n/* ✅ NIEUWE COMPONENTS STYLING - MINIMAL */\n.choice-buttons {\n  display: flex;\n  gap: 30px;\n  justify-content: center;\n  margin: 40px 0;\n}\n\n.btn-choice {\n  flex: 1;\n  max-width: 350px;\n  padding: 30px;\n  background: white;\n  border: 3px solid #e0e0e0;\n  border-radius: 20px;\n  cursor: pointer;\n  transition: all 0.3s ease;\n  text-align: center;\n  box-shadow: 0 5px 15px rgba(0,0,0,0.1);\n}\n\n.btn-choice:hover {\n  transform: translateY(-5px);\n  box-shadow: 0 10px 25px rgba(0,0,0,0.2);\n}\n\n.btn-choice.btn-returning:hover {\n  background: linear-gradient(135deg, #e8f5e8 0%, #d4edda 100%);\n  border-color: #28a745;\n}\n\n.btn-choice.btn-first-visit:hover {\n  background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);\n  border-color: #2196F3;\n}\n\n.choice-icon {\n  font-size: 48px;\n  margin-bottom: 15px;\n}\n\n.choice-title {\n  font-size: 18px;\n  font-weight: bold;\n  margin-bottom: 10px;\n  color: #333;\n}\n\n.choice-description {\n  font-size: 14px;\n  color: #666;\n  line-height: 1.4;\n}\n\n/* ✅ ANIMATIONS */\n@keyframes successSlideIn {\n  from {\n    transform: translateY(-20px);\n    opacity: 0;\n  }\n  to {\n    transform: translateY(0);\n    opacity: 1;\n  }\n}\n\n@keyframes bounceSuccess {\n  0%, 100% { \n    transform: scale(1) rotate(0deg); \n  }\n  25% { \n    transform: scale(1.1) rotate(-5deg); \n  }\n  75% { \n    transform: scale(1.1) rotate(5deg); \n  }\n}\n\n@keyframes countdownProgress {\n  from { \n    width: 0%; \n  }\n  to { \n    width: 100%; \n  }\n}\n\n@keyframes slideInFromTop {\n  from {\n    transform: translateY(-100px);\n    opacity: 0;\n  }\n  to {\n    transform: translateY(0);\n    opacity: 1;\n  }\n}\n\n@keyframes shakeError {\n  0%, 100% { transform: translateX(0); }\n  25% { transform: translateX(-8px); }\n  75% { transform: translateX(8px); }\n}\n\n/* ✅ RESPONSIVE DESIGN */\n@media (max-width: 768px) {\n  .main-choices {\n    flex-direction: column;\n    gap: 20px;\n  }\n\n  .btn-main {\n    min-width: auto;\n    max-width: 400px;\n  }\n\n  .choice-buttons {\n    flex-direction: column;\n    gap: 20px;\n  }\n\n  .btn-choice {\n    max-width: none;\n  }\n\n  .success-message-home,\n  .error-message-home {\n    flex-direction: column;\n    text-align: center;\n    padding: 25px;\n  }\n\n  .success-icon,\n  .error-icon {\n    font-size: 36px;\n  }\n\n  .success-animation {\n    font-size: 56px;\n  }\n\n  .header h1 {\n    font-size: 2.2rem;\n  }\n\n  .header p {\n    font-size: 1rem;\n  }\n}\n\n@media (max-width: 480px) {\n  .home-page {\n    padding: 20px 15px;\n  }\n\n  .member-page, .non-member-form, .level-page, .assurance-page, .payment-page, .returning-visitor-choice, .returning-visitor-form {\n    margin: 10px;\n    padding: 25px 20px;\n  }\n\n  .header-section {\n    flex-direction: column;\n    gap: 15px;\n    text-align: center;\n  }\n\n  .main-choices {\n    gap: 15px;\n  }\n\n  .btn-main {\n    padding: 25px 20px;\n  }\n\n  .btn-icon {\n    font-size: 2.5rem;\n  }\n\n  .btn-title {\n    font-size: 1.2rem;\n  }\n}", "",{"version":3,"sources":["webpack://./src/Styles.css"],"names":[],"mappings":"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","sourcesContent":["/* ✅ ORIGINELE STYLING VOLLEDIG HERSTELD */\n\n.assurance-page .checkbox-item {\n  background: white;\n  border: 2px solid #e0e0e0;\n  border-radius: 15px;\n  padding: 20px;\n  margin: 15px 0;\n  cursor: pointer;\n  transition: all 0.3s ease;\n  box-shadow: 0 2px 8px rgba(0,0,0,0.1);\n  display: flex;\n  align-items: flex-start;\n  gap: 15px;\n}\n\n.assurance-page .checkbox-item:hover {\n  border-color: #2196F3;\n  box-shadow: 0 4px 12px rgba(33, 150, 243, 0.2);\n  transform: translateY(-1px);\n}\n\n.assurance-page .checkbox-item input[type=\"checkbox\"] {\n  width: 20px;\n  height: 20px;\n  margin: 0;\n  flex-shrink: 0;\n}\n\n.assurance-page .checkbox-item span {\n  flex: 1;\n  line-height: 1.4;\n  color: #333;\n}\n\n/* ALLEEN reglement link */\n.assurance-page .reglement-link {\n  color: #2196F3;\n  text-decoration: underline;\n  font-weight: 500;\n}\n\n.assurance-page .reglement-link:hover {\n  color: #1976D2;\n}\n\n* {\n  margin: 0;\n  padding: 0;\n  box-sizing: border-box;\n}\n\nbody {\n  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',\n    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',\n    sans-serif;\n  -webkit-font-smoothing: antialiased;\n  -moz-osx-font-smoothing: grayscale;\n  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);\n  min-height: 100vh;\n}\n\n.App {\n  text-align: center;\n  min-height: 100vh;\n}\n\n/* ✅ ORIGINELE HOME PAGE STYLING */\n.home-page {\n  padding: 40px 20px;\n  max-width: 1200px;\n  margin: 0 auto;\n  min-height: 100vh;\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n}\n\n.header {\n  margin-bottom: 60px;\n}\n\n.header h1 {\n  color: white;\n  font-size: 3rem;\n  margin-bottom: 20px;\n  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);\n  font-weight: 700;\n}\n\n.header p {\n  color: rgba(255,255,255,0.9);\n  font-size: 1.2rem;\n  text-shadow: 1px 1px 2px rgba(0,0,0,0.3);\n}\n\n/* ✅ ORIGINELE GROENE/BLAUWE HOOFDKNOPPEN */\n.main-choices {\n  display: flex;\n  gap: 40px;\n  justify-content: center;\n  margin: 60px 0;\n  flex-wrap: wrap;\n}\n\n.btn-main {\n  background: white;\n  border: none;\n  border-radius: 20px;\n  padding: 40px 30px;\n  min-width: 300px;\n  cursor: pointer;\n  box-shadow: 0 10px 30px rgba(0,0,0,0.2);\n  transition: all 0.3s ease;\n  text-align: center;\n}\n\n.btn-main:hover {\n  transform: translateY(-5px);\n  box-shadow: 0 15px 40px rgba(0,0,0,0.3);\n}\n\n.btn-main.btn-member {\n  background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);\n  color: white;\n}\n\n.btn-main.btn-member:hover {\n  background: linear-gradient(135deg, #45a049 0%, #3d8b40 100%);\n}\n\n.btn-main.btn-non-member {\n  background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);\n  color: white;\n}\n\n.btn-main.btn-non-member:hover {\n  background: linear-gradient(135deg, #1976D2 0%, #1565C0 100%);\n}\n\n.btn-icon {\n  font-size: 3rem;\n  margin-bottom: 20px;\n  display: block;\n}\n\n.btn-title {\n  font-size: 1.4rem;\n  font-weight: bold;\n  margin-bottom: 15px;\n  line-height: 1.3;\n}\n\n.btn-description {\n  font-size: 1rem;\n  opacity: 0.9;\n  line-height: 1.4;\n}\n\n/* ✅ INFO FOOTER */\n.info-footer {\n  background: rgba(255,255,255,0.1);\n  border-radius: 15px;\n  padding: 25px;\n  color: white;\n  backdrop-filter: blur(10px);\n  margin-top: 40px;\n}\n\n.info-footer p {\n  margin: 8px 0;\n  line-height: 1.5;\n}\n\n/* ✅ FORM PAGES - ORIGINELE STYLING */\n.member-page, .non-member-form, .level-page, .assurance-page, .payment-page, .returning-visitor-choice, .returning-visitor-form {\n  background: white;\n  border-radius: 20px;\n  margin: 20px auto;\n  padding: 40px;\n  max-width: 600px;\n  box-shadow: 0 10px 30px rgba(0,0,0,0.2);\n  min-height: 70vh;\n}\n\n.returning-visitor-choice {\n  max-width: 900px;\n}\n\n.header-section {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  margin-bottom: 40px;\n  padding-bottom: 20px;\n  border-bottom: 2px solid #f0f0f0;\n}\n\n.header-section h2 {\n  color: #333;\n  font-size: 2rem;\n  font-weight: 600;\n}\n\n.btn-retour-accueil {\n  background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%);\n  color: white;\n  border: none;\n  border-radius: 15px;\n  padding: 12px 20px;\n  cursor: pointer;\n  font-size: 0.9rem;\n  font-weight: 500;\n  transition: all 0.3s ease;\n  box-shadow: 0 3px 10px rgba(108, 117, 125, 0.3);\n}\n\n.btn-retour-accueil:hover {\n  background: linear-gradient(135deg, #5a6268 0%, #495057 100%);\n  transform: translateY(-2px);\n  box-shadow: 0 5px 15px rgba(108, 117, 125, 0.4);\n}\n\n/* ✅ FORM ELEMENTS - ORIGINELE STYLING */\n.form-group {\n  margin-bottom: 25px;\n  text-align: left;\n}\n\n.form-group label {\n  display: block;\n  margin-bottom: 8px;\n  font-weight: 600;\n  color: #333;\n  font-size: 1.1rem;\n}\n\n.form-group input, .form-group select, .form-group textarea {\n  width: 100%;\n  padding: 15px;\n  border: 2px solid #e0e0e0;\n  border-radius: 15px;\n  font-size: 1rem;\n  transition: all 0.3s ease;\n  background: #fafafa;\n}\n\n.form-group input:focus, .form-group select:focus, .form-group textarea:focus {\n  outline: none;\n  border-color: #4CAF50;\n  background: white;\n  box-shadow: 0 0 10px rgba(76, 175, 80, 0.2);\n}\n\n/* ✅ BUTTONS - ORIGINELE GROENE/BLAUWE STYLING */\n.btn-verify, .btn-submit, .btn-continue {\n  background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);\n  color: white;\n  border: none;\n  border-radius: 15px;\n  padding: 18px 30px;\n  font-size: 1.1rem;\n  font-weight: 600;\n  cursor: pointer;\n  width: 100%;\n  margin-top: 20px;\n  transition: all 0.3s ease;\n  box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);\n}\n\n.btn-verify:hover, .btn-submit:hover, .btn-continue:hover {\n  background: linear-gradient(135deg, #45a049 0%, #3d8b40 100%);\n  transform: translateY(-2px);\n  box-shadow: 0 8px 20px rgba(76, 175, 80, 0.4);\n}\n\n.btn-verify:disabled, .btn-submit:disabled, .btn-continue:disabled {\n  background: #cccccc;\n  cursor: not-allowed;\n  transform: none;\n  box-shadow: none;\n}\n\n/* ✅ NIVEAU BUTTONS - ORIGINELE BLAUWE STYLING */\n.niveau-buttons {\n  display: flex;\n  flex-direction: column;\n  gap: 15px;\n  margin: 30px 0;\n}\n\n.btn-niveau {\n  background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);\n  color: white;\n  border: none;\n  border-radius: 15px;\n  padding: 20px;\n  font-size: 1.1rem;\n  cursor: pointer;\n  transition: all 0.3s ease;\n  box-shadow: 0 3px 10px rgba(33, 150, 243, 0.3);\n  text-align: left;\n}\n\n.btn-niveau:hover {\n  background: linear-gradient(135deg, #1976D2 0%, #1565C0 100%);\n  transform: translateY(-2px);\n  box-shadow: 0 5px 15px rgba(33, 150, 243, 0.4);\n}\n\n.btn-niveau.selected {\n  background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);\n  box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4);\n}\n\n/* ✅ ERROR/SUCCESS MESSAGES */\n.error-message {\n  background: linear-gradient(135deg, #f8d7da 0%, #f1aeb5 100%);\n  border: 3px solid #dc3545;\n  border-radius: 15px;\n  padding: 20px;\n  margin: 20px 0;\n  color: #721c24;\n  display: flex;\n  align-items: flex-start;\n  gap: 15px;\n  box-shadow: 0 3px 10px rgba(220, 53, 69, 0.3);\n}\n\n.success-message {\n  background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);\n  border: 3px solid #28a745;\n  border-radius: 15px;\n  padding: 20px;\n  margin: 20px 0;\n  color: #155724;\n  display: flex;\n  align-items: flex-start;\n  gap: 15px;\n  box-shadow: 0 3px 10px rgba(40, 167, 69, 0.3);\n}\n\n.success-message-enhanced {\n  background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);\n  border: 3px solid #28a745;\n  border-radius: 20px;\n  padding: 40px;\n  margin: 30px 0;\n  text-align: center;\n  box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);\n  animation: successSlideIn 0.5s ease-out;\n}\n\n.success-animation {\n  font-size: 72px;\n  margin-bottom: 20px;\n  animation: bounceSuccess 2s ease-in-out infinite;\n}\n\n.success-message-enhanced h3 {\n  color: #155724;\n  margin-bottom: 20px;\n  font-size: 28px;\n}\n\n.countdown {\n  margin-top: 25px;\n  color: #6c757d;\n  font-size: 14px;\n}\n\n.countdown-bar {\n  width: 100%;\n  height: 4px;\n  background: #e9ecef;\n  border-radius: 2px;\n  margin-bottom: 10px;\n  overflow: hidden;\n  position: relative;\n}\n\n.countdown-bar::after {\n  content: '';\n  position: absolute;\n  left: 0;\n  top: 0;\n  height: 100%;\n  background: linear-gradient(90deg, #28a745, #20c997);\n  animation: countdownProgress 8s linear;\n}\n\n/* SUCCESS/ERROR MESSAGES HOME */\n.success-message-home {\n  background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);\n  border: 3px solid #28a745;\n  border-radius: 20px;\n  padding: 30px;\n  margin: 30px 0;\n  display: flex;\n  align-items: center;\n  gap: 20px;\n  box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);\n  animation: slideInFromTop 0.6s ease-out;\n}\n\n.success-message-home.member-verified {\n  background: linear-gradient(135deg, #cce7ff 0%, #b3d9ff 100%);\n  border-color: #007bff;\n  box-shadow: 0 5px 15px rgba(0, 123, 255, 0.3);\n}\n\n.success-message-home.payment-confirmed {\n  background: linear-gradient(135deg, #fff4cd 0%, #ffeaa7 100%);\n  border-color: #ffc107;\n  box-shadow: 0 5px 15px rgba(255, 193, 7, 0.3);\n}\n\n.error-message-home {\n  background: linear-gradient(135deg, #f8d7da 0%, #f1aeb5 100%);\n  border: 3px solid #dc3545;\n  border-radius: 20px;\n  padding: 30px;\n  margin: 30px 0;\n  display: flex;\n  align-items: center;\n  gap: 20px;\n  box-shadow: 0 5px 15px rgba(220, 53, 69, 0.3);\n  animation: shakeError 0.6s ease-in-out;\n}\n\n.success-icon, .error-icon {\n  font-size: 48px;\n  flex-shrink: 0;\n}\n\n.success-content, .error-content {\n  flex: 1;\n  text-align: left;\n}\n\n.success-content strong {\n  display: block;\n  font-size: 22px;\n  margin-bottom: 10px;\n  color: #155724;\n}\n\n.badge {\n  display: inline-block;\n  background: rgba(21, 87, 36, 0.1);\n  color: #155724;\n  padding: 8px 16px;\n  border-radius: 15px;\n  font-size: 14px;\n  font-weight: bold;\n  margin-top: 15px;\n  border: 1px solid rgba(21, 87, 36, 0.2);\n}\n\n/* ✅ INFO SECTIONS */\n.info-section {\n  background: rgba(33, 150, 243, 0.1);\n  border-left: 4px solid #2196F3;\n  padding: 20px;\n  border-radius: 10px;\n  margin-top: 30px;\n  text-align: left;\n}\n\n.info-section p {\n  margin: 5px 0;\n  color: #333;\n}\n\n/* ✅ NIEUWE COMPONENTS STYLING - MINIMAL */\n.choice-buttons {\n  display: flex;\n  gap: 30px;\n  justify-content: center;\n  margin: 40px 0;\n}\n\n.btn-choice {\n  flex: 1;\n  max-width: 350px;\n  padding: 30px;\n  background: white;\n  border: 3px solid #e0e0e0;\n  border-radius: 20px;\n  cursor: pointer;\n  transition: all 0.3s ease;\n  text-align: center;\n  box-shadow: 0 5px 15px rgba(0,0,0,0.1);\n}\n\n.btn-choice:hover {\n  transform: translateY(-5px);\n  box-shadow: 0 10px 25px rgba(0,0,0,0.2);\n}\n\n.btn-choice.btn-returning:hover {\n  background: linear-gradient(135deg, #e8f5e8 0%, #d4edda 100%);\n  border-color: #28a745;\n}\n\n.btn-choice.btn-first-visit:hover {\n  background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);\n  border-color: #2196F3;\n}\n\n.choice-icon {\n  font-size: 48px;\n  margin-bottom: 15px;\n}\n\n.choice-title {\n  font-size: 18px;\n  font-weight: bold;\n  margin-bottom: 10px;\n  color: #333;\n}\n\n.choice-description {\n  font-size: 14px;\n  color: #666;\n  line-height: 1.4;\n}\n\n/* ✅ ANIMATIONS */\n@keyframes successSlideIn {\n  from {\n    transform: translateY(-20px);\n    opacity: 0;\n  }\n  to {\n    transform: translateY(0);\n    opacity: 1;\n  }\n}\n\n@keyframes bounceSuccess {\n  0%, 100% { \n    transform: scale(1) rotate(0deg); \n  }\n  25% { \n    transform: scale(1.1) rotate(-5deg); \n  }\n  75% { \n    transform: scale(1.1) rotate(5deg); \n  }\n}\n\n@keyframes countdownProgress {\n  from { \n    width: 0%; \n  }\n  to { \n    width: 100%; \n  }\n}\n\n@keyframes slideInFromTop {\n  from {\n    transform: translateY(-100px);\n    opacity: 0;\n  }\n  to {\n    transform: translateY(0);\n    opacity: 1;\n  }\n}\n\n@keyframes shakeError {\n  0%, 100% { transform: translateX(0); }\n  25% { transform: translateX(-8px); }\n  75% { transform: translateX(8px); }\n}\n\n/* ✅ RESPONSIVE DESIGN */\n@media (max-width: 768px) {\n  .main-choices {\n    flex-direction: column;\n    gap: 20px;\n  }\n\n  .btn-main {\n    min-width: auto;\n    max-width: 400px;\n  }\n\n  .choice-buttons {\n    flex-direction: column;\n    gap: 20px;\n  }\n\n  .btn-choice {\n    max-width: none;\n  }\n\n  .success-message-home,\n  .error-message-home {\n    flex-direction: column;\n    text-align: center;\n    padding: 25px;\n  }\n\n  .success-icon,\n  .error-icon {\n    font-size: 36px;\n  }\n\n  .success-animation {\n    font-size: 56px;\n  }\n\n  .header h1 {\n    font-size: 2.2rem;\n  }\n\n  .header p {\n    font-size: 1rem;\n  }\n}\n\n@media (max-width: 480px) {\n  .home-page {\n    padding: 20px 15px;\n  }\n\n  .member-page, .non-member-form, .level-page, .assurance-page, .payment-page, .returning-visitor-choice, .returning-visitor-form {\n    margin: 10px;\n    padding: 25px 20px;\n  }\n\n  .header-section {\n    flex-direction: column;\n    gap: 15px;\n    text-align: center;\n  }\n\n  .main-choices {\n    gap: 15px;\n  }\n\n  .btn-main {\n    padding: 25px 20px;\n  }\n\n  .btn-icon {\n    font-size: 2.5rem;\n  }\n\n  .btn-title {\n    font-size: 1.2rem;\n  }\n}"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ __webpack_exports__["default"] = (___CSS_LOADER_EXPORT___);
 
@@ -9791,7 +9791,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "/* ===== ORIGINELE STYLES BEHOUDEN ===== */\n\n/* Styles améliorés pour la section header */\n.header-section {\n display: flex;\n justify-content: space-between;\n align-items: center;\n margin-bottom: 30px;\n padding-bottom: 15px;\n border-bottom: 2px solid #e0e0e0;\n}\n\n.header-section h2 {\n margin: 0;\n color: #333;\n font-size: 28px;\n font-weight: 600;\n}\n\n.header-buttons {\n display: flex;\n gap: 15px;\n align-items: center;\n}\n\n/* Styles pour le bouton \"Appeler un bénévole\" */\n.btn-appeler-benevole {\n background: linear-gradient(135deg, #ff6b6b 0%, #ff4757 100%);\n color: white;\n border: none;\n padding: 12px 20px;\n border-radius: 8px;\n font-size: 16px;\n font-weight: 600;\n cursor: pointer;\n transition: all 0.3s ease;\n box-shadow: 0 2px 8px rgba(255, 107, 107, 0.3);\n display: flex;\n align-items: center;\n gap: 8px;\n text-transform: uppercase;\n letter-spacing: 0.5px;\n}\n\n.btn-appeler-benevole:hover {\n background: linear-gradient(135deg, #ff5252 0%, #ff3742 100%);\n transform: translateY(-2px);\n box-shadow: 0 4px 12px rgba(255, 107, 107, 0.4);\n}\n\n.btn-appeler-benevole:active {\n transform: translateY(0);\n box-shadow: 0 2px 6px rgba(255, 107, 107, 0.3);\n}\n\n.btn-appeler-benevole:disabled {\n background: #cccccc;\n cursor: not-allowed;\n transform: none;\n box-shadow: none;\n}\n\n/* Styles pour le bouton retour à l'accueil */\n.btn-retour-accueil {\n background: linear-gradient(135deg, #6b73ff 0%, #000dff 100%);\n color: white;\n border: none;\n padding: 12px 20px;\n border-radius: 8px;\n font-size: 16px;\n font-weight: 500;\n cursor: pointer;\n transition: all 0.3s ease;\n box-shadow: 0 2px 8px rgba(107, 115, 255, 0.3);\n display: flex;\n align-items: center;\n gap: 8px;\n}\n\n.btn-retour-accueil:hover {\n background: linear-gradient(135deg, #5a64e8 0%, #000bcc 100%);\n transform: translateY(-2px);\n box-shadow: 0 4px 12px rgba(107, 115, 255, 0.4);\n}\n\n.btn-retour-accueil:active {\n transform: translateY(0);\n box-shadow: 0 2px 6px rgba(107, 115, 255, 0.3);\n}\n\n.btn-retour-accueil:disabled {\n background: #cccccc;\n cursor: not-allowed;\n transform: none;\n box-shadow: none;\n}\n\n/* Styles pour le message bénévole */\n.benevole-message {\n background-color: #fff3cd;\n color: #856404;\n padding: 15px 20px;\n border-radius: 8px;\n margin-top: 20px;\n border: 2px solid #ffeaa7;\n font-weight: 600;\n display: flex;\n align-items: center;\n gap: 10px;\n animation: bellRing 0.5s ease-in-out;\n}\n\n/* Animation pour le message bénévole */\n@keyframes bellRing {\n 0%, 100% { transform: translateX(0); }\n 25% { transform: translateX(-3px) rotate(-5deg); }\n 75% { transform: translateX(3px) rotate(5deg); }\n}\n\n/* Styles améliorés pour les messages d'erreur et de succès */\n.error-message {\n background-color: #f8d7da;\n color: #721c24;\n padding: 15px 20px;\n border-radius: 8px;\n margin-top: 20px;\n border: 2px solid #f5c6cb;\n font-weight: 500;\n display: flex;\n align-items: center;\n gap: 10px;\n animation: shake 0.5s ease-in-out;\n}\n\n.error-icon {\n font-size: 24px;\n flex-shrink: 0;\n}\n\n.success-message {\n background-color: #d1edff;\n color: #0c5460;\n padding: 15px 20px;\n border-radius: 8px;\n margin-top: 20px;\n border: 2px solid #b6d4fe;\n font-weight: 500;\n display: flex;\n align-items: center;\n gap: 10px;\n animation: slideIn 0.3s ease-in-out;\n}\n\n.success-icon {\n font-size: 24px;\n flex-shrink: 0;\n}\n\n/* Animation pour les messages d'erreur */\n@keyframes shake {\n 0%, 100% { transform: translateX(0); }\n 10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }\n 20%, 40%, 60%, 80% { transform: translateX(5px); }\n}\n\n/* Animation pour les messages de succès */\n@keyframes slideIn {\n from {\n opacity: 0;\n transform: translateY(-20px);\n }\n to {\n opacity: 1;\n transform: translateY(0);\n }\n}\n\n/* Styles pour le bouton de vérification */\n.btn-verify {\n background: linear-gradient(135deg, #28a745 0%, #20c997 100%);\n color: white;\n border: none;\n padding: 15px 30px;\n border-radius: 8px;\n font-size: 18px;\n font-weight: 600;\n cursor: pointer;\n transition: all 0.3s ease;\n width: 100%;\n margin-top: 20px;\n box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3);\n}\n\n.btn-verify:hover {\n background: linear-gradient(135deg, #218838 0%, #1abc9c 100%);\n transform: translateY(-2px);\n box-shadow: 0 4px 12px rgba(40, 167, 69, 0.4);\n}\n\n.btn-verify:disabled {\n background: #6c757d;\n cursor: not-allowed;\n transform: none;\n box-shadow: none;\n}\n\n/* Styles pour la section membre-check */\n.member-check {\n max-width: 600px;\n margin: 0 auto;\n padding: 30px;\n background: white;\n border-radius: 12px;\n box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);\n}\n\n.form-group {\n margin-bottom: 20px;\n}\n\n.form-group label {\n display: block;\n margin-bottom: 8px;\n font-weight: 600;\n color: #333;\n font-size: 16px;\n}\n\n.form-group input {\n width: 100%;\n padding: 12px 15px;\n border: 2px solid #e0e0e0;\n border-radius: 8px;\n font-size: 16px;\n transition: border-color 0.3s ease;\n box-sizing: border-box;\n}\n\n.form-group input:focus {\n outline: none;\n border-color: #6b73ff;\n box-shadow: 0 0 0 3px rgba(107, 115, 255, 0.1);\n}\n\n.form-group input:disabled {\n background-color: #f8f9fa;\n cursor: not-allowed;\n}\n\n/* ===== CHECKBOX & RADIO FIXES - VOLLEDIG KLIKBAAR ===== */\n\n/* Fix voor ALLE input types - checkbox en radio */\ninput[type=\"checkbox\"], \ninput[type=\"radio\"] {\n    /* NIET display: none gebruiken - dat maakt ze onklikbaar! */\n    position: relative !important;\n    opacity: 1 !important;\n    width: auto !important;\n    height: auto !important;\n    margin: 0 10px 0 0 !important;\n    cursor: pointer !important;\n    transform: scale(1.3) !important;\n    z-index: 10 !important;\n\n    /* Zorg dat ze zichtbaar en klikbaar blijven */\n    pointer-events: auto !important;\n    visibility: visible !important;\n}\n\n/* Container styling voor checkbox/radio items */\n.checkbox-item, \n.radio-item {\n    position: relative;\n    display: flex !important;\n    align-items: flex-start;\n    margin-bottom: 20px;\n    cursor: pointer;\n    padding: 15px;\n    border: 2px solid #e0e0e0;\n    border-radius: 8px;\n    background: white;\n    transition: all 0.3s ease;\n    user-select: none;\n}\n\n.checkbox-item:hover,\n.radio-item:hover {\n    background-color: #f8f9fa;\n    border-color: #007bff;\n    box-shadow: 0 2px 8px rgba(0, 123, 255, 0.1);\n}\n\n/* Selected state */\n.checkbox-item:has(input:checked),\n.radio-item:has(input:checked) {\n    background-color: #e3f2fd;\n    border-color: #007bff;\n    box-shadow: 0 2px 12px rgba(0, 123, 255, 0.2);\n}\n\n/* Text styling binnen items */\n.checkbox-item span,\n.checkbox-item label,\n.radio-item span, \n.radio-item label {\n    flex: 1;\n    line-height: 1.5;\n    font-size: 16px;\n    color: #333;\n    cursor: pointer;\n    margin-left: 10px;\n}\n\n/* Details styling */\n.checkbox-item .details,\n.radio-item .details {\n    margin-top: 10px;\n    padding-left: 35px;\n}\n\n.checkbox-item .details p,\n.radio-item .details p {\n    margin: 5px 0;\n    font-size: 14px;\n    color: #666;\n    line-height: 1.4;\n}\n\n.checkbox-item .details ul,\n.radio-item .details ul {\n    margin: 5px 0;\n    padding-left: 20px;\n}\n\n.checkbox-item .details li,\n.radio-item .details li {\n    font-size: 14px;\n    color: #666;\n    margin-bottom: 5px;\n    line-height: 1.4;\n}\n\n/* Link styling binnen checkbox/radio items */\n.checkbox-item a,\n.radio-item a {\n    color: #007bff;\n    text-decoration: underline;\n}\n\n.checkbox-item a:hover,\n.radio-item a:hover {\n    color: #0056b3;\n}\n\n/* Focus state voor accessibility */\n.checkbox-item input:focus,\n.radio-item input:focus {\n    outline: 2px solid #007bff;\n    outline-offset: 2px;\n}\n\n/* ===== REGLEMENT PAGE STYLES ===== */\n.reglement-page {\n max-width: 1200px;\n margin: 20px auto;\n padding: 30px;\n background: #fff;\n border-radius: 12px;\n box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);\n font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;\n min-height: calc(100vh - 40px);\n}\n\n.reglement-header {\n display: flex;\n justify-content: space-between;\n align-items: center;\n margin-bottom: 25px;\n padding: 20px;\n background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);\n border-radius: 8px;\n border-bottom: 3px solid #2c3e50;\n}\n\n.reglement-header h1 {\n font-size: 32px;\n font-weight: 700;\n color: #2c3e50;\n margin: 0;\n text-transform: uppercase;\n letter-spacing: 1px;\n}\n\n.btn-close {\n border: none;\n background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);\n color: #fff;\n width: 45px;\n height: 45px;\n border-radius: 50%;\n font-size: 22px;\n font-weight: bold;\n cursor: pointer;\n transition: all 0.3s ease;\n box-shadow: 0 2px 8px rgba(231, 76, 60, 0.3);\n display: flex;\n align-items: center;\n justify-content: center;\n}\n\n.btn-close:hover {\n background: linear-gradient(135deg, #c0392b 0%, #a93226 100%);\n transform: scale(1.1) rotate(90deg);\n box-shadow: 0 4px 12px rgba(231, 76, 60, 0.5);\n}\n\n/* Responsive design voor tablets */\n@media (max-width: 768px) {\n .header-section {\n flex-direction: column;\n gap: 15px;\n text-align: center;\n }\n\n .header-buttons {\n flex-direction: column;\n width: 100%;\n gap: 10px;\n }\n\n .btn-appeler-benevole,\n .btn-retour-accueil {\n width: 100%;\n justify-content: center;\n }\n\n .member-check {\n margin: 20px;\n padding: 20px;\n }\n\n .error-message,\n .success-message,\n .benevole-message {\n flex-direction: column;\n text-align: center;\n gap: 8px;\n }\n\n .error-icon,\n .success-icon {\n font-size: 20px;\n }\n\n /* Responsive voor checkbox/radio items */\n .checkbox-item,\n .radio-item {\n padding: 12px;\n margin-bottom: 15px;\n }\n\n .checkbox-item span,\n .checkbox-item label,\n .radio-item span,\n .radio-item label {\n font-size: 14px;\n }\n\n input[type=\"checkbox\"], \n input[type=\"radio\"] {\n transform: scale(1.1) !important;\n }\n}\n\n/* Voor zeer kleine schermen */\n@media (max-width: 480px) {\n .header-section h2 {\n font-size: 24px;\n }\n\n .btn-appeler-benevole,\n .btn-retour-accueil {\n font-size: 14px;\n padding: 10px 16px;\n }\n\n .member-check {\n margin: 10px;\n padding: 15px;\n }\n\n .checkbox-item,\n .radio-item {\n padding: 10px;\n margin-bottom: 12px;\n }\n\n .checkbox-item span,\n .checkbox-item label,\n .radio-item span,\n .radio-item label {\n font-size: 13px;\n }\n\n input[type=\"checkbox\"], \n input[type=\"radio\"] {\n transform: scale(1.0) !important;\n }\n}", "",{"version":3,"sources":["webpack://./src/styles/Styles.css"],"names":[],"mappings":"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","sourcesContent":["/* ===== ORIGINELE STYLES BEHOUDEN ===== */\n\n/* Styles améliorés pour la section header */\n.header-section {\n display: flex;\n justify-content: space-between;\n align-items: center;\n margin-bottom: 30px;\n padding-bottom: 15px;\n border-bottom: 2px solid #e0e0e0;\n}\n\n.header-section h2 {\n margin: 0;\n color: #333;\n font-size: 28px;\n font-weight: 600;\n}\n\n.header-buttons {\n display: flex;\n gap: 15px;\n align-items: center;\n}\n\n/* Styles pour le bouton \"Appeler un bénévole\" */\n.btn-appeler-benevole {\n background: linear-gradient(135deg, #ff6b6b 0%, #ff4757 100%);\n color: white;\n border: none;\n padding: 12px 20px;\n border-radius: 8px;\n font-size: 16px;\n font-weight: 600;\n cursor: pointer;\n transition: all 0.3s ease;\n box-shadow: 0 2px 8px rgba(255, 107, 107, 0.3);\n display: flex;\n align-items: center;\n gap: 8px;\n text-transform: uppercase;\n letter-spacing: 0.5px;\n}\n\n.btn-appeler-benevole:hover {\n background: linear-gradient(135deg, #ff5252 0%, #ff3742 100%);\n transform: translateY(-2px);\n box-shadow: 0 4px 12px rgba(255, 107, 107, 0.4);\n}\n\n.btn-appeler-benevole:active {\n transform: translateY(0);\n box-shadow: 0 2px 6px rgba(255, 107, 107, 0.3);\n}\n\n.btn-appeler-benevole:disabled {\n background: #cccccc;\n cursor: not-allowed;\n transform: none;\n box-shadow: none;\n}\n\n/* Styles pour le bouton retour à l'accueil */\n.btn-retour-accueil {\n background: linear-gradient(135deg, #6b73ff 0%, #000dff 100%);\n color: white;\n border: none;\n padding: 12px 20px;\n border-radius: 8px;\n font-size: 16px;\n font-weight: 500;\n cursor: pointer;\n transition: all 0.3s ease;\n box-shadow: 0 2px 8px rgba(107, 115, 255, 0.3);\n display: flex;\n align-items: center;\n gap: 8px;\n}\n\n.btn-retour-accueil:hover {\n background: linear-gradient(135deg, #5a64e8 0%, #000bcc 100%);\n transform: translateY(-2px);\n box-shadow: 0 4px 12px rgba(107, 115, 255, 0.4);\n}\n\n.btn-retour-accueil:active {\n transform: translateY(0);\n box-shadow: 0 2px 6px rgba(107, 115, 255, 0.3);\n}\n\n.btn-retour-accueil:disabled {\n background: #cccccc;\n cursor: not-allowed;\n transform: none;\n box-shadow: none;\n}\n\n/* Styles pour le message bénévole */\n.benevole-message {\n background-color: #fff3cd;\n color: #856404;\n padding: 15px 20px;\n border-radius: 8px;\n margin-top: 20px;\n border: 2px solid #ffeaa7;\n font-weight: 600;\n display: flex;\n align-items: center;\n gap: 10px;\n animation: bellRing 0.5s ease-in-out;\n}\n\n/* Animation pour le message bénévole */\n@keyframes bellRing {\n 0%, 100% { transform: translateX(0); }\n 25% { transform: translateX(-3px) rotate(-5deg); }\n 75% { transform: translateX(3px) rotate(5deg); }\n}\n\n/* Styles améliorés pour les messages d'erreur et de succès */\n.error-message {\n background-color: #f8d7da;\n color: #721c24;\n padding: 15px 20px;\n border-radius: 8px;\n margin-top: 20px;\n border: 2px solid #f5c6cb;\n font-weight: 500;\n display: flex;\n align-items: center;\n gap: 10px;\n animation: shake 0.5s ease-in-out;\n}\n\n.error-icon {\n font-size: 24px;\n flex-shrink: 0;\n}\n\n.success-message {\n background-color: #d1edff;\n color: #0c5460;\n padding: 15px 20px;\n border-radius: 8px;\n margin-top: 20px;\n border: 2px solid #b6d4fe;\n font-weight: 500;\n display: flex;\n align-items: center;\n gap: 10px;\n animation: slideIn 0.3s ease-in-out;\n}\n\n.success-icon {\n font-size: 24px;\n flex-shrink: 0;\n}\n\n/* Animation pour les messages d'erreur */\n@keyframes shake {\n 0%, 100% { transform: translateX(0); }\n 10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }\n 20%, 40%, 60%, 80% { transform: translateX(5px); }\n}\n\n/* Animation pour les messages de succès */\n@keyframes slideIn {\n from {\n opacity: 0;\n transform: translateY(-20px);\n }\n to {\n opacity: 1;\n transform: translateY(0);\n }\n}\n\n/* Styles pour le bouton de vérification */\n.btn-verify {\n background: linear-gradient(135deg, #28a745 0%, #20c997 100%);\n color: white;\n border: none;\n padding: 15px 30px;\n border-radius: 8px;\n font-size: 18px;\n font-weight: 600;\n cursor: pointer;\n transition: all 0.3s ease;\n width: 100%;\n margin-top: 20px;\n box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3);\n}\n\n.btn-verify:hover {\n background: linear-gradient(135deg, #218838 0%, #1abc9c 100%);\n transform: translateY(-2px);\n box-shadow: 0 4px 12px rgba(40, 167, 69, 0.4);\n}\n\n.btn-verify:disabled {\n background: #6c757d;\n cursor: not-allowed;\n transform: none;\n box-shadow: none;\n}\n\n/* Styles pour la section membre-check */\n.member-check {\n max-width: 600px;\n margin: 0 auto;\n padding: 30px;\n background: white;\n border-radius: 12px;\n box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);\n}\n\n.form-group {\n margin-bottom: 20px;\n}\n\n.form-group label {\n display: block;\n margin-bottom: 8px;\n font-weight: 600;\n color: #333;\n font-size: 16px;\n}\n\n.form-group input {\n width: 100%;\n padding: 12px 15px;\n border: 2px solid #e0e0e0;\n border-radius: 8px;\n font-size: 16px;\n transition: border-color 0.3s ease;\n box-sizing: border-box;\n}\n\n.form-group input:focus {\n outline: none;\n border-color: #6b73ff;\n box-shadow: 0 0 0 3px rgba(107, 115, 255, 0.1);\n}\n\n.form-group input:disabled {\n background-color: #f8f9fa;\n cursor: not-allowed;\n}\n\n/* ===== CHECKBOX & RADIO FIXES - VOLLEDIG KLIKBAAR ===== */\n\n/* Fix voor ALLE input types - checkbox en radio */\ninput[type=\"checkbox\"], \ninput[type=\"radio\"] {\n    /* NIET display: none gebruiken - dat maakt ze onklikbaar! */\n    position: relative !important;\n    opacity: 1 !important;\n    width: auto !important;\n    height: auto !important;\n    margin: 0 10px 0 0 !important;\n    cursor: pointer !important;\n    transform: scale(1.3) !important;\n    z-index: 10 !important;\n\n    /* Zorg dat ze zichtbaar en klikbaar blijven */\n    pointer-events: auto !important;\n    visibility: visible !important;\n}\n\n/* Container styling voor checkbox/radio items */\n.checkbox-item, \n.radio-item {\n    position: relative;\n    display: flex !important;\n    align-items: flex-start;\n    margin-bottom: 20px;\n    cursor: pointer;\n    padding: 15px;\n    border: 2px solid #e0e0e0;\n    border-radius: 8px;\n    background: white;\n    transition: all 0.3s ease;\n    user-select: none;\n}\n\n.checkbox-item:hover,\n.radio-item:hover {\n    background-color: #f8f9fa;\n    border-color: #007bff;\n    box-shadow: 0 2px 8px rgba(0, 123, 255, 0.1);\n}\n\n/* Selected state */\n.checkbox-item:has(input:checked),\n.radio-item:has(input:checked) {\n    background-color: #e3f2fd;\n    border-color: #007bff;\n    box-shadow: 0 2px 12px rgba(0, 123, 255, 0.2);\n}\n\n/* Text styling binnen items */\n.checkbox-item span,\n.checkbox-item label,\n.radio-item span, \n.radio-item label {\n    flex: 1;\n    line-height: 1.5;\n    font-size: 16px;\n    color: #333;\n    cursor: pointer;\n    margin-left: 10px;\n}\n\n/* Details styling */\n.checkbox-item .details,\n.radio-item .details {\n    margin-top: 10px;\n    padding-left: 35px;\n}\n\n.checkbox-item .details p,\n.radio-item .details p {\n    margin: 5px 0;\n    font-size: 14px;\n    color: #666;\n    line-height: 1.4;\n}\n\n.checkbox-item .details ul,\n.radio-item .details ul {\n    margin: 5px 0;\n    padding-left: 20px;\n}\n\n.checkbox-item .details li,\n.radio-item .details li {\n    font-size: 14px;\n    color: #666;\n    margin-bottom: 5px;\n    line-height: 1.4;\n}\n\n/* Link styling binnen checkbox/radio items */\n.checkbox-item a,\n.radio-item a {\n    color: #007bff;\n    text-decoration: underline;\n}\n\n.checkbox-item a:hover,\n.radio-item a:hover {\n    color: #0056b3;\n}\n\n/* Focus state voor accessibility */\n.checkbox-item input:focus,\n.radio-item input:focus {\n    outline: 2px solid #007bff;\n    outline-offset: 2px;\n}\n\n/* ===== REGLEMENT PAGE STYLES ===== */\n.reglement-page {\n max-width: 1200px;\n margin: 20px auto;\n padding: 30px;\n background: #fff;\n border-radius: 12px;\n box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);\n font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;\n min-height: calc(100vh - 40px);\n}\n\n.reglement-header {\n display: flex;\n justify-content: space-between;\n align-items: center;\n margin-bottom: 25px;\n padding: 20px;\n background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);\n border-radius: 8px;\n border-bottom: 3px solid #2c3e50;\n}\n\n.reglement-header h1 {\n font-size: 32px;\n font-weight: 700;\n color: #2c3e50;\n margin: 0;\n text-transform: uppercase;\n letter-spacing: 1px;\n}\n\n.btn-close {\n border: none;\n background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);\n color: #fff;\n width: 45px;\n height: 45px;\n border-radius: 50%;\n font-size: 22px;\n font-weight: bold;\n cursor: pointer;\n transition: all 0.3s ease;\n box-shadow: 0 2px 8px rgba(231, 76, 60, 0.3);\n display: flex;\n align-items: center;\n justify-content: center;\n}\n\n.btn-close:hover {\n background: linear-gradient(135deg, #c0392b 0%, #a93226 100%);\n transform: scale(1.1) rotate(90deg);\n box-shadow: 0 4px 12px rgba(231, 76, 60, 0.5);\n}\n\n/* Responsive design voor tablets */\n@media (max-width: 768px) {\n .header-section {\n flex-direction: column;\n gap: 15px;\n text-align: center;\n }\n\n .header-buttons {\n flex-direction: column;\n width: 100%;\n gap: 10px;\n }\n\n .btn-appeler-benevole,\n .btn-retour-accueil {\n width: 100%;\n justify-content: center;\n }\n\n .member-check {\n margin: 20px;\n padding: 20px;\n }\n\n .error-message,\n .success-message,\n .benevole-message {\n flex-direction: column;\n text-align: center;\n gap: 8px;\n }\n\n .error-icon,\n .success-icon {\n font-size: 20px;\n }\n\n /* Responsive voor checkbox/radio items */\n .checkbox-item,\n .radio-item {\n padding: 12px;\n margin-bottom: 15px;\n }\n\n .checkbox-item span,\n .checkbox-item label,\n .radio-item span,\n .radio-item label {\n font-size: 14px;\n }\n\n input[type=\"checkbox\"], \n input[type=\"radio\"] {\n transform: scale(1.1) !important;\n }\n}\n\n/* Voor zeer kleine schermen */\n@media (max-width: 480px) {\n .header-section h2 {\n font-size: 24px;\n }\n\n .btn-appeler-benevole,\n .btn-retour-accueil {\n font-size: 14px;\n padding: 10px 16px;\n }\n\n .member-check {\n margin: 10px;\n padding: 15px;\n }\n\n .checkbox-item,\n .radio-item {\n padding: 10px;\n margin-bottom: 12px;\n }\n\n .checkbox-item span,\n .checkbox-item label,\n .radio-item span,\n .radio-item label {\n font-size: 13px;\n }\n\n input[type=\"checkbox\"], \n input[type=\"radio\"] {\n transform: scale(1.0) !important;\n }\n}"],"sourceRoot":""}]);
+___CSS_LOADER_EXPORT___.push([module.id, "/* ✅ ORIGINELE STYLING VOLLEDIG HERSTELD */\n\n.assurance-page .checkbox-item {\n  background: white;\n  border: 2px solid #e0e0e0;\n  border-radius: 15px;\n  padding: 20px;\n  margin: 15px 0;\n  cursor: pointer;\n  transition: all 0.3s ease;\n  box-shadow: 0 2px 8px rgba(0,0,0,0.1);\n  display: flex;\n  align-items: flex-start;\n  gap: 15px;\n}\n\n.assurance-page .checkbox-item:hover {\n  border-color: #2196F3;\n  box-shadow: 0 4px 12px rgba(33, 150, 243, 0.2);\n  transform: translateY(-1px);\n}\n\n.assurance-page .checkbox-item input[type=\"checkbox\"] {\n  width: 20px;\n  height: 20px;\n  margin: 0;\n  flex-shrink: 0;\n}\n\n.assurance-page .checkbox-item span {\n  flex: 1;\n  line-height: 1.4;\n  color: #333;\n}\n\n/* ALLEEN reglement link */\n.assurance-page .reglement-link {\n  color: #2196F3;\n  text-decoration: underline;\n  font-weight: 500;\n}\n\n.assurance-page .reglement-link:hover {\n  color: #1976D2;\n}\n\n* {\n  margin: 0;\n  padding: 0;\n  box-sizing: border-box;\n}\n\nbody {\n  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',\n    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',\n    sans-serif;\n  -webkit-font-smoothing: antialiased;\n  -moz-osx-font-smoothing: grayscale;\n  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);\n  min-height: 100vh;\n}\n\n.App {\n  text-align: center;\n  min-height: 100vh;\n}\n\n/* ✅ ORIGINELE HOME PAGE STYLING */\n.home-page {\n  padding: 40px 20px;\n  max-width: 1200px;\n  margin: 0 auto;\n  min-height: 100vh;\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n}\n\n.header {\n  margin-bottom: 60px;\n}\n\n.header h1 {\n  color: white;\n  font-size: 3rem;\n  margin-bottom: 20px;\n  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);\n  font-weight: 700;\n}\n\n.header p {\n  color: rgba(255,255,255,0.9);\n  font-size: 1.2rem;\n  text-shadow: 1px 1px 2px rgba(0,0,0,0.3);\n}\n\n/* ✅ ORIGINELE GROENE/BLAUWE HOOFDKNOPPEN */\n.main-choices {\n  display: flex;\n  gap: 40px;\n  justify-content: center;\n  margin: 60px 0;\n  flex-wrap: wrap;\n}\n\n.btn-main {\n  background: white;\n  border: none;\n  border-radius: 20px;\n  padding: 40px 30px;\n  min-width: 300px;\n  cursor: pointer;\n  box-shadow: 0 10px 30px rgba(0,0,0,0.2);\n  transition: all 0.3s ease;\n  text-align: center;\n}\n\n.btn-main:hover {\n  transform: translateY(-5px);\n  box-shadow: 0 15px 40px rgba(0,0,0,0.3);\n}\n\n.btn-main.btn-member {\n  background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);\n  color: white;\n}\n\n.btn-main.btn-member:hover {\n  background: linear-gradient(135deg, #45a049 0%, #3d8b40 100%);\n}\n\n.btn-main.btn-non-member {\n  background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);\n  color: white;\n}\n\n.btn-main.btn-non-member:hover {\n  background: linear-gradient(135deg, #1976D2 0%, #1565C0 100%);\n}\n\n.btn-icon {\n  font-size: 3rem;\n  margin-bottom: 20px;\n  display: block;\n}\n\n.btn-title {\n  font-size: 1.4rem;\n  font-weight: bold;\n  margin-bottom: 15px;\n  line-height: 1.3;\n}\n\n.btn-description {\n  font-size: 1rem;\n  opacity: 0.9;\n  line-height: 1.4;\n}\n\n/* ✅ INFO FOOTER */\n.info-footer {\n  background: rgba(255,255,255,0.1);\n  border-radius: 15px;\n  padding: 25px;\n  color: white;\n  backdrop-filter: blur(10px);\n  margin-top: 40px;\n}\n\n.info-footer p {\n  margin: 8px 0;\n  line-height: 1.5;\n}\n\n/* ✅ FORM PAGES - ORIGINELE STYLING */\n.member-page, .non-member-form, .level-page, .assurance-page, .payment-page, .returning-visitor-choice, .returning-visitor-form {\n  background: white;\n  border-radius: 20px;\n  margin: 20px auto;\n  padding: 40px;\n  max-width: 600px;\n  box-shadow: 0 10px 30px rgba(0,0,0,0.2);\n  min-height: 70vh;\n}\n\n.returning-visitor-choice {\n  max-width: 900px;\n}\n\n.header-section {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  margin-bottom: 40px;\n  padding-bottom: 20px;\n  border-bottom: 2px solid #f0f0f0;\n}\n\n.header-section h2 {\n  color: #333;\n  font-size: 2rem;\n  font-weight: 600;\n}\n\n.btn-retour-accueil {\n  background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%);\n  color: white;\n  border: none;\n  border-radius: 15px;\n  padding: 12px 20px;\n  cursor: pointer;\n  font-size: 0.9rem;\n  font-weight: 500;\n  transition: all 0.3s ease;\n  box-shadow: 0 3px 10px rgba(108, 117, 125, 0.3);\n}\n\n.btn-retour-accueil:hover {\n  background: linear-gradient(135deg, #5a6268 0%, #495057 100%);\n  transform: translateY(-2px);\n  box-shadow: 0 5px 15px rgba(108, 117, 125, 0.4);\n}\n\n/* ✅ FORM ELEMENTS - ORIGINELE STYLING */\n.form-group {\n  margin-bottom: 25px;\n  text-align: left;\n}\n\n.form-group label {\n  display: block;\n  margin-bottom: 8px;\n  font-weight: 600;\n  color: #333;\n  font-size: 1.1rem;\n}\n\n.form-group input, .form-group select, .form-group textarea {\n  width: 100%;\n  padding: 15px;\n  border: 2px solid #e0e0e0;\n  border-radius: 15px;\n  font-size: 1rem;\n  transition: all 0.3s ease;\n  background: #fafafa;\n}\n\n.form-group input:focus, .form-group select:focus, .form-group textarea:focus {\n  outline: none;\n  border-color: #4CAF50;\n  background: white;\n  box-shadow: 0 0 10px rgba(76, 175, 80, 0.2);\n}\n\n/* ✅ BUTTONS - ORIGINELE GROENE/BLAUWE STYLING */\n.btn-verify, .btn-submit, .btn-continue {\n  background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);\n  color: white;\n  border: none;\n  border-radius: 15px;\n  padding: 18px 30px;\n  font-size: 1.1rem;\n  font-weight: 600;\n  cursor: pointer;\n  width: 100%;\n  margin-top: 20px;\n  transition: all 0.3s ease;\n  box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);\n}\n\n.btn-verify:hover, .btn-submit:hover, .btn-continue:hover {\n  background: linear-gradient(135deg, #45a049 0%, #3d8b40 100%);\n  transform: translateY(-2px);\n  box-shadow: 0 8px 20px rgba(76, 175, 80, 0.4);\n}\n\n.btn-verify:disabled, .btn-submit:disabled, .btn-continue:disabled {\n  background: #cccccc;\n  cursor: not-allowed;\n  transform: none;\n  box-shadow: none;\n}\n\n/* ✅ NIVEAU BUTTONS - ORIGINELE BLAUWE STYLING */\n.niveau-buttons {\n  display: flex;\n  flex-direction: column;\n  gap: 15px;\n  margin: 30px 0;\n}\n\n.btn-niveau {\n  background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);\n  color: white;\n  border: none;\n  border-radius: 15px;\n  padding: 20px;\n  font-size: 1.1rem;\n  cursor: pointer;\n  transition: all 0.3s ease;\n  box-shadow: 0 3px 10px rgba(33, 150, 243, 0.3);\n  text-align: left;\n}\n\n.btn-niveau:hover {\n  background: linear-gradient(135deg, #1976D2 0%, #1565C0 100%);\n  transform: translateY(-2px);\n  box-shadow: 0 5px 15px rgba(33, 150, 243, 0.4);\n}\n\n.btn-niveau.selected {\n  background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);\n  box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4);\n}\n\n/* ✅ ERROR/SUCCESS MESSAGES */\n.error-message {\n  background: linear-gradient(135deg, #f8d7da 0%, #f1aeb5 100%);\n  border: 3px solid #dc3545;\n  border-radius: 15px;\n  padding: 20px;\n  margin: 20px 0;\n  color: #721c24;\n  display: flex;\n  align-items: flex-start;\n  gap: 15px;\n  box-shadow: 0 3px 10px rgba(220, 53, 69, 0.3);\n}\n\n.success-message {\n  background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);\n  border: 3px solid #28a745;\n  border-radius: 15px;\n  padding: 20px;\n  margin: 20px 0;\n  color: #155724;\n  display: flex;\n  align-items: flex-start;\n  gap: 15px;\n  box-shadow: 0 3px 10px rgba(40, 167, 69, 0.3);\n}\n\n.success-message-enhanced {\n  background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);\n  border: 3px solid #28a745;\n  border-radius: 20px;\n  padding: 40px;\n  margin: 30px 0;\n  text-align: center;\n  box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);\n  animation: successSlideIn 0.5s ease-out;\n}\n\n.success-animation {\n  font-size: 72px;\n  margin-bottom: 20px;\n  animation: bounceSuccess 2s ease-in-out infinite;\n}\n\n.success-message-enhanced h3 {\n  color: #155724;\n  margin-bottom: 20px;\n  font-size: 28px;\n}\n\n.countdown {\n  margin-top: 25px;\n  color: #6c757d;\n  font-size: 14px;\n}\n\n.countdown-bar {\n  width: 100%;\n  height: 4px;\n  background: #e9ecef;\n  border-radius: 2px;\n  margin-bottom: 10px;\n  overflow: hidden;\n  position: relative;\n}\n\n.countdown-bar::after {\n  content: '';\n  position: absolute;\n  left: 0;\n  top: 0;\n  height: 100%;\n  background: linear-gradient(90deg, #28a745, #20c997);\n  animation: countdownProgress 8s linear;\n}\n\n/* SUCCESS/ERROR MESSAGES HOME */\n.success-message-home {\n  background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);\n  border: 3px solid #28a745;\n  border-radius: 20px;\n  padding: 30px;\n  margin: 30px 0;\n  display: flex;\n  align-items: center;\n  gap: 20px;\n  box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);\n  animation: slideInFromTop 0.6s ease-out;\n}\n\n.success-message-home.member-verified {\n  background: linear-gradient(135deg, #cce7ff 0%, #b3d9ff 100%);\n  border-color: #007bff;\n  box-shadow: 0 5px 15px rgba(0, 123, 255, 0.3);\n}\n\n.success-message-home.payment-confirmed {\n  background: linear-gradient(135deg, #fff4cd 0%, #ffeaa7 100%);\n  border-color: #ffc107;\n  box-shadow: 0 5px 15px rgba(255, 193, 7, 0.3);\n}\n\n.error-message-home {\n  background: linear-gradient(135deg, #f8d7da 0%, #f1aeb5 100%);\n  border: 3px solid #dc3545;\n  border-radius: 20px;\n  padding: 30px;\n  margin: 30px 0;\n  display: flex;\n  align-items: center;\n  gap: 20px;\n  box-shadow: 0 5px 15px rgba(220, 53, 69, 0.3);\n  animation: shakeError 0.6s ease-in-out;\n}\n\n.success-icon, .error-icon {\n  font-size: 48px;\n  flex-shrink: 0;\n}\n\n.success-content, .error-content {\n  flex: 1;\n  text-align: left;\n}\n\n.success-content strong {\n  display: block;\n  font-size: 22px;\n  margin-bottom: 10px;\n  color: #155724;\n}\n\n.badge {\n  display: inline-block;\n  background: rgba(21, 87, 36, 0.1);\n  color: #155724;\n  padding: 8px 16px;\n  border-radius: 15px;\n  font-size: 14px;\n  font-weight: bold;\n  margin-top: 15px;\n  border: 1px solid rgba(21, 87, 36, 0.2);\n}\n\n/* ✅ INFO SECTIONS */\n.info-section {\n  background: rgba(33, 150, 243, 0.1);\n  border-left: 4px solid #2196F3;\n  padding: 20px;\n  border-radius: 10px;\n  margin-top: 30px;\n  text-align: left;\n}\n\n.info-section p {\n  margin: 5px 0;\n  color: #333;\n}\n\n/* ✅ NIEUWE COMPONENTS STYLING - MINIMAL */\n.choice-buttons {\n  display: flex;\n  gap: 30px;\n  justify-content: center;\n  margin: 40px 0;\n}\n\n.btn-choice {\n  flex: 1;\n  max-width: 350px;\n  padding: 30px;\n  background: white;\n  border: 3px solid #e0e0e0;\n  border-radius: 20px;\n  cursor: pointer;\n  transition: all 0.3s ease;\n  text-align: center;\n  box-shadow: 0 5px 15px rgba(0,0,0,0.1);\n}\n\n.btn-choice:hover {\n  transform: translateY(-5px);\n  box-shadow: 0 10px 25px rgba(0,0,0,0.2);\n}\n\n.btn-choice.btn-returning:hover {\n  background: linear-gradient(135deg, #e8f5e8 0%, #d4edda 100%);\n  border-color: #28a745;\n}\n\n.btn-choice.btn-first-visit:hover {\n  background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);\n  border-color: #2196F3;\n}\n\n.choice-icon {\n  font-size: 48px;\n  margin-bottom: 15px;\n}\n\n.choice-title {\n  font-size: 18px;\n  font-weight: bold;\n  margin-bottom: 10px;\n  color: #333;\n}\n\n.choice-description {\n  font-size: 14px;\n  color: #666;\n  line-height: 1.4;\n}\n\n/* ✅ ANIMATIONS */\n@keyframes successSlideIn {\n  from {\n    transform: translateY(-20px);\n    opacity: 0;\n  }\n  to {\n    transform: translateY(0);\n    opacity: 1;\n  }\n}\n\n@keyframes bounceSuccess {\n  0%, 100% { \n    transform: scale(1) rotate(0deg); \n  }\n  25% { \n    transform: scale(1.1) rotate(-5deg); \n  }\n  75% { \n    transform: scale(1.1) rotate(5deg); \n  }\n}\n\n@keyframes countdownProgress {\n  from { \n    width: 0%; \n  }\n  to { \n    width: 100%; \n  }\n}\n\n@keyframes slideInFromTop {\n  from {\n    transform: translateY(-100px);\n    opacity: 0;\n  }\n  to {\n    transform: translateY(0);\n    opacity: 1;\n  }\n}\n\n@keyframes shakeError {\n  0%, 100% { transform: translateX(0); }\n  25% { transform: translateX(-8px); }\n  75% { transform: translateX(8px); }\n}\n\n/* ✅ RESPONSIVE DESIGN */\n@media (max-width: 768px) {\n  .main-choices {\n    flex-direction: column;\n    gap: 20px;\n  }\n\n  .btn-main {\n    min-width: auto;\n    max-width: 400px;\n  }\n\n  .choice-buttons {\n    flex-direction: column;\n    gap: 20px;\n  }\n\n  .btn-choice {\n    max-width: none;\n  }\n\n  .success-message-home,\n  .error-message-home {\n    flex-direction: column;\n    text-align: center;\n    padding: 25px;\n  }\n\n  .success-icon,\n  .error-icon {\n    font-size: 36px;\n  }\n\n  .success-animation {\n    font-size: 56px;\n  }\n\n  .header h1 {\n    font-size: 2.2rem;\n  }\n\n  .header p {\n    font-size: 1rem;\n  }\n}\n\n@media (max-width: 480px) {\n  .home-page {\n    padding: 20px 15px;\n  }\n\n  .member-page, .non-member-form, .level-page, .assurance-page, .payment-page, .returning-visitor-choice, .returning-visitor-form {\n    margin: 10px;\n    padding: 25px 20px;\n  }\n\n  .header-section {\n    flex-direction: column;\n    gap: 15px;\n    text-align: center;\n  }\n\n  .main-choices {\n    gap: 15px;\n  }\n\n  .btn-main {\n    padding: 25px 20px;\n  }\n\n  .btn-icon {\n    font-size: 2.5rem;\n  }\n\n  .btn-title {\n    font-size: 1.2rem;\n  }\n}", "",{"version":3,"sources":["webpack://./src/styles/Styles.css"],"names":[],"mappings":"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","sourcesContent":["/* ✅ ORIGINELE STYLING VOLLEDIG HERSTELD */\n\n.assurance-page .checkbox-item {\n  background: white;\n  border: 2px solid #e0e0e0;\n  border-radius: 15px;\n  padding: 20px;\n  margin: 15px 0;\n  cursor: pointer;\n  transition: all 0.3s ease;\n  box-shadow: 0 2px 8px rgba(0,0,0,0.1);\n  display: flex;\n  align-items: flex-start;\n  gap: 15px;\n}\n\n.assurance-page .checkbox-item:hover {\n  border-color: #2196F3;\n  box-shadow: 0 4px 12px rgba(33, 150, 243, 0.2);\n  transform: translateY(-1px);\n}\n\n.assurance-page .checkbox-item input[type=\"checkbox\"] {\n  width: 20px;\n  height: 20px;\n  margin: 0;\n  flex-shrink: 0;\n}\n\n.assurance-page .checkbox-item span {\n  flex: 1;\n  line-height: 1.4;\n  color: #333;\n}\n\n/* ALLEEN reglement link */\n.assurance-page .reglement-link {\n  color: #2196F3;\n  text-decoration: underline;\n  font-weight: 500;\n}\n\n.assurance-page .reglement-link:hover {\n  color: #1976D2;\n}\n\n* {\n  margin: 0;\n  padding: 0;\n  box-sizing: border-box;\n}\n\nbody {\n  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',\n    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',\n    sans-serif;\n  -webkit-font-smoothing: antialiased;\n  -moz-osx-font-smoothing: grayscale;\n  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);\n  min-height: 100vh;\n}\n\n.App {\n  text-align: center;\n  min-height: 100vh;\n}\n\n/* ✅ ORIGINELE HOME PAGE STYLING */\n.home-page {\n  padding: 40px 20px;\n  max-width: 1200px;\n  margin: 0 auto;\n  min-height: 100vh;\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n}\n\n.header {\n  margin-bottom: 60px;\n}\n\n.header h1 {\n  color: white;\n  font-size: 3rem;\n  margin-bottom: 20px;\n  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);\n  font-weight: 700;\n}\n\n.header p {\n  color: rgba(255,255,255,0.9);\n  font-size: 1.2rem;\n  text-shadow: 1px 1px 2px rgba(0,0,0,0.3);\n}\n\n/* ✅ ORIGINELE GROENE/BLAUWE HOOFDKNOPPEN */\n.main-choices {\n  display: flex;\n  gap: 40px;\n  justify-content: center;\n  margin: 60px 0;\n  flex-wrap: wrap;\n}\n\n.btn-main {\n  background: white;\n  border: none;\n  border-radius: 20px;\n  padding: 40px 30px;\n  min-width: 300px;\n  cursor: pointer;\n  box-shadow: 0 10px 30px rgba(0,0,0,0.2);\n  transition: all 0.3s ease;\n  text-align: center;\n}\n\n.btn-main:hover {\n  transform: translateY(-5px);\n  box-shadow: 0 15px 40px rgba(0,0,0,0.3);\n}\n\n.btn-main.btn-member {\n  background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);\n  color: white;\n}\n\n.btn-main.btn-member:hover {\n  background: linear-gradient(135deg, #45a049 0%, #3d8b40 100%);\n}\n\n.btn-main.btn-non-member {\n  background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);\n  color: white;\n}\n\n.btn-main.btn-non-member:hover {\n  background: linear-gradient(135deg, #1976D2 0%, #1565C0 100%);\n}\n\n.btn-icon {\n  font-size: 3rem;\n  margin-bottom: 20px;\n  display: block;\n}\n\n.btn-title {\n  font-size: 1.4rem;\n  font-weight: bold;\n  margin-bottom: 15px;\n  line-height: 1.3;\n}\n\n.btn-description {\n  font-size: 1rem;\n  opacity: 0.9;\n  line-height: 1.4;\n}\n\n/* ✅ INFO FOOTER */\n.info-footer {\n  background: rgba(255,255,255,0.1);\n  border-radius: 15px;\n  padding: 25px;\n  color: white;\n  backdrop-filter: blur(10px);\n  margin-top: 40px;\n}\n\n.info-footer p {\n  margin: 8px 0;\n  line-height: 1.5;\n}\n\n/* ✅ FORM PAGES - ORIGINELE STYLING */\n.member-page, .non-member-form, .level-page, .assurance-page, .payment-page, .returning-visitor-choice, .returning-visitor-form {\n  background: white;\n  border-radius: 20px;\n  margin: 20px auto;\n  padding: 40px;\n  max-width: 600px;\n  box-shadow: 0 10px 30px rgba(0,0,0,0.2);\n  min-height: 70vh;\n}\n\n.returning-visitor-choice {\n  max-width: 900px;\n}\n\n.header-section {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  margin-bottom: 40px;\n  padding-bottom: 20px;\n  border-bottom: 2px solid #f0f0f0;\n}\n\n.header-section h2 {\n  color: #333;\n  font-size: 2rem;\n  font-weight: 600;\n}\n\n.btn-retour-accueil {\n  background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%);\n  color: white;\n  border: none;\n  border-radius: 15px;\n  padding: 12px 20px;\n  cursor: pointer;\n  font-size: 0.9rem;\n  font-weight: 500;\n  transition: all 0.3s ease;\n  box-shadow: 0 3px 10px rgba(108, 117, 125, 0.3);\n}\n\n.btn-retour-accueil:hover {\n  background: linear-gradient(135deg, #5a6268 0%, #495057 100%);\n  transform: translateY(-2px);\n  box-shadow: 0 5px 15px rgba(108, 117, 125, 0.4);\n}\n\n/* ✅ FORM ELEMENTS - ORIGINELE STYLING */\n.form-group {\n  margin-bottom: 25px;\n  text-align: left;\n}\n\n.form-group label {\n  display: block;\n  margin-bottom: 8px;\n  font-weight: 600;\n  color: #333;\n  font-size: 1.1rem;\n}\n\n.form-group input, .form-group select, .form-group textarea {\n  width: 100%;\n  padding: 15px;\n  border: 2px solid #e0e0e0;\n  border-radius: 15px;\n  font-size: 1rem;\n  transition: all 0.3s ease;\n  background: #fafafa;\n}\n\n.form-group input:focus, .form-group select:focus, .form-group textarea:focus {\n  outline: none;\n  border-color: #4CAF50;\n  background: white;\n  box-shadow: 0 0 10px rgba(76, 175, 80, 0.2);\n}\n\n/* ✅ BUTTONS - ORIGINELE GROENE/BLAUWE STYLING */\n.btn-verify, .btn-submit, .btn-continue {\n  background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);\n  color: white;\n  border: none;\n  border-radius: 15px;\n  padding: 18px 30px;\n  font-size: 1.1rem;\n  font-weight: 600;\n  cursor: pointer;\n  width: 100%;\n  margin-top: 20px;\n  transition: all 0.3s ease;\n  box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);\n}\n\n.btn-verify:hover, .btn-submit:hover, .btn-continue:hover {\n  background: linear-gradient(135deg, #45a049 0%, #3d8b40 100%);\n  transform: translateY(-2px);\n  box-shadow: 0 8px 20px rgba(76, 175, 80, 0.4);\n}\n\n.btn-verify:disabled, .btn-submit:disabled, .btn-continue:disabled {\n  background: #cccccc;\n  cursor: not-allowed;\n  transform: none;\n  box-shadow: none;\n}\n\n/* ✅ NIVEAU BUTTONS - ORIGINELE BLAUWE STYLING */\n.niveau-buttons {\n  display: flex;\n  flex-direction: column;\n  gap: 15px;\n  margin: 30px 0;\n}\n\n.btn-niveau {\n  background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);\n  color: white;\n  border: none;\n  border-radius: 15px;\n  padding: 20px;\n  font-size: 1.1rem;\n  cursor: pointer;\n  transition: all 0.3s ease;\n  box-shadow: 0 3px 10px rgba(33, 150, 243, 0.3);\n  text-align: left;\n}\n\n.btn-niveau:hover {\n  background: linear-gradient(135deg, #1976D2 0%, #1565C0 100%);\n  transform: translateY(-2px);\n  box-shadow: 0 5px 15px rgba(33, 150, 243, 0.4);\n}\n\n.btn-niveau.selected {\n  background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);\n  box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4);\n}\n\n/* ✅ ERROR/SUCCESS MESSAGES */\n.error-message {\n  background: linear-gradient(135deg, #f8d7da 0%, #f1aeb5 100%);\n  border: 3px solid #dc3545;\n  border-radius: 15px;\n  padding: 20px;\n  margin: 20px 0;\n  color: #721c24;\n  display: flex;\n  align-items: flex-start;\n  gap: 15px;\n  box-shadow: 0 3px 10px rgba(220, 53, 69, 0.3);\n}\n\n.success-message {\n  background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);\n  border: 3px solid #28a745;\n  border-radius: 15px;\n  padding: 20px;\n  margin: 20px 0;\n  color: #155724;\n  display: flex;\n  align-items: flex-start;\n  gap: 15px;\n  box-shadow: 0 3px 10px rgba(40, 167, 69, 0.3);\n}\n\n.success-message-enhanced {\n  background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);\n  border: 3px solid #28a745;\n  border-radius: 20px;\n  padding: 40px;\n  margin: 30px 0;\n  text-align: center;\n  box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);\n  animation: successSlideIn 0.5s ease-out;\n}\n\n.success-animation {\n  font-size: 72px;\n  margin-bottom: 20px;\n  animation: bounceSuccess 2s ease-in-out infinite;\n}\n\n.success-message-enhanced h3 {\n  color: #155724;\n  margin-bottom: 20px;\n  font-size: 28px;\n}\n\n.countdown {\n  margin-top: 25px;\n  color: #6c757d;\n  font-size: 14px;\n}\n\n.countdown-bar {\n  width: 100%;\n  height: 4px;\n  background: #e9ecef;\n  border-radius: 2px;\n  margin-bottom: 10px;\n  overflow: hidden;\n  position: relative;\n}\n\n.countdown-bar::after {\n  content: '';\n  position: absolute;\n  left: 0;\n  top: 0;\n  height: 100%;\n  background: linear-gradient(90deg, #28a745, #20c997);\n  animation: countdownProgress 8s linear;\n}\n\n/* SUCCESS/ERROR MESSAGES HOME */\n.success-message-home {\n  background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);\n  border: 3px solid #28a745;\n  border-radius: 20px;\n  padding: 30px;\n  margin: 30px 0;\n  display: flex;\n  align-items: center;\n  gap: 20px;\n  box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);\n  animation: slideInFromTop 0.6s ease-out;\n}\n\n.success-message-home.member-verified {\n  background: linear-gradient(135deg, #cce7ff 0%, #b3d9ff 100%);\n  border-color: #007bff;\n  box-shadow: 0 5px 15px rgba(0, 123, 255, 0.3);\n}\n\n.success-message-home.payment-confirmed {\n  background: linear-gradient(135deg, #fff4cd 0%, #ffeaa7 100%);\n  border-color: #ffc107;\n  box-shadow: 0 5px 15px rgba(255, 193, 7, 0.3);\n}\n\n.error-message-home {\n  background: linear-gradient(135deg, #f8d7da 0%, #f1aeb5 100%);\n  border: 3px solid #dc3545;\n  border-radius: 20px;\n  padding: 30px;\n  margin: 30px 0;\n  display: flex;\n  align-items: center;\n  gap: 20px;\n  box-shadow: 0 5px 15px rgba(220, 53, 69, 0.3);\n  animation: shakeError 0.6s ease-in-out;\n}\n\n.success-icon, .error-icon {\n  font-size: 48px;\n  flex-shrink: 0;\n}\n\n.success-content, .error-content {\n  flex: 1;\n  text-align: left;\n}\n\n.success-content strong {\n  display: block;\n  font-size: 22px;\n  margin-bottom: 10px;\n  color: #155724;\n}\n\n.badge {\n  display: inline-block;\n  background: rgba(21, 87, 36, 0.1);\n  color: #155724;\n  padding: 8px 16px;\n  border-radius: 15px;\n  font-size: 14px;\n  font-weight: bold;\n  margin-top: 15px;\n  border: 1px solid rgba(21, 87, 36, 0.2);\n}\n\n/* ✅ INFO SECTIONS */\n.info-section {\n  background: rgba(33, 150, 243, 0.1);\n  border-left: 4px solid #2196F3;\n  padding: 20px;\n  border-radius: 10px;\n  margin-top: 30px;\n  text-align: left;\n}\n\n.info-section p {\n  margin: 5px 0;\n  color: #333;\n}\n\n/* ✅ NIEUWE COMPONENTS STYLING - MINIMAL */\n.choice-buttons {\n  display: flex;\n  gap: 30px;\n  justify-content: center;\n  margin: 40px 0;\n}\n\n.btn-choice {\n  flex: 1;\n  max-width: 350px;\n  padding: 30px;\n  background: white;\n  border: 3px solid #e0e0e0;\n  border-radius: 20px;\n  cursor: pointer;\n  transition: all 0.3s ease;\n  text-align: center;\n  box-shadow: 0 5px 15px rgba(0,0,0,0.1);\n}\n\n.btn-choice:hover {\n  transform: translateY(-5px);\n  box-shadow: 0 10px 25px rgba(0,0,0,0.2);\n}\n\n.btn-choice.btn-returning:hover {\n  background: linear-gradient(135deg, #e8f5e8 0%, #d4edda 100%);\n  border-color: #28a745;\n}\n\n.btn-choice.btn-first-visit:hover {\n  background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);\n  border-color: #2196F3;\n}\n\n.choice-icon {\n  font-size: 48px;\n  margin-bottom: 15px;\n}\n\n.choice-title {\n  font-size: 18px;\n  font-weight: bold;\n  margin-bottom: 10px;\n  color: #333;\n}\n\n.choice-description {\n  font-size: 14px;\n  color: #666;\n  line-height: 1.4;\n}\n\n/* ✅ ANIMATIONS */\n@keyframes successSlideIn {\n  from {\n    transform: translateY(-20px);\n    opacity: 0;\n  }\n  to {\n    transform: translateY(0);\n    opacity: 1;\n  }\n}\n\n@keyframes bounceSuccess {\n  0%, 100% { \n    transform: scale(1) rotate(0deg); \n  }\n  25% { \n    transform: scale(1.1) rotate(-5deg); \n  }\n  75% { \n    transform: scale(1.1) rotate(5deg); \n  }\n}\n\n@keyframes countdownProgress {\n  from { \n    width: 0%; \n  }\n  to { \n    width: 100%; \n  }\n}\n\n@keyframes slideInFromTop {\n  from {\n    transform: translateY(-100px);\n    opacity: 0;\n  }\n  to {\n    transform: translateY(0);\n    opacity: 1;\n  }\n}\n\n@keyframes shakeError {\n  0%, 100% { transform: translateX(0); }\n  25% { transform: translateX(-8px); }\n  75% { transform: translateX(8px); }\n}\n\n/* ✅ RESPONSIVE DESIGN */\n@media (max-width: 768px) {\n  .main-choices {\n    flex-direction: column;\n    gap: 20px;\n  }\n\n  .btn-main {\n    min-width: auto;\n    max-width: 400px;\n  }\n\n  .choice-buttons {\n    flex-direction: column;\n    gap: 20px;\n  }\n\n  .btn-choice {\n    max-width: none;\n  }\n\n  .success-message-home,\n  .error-message-home {\n    flex-direction: column;\n    text-align: center;\n    padding: 25px;\n  }\n\n  .success-icon,\n  .error-icon {\n    font-size: 36px;\n  }\n\n  .success-animation {\n    font-size: 56px;\n  }\n\n  .header h1 {\n    font-size: 2.2rem;\n  }\n\n  .header p {\n    font-size: 1rem;\n  }\n}\n\n@media (max-width: 480px) {\n  .home-page {\n    padding: 20px 15px;\n  }\n\n  .member-page, .non-member-form, .level-page, .assurance-page, .payment-page, .returning-visitor-choice, .returning-visitor-form {\n    margin: 10px;\n    padding: 25px 20px;\n  }\n\n  .header-section {\n    flex-direction: column;\n    gap: 15px;\n    text-align: center;\n  }\n\n  .main-choices {\n    gap: 15px;\n  }\n\n  .btn-main {\n    padding: 25px 20px;\n  }\n\n  .btn-icon {\n    font-size: 2.5rem;\n  }\n\n  .btn-title {\n    font-size: 1.2rem;\n  }\n}"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ __webpack_exports__["default"] = (___CSS_LOADER_EXPORT___);
 
@@ -46736,67 +46736,122 @@ module.exports = styleTagTransform;
 
 /***/ }),
 
-/***/ "./src/App.jsx":
-/*!*********************!*\
-  !*** ./src/App.jsx ***!
-  \*********************/
+/***/ "./src/App.js":
+/*!********************!*\
+  !*** ./src/App.js ***!
+  \********************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": function() { return /* binding */ App; }
-/* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/dist/index.js");
 /* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/dist/index.js");
 /* harmony import */ var _components_Home__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/Home */ "./src/components/Home.jsx");
-/* harmony import */ var _components_MemberCheck__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/MemberCheck */ "./src/components/MemberCheck.jsx");
+/* harmony import */ var _components_MemberPage__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/MemberPage */ "./src/components/MemberPage.jsx");
 /* harmony import */ var _components_NonMemberForm__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/NonMemberForm */ "./src/components/NonMemberForm.jsx");
-/* harmony import */ var _components_LevelPage__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/LevelPage */ "./src/components/LevelPage.jsx");
-/* harmony import */ var _components_AssurancePage__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./components/AssurancePage */ "./src/components/AssurancePage.jsx");
-/* harmony import */ var _components_ReglementPage__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./components/ReglementPage */ "./src/components/ReglementPage.jsx");
-/* harmony import */ var _components_PaymentPage__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/PaymentPage */ "./src/components/PaymentPage.jsx");
-/* harmony import */ var _components_Confirmation__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/Confirmation */ "./src/components/Confirmation.jsx");
-/* harmony import */ var _styles_Styles_css__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./styles/Styles.css */ "./src/styles/Styles.css");
+/* harmony import */ var _components_ReturningVisitorChoice__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/ReturningVisitorChoice */ "./src/components/ReturningVisitorChoice.jsx");
+/* harmony import */ var _components_ReturningVisitorForm__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./components/ReturningVisitorForm */ "./src/components/ReturningVisitorForm.jsx");
+/* harmony import */ var _components_LevelPage__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./components/LevelPage */ "./src/components/LevelPage.jsx");
+/* harmony import */ var _components_AssurancePage__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/AssurancePage */ "./src/components/AssurancePage.jsx");
+/* harmony import */ var _components_PaymentPage__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/PaymentPage */ "./src/components/PaymentPage.jsx");
+/* harmony import */ var _Styles_css__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./Styles.css */ "./src/Styles.css");
+
+
+// ✅ CORRECTED: Import jouw exacte bestandsnamen
+ // ✅ Home.jsx (niet HomePage.jsx)
+
+
+// ✅ NEW COMPONENTS for returning visitor flow
+
+
+// Existing components
 
 
 
-
-
-
-
-
-
-
+// ✅ CORRECTED: Import jouw Styles.css (niet App.css)
 
 function App() {
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__.BrowserRouter, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Routes, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Route, {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__.BrowserRouter, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "App"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Routes, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Route, {
     path: "/",
     element: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Home__WEBPACK_IMPORTED_MODULE_3__["default"], null)
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Route, {
-    path: "/member-check",
-    element: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_MemberCheck__WEBPACK_IMPORTED_MODULE_4__["default"], null)
+    path: "/member",
+    element: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_MemberPage__WEBPACK_IMPORTED_MODULE_4__["default"], null)
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Route, {
+    path: "/visitor-choice",
+    element: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_ReturningVisitorChoice__WEBPACK_IMPORTED_MODULE_6__["default"], null)
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Route, {
+    path: "/returning-visitor-form",
+    element: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_ReturningVisitorForm__WEBPACK_IMPORTED_MODULE_7__["default"], null)
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Route, {
     path: "/non-member",
     element: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_NonMemberForm__WEBPACK_IMPORTED_MODULE_5__["default"], null)
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Route, {
     path: "/niveau",
-    element: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_LevelPage__WEBPACK_IMPORTED_MODULE_6__["default"], null)
+    element: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_LevelPage__WEBPACK_IMPORTED_MODULE_8__["default"], null)
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Route, {
     path: "/assurance",
-    element: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_AssurancePage__WEBPACK_IMPORTED_MODULE_7__["default"], null)
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Route, {
-    path: "/reglement",
-    element: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_ReglementPage__WEBPACK_IMPORTED_MODULE_8__["default"], null)
+    element: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_AssurancePage__WEBPACK_IMPORTED_MODULE_9__["default"], null)
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Route, {
     path: "/paiement",
-    element: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_PaymentPage__WEBPACK_IMPORTED_MODULE_9__["default"], null)
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__.Route, {
-    path: "/confirmation",
-    element: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_Confirmation__WEBPACK_IMPORTED_MODULE_10__["default"], null)
-  })));
+    element: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_PaymentPage__WEBPACK_IMPORTED_MODULE_10__["default"], null)
+  }))));
 }
+/* harmony default export */ __webpack_exports__["default"] = (App);
+
+/***/ }),
+
+/***/ "./src/Styles.css":
+/*!************************!*\
+  !*** ./src/Styles.css ***!
+  \************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !../node_modules/style-loader/dist/runtime/styleDomAPI.js */ "./node_modules/style-loader/dist/runtime/styleDomAPI.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../node_modules/style-loader/dist/runtime/insertBySelector.js */ "./node_modules/style-loader/dist/runtime/insertBySelector.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! !../node_modules/style-loader/dist/runtime/setAttributesWithoutAttributes.js */ "./node_modules/style-loader/dist/runtime/setAttributesWithoutAttributes.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! !../node_modules/style-loader/dist/runtime/insertStyleElement.js */ "./node_modules/style-loader/dist/runtime/insertStyleElement.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! !../node_modules/style-loader/dist/runtime/styleTagTransform.js */ "./node_modules/style-loader/dist/runtime/styleTagTransform.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_Styles_css__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../node_modules/css-loader/dist/cjs.js!./Styles.css */ "./node_modules/css-loader/dist/cjs.js!./src/Styles.css");
+
+      
+      
+      
+      
+      
+      
+      
+      
+      
+
+var options = {};
+
+options.styleTagTransform = (_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default());
+options.setAttributes = (_node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3___default());
+
+      options.insert = _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2___default().bind(null, "head");
+    
+options.domAPI = (_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default());
+options.insertStyleElement = (_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default());
+
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_Styles_css__WEBPACK_IMPORTED_MODULE_6__["default"], options);
+
+
+
+
+       /* harmony default export */ __webpack_exports__["default"] = (_node_modules_css_loader_dist_cjs_js_Styles_css__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_Styles_css__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_Styles_css__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
+
 
 /***/ }),
 
@@ -46837,16 +46892,15 @@ function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
 
 
 
-// ✅ TABLET DYNAMIC API URL DETECTION
+// ✅ ONLY CHANGE: Dynamic API URL detection
 var getApiBaseUrl = function getApiBaseUrl() {
-  // If running on tablet (not localhost), use current host
-  if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
-    return "http://".concat(window.location.hostname, ":3001");
+  var hostname = window.location.hostname;
+  var protocol = window.location.protocol;
+  if (hostname !== 'localhost' && hostname !== '127.0.0.1') {
+    return "".concat(protocol, "//").concat(hostname, ":3001");
   }
-  // Default to localhost for development
   return 'http://localhost:3001';
 };
-var API_BASE_URL = getApiBaseUrl();
 function AssurancePage() {
   var _state$form, _state$form2;
   var state = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_1__.useLocation)().state;
@@ -46868,8 +46922,6 @@ function AssurancePage() {
     _useState6 = _slicedToArray(_useState5, 2),
     loading = _useState6[0],
     setLoading = _useState6[1];
-
-  // Redirect si aucune donnée de formulaire n'est disponible
   if (!(state !== null && state !== void 0 && state.form)) {
     navigate('/non-member');
     return null;
@@ -46879,11 +46931,11 @@ function AssurancePage() {
     setChecks(function (prev) {
       return _objectSpread(_objectSpread({}, prev), {}, _defineProperty({}, key, !prev[key]));
     });
-    setError(''); // Effacer l'erreur lors de l'interaction utilisateur
+    setError('');
   };
   var finish = /*#__PURE__*/function () {
     var _ref = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee() {
-      var registrationData, response, _err$response, _err$response2, _err$response3, errorMessage, _t;
+      var apiUrl, registrationData, response, _t;
       return _regenerator().w(function (_context) {
         while (1) switch (_context.p = _context.n) {
           case 0:
@@ -46898,28 +46950,18 @@ function AssurancePage() {
             setLoading(true);
             setError('');
             _context.p = 2;
-            console.log('=== ASSURANCE PAGE TABLET SUBMISSION ===');
-            console.log('API Base URL:', API_BASE_URL);
-            console.log('State data:', state);
-
-            // Utiliser le tarif calculé basé sur l'âge ET assurance status
+            apiUrl = getApiBaseUrl(); // ✅ ONLY CHANGE: Dynamic API
             registrationData = _objectSpread(_objectSpread({
               type: 'non-adherent'
             }, state.form), {}, {
               tarif: state.tarif,
-              // Utilise le tarif calculé
               niveau: state.niveau,
               assuranceAccepted: true,
-              // User has checked all checkboxes
-              status: 'pending' // Default status for non-members
+              status: 'pending'
             });
-            console.log('Submitting registration with data:', registrationData);
-
-            // ✅ TABLET DYNAMIC API URL
             _context.n = 3;
-            return axios__WEBPACK_IMPORTED_MODULE_3__["default"].post("".concat(API_BASE_URL, "/presences"), registrationData, {
+            return axios__WEBPACK_IMPORTED_MODULE_3__["default"].post("".concat(apiUrl, "/presences"), registrationData, {
               timeout: 15000,
-              // 15 second timeout
               headers: {
                 'Content-Type': 'application/json'
               }
@@ -46927,14 +46969,11 @@ function AssurancePage() {
           case 3:
             response = _context.v;
             if (response.data.success) {
-              console.log('=== REGISTRATION SUCCESS ===');
-              console.log('Registered presence:', response.data.presence);
               (0,_utils_soundUtils__WEBPACK_IMPORTED_MODULE_4__.playSuccessSound)();
               navigate('/paiement', {
                 state: {
                   presenceId: response.data.presence.id,
                   montant: state.tarif,
-                  // Utilise le calculé tarif
                   nom: state.form.nom,
                   prenom: state.form.prenom,
                   age: state.age,
@@ -46942,7 +46981,6 @@ function AssurancePage() {
                 }
               });
             } else {
-              console.error('Registration failed:', response.data);
               setError(response.data.error || 'Erreur lors de l\'enregistrement');
               (0,_utils_soundUtils__WEBPACK_IMPORTED_MODULE_4__.playBuzzerSound)();
             }
@@ -46951,26 +46989,8 @@ function AssurancePage() {
           case 4:
             _context.p = 4;
             _t = _context.v;
-            console.error('=== REGISTRATION ERROR ===');
-            console.error('Error details:', _t);
-            console.error('API URL used:', API_BASE_URL);
-            errorMessage = 'Erreur de connexion';
-            if (_t.code === 'NETWORK_ERROR' || _t.code === 'ERR_NETWORK') {
-              errorMessage = 'Erreur de réseau. Vérifiez la connexion au serveur.';
-            } else if (_t.code === 'ECONNABORTED') {
-              errorMessage = 'Délai d\'attente dépassé lors de l\'enregistrement.';
-            } else if (((_err$response = _t.response) === null || _err$response === void 0 ? void 0 : _err$response.status) === 500) {
-              errorMessage = 'Erreur du serveur. Veuillez réessayer.';
-            } else if (((_err$response2 = _t.response) === null || _err$response2 === void 0 ? void 0 : _err$response2.status) === 400) {
-              errorMessage = 'Données invalides. Vérifiez le formulaire.';
-            } else if ((_err$response3 = _t.response) !== null && _err$response3 !== void 0 && (_err$response3 = _err$response3.data) !== null && _err$response3 !== void 0 && _err$response3.error) {
-              errorMessage = _t.response.data.error;
-            } else if (_t.message) {
-              errorMessage = "Erreur: ".concat(_t.message);
-            } else {
-              errorMessage = 'Impossible de contacter le serveur. Vérifiez la connexion réseau.';
-            }
-            setError(errorMessage);
+            console.error('Registration error:', _t);
+            setError('Erreur de connexion');
             (0,_utils_soundUtils__WEBPACK_IMPORTED_MODULE_4__.playBuzzerSound)();
           case 5:
             _context.p = 5;
@@ -46994,61 +47014,24 @@ function AssurancePage() {
     });
   };
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    style: {
-      maxWidth: '800px',
-      margin: '20px auto',
-      padding: '30px',
-      background: 'white',
-      borderRadius: '12px',
-      boxShadow: '0 4px 20px rgba(0,0,0,0.1)'
-    }
+    className: "assurance-page"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "header-section"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h2", null, "INFORMATION RELATIVE \xC0 L'ASSURANCE DU PRATIQUANT"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h2", null, "Information relative \xE0 l'assurance du pratiquant"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "header-buttons"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
     onClick: handleRetourAccueil,
     className: "btn-retour-accueil"
-  }, "\uD83C\uDFE0 Retour Accueil"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    style: {
-      fontSize: '12px',
-      color: '#666',
-      marginBottom: '10px',
-      padding: '8px',
-      background: '#f0f7ff',
-      borderRadius: '4px',
-      border: '1px solid #cce7ff'
-    }
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, "\uD83C\uDF10 API: ", API_BASE_URL), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, "\uD83D\uDCF1 Host: ", window.location.hostname), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, "\u2705 Backend connectivity: Verified")), state.tarif !== undefined && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    style: {
-      background: '#f8f9fa',
-      padding: '20px',
-      borderRadius: '8px',
-      marginBottom: '20px',
-      textAlign: 'center'
-    }
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h4", null, "\uD83D\uDCB0 Tarif \xE0 r\xE9gler : ", state.tarif === 0 ? 'GRATUIT' : "".concat(state.tarif, "\u20AC")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, "\uD83D\uDC64 ", (_state$form = state.form) === null || _state$form === void 0 ? void 0 : _state$form.nom, " ", (_state$form2 = state.form) === null || _state$form2 === void 0 ? void 0 : _state$form2.prenom, " - ", state.age, " ans - Niveau ", state.niveau), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    style: {
-      fontStyle: 'italic',
-      marginTop: '10px'
-    }
+  }, "\uD83C\uDFE0 Retour Accueil"))), state.tarif !== undefined && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "tarif-summary"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h3", null, "\uD83D\uDCB0 Tarif \xE0 r\xE9gler : ", state.tarif === 0 ? 'GRATUIT' : "".concat(state.tarif, "\u20AC")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "tarif-details"
+  }, "\uD83D\uDC64 ", (_state$form = state.form) === null || _state$form === void 0 ? void 0 : _state$form.nom, " ", (_state$form2 = state.form) === null || _state$form2 === void 0 ? void 0 : _state$form2.prenom, " - ", state.age, " ans - Niveau ", state.niveau), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "tarif-description"
   }, state.tarifDescription)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    style: {
-      marginBottom: '30px',
-      lineHeight: '1.6'
-    }
-  }, "Conform\xE9ment \xE0 l'article L321-4 du Code du sport, le pr\xE9sent document vise \xE0 informer le pratiquant des conditions d'assurance applicables dans le cadre de la pratique de l'escalade au sein de la structure."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    style: {
-      marginBottom: '20px'
-    }
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h3", null, "Assurance en Responsabilit\xE9 Civile"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "La structure dispose d'un contrat d'assurance en responsabilit\xE9 civile couvrant les dommages caus\xE9s \xE0 des tiers dans le cadre de la pratique de l'escalade.")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    style: {
-      marginBottom: '30px'
-    }
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h3", null, "Assurance Individuelle Accident"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Cette assurance ne couvre pas les dommages corporels que le pratiquant pourrait se causer \xE0 lui-m\xEAme, en l'absence de tiers responsable identifi\xE9."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "L'assurance individuelle accident permet au pratiquant d'\xEAtre indemnis\xE9 pour les dommages corporels dont il pourrait \xEAtre victime, y compris en l'absence de tiers responsable."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "En l'absence de garantie individuelle accident, il est recommand\xE9 de souscrire une couverture adapt\xE9e soit aupr\xE8s de l'assureur de son choix, soit via une licence FFME.")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    style: {
-      marginBottom: '30px'
-    }
+    className: "assurance-info"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Conform\xE9ment \xE0 l'article L321-4 du Code du sport, le pr\xE9sent document vise \xE0 informer le pratiquant des conditions d'assurance applicables dans le cadre de la pratique de l'escalade au sein de la structure."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h3", null, "Assurance en Responsabilit\xE9 Civile"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "La structure dispose d'un contrat d'assurance en responsabilit\xE9 civile couvrant les dommages caus\xE9s \xE0 des tiers dans le cadre de la pratique de l'escalade."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h3", null, "Assurance Individuelle Accident"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Cette assurance ne couvre pas les dommages corporels que le pratiquant pourrait se causer \xE0 lui-m\xEAme, en l'absence de tiers responsable identifi\xE9."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "L'assurance individuelle accident permet au pratiquant d'\xEAtre indemnis\xE9 pour les dommages corporels dont il pourrait \xEAtre victime, y compris en l'absence de tiers responsable."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "En l'absence de garantie individuelle accident, il est recommand\xE9 de souscrire une couverture adapt\xE9e soit aupr\xE8s de l'assureur de son choix, soit via une licence FFME.")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "checkbox-list"
   }, [{
     key: 'c1',
     text: "Je reconnais avoir été informé(e) des conditions d'assurance applicables dans le cadre de la pratique de l'escalade au sein de cette structure."
@@ -47070,175 +47053,33 @@ function AssurancePage() {
       text = _ref2.text;
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
       key: key,
+      className: "checkbox-item ".concat(checks[key] ? 'checked' : ''),
       onClick: function onClick() {
         return toggleCheck(key);
-      },
-      style: {
-        display: 'flex',
-        alignItems: 'flex-start',
-        marginBottom: '20px',
-        cursor: 'pointer',
-        padding: '15px',
-        border: '2px solid #e0e0e0',
-        borderRadius: '8px',
-        background: checks[key] ? '#e3f2fd' : 'white',
-        borderColor: checks[key] ? '#007bff' : '#e0e0e0',
-        transition: 'all 0.3s ease',
-        // ✅ Enhanced clickability for tablet
-        userSelect: 'none',
-        WebkitUserSelect: 'none',
-        touchAction: 'manipulation'
       }
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
       type: "checkbox",
       checked: checks[key],
-      onChange: function onChange() {} // Controlled by parent onClick
-      ,
-      style: {
-        marginRight: '15px',
-        marginTop: '3px',
-        transform: 'scale(1.3)',
-        // Larger for tablet
-        cursor: 'pointer',
-        pointerEvents: 'auto'
-      }
+      onChange: function onChange() {}
     }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
-      style: {
-        cursor: 'pointer',
-        flex: 1
-      }
+      className: "checkbox-text"
     }, text));
   })), error && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "error-message",
-    style: {
-      marginBottom: '20px',
-      padding: '15px',
-      background: '#ffebee',
-      color: '#c62828',
-      borderRadius: '8px',
-      border: '1px solid #ffcdd2'
-    }
+    className: "error-message"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
     className: "error-icon"
-  }, "\u26A0\uFE0F"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
-    style: {
-      marginLeft: '10px'
-    }
-  }, error)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    style: {
-      display: 'flex',
-      gap: '15px',
-      justifyContent: 'space-between',
-      marginTop: '30px'
-    }
+  }, "\u26A0\uFE0F"), error), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "action-buttons"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
     onClick: handleRetourNiveau,
-    className: "btn-retour-accueil",
-    style: {
-      flex: 1,
-      padding: '12px 20px',
-      fontSize: '16px'
-    },
+    className: "btn-continue",
     disabled: loading
   }, "\u2190 Retour Niveau"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
     onClick: finish,
     disabled: !allChecked || loading,
-    className: "btn-verify",
-    style: {
-      flex: 2,
-      opacity: !allChecked || loading ? 0.6 : 1,
-      cursor: !allChecked || loading ? 'not-allowed' : 'pointer',
-      padding: '12px 20px',
-      fontSize: '16px'
-    }
+    className: "btn-continue"
   }, loading ? '⏳ Enregistrement...' : 'Continuer vers le paiement →')));
 }
-
-/***/ }),
-
-/***/ "./src/components/Confirmation.jsx":
-/*!*****************************************!*\
-  !*** ./src/components/Confirmation.jsx ***!
-  \*****************************************/
-/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": function() { return /* binding */ Confirmation; }
-/* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/dist/index.js");
-/* harmony import */ var _utils_soundUtils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/soundUtils */ "./src/utils/soundUtils.js");
-
-
-
-function Confirmation() {
-  var navigate = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_1__.useNavigate)();
-  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
-    (0,_utils_soundUtils__WEBPACK_IMPORTED_MODULE_2__.playSuccessSound)();
-    var timer = setTimeout(function () {
-      return navigate('/');
-    }, 2500); // auto-return
-    return function () {
-      return clearTimeout(timer);
-    };
-  }, [navigate]);
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "confirmation-page"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h2", null, "Merci !"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Votre enregistrement est termin\xE9."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Vous allez \xEAtre redirig\xE9 vers l\u2019accueil\u2026"));
-}
-
-/***/ }),
-
-/***/ "./src/components/Home.css":
-/*!*********************************!*\
-  !*** ./src/components/Home.css ***!
-  \*********************************/
-/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
-/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !../../node_modules/style-loader/dist/runtime/styleDomAPI.js */ "./node_modules/style-loader/dist/runtime/styleDomAPI.js");
-/* harmony import */ var _node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../node_modules/style-loader/dist/runtime/insertBySelector.js */ "./node_modules/style-loader/dist/runtime/insertBySelector.js");
-/* harmony import */ var _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! !../../node_modules/style-loader/dist/runtime/setAttributesWithoutAttributes.js */ "./node_modules/style-loader/dist/runtime/setAttributesWithoutAttributes.js");
-/* harmony import */ var _node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! !../../node_modules/style-loader/dist/runtime/insertStyleElement.js */ "./node_modules/style-loader/dist/runtime/insertStyleElement.js");
-/* harmony import */ var _node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! !../../node_modules/style-loader/dist/runtime/styleTagTransform.js */ "./node_modules/style-loader/dist/runtime/styleTagTransform.js");
-/* harmony import */ var _node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _node_modules_css_loader_dist_cjs_js_Home_css__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! !!../../node_modules/css-loader/dist/cjs.js!./Home.css */ "./node_modules/css-loader/dist/cjs.js!./src/components/Home.css");
-
-      
-      
-      
-      
-      
-      
-      
-      
-      
-
-var options = {};
-
-options.styleTagTransform = (_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default());
-options.setAttributes = (_node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3___default());
-
-      options.insert = _node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2___default().bind(null, "head");
-    
-options.domAPI = (_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default());
-options.insertStyleElement = (_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default());
-
-var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_Home_css__WEBPACK_IMPORTED_MODULE_6__["default"], options);
-
-
-
-
-       /* harmony default export */ __webpack_exports__["default"] = (_node_modules_css_loader_dist_cjs_js_Home_css__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_Home_css__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_Home_css__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
-
 
 /***/ }),
 
@@ -47255,27 +47096,43 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/dist/index.js");
-/* harmony import */ var _Home_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Home.css */ "./src/components/Home.css");
-
 
 
 function Home() {
   var navigate = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_1__.useNavigate)();
+  var handleMemberClick = function handleMemberClick() {
+    navigate('/member');
+  };
+  var handleNonMemberClick = function handleNonMemberClick() {
+    navigate('/visitor-choice');
+  };
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "home-container"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h1", null, "Bienvenue au Club d'Escalade"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "buttons-container"
+    className: "home-page"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "header"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h1", null, "\uD83E\uDDD7\u200D\u2640\uFE0F Bienvenue \xE0 l'Escalade"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Syst\xE8me d'acc\xE8s \xE0 la salle d'escalade")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "main-choices"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
-    className: "main-button member-button",
-    onClick: function onClick() {
-      return navigate('/member-check');
-    }
-  }, "Je suis membre du club"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
-    className: "main-button non-member-button",
-    onClick: function onClick() {
-      return navigate('/non-member');
-    }
-  }, "Je ne suis pas membre du club")));
+    onClick: handleMemberClick,
+    className: "btn-main btn-member"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "btn-icon"
+  }, "\uD83D\uDC64"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "btn-title"
+  }, "Je suis membre du club"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "btn-description"
+  }, "V\xE9rification rapide avec votre adh\xE9sion")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
+    onClick: handleNonMemberClick,
+    className: "btn-main btn-non-member"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "btn-icon"
+  }, "\uD83C\uDFAF"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "btn-title"
+  }, "Je ne suis pas membre du club"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "btn-description"
+  }, "Inscription visiteur"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "info-footer"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("strong", null, "\u2139\uFE0F Information :")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Choisissez votre situation pour acc\xE9der \xE0 l'escalade.")));
 }
 
 /***/ }),
@@ -47558,21 +47415,26 @@ function LevelPage() {
 
 /***/ }),
 
-/***/ "./src/components/MemberCheck.jsx":
-/*!****************************************!*\
-  !*** ./src/components/MemberCheck.jsx ***!
-  \****************************************/
+/***/ "./src/components/MemberPage.jsx":
+/*!***************************************!*\
+  !*** ./src/components/MemberPage.jsx ***!
+  \***************************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": function() { return /* binding */ MemberCheck; }
+/* harmony export */   "default": function() { return /* binding */ MemberPage; }
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/dist/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/lib/axios.js");
-/* harmony import */ var _utils_soundUtils__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils/soundUtils */ "./src/utils/soundUtils.js");
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 function _regenerator() { /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/babel/babel/blob/main/packages/babel-helpers/LICENSE */ var e, t, r = "function" == typeof Symbol ? Symbol : {}, n = r.iterator || "@@iterator", o = r.toStringTag || "@@toStringTag"; function i(r, n, o, i) { var c = n && n.prototype instanceof Generator ? n : Generator, u = Object.create(c.prototype); return _regeneratorDefine2(u, "_invoke", function (r, n, o) { var i, c, u, f = 0, p = o || [], y = !1, G = { p: 0, n: 0, v: e, a: d, f: d.bind(e, 4), d: function d(t, r) { return i = t, c = 0, u = e, G.n = r, a; } }; function d(r, n) { for (c = r, u = n, t = 0; !y && f && !o && t < p.length; t++) { var o, i = p[t], d = G.p, l = i[2]; r > 3 ? (o = l === n) && (u = i[(c = i[4]) ? 5 : (c = 3, 3)], i[4] = i[5] = e) : i[0] <= d && ((o = r < 2 && d < i[1]) ? (c = 0, G.v = n, G.n = i[1]) : d < l && (o = r < 3 || i[0] > n || n > l) && (i[4] = r, i[5] = n, G.n = l, c = 0)); } if (o || r > 1) return a; throw y = !0, n; } return function (o, p, l) { if (f > 1) throw TypeError("Generator is already running"); for (y && 1 === p && d(p, l), c = p, u = l; (t = c < 2 ? e : u) || !y;) { i || (c ? c < 3 ? (c > 1 && (G.n = -1), d(c, u)) : G.n = u : G.v = u); try { if (f = 2, i) { if (c || (o = "next"), t = i[o]) { if (!(t = t.call(i, u))) throw TypeError("iterator result is not an object"); if (!t.done) return t; u = t.value, c < 2 && (c = 0); } else 1 === c && (t = i.return) && t.call(i), c < 2 && (u = TypeError("The iterator does not provide a '" + o + "' method"), c = 1); i = e; } else if ((t = (y = G.n < 0) ? u : r.call(n, G)) !== a) break; } catch (t) { i = e, c = 1, u = t; } finally { f = 1; } } return { value: t, done: y }; }; }(r, o, i), !0), u; } var a = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} t = Object.getPrototypeOf; var c = [][n] ? t(t([][n]())) : (_regeneratorDefine2(t = {}, n, function () { return this; }), t), u = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(c); function f(e) { return Object.setPrototypeOf ? Object.setPrototypeOf(e, GeneratorFunctionPrototype) : (e.__proto__ = GeneratorFunctionPrototype, _regeneratorDefine2(e, o, "GeneratorFunction")), e.prototype = Object.create(u), e; } return GeneratorFunction.prototype = GeneratorFunctionPrototype, _regeneratorDefine2(u, "constructor", GeneratorFunctionPrototype), _regeneratorDefine2(GeneratorFunctionPrototype, "constructor", GeneratorFunction), GeneratorFunction.displayName = "GeneratorFunction", _regeneratorDefine2(GeneratorFunctionPrototype, o, "GeneratorFunction"), _regeneratorDefine2(u), _regeneratorDefine2(u, o, "Generator"), _regeneratorDefine2(u, n, function () { return this; }), _regeneratorDefine2(u, "toString", function () { return "[object Generator]"; }), (_regenerator = function _regenerator() { return { w: i, m: f }; })(); }
 function _regeneratorDefine2(e, r, n, t) { var i = Object.defineProperty; try { i({}, "", {}); } catch (e) { i = 0; } _regeneratorDefine2 = function _regeneratorDefine(e, r, n, t) { function o(r, n) { _regeneratorDefine2(e, r, function (e) { return this._invoke(r, n, e); }); } r ? i ? i(e, r, { value: n, enumerable: !t, configurable: !t, writable: !t }) : e[r] = n : (o("next", 0), o("throw", 1), o("return", 2)); }, _regeneratorDefine2(e, r, n, t); }
 function asyncGeneratorStep(n, t, e, r, o, a, c) { try { var i = n[a](c), u = i.value; } catch (n) { return void e(n); } i.done ? t(u) : Promise.resolve(u).then(r, o); }
@@ -47586,352 +47448,153 @@ function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
 
 
 
-
-
-// ✅ GECORRIGEERDE API BASE URL - WAS 4000, NU 3001
-var API_BASE_URL = 'http://localhost:3001';
-function MemberCheck() {
-  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(''),
+var getApiBaseUrl = function getApiBaseUrl() {
+  var hostname = window.location.hostname;
+  var protocol = window.location.protocol;
+  if (hostname !== 'localhost' && hostname !== '127.0.0.1') {
+    return "".concat(protocol, "//").concat(hostname, ":3001");
+  }
+  return 'http://localhost:3001';
+};
+function MemberPage() {
+  var navigate = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_1__.useNavigate)();
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({
+      nom: '',
+      prenom: ''
+    }),
     _useState2 = _slicedToArray(_useState, 2),
-    nom = _useState2[0],
-    setNom = _useState2[1];
-  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(''),
+    form = _useState2[0],
+    setForm = _useState2[1];
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
     _useState4 = _slicedToArray(_useState3, 2),
-    prenom = _useState4[0],
-    setPrenom = _useState4[1];
-  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+    loading = _useState4[0],
+    setLoading = _useState4[1];
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(''),
     _useState6 = _slicedToArray(_useState5, 2),
-    loading = _useState6[0],
-    setLoading = _useState6[1];
+    error = _useState6[0],
+    setError = _useState6[1];
   var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(''),
     _useState8 = _slicedToArray(_useState7, 2),
-    error = _useState8[0],
-    setError = _useState8[1];
-  var _useState9 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(''),
-    _useState0 = _slicedToArray(_useState9, 2),
-    message = _useState0[0],
-    setMessage = _useState0[1];
-  var _useState1 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
-    _useState10 = _slicedToArray(_useState1, 2),
-    benevoleCalled = _useState10[0],
-    setBenevoleCalled = _useState10[1];
-  var navigate = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_1__.useNavigate)();
-  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
-    (0,_utils_soundUtils__WEBPACK_IMPORTED_MODULE_3__.preloadSounds)();
-  }, []);
-  var handleVerification = /*#__PURE__*/function () {
+    success = _useState8[0],
+    setSuccess = _useState8[1];
+  var handleSubmit = /*#__PURE__*/function () {
     var _ref = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee(e) {
-      var checkResponse, presenceData, presenceResponse, _error$response, _error$response2, errorMessage, _t;
+      var apiUrl, response, _t;
       return _regenerator().w(function (_context) {
         while (1) switch (_context.p = _context.n) {
           case 0:
             e.preventDefault();
-            setLoading(true);
-            setError('');
-            setMessage('');
-            setBenevoleCalled(false);
-            _context.p = 1;
-            console.log('=== STARTING MEMBER VERIFICATION ===');
-            console.log('Checking member:', nom, prenom);
-
-            // Étape 1: Vérification de l'adhésion - GECORRIGEERDE URL
-            _context.n = 2;
-            return axios__WEBPACK_IMPORTED_MODULE_2__["default"].get("".concat(API_BASE_URL, "/members/check"), {
-              params: {
-                nom: nom,
-                prenom: prenom
-              }
-            });
-          case 2:
-            checkResponse = _context.v;
-            console.log('Member check response:', checkResponse.data);
-            if (!checkResponse.data.success) {
-              _context.n = 4;
+            if (!(!form.nom.trim() || !form.prenom.trim())) {
+              _context.n = 1;
               break;
             }
-            // Membre valide et payé
-            setMessage(checkResponse.data.message);
-            (0,_utils_soundUtils__WEBPACK_IMPORTED_MODULE_3__.playSuccessSound)();
-            console.log('=== MEMBER VALIDATED - REGISTERING PRESENCE ===');
-
-            // Étape 2: Enregistrement présence adherent - GECORRIGEERDE URL
-            presenceData = {
-              type: 'adherent',
-              nom: nom.trim(),
-              prenom: prenom.trim()
-              // Expliciet: geen andere velden voor adherents
-            };
-            console.log('Sending presence data:', presenceData);
+            setError('Nom et prénom sont requis');
+            return _context.a(2);
+          case 1:
+            setLoading(true);
+            setError('');
+            setSuccess('');
+            _context.p = 2;
+            apiUrl = getApiBaseUrl();
             _context.n = 3;
-            return axios__WEBPACK_IMPORTED_MODULE_2__["default"].post("".concat(API_BASE_URL, "/presences"), presenceData, {
-              headers: {
-                'Content-Type': 'application/json'
-              }
+            return axios__WEBPACK_IMPORTED_MODULE_2__["default"].get("".concat(apiUrl, "/members/check"), {
+              params: {
+                nom: form.nom.trim(),
+                prenom: form.prenom.trim()
+              },
+              timeout: 15000
             });
           case 3:
-            presenceResponse = _context.v;
-            console.log('Presence response:', presenceResponse.data);
-            if (presenceResponse.data.success) {
-              console.log('=== PRESENCE REGISTERED SUCCESSFULLY ===');
-              console.log('Final presence object:', presenceResponse.data.presence);
+            response = _context.v;
+            if (response.data.success) {
+              setSuccess('Membre vérifié avec succès !');
 
-              // Verificatie dat geen tarif werd toegevoegd
-              if (presenceResponse.data.presence.tarif !== undefined) {
-                console.error('ERROR: Tarif was added to adherent!', presenceResponse.data.presence.tarif);
-              } else {
-                console.log('SUCCESS: No tarif field in adherent presence');
-              }
+              // ✅ FIX: Return to home WITHOUT success message state
               setTimeout(function () {
-                navigate('/confirmation');
+                navigate('/');
               }, 2000);
             } else {
-              setError("Erreur lors de l'enregistrement de la présence");
-              (0,_utils_soundUtils__WEBPACK_IMPORTED_MODULE_3__.playBuzzerSound)();
+              setError(response.data.error);
             }
             _context.n = 5;
             break;
           case 4:
-            // Membre non valide ou non payé
-            console.log('Member validation failed:', checkResponse.data.error);
-            setError(checkResponse.data.error || "Adhésion non valide");
-            (0,_utils_soundUtils__WEBPACK_IMPORTED_MODULE_3__.playBuzzerSound)();
-          case 5:
-            _context.n = 7;
-            break;
-          case 6:
-            _context.p = 6;
+            _context.p = 4;
             _t = _context.v;
-            console.error('=== ERROR IN VERIFICATION ===');
-            console.error('Error details:', _t);
-            errorMessage = "Erreur de connexion";
-            if (((_error$response = _t.response) === null || _error$response === void 0 ? void 0 : _error$response.status) === 404) {
-              errorMessage = "Aucun membre trouvé avec ce nom et prénom";
-            } else if ((_error$response2 = _t.response) !== null && _error$response2 !== void 0 && (_error$response2 = _error$response2.data) !== null && _error$response2 !== void 0 && _error$response2.error) {
-              errorMessage = _t.response.data.error;
-            } else if (_t.message) {
-              errorMessage = _t.message;
-            }
-            setError(errorMessage);
-            (0,_utils_soundUtils__WEBPACK_IMPORTED_MODULE_3__.playBuzzerSound)();
-          case 7:
-            _context.p = 7;
+            console.error('Member verification error:', _t);
+            setError('Erreur de connexion. Veuillez réessayer.');
+          case 5:
+            _context.p = 5;
             setLoading(false);
-            return _context.f(7);
-          case 8:
+            return _context.f(5);
+          case 6:
             return _context.a(2);
         }
-      }, _callee, null, [[1, 6, 7, 8]]);
+      }, _callee, null, [[2, 4, 5, 6]]);
     }));
-    return function handleVerification(_x) {
+    return function handleSubmit(_x) {
       return _ref.apply(this, arguments);
     };
   }();
-  var handleAppelerBenevole = function handleAppelerBenevole() {
-    (0,_utils_soundUtils__WEBPACK_IMPORTED_MODULE_3__.playBellSound)();
-    setBenevoleCalled(true);
-    setMessage("Un bénévole va arriver pour vous aider !");
-    setTimeout(function () {
-      setMessage('');
-      setBenevoleCalled(false);
-    }, 5000);
-  };
   var handleRetourAccueil = function handleRetourAccueil() {
-    setNom('');
-    setPrenom('');
-    setError('');
-    setMessage('');
-    setLoading(false);
-    setBenevoleCalled(false);
     navigate('/');
   };
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    style: {
-      minHeight: '100vh',
-      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      padding: '20px',
-      fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif"
-    }
+    className: "member-page"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    style: {
-      background: 'rgba(255, 255, 255, 0.95)',
-      padding: '40px',
-      borderRadius: '20px',
-      boxShadow: '0 20px 60px rgba(0, 0, 0, 0.3)',
-      width: '100%',
-      maxWidth: '500px',
-      textAlign: 'center'
-    }
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h2", {
-    style: {
-      color: '#333',
-      marginBottom: '30px',
-      fontSize: '2rem',
-      fontWeight: '300'
-    }
-  }, "V\xE9rification d'adh\xE9sion"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("form", {
-    onSubmit: handleVerification,
-    style: {
-      marginBottom: '20px'
-    }
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    style: {
-      marginBottom: '20px',
-      textAlign: 'left'
-    }
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
-    style: {
-      display: 'block',
-      marginBottom: '8px',
-      fontSize: '1.1rem',
-      color: '#555',
-      fontWeight: '500'
-    }
-  }, "Nom"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
-    type: "text",
-    value: nom,
-    onChange: function onChange(e) {
-      return setNom(e.target.value);
-    },
-    required: true,
-    disabled: loading,
-    style: {
-      width: '100%',
-      padding: '15px',
-      border: '2px solid #ddd',
-      borderRadius: '10px',
-      fontSize: '1.1rem',
-      transition: 'border-color 0.3s',
-      boxSizing: 'border-box'
-    },
-    onFocus: function onFocus(e) {
-      return e.target.style.borderColor = '#667eea';
-    },
-    onBlur: function onBlur(e) {
-      return e.target.style.borderColor = '#ddd';
-    }
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    style: {
-      marginBottom: '30px',
-      textAlign: 'left'
-    }
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
-    style: {
-      display: 'block',
-      marginBottom: '8px',
-      fontSize: '1.1rem',
-      color: '#555',
-      fontWeight: '500'
-    }
-  }, "Pr\xE9nom"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
-    type: "text",
-    value: prenom,
-    onChange: function onChange(e) {
-      return setPrenom(e.target.value);
-    },
-    required: true,
-    disabled: loading,
-    style: {
-      width: '100%',
-      padding: '15px',
-      border: '2px solid #ddd',
-      borderRadius: '10px',
-      fontSize: '1.1rem',
-      transition: 'border-color 0.3s',
-      boxSizing: 'border-box'
-    },
-    onFocus: function onFocus(e) {
-      return e.target.style.borderColor = '#667eea';
-    },
-    onBlur: function onBlur(e) {
-      return e.target.style.borderColor = '#ddd';
-    }
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    style: {
-      display: 'flex',
-      gap: '15px',
-      flexWrap: 'wrap'
-    }
+    className: "header-section"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h2", null, "V\xE9rification Adh\xE9rent"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "header-buttons"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
-    type: "submit",
-    disabled: loading,
-    style: {
-      flex: 1,
-      padding: '15px 30px',
-      background: loading ? '#ccc' : 'linear-gradient(135deg, #667eea, #764ba2)',
-      color: 'white',
-      border: 'none',
-      borderRadius: '10px',
-      fontSize: '1.1rem',
-      fontWeight: '600',
-      cursor: loading ? 'not-allowed' : 'pointer',
-      transition: 'all 0.3s',
-      minWidth: '150px'
-    }
-  }, loading ? 'Vérification...' : 'Vérifier'), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
-    type: "button",
-    onClick: handleAppelerBenevole,
-    disabled: loading,
-    style: {
-      flex: 1,
-      padding: '15px 30px',
-      background: '#ff6b6b',
-      color: 'white',
-      border: 'none',
-      borderRadius: '10px',
-      fontSize: '1.1rem',
-      fontWeight: '600',
-      cursor: 'pointer',
-      transition: 'all 0.3s',
-      minWidth: '150px'
-    }
-  }, "\uD83D\uDD14 Appeler b\xE9n\xE9vole"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
     onClick: handleRetourAccueil,
-    style: {
-      width: '100%',
-      padding: '12px',
-      background: 'transparent',
-      color: '#667eea',
-      border: '2px solid #667eea',
-      borderRadius: '10px',
-      fontSize: '1rem',
-      cursor: 'pointer',
-      transition: 'all 0.3s',
-      marginTop: '10px'
-    }
-  }, "\u2190 Retour \xE0 l'accueil"), error && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    style: {
-      marginTop: '20px',
-      padding: '15px',
-      background: '#ff6b6b',
-      color: 'white',
-      borderRadius: '10px',
-      display: 'flex',
-      alignItems: 'center',
-      gap: '10px'
-    }
+    className: "btn-retour-accueil"
+  }, "\uD83C\uDFE0 Retour Accueil"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("form", {
+    onSubmit: handleSubmit
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "form-group"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
+    htmlFor: "nom"
+  }, "Nom :"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
+    id: "nom",
+    type: "text",
+    value: form.nom,
+    onChange: function onChange(e) {
+      return setForm(_objectSpread(_objectSpread({}, form), {}, {
+        nom: e.target.value
+      }));
+    },
+    placeholder: "Votre nom de famille",
+    required: true,
+    disabled: loading
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "form-group"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
+    htmlFor: "prenom"
+  }, "Pr\xE9nom :"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
+    id: "prenom",
+    type: "text",
+    value: form.prenom,
+    onChange: function onChange(e) {
+      return setForm(_objectSpread(_objectSpread({}, form), {}, {
+        prenom: e.target.value
+      }));
+    },
+    placeholder: "Votre pr\xE9nom",
+    required: true,
+    disabled: loading
+  })), error && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "error-message"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
-    style: {
-      fontSize: '1.2rem'
-    }
-  }, "\u26A0\uFE0F"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", null, error)), message && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    style: {
-      marginTop: '20px',
-      padding: '15px',
-      background: benevoleCalled ? '#ff9500' : '#4CAF50',
-      color: 'white',
-      borderRadius: '10px',
-      display: 'flex',
-      alignItems: 'center',
-      gap: '10px'
-    }
+    className: "error-icon"
+  }, "\u26A0\uFE0F"), error), success && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "success-message"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
-    style: {
-      fontSize: '1.2rem'
-    }
-  }, benevoleCalled ? "🔔" : "✅"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", null, message))));
+    className: "success-icon"
+  }, "\u2705"), success), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
+    type: "submit",
+    className: "btn-verify",
+    disabled: loading || !form.nom.trim() || !form.prenom.trim()
+  }, loading ? '⏳ Vérification...' : 'Vérifier mon adhésion')));
 }
 
 /***/ }),
@@ -47950,12 +47613,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/dist/index.js");
 /* harmony import */ var _utils_soundUtils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/soundUtils */ "./src/utils/soundUtils.js");
-/* harmony import */ var _utils_ageCalculation__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils/ageCalculation */ "./src/utils/ageCalculation.js");
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
-function _regenerator() { /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/babel/babel/blob/main/packages/babel-helpers/LICENSE */ var e, t, r = "function" == typeof Symbol ? Symbol : {}, n = r.iterator || "@@iterator", o = r.toStringTag || "@@toStringTag"; function i(r, n, o, i) { var c = n && n.prototype instanceof Generator ? n : Generator, u = Object.create(c.prototype); return _regeneratorDefine2(u, "_invoke", function (r, n, o) { var i, c, u, f = 0, p = o || [], y = !1, G = { p: 0, n: 0, v: e, a: d, f: d.bind(e, 4), d: function d(t, r) { return i = t, c = 0, u = e, G.n = r, a; } }; function d(r, n) { for (c = r, u = n, t = 0; !y && f && !o && t < p.length; t++) { var o, i = p[t], d = G.p, l = i[2]; r > 3 ? (o = l === n) && (u = i[(c = i[4]) ? 5 : (c = 3, 3)], i[4] = i[5] = e) : i[0] <= d && ((o = r < 2 && d < i[1]) ? (c = 0, G.v = n, G.n = i[1]) : d < l && (o = r < 3 || i[0] > n || n > l) && (i[4] = r, i[5] = n, G.n = l, c = 0)); } if (o || r > 1) return a; throw y = !0, n; } return function (o, p, l) { if (f > 1) throw TypeError("Generator is already running"); for (y && 1 === p && d(p, l), c = p, u = l; (t = c < 2 ? e : u) || !y;) { i || (c ? c < 3 ? (c > 1 && (G.n = -1), d(c, u)) : G.n = u : G.v = u); try { if (f = 2, i) { if (c || (o = "next"), t = i[o]) { if (!(t = t.call(i, u))) throw TypeError("iterator result is not an object"); if (!t.done) return t; u = t.value, c < 2 && (c = 0); } else 1 === c && (t = i.return) && t.call(i), c < 2 && (u = TypeError("The iterator does not provide a '" + o + "' method"), c = 1); i = e; } else if ((t = (y = G.n < 0) ? u : r.call(n, G)) !== a) break; } catch (t) { i = e, c = 1, u = t; } finally { f = 1; } } return { value: t, done: y }; }; }(r, o, i), !0), u; } var a = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} t = Object.getPrototypeOf; var c = [][n] ? t(t([][n]())) : (_regeneratorDefine2(t = {}, n, function () { return this; }), t), u = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(c); function f(e) { return Object.setPrototypeOf ? Object.setPrototypeOf(e, GeneratorFunctionPrototype) : (e.__proto__ = GeneratorFunctionPrototype, _regeneratorDefine2(e, o, "GeneratorFunction")), e.prototype = Object.create(u), e; } return GeneratorFunction.prototype = GeneratorFunctionPrototype, _regeneratorDefine2(u, "constructor", GeneratorFunctionPrototype), _regeneratorDefine2(GeneratorFunctionPrototype, "constructor", GeneratorFunction), GeneratorFunction.displayName = "GeneratorFunction", _regeneratorDefine2(GeneratorFunctionPrototype, o, "GeneratorFunction"), _regeneratorDefine2(u), _regeneratorDefine2(u, o, "Generator"), _regeneratorDefine2(u, n, function () { return this; }), _regeneratorDefine2(u, "toString", function () { return "[object Generator]"; }), (_regenerator = function _regenerator() { return { w: i, m: f }; })(); }
-function _regeneratorDefine2(e, r, n, t) { var i = Object.defineProperty; try { i({}, "", {}); } catch (e) { i = 0; } _regeneratorDefine2 = function _regeneratorDefine(e, r, n, t) { function o(r, n) { _regeneratorDefine2(e, r, function (e) { return this._invoke(r, n, e); }); } r ? i ? i(e, r, { value: n, enumerable: !t, configurable: !t, writable: !t }) : e[r] = n : (o("next", 0), o("throw", 1), o("return", 2)); }, _regeneratorDefine2(e, r, n, t); }
-function asyncGeneratorStep(n, t, e, r, o, a, c) { try { var i = n[a](c), u = i.value; } catch (n) { return void e(n); } i.done ? t(u) : Promise.resolve(u).then(r, o); }
-function _asyncToGenerator(n) { return function () { var t = this, e = arguments; return new Promise(function (r, o) { var a = n.apply(t, e); function _next(n) { asyncGeneratorStep(a, r, o, _next, _throw, "next", n); } function _throw(n) { asyncGeneratorStep(a, r, o, _next, _throw, "throw", n); } _next(void 0); }); }; }
 function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
 function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
 function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
@@ -47971,427 +47629,171 @@ function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
 
 
 
-
-// ✅ GECORRIGEERDE API BASE URL
-var API_BASE_URL = 'http://localhost:3001';
+// ✅ KEEP: Dynamic API URL detection (WORKING!)
+var getApiBaseUrl = function getApiBaseUrl() {
+  var hostname = window.location.hostname;
+  var protocol = window.location.protocol;
+  if (hostname !== 'localhost' && hostname !== '127.0.0.1') {
+    return "".concat(protocol, "//").concat(hostname, ":3001");
+  }
+  return 'http://localhost:3001';
+};
 function NonMemberForm() {
-  var nav = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_1__.useNavigate)();
+  var navigate = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_1__.useNavigate)();
+  var location = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_1__.useLocation)();
+  var _ref = location.state || {},
+    memberForm = _ref.form,
+    memberCheckFailed = _ref.memberCheckFailed,
+    reason = _ref.reason;
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({
-      nom: '',
-      prenom: '',
+      nom: (memberForm === null || memberForm === void 0 ? void 0 : memberForm.nom) || '',
+      prenom: (memberForm === null || memberForm === void 0 ? void 0 : memberForm.prenom) || '',
       email: '',
       telephone: '',
       dateNaissance: ''
+      // ✅ REMOVED: assuranceAccepted - belongs in AssurancePage!
     }),
     _useState2 = _slicedToArray(_useState, 2),
     form = _useState2[0],
     setForm = _useState2[1];
   var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(''),
     _useState4 = _slicedToArray(_useState3, 2),
-    err = _useState4[0],
-    setErr = _useState4[1];
-  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null),
-    _useState6 = _slicedToArray(_useState5, 2),
-    tarifPreview = _useState6[0],
-    setTarifPreview = _useState6[1];
-  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
-    _useState8 = _slicedToArray(_useState7, 2),
-    loading = _useState8[0],
-    setLoading = _useState8[1];
-  var onChange = function onChange(e) {
-    var _e$target = e.target,
-      name = _e$target.name,
-      value = _e$target.value;
-    setForm(_objectSpread(_objectSpread({}, form), {}, _defineProperty({}, name, value)));
+    error = _useState4[0],
+    setError = _useState4[1];
+  var handleSubmit = function handleSubmit(e) {
+    e.preventDefault();
+    if (!form.nom.trim() || !form.prenom.trim()) {
+      setError('Nom et prénom sont requis');
+      (0,_utils_soundUtils__WEBPACK_IMPORTED_MODULE_2__.playBuzzerSound)();
+      return;
+    }
+    if (!form.dateNaissance) {
+      setError('Date de naissance est requise pour calculer le tarif');
+      (0,_utils_soundUtils__WEBPACK_IMPORTED_MODULE_2__.playBuzzerSound)();
+      return;
+    }
 
-    // Preview du tarif en temps réel
-    if (name === 'dateNaissance' && value) {
-      try {
-        var _calculateAgeAndTarif = (0,_utils_ageCalculation__WEBPACK_IMPORTED_MODULE_3__.calculateAgeAndTarif)(value),
-          age = _calculateAgeAndTarif.age,
-          tarif = _calculateAgeAndTarif.tarif,
-          description = _calculateAgeAndTarif.description;
-        setTarifPreview({
-          age: age,
-          tarif: tarif,
-          description: description
-        });
-      } catch (error) {
-        setTarifPreview(null);
+    // ✅ RESTORED: Navigate to niveau page (original flow)
+    navigate('/niveau', {
+      state: {
+        form: form,
+        type: 'non-adherent'
       }
-    } else if (name === 'dateNaissance' && !value) {
-      setTarifPreview(null);
-    }
+    });
   };
-  var next = /*#__PURE__*/function () {
-    var _ref = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee(e) {
-      var _calculateAgeAndTarif2, age, tarif, description, category, nonMemberData, response, _t, _t2;
-      return _regenerator().w(function (_context) {
-        while (1) switch (_context.p = _context.n) {
-          case 0:
-            e.preventDefault();
-            setLoading(true);
-            setErr('');
-            if (!(!form.nom || !form.prenom || !form.email)) {
-              _context.n = 1;
-              break;
-            }
-            setErr('Champs obligatoires manquants');
-            (0,_utils_soundUtils__WEBPACK_IMPORTED_MODULE_2__.playBuzzerSound)();
-            setLoading(false);
-            return _context.a(2);
-          case 1:
-            if (form.dateNaissance) {
-              _context.n = 2;
-              break;
-            }
-            setErr('La date de naissance est obligatoire pour calculer le tarif');
-            (0,_utils_soundUtils__WEBPACK_IMPORTED_MODULE_2__.playBuzzerSound)();
-            setLoading(false);
-            return _context.a(2);
-          case 2:
-            _context.p = 2;
-            // Calcul du tarif basé sur l'âge
-            _calculateAgeAndTarif2 = (0,_utils_ageCalculation__WEBPACK_IMPORTED_MODULE_3__.calculateAgeAndTarif)(form.dateNaissance), age = _calculateAgeAndTarif2.age, tarif = _calculateAgeAndTarif2.tarif, description = _calculateAgeAndTarif2.description, category = _calculateAgeAndTarif2.category;
-            console.log('=== TARIF CALCULATION ===');
-            console.log('Date de naissance:', form.dateNaissance);
-            console.log('Âge calculé:', age);
-            console.log('Tarif calculé:', tarif);
-            console.log('Catégorie:', category);
-
-            // Optionnel: Sauvegarder dans non-members voor tracking
-            nonMemberData = _objectSpread(_objectSpread({}, form), {}, {
-              age: age,
-              tarif: tarif,
-              tarifDescription: description,
-              tarifCategory: category,
-              status: 'form_completed'
-            });
-            _context.p = 3;
-            _context.n = 4;
-            return fetch("".concat(API_BASE_URL, "/non-members"), {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify(nonMemberData)
-            });
-          case 4:
-            response = _context.v;
-            if (response.ok) {
-              console.log('✅ Non-member data saved for tracking');
-            } else {
-              console.warn('⚠️ Could not save non-member data, but continuing...');
-            }
-            _context.n = 6;
-            break;
-          case 5:
-            _context.p = 5;
-            _t = _context.v;
-            console.warn('⚠️ Save error, but continuing...', _t);
-          case 6:
-            // Navigation naar niveau pagina met alle data
-            nav('/niveau', {
-              state: {
-                form: form,
-                age: age,
-                tarif: tarif,
-                tarifDescription: description,
-                tarifCategory: category
-              }
-            });
-            _context.n = 8;
-            break;
-          case 7:
-            _context.p = 7;
-            _t2 = _context.v;
-            console.error('Error in form processing:', _t2);
-            setErr('Erreur lors du traitement du formulaire');
-            (0,_utils_soundUtils__WEBPACK_IMPORTED_MODULE_2__.playBuzzerSound)();
-          case 8:
-            _context.p = 8;
-            setLoading(false);
-            return _context.f(8);
-          case 9:
-            return _context.a(2);
-        }
-      }, _callee, null, [[3, 5], [2, 7, 8, 9]]);
-    }));
-    return function next(_x) {
-      return _ref.apply(this, arguments);
-    };
-  }();
+  var handleRetourAccueil = function handleRetourAccueil() {
+    navigate('/');
+  };
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    style: {
-      minHeight: '100vh',
-      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      padding: '20px',
-      fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif"
-    }
+    className: "non-member-form"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    style: {
-      background: 'rgba(255, 255, 255, 0.95)',
-      padding: '40px',
-      borderRadius: '20px',
-      boxShadow: '0 20px 60px rgba(0, 0, 0, 0.3)',
-      width: '100%',
-      maxWidth: '600px'
-    }
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h2", {
-    style: {
-      color: '#333',
-      marginBottom: '30px',
-      fontSize: '2rem',
-      fontWeight: '300',
-      textAlign: 'center'
-    }
-  }, "Inscription non-membre"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("form", {
-    onSubmit: next
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    style: {
-      display: 'grid',
-      gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-      gap: '20px',
-      marginBottom: '20px'
-    }
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
-    style: {
-      display: 'block',
-      marginBottom: '8px',
-      fontSize: '1.1rem',
-      color: '#555',
-      fontWeight: '500'
-    }
-  }, "Nom *"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
-    type: "text",
-    name: "nom",
-    value: form.nom,
-    onChange: onChange,
-    required: true,
-    disabled: loading,
-    style: {
-      width: '100%',
-      padding: '15px',
-      border: '2px solid #ddd',
-      borderRadius: '10px',
-      fontSize: '1.1rem',
-      transition: 'border-color 0.3s',
-      boxSizing: 'border-box'
-    },
-    onFocus: function onFocus(e) {
-      return e.target.style.borderColor = '#667eea';
-    },
-    onBlur: function onBlur(e) {
-      return e.target.style.borderColor = '#ddd';
-    }
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
-    style: {
-      display: 'block',
-      marginBottom: '8px',
-      fontSize: '1.1rem',
-      color: '#555',
-      fontWeight: '500'
-    }
-  }, "Pr\xE9nom *"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
-    type: "text",
-    name: "prenom",
-    value: form.prenom,
-    onChange: onChange,
-    required: true,
-    disabled: loading,
-    style: {
-      width: '100%',
-      padding: '15px',
-      border: '2px solid #ddd',
-      borderRadius: '10px',
-      fontSize: '1.1rem',
-      transition: 'border-color 0.3s',
-      boxSizing: 'border-box'
-    },
-    onFocus: function onFocus(e) {
-      return e.target.style.borderColor = '#667eea';
-    },
-    onBlur: function onBlur(e) {
-      return e.target.style.borderColor = '#ddd';
-    }
-  }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    style: {
-      marginBottom: '20px'
-    }
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
-    style: {
-      display: 'block',
-      marginBottom: '8px',
-      fontSize: '1.1rem',
-      color: '#555',
-      fontWeight: '500'
-    }
-  }, "Email *"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
-    type: "email",
-    name: "email",
-    value: form.email,
-    onChange: onChange,
-    required: true,
-    disabled: loading,
-    style: {
-      width: '100%',
-      padding: '15px',
-      border: '2px solid #ddd',
-      borderRadius: '10px',
-      fontSize: '1.1rem',
-      transition: 'border-color 0.3s',
-      boxSizing: 'border-box'
-    },
-    onFocus: function onFocus(e) {
-      return e.target.style.borderColor = '#667eea';
-    },
-    onBlur: function onBlur(e) {
-      return e.target.style.borderColor = '#ddd';
-    }
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    style: {
-      display: 'grid',
-      gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-      gap: '20px',
-      marginBottom: '20px'
-    }
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
-    style: {
-      display: 'block',
-      marginBottom: '8px',
-      fontSize: '1.1rem',
-      color: '#555',
-      fontWeight: '500'
-    }
-  }, "T\xE9l\xE9phone"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
-    type: "tel",
-    name: "telephone",
-    value: form.telephone,
-    onChange: onChange,
-    disabled: loading,
-    style: {
-      width: '100%',
-      padding: '15px',
-      border: '2px solid #ddd',
-      borderRadius: '10px',
-      fontSize: '1.1rem',
-      transition: 'border-color 0.3s',
-      boxSizing: 'border-box'
-    },
-    onFocus: function onFocus(e) {
-      return e.target.style.borderColor = '#667eea';
-    },
-    onBlur: function onBlur(e) {
-      return e.target.style.borderColor = '#ddd';
-    }
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
-    style: {
-      display: 'block',
-      marginBottom: '8px',
-      fontSize: '1.1rem',
-      color: '#555',
-      fontWeight: '500'
-    }
-  }, "Date de naissance *"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
-    type: "date",
-    name: "dateNaissance",
-    value: form.dateNaissance,
-    onChange: onChange,
-    required: true,
-    disabled: loading,
-    style: {
-      width: '100%',
-      padding: '15px',
-      border: '2px solid #ddd',
-      borderRadius: '10px',
-      fontSize: '1.1rem',
-      transition: 'border-color 0.3s',
-      boxSizing: 'border-box'
-    },
-    onFocus: function onFocus(e) {
-      return e.target.style.borderColor = '#667eea';
-    },
-    onBlur: function onBlur(e) {
-      return e.target.style.borderColor = '#ddd';
-    }
-  }))), tarifPreview && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    style: {
-      background: 'linear-gradient(135deg, #4CAF50, #45a049)',
-      color: 'white',
-      padding: '20px',
-      borderRadius: '15px',
-      marginBottom: '20px',
-      textAlign: 'center'
-    }
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h4", {
-    style: {
-      margin: '0 0 10px 0',
-      fontSize: '1.3rem'
-    }
-  }, "Tarif calcul\xE9 : ", tarifPreview.tarif === 0 ? 'GRATUIT' : "".concat(tarifPreview.tarif, "\u20AC")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
-    style: {
-      margin: '5px 0',
-      opacity: 0.9
-    }
-  }, "\xC2ge : ", tarifPreview.age, " ans"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
-    style: {
-      margin: '5px 0',
-      opacity: 0.9
-    }
-  }, tarifPreview.description)), err && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    style: {
-      marginBottom: '20px',
-      padding: '15px',
-      background: '#ff6b6b',
-      color: 'white',
-      borderRadius: '10px',
-      textAlign: 'center'
-    }
-  }, err), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    style: {
-      display: 'flex',
-      gap: '15px',
-      flexWrap: 'wrap'
-    }
+    className: "header-section"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h2", null, "Inscription Visiteur"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "header-buttons"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
-    type: "button",
-    onClick: function onClick() {
-      return nav('/');
+    onClick: handleRetourAccueil,
+    className: "btn-retour-accueil"
+  }, "\uD83C\uDFE0 Retour Accueil"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    style: {
+      fontSize: '12px',
+      color: '#666',
+      marginBottom: '15px',
+      padding: '8px',
+      background: '#f8f9fa',
+      borderRadius: '4px',
+      opacity: 0.7
+    }
+  }, "API: ", getApiBaseUrl(), " | Host: ", window.location.hostname), memberCheckFailed && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "info-message"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
+    className: "info-icon"
+  }, "\u2139\uFE0F"), "Aucune adh\xE9sion trouv\xE9e. Veuillez vous inscrire comme visiteur.", reason && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "info-detail"
+  }, "D\xE9tail: ", reason)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("form", {
+    onSubmit: handleSubmit
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "form-group"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
+    htmlFor: "nom"
+  }, "Nom de famille *:"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
+    id: "nom",
+    type: "text",
+    value: form.nom,
+    onChange: function onChange(e) {
+      return setForm(_objectSpread(_objectSpread({}, form), {}, {
+        nom: e.target.value
+      }));
     },
-    disabled: loading,
-    style: {
-      flex: 1,
-      padding: '15px 30px',
-      background: 'transparent',
-      color: '#667eea',
-      border: '2px solid #667eea',
-      borderRadius: '10px',
-      fontSize: '1.1rem',
-      fontWeight: '600',
-      cursor: 'pointer',
-      transition: 'all 0.3s',
-      minWidth: '150px'
-    }
-  }, "\u2190 Retour"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
+    placeholder: "Votre nom de famille",
+    required: true
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "form-group"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
+    htmlFor: "prenom"
+  }, "Pr\xE9nom *:"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
+    id: "prenom",
+    type: "text",
+    value: form.prenom,
+    onChange: function onChange(e) {
+      return setForm(_objectSpread(_objectSpread({}, form), {}, {
+        prenom: e.target.value
+      }));
+    },
+    placeholder: "Votre pr\xE9nom",
+    required: true
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "form-group"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
+    htmlFor: "email"
+  }, "Email:"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
+    id: "email",
+    type: "email",
+    value: form.email,
+    onChange: function onChange(e) {
+      return setForm(_objectSpread(_objectSpread({}, form), {}, {
+        email: e.target.value
+      }));
+    },
+    placeholder: "votre@email.com"
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "form-group"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
+    htmlFor: "telephone"
+  }, "T\xE9l\xE9phone:"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
+    id: "telephone",
+    type: "tel",
+    value: form.telephone,
+    onChange: function onChange(e) {
+      return setForm(_objectSpread(_objectSpread({}, form), {}, {
+        telephone: e.target.value
+      }));
+    },
+    placeholder: "06 12 34 56 78"
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "form-group"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", {
+    htmlFor: "dateNaissance"
+  }, "Date de naissance *:"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
+    id: "dateNaissance",
+    type: "date",
+    value: form.dateNaissance,
+    onChange: function onChange(e) {
+      return setForm(_objectSpread(_objectSpread({}, form), {}, {
+        dateNaissance: e.target.value
+      }));
+    },
+    required: true
+  })), error && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "error-message"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
+    className: "error-icon"
+  }, "\u26A0\uFE0F"), error), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
     type: "submit",
-    disabled: loading,
-    style: {
-      flex: 2,
-      padding: '15px 30px',
-      background: loading ? '#ccc' : 'linear-gradient(135deg, #667eea, #764ba2)',
-      color: 'white',
-      border: 'none',
-      borderRadius: '10px',
-      fontSize: '1.1rem',
-      fontWeight: '600',
-      cursor: loading ? 'not-allowed' : 'pointer',
-      transition: 'all 0.3s',
-      minWidth: '150px'
-    }
-  }, loading ? 'Traitement...' : 'Continuer →')))));
+    className: "btn-continue",
+    disabled: !form.nom.trim() || !form.prenom.trim() || !form.dateNaissance
+  }, "Continuer \u2192 Choisir Niveau")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "info-section"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("strong", null, "Prochaines \xE9tapes:")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("ol", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", null, "Choisir votre niveau d'escalade"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", null, "Accepter les conditions d'assurance"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", null, "Finaliser le paiement"))));
 }
 
 /***/ }),
@@ -48425,451 +47827,372 @@ function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
 
 
 
-
-// ✅ GECORRIGEERDE API BASE URL - WAS 4000, NU 3001
-var API_BASE_URL = 'http://localhost:3001';
+var getApiBaseUrl = function getApiBaseUrl() {
+  var hostname = window.location.hostname;
+  var protocol = window.location.protocol;
+  if (hostname !== 'localhost' && hostname !== '127.0.0.1') {
+    return "".concat(protocol, "//").concat(hostname, ":3001");
+  }
+  return 'http://localhost:3001';
+};
 function PaymentPage() {
-  var _useLocation = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_1__.useLocation)(),
-    state = _useLocation.state; // presenceId + montant
+  var location = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_1__.useLocation)();
   var navigate = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_1__.useNavigate)();
-  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(''),
+  var state = location.state;
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null),
     _useState2 = _slicedToArray(_useState, 2),
-    error = _useState2[0],
-    setError = _useState2[1];
-  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null),
+    presenceInfo = _useState2[0],
+    setPresenceInfo = _useState2[1];
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('pending'),
     _useState4 = _slicedToArray(_useState3, 2),
-    presenceData = _useState4[0],
-    setPresenceData = _useState4[1];
-  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+    paymentStatus = _useState4[0],
+    setPaymentStatus = _useState4[1];
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(true),
     _useState6 = _slicedToArray(_useState5, 2),
-    isValidated = _useState6[0],
-    setIsValidated = _useState6[1];
-  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(true),
-    _useState8 = _slicedToArray(_useState7, 2),
-    loading = _useState8[0],
-    setLoading = _useState8[1];
-
-  // Poll elke 4 s of de betaling is gevalideerd
+    loading = _useState6[0],
+    setLoading = _useState6[1];
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     if (!(state !== null && state !== void 0 && state.presenceId)) {
       navigate('/');
       return;
     }
-    var checkPaymentStatus = /*#__PURE__*/function () {
+    var fetchPresenceInfo = /*#__PURE__*/function () {
       var _ref = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee() {
-        var res, _t;
+        var apiUrl, response, _t;
         return _regenerator().w(function (_context) {
           while (1) switch (_context.p = _context.n) {
             case 0:
               _context.p = 0;
+              apiUrl = getApiBaseUrl();
               _context.n = 1;
-              return axios__WEBPACK_IMPORTED_MODULE_2__["default"].get("".concat(API_BASE_URL, "/presences/").concat(state.presenceId));
+              return axios__WEBPACK_IMPORTED_MODULE_2__["default"].get("".concat(apiUrl, "/presences/").concat(state.presenceId));
             case 1:
-              res = _context.v;
-              if (res.data.success) {
-                setPresenceData(res.data.presence);
-                setLoading(false);
-                if (['Payé', 'Pay'].includes(res.data.presence.status)) {
-                  if (!isValidated) {
-                    setIsValidated(true);
-                    (0,_utils_soundUtils__WEBPACK_IMPORTED_MODULE_3__.playSuccessSound)();
-                    setTimeout(function () {
-                      return navigate('/');
-                    }, 3000);
-                  }
-                }
+              response = _context.v;
+              if (response.data.success) {
+                setPresenceInfo(response.data.presence);
+                setPaymentStatus(response.data.presence.status);
               }
               _context.n = 3;
               break;
             case 2:
               _context.p = 2;
               _t = _context.v;
-              console.error('Erreur vérification statut:', _t);
-              setError('Impossible de vérifier le statut du paiement');
-              setLoading(false);
+              console.error('Failed to fetch presence info:', _t);
             case 3:
+              _context.p = 3;
+              setLoading(false);
+              return _context.f(3);
+            case 4:
               return _context.a(2);
           }
-        }, _callee, null, [[0, 2]]);
+        }, _callee, null, [[0, 2, 3, 4]]);
       }));
-      return function checkPaymentStatus() {
+      return function fetchPresenceInfo() {
         return _ref.apply(this, arguments);
       };
     }();
+    fetchPresenceInfo();
+    var pollInterval = setInterval(/*#__PURE__*/_asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee2() {
+      var apiUrl, response, newStatus, _t2;
+      return _regenerator().w(function (_context2) {
+        while (1) switch (_context2.p = _context2.n) {
+          case 0:
+            _context2.p = 0;
+            apiUrl = getApiBaseUrl();
+            _context2.n = 1;
+            return axios__WEBPACK_IMPORTED_MODULE_2__["default"].get("".concat(apiUrl, "/presences/").concat(state.presenceId));
+          case 1:
+            response = _context2.v;
+            if (response.data.success) {
+              newStatus = response.data.presence.status;
+              if (newStatus === 'Payé' && paymentStatus !== 'Payé') {
+                (0,_utils_soundUtils__WEBPACK_IMPORTED_MODULE_3__.playSuccessSound)();
+                setPaymentStatus(newStatus);
 
-    // Vérification initiale
-    checkPaymentStatus();
-
-    // Vérification périodique
-    var interval = setInterval(checkPaymentStatus, 4000);
+                // ✅ FEATURE 3: Enhanced success - longer display time (10 seconds)
+                setTimeout(function () {
+                  navigate('/', {
+                    state: {
+                      successMessage: '🎉 Paiement validé avec succès !\n\n✅ Votre session d\'escalade est confirmée\n🧗‍♀️ Équipez-vous et amusez-vous bien !\n\n🎯 Bonne grimpe !',
+                      paymentConfirmed: true
+                    }
+                  });
+                }, 10000); // Increased to 10 seconds
+              } else if ((newStatus === 'Annulé' || newStatus === 'Cancelled') && paymentStatus !== 'Annulé' && paymentStatus !== 'Cancelled') {
+                (0,_utils_soundUtils__WEBPACK_IMPORTED_MODULE_3__.playBuzzerSound)();
+                setPaymentStatus(newStatus);
+                setTimeout(function () {
+                  navigate('/', {
+                    state: {
+                      errorMessage: '❌ Paiement annulé par le bénévole.\n\nContactez l\'accueil si vous avez des questions.',
+                      paymentCancelled: true
+                    }
+                  });
+                }, 4000);
+              } else {
+                setPaymentStatus(newStatus);
+              }
+            }
+            _context2.n = 3;
+            break;
+          case 2:
+            _context2.p = 2;
+            _t2 = _context2.v;
+            console.error('Polling error:', _t2);
+          case 3:
+            return _context2.a(2);
+        }
+      }, _callee2, null, [[0, 2]]);
+    })), 3000);
     return function () {
-      return clearInterval(interval);
+      return clearInterval(pollInterval);
     };
-  }, [state, navigate, isValidated]);
-  var handleContactVolunteer = function handleContactVolunteer() {
-    (0,_utils_soundUtils__WEBPACK_IMPORTED_MODULE_3__.playBellSound)();
-    // Optionnel: ajouter une logique pour notifier les bénévoles
-  };
-  var handleRetourAccueil = function handleRetourAccueil() {
-    navigate('/');
-  };
-  if (!(state !== null && state !== void 0 && state.presenceId)) return null;
-
-  // Si le paiement est validé
-  if (isValidated || (presenceData === null || presenceData === void 0 ? void 0 : presenceData.status) === 'Payé' || (presenceData === null || presenceData === void 0 ? void 0 : presenceData.status) === 'Pay') {
+  }, [state, navigate, paymentStatus]);
+  if (loading) {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      style: {
-        minHeight: '100vh',
-        background: 'linear-gradient(135deg, #4CAF50 0%, #45a049 100%)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: '20px',
-        fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif"
-      }
+      className: "payment-page"
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      style: {
-        background: 'rgba(255, 255, 255, 0.95)',
-        padding: '40px',
-        borderRadius: '20px',
-        boxShadow: '0 20px 60px rgba(0, 0, 0, 0.3)',
-        width: '100%',
-        maxWidth: '600px',
-        textAlign: 'center'
-      }
+      className: "loading-message"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
+      className: "loading-icon"
+    }, "\u23F3"), "Chargement des informations de paiement..."));
+  }
+  if (!(state !== null && state !== void 0 && state.presenceId)) {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+      className: "payment-page"
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      style: {
-        fontSize: '4rem',
-        marginBottom: '20px'
-      }
-    }, "\u2705"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h2", {
-      style: {
-        color: '#4CAF50',
-        marginBottom: '20px',
-        fontSize: '2rem'
-      }
-    }, "Paiement valid\xE9 !"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
-      style: {
-        fontSize: '1.2rem',
-        marginBottom: '15px',
-        color: '#333'
-      }
-    }, "Votre paiement de ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("strong", null, state.montant, "\u20AC"), " a \xE9t\xE9 confirm\xE9."), (presenceData === null || presenceData === void 0 ? void 0 : presenceData.methodePaiement) && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
-      style: {
-        fontSize: '1.1rem',
-        marginBottom: '20px',
-        color: '#666'
-      }
-    }, "Mode de paiement : ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("strong", null, presenceData.methodePaiement)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-      style: {
-        background: '#e8f5e8',
-        padding: '15px',
-        borderRadius: '10px',
-        marginBottom: '20px',
-        color: '#2e7d32'
-      }
-    }, "Redirection automatique vers la page d'accueil dans 3 secondes..."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
-      onClick: handleRetourAccueil,
-      style: {
-        padding: '15px 30px',
-        background: 'linear-gradient(135deg, #4CAF50, #45a049)',
-        color: 'white',
-        border: 'none',
-        borderRadius: '10px',
-        fontSize: '1.1rem',
-        fontWeight: '600',
-        cursor: 'pointer',
-        transition: 'all 0.3s'
-      }
-    }, "\uD83C\uDFE0 Retour imm\xE9diat \xE0 l'accueil")));
+      className: "error-message"
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
+      className: "error-icon"
+    }, "\u26A0\uFE0F"), "Erreur: Aucune information de paiement trouv\xE9e"));
   }
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    style: {
-      minHeight: '100vh',
-      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      padding: '20px',
-      fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif"
-    }
+    className: "payment-page"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    style: {
-      background: 'rgba(255, 255, 255, 0.95)',
-      padding: '40px',
-      borderRadius: '20px',
-      boxShadow: '0 20px 60px rgba(0, 0, 0, 0.3)',
-      width: '100%',
-      maxWidth: '700px',
-      textAlign: 'center'
-    }
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h2", {
-    style: {
-      color: '#333',
-      marginBottom: '20px',
-      fontSize: '2rem',
-      fontWeight: '300'
-    }
-  }, "\uD83D\uDCB0 Montant \xE0 r\xE9gler : ", state.montant, "\u20AC"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
-    style: {
-      fontSize: '1.2rem',
-      marginBottom: '30px',
-      color: '#666'
-    }
-  }, "En attente de validation par un b\xE9n\xE9vole"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    style: {
-      marginBottom: '30px'
-    }
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h3", {
-    style: {
-      color: '#667eea',
-      marginBottom: '20px'
-    }
-  }, "\uD83C\uDFEA Pr\xE9sentez-vous \xE0 l'accueil"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    style: {
-      background: '#f8f9fa',
-      padding: '20px',
-      borderRadius: '15px',
-      marginBottom: '20px'
-    }
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", {
-    style: {
-      marginBottom: '20px',
-      color: '#333',
-      lineHeight: '1.6'
-    }
-  }, "Un b\xE9n\xE9vole va vous aider \xE0 finaliser votre paiement avec l'un des modes suivants :"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    style: {
-      display: 'grid',
-      gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
-      gap: '15px'
-    }
+    className: "header-section"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h2", null, "\uD83D\uDCB3 Paiement")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "payment-info"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    style: {
-      padding: '15px',
-      background: 'white',
-      borderRadius: '10px',
-      border: '2px solid #4CAF50'
-    }
+    className: "participant-info"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h3", null, "\uD83D\uDC64 Participant"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("strong", null, "Nom:"), " ", state.nom || 'N/A'), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("strong", null, "Pr\xE9nom:"), " ", state.prenom || 'N/A'), state.age && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("strong", null, "Cat\xE9gorie:"), " ", state.tarifCategory || state.age), state.isReturningVisitor && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "returning-visitor-info"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("strong", null, "\uD83D\uDD04 Visiteur r\xE9current")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, "Visite n\xB0 ", state.previousVisits || 'N/A'), state.lastVisit && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, "Derni\xE8re visite: ", new Date(state.lastVisit).toLocaleDateString('fr-FR')))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "amount-info"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h3", null, "\uD83D\uDCB0 Montant \xE0 r\xE9gler"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "amount-display"
+  }, function () {
+    // ✅ FIXED: Better tariff display logic
+    var amount = state.montant || state.tarif || (presenceInfo === null || presenceInfo === void 0 ? void 0 : presenceInfo.tarif) || 0;
+    return amount === 0 ? '🆓 GRATUIT' : "\uD83D\uDCB6 ".concat(amount, "\u20AC");
+  }()), state.tarifCategory && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "tarif-category"
+  }, state.tarifCategory)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "payment-status"
+  }, paymentStatus === 'pending' && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "status-pending"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
+    className: "status-icon"
+  }, "\u23F3"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "status-message"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("strong", null, "En attente de validation"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Rendez-vous \xE0 l'accueil pour effectuer le paiement."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Un b\xE9n\xE9vole validera votre paiement dans le syst\xE8me."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Cette page se mettra \xE0 jour automatiquement."))), paymentStatus === 'Payé' && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "status-paid-enhanced"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    style: {
-      fontSize: '2rem',
-      marginBottom: '5px'
-    }
-  }, "\uD83D\uDCB5"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    style: {
-      fontWeight: '600'
-    }
-  }, "Esp\xE8ces")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    style: {
-      padding: '15px',
-      background: 'white',
-      borderRadius: '10px',
-      border: '2px solid #2196F3'
-    }
+    className: "success-animation"
+  }, "\uD83C\uDF89"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "status-message"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h3", null, "\uD83C\uDF89 Paiement valid\xE9 avec succ\xE8s !"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "success-details"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("strong", null, "\u2705 Votre session d'escalade est confirm\xE9e !")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "\uD83E\uDDD7\u200D\u2640\uFE0F \xC9quipez-vous et amusez-vous bien !"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "access-info"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, "\uD83C\uDFAF Acc\xE8s autoris\xE9 \xE0 toutes les voies"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, "\uD83E\uDD7E Mat\xE9riel disponible \xE0 l'accueil"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, "\uD83E\uDD1D N'h\xE9sitez pas \xE0 demander de l'aide si besoin")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("strong", null, "Bonne grimpe ! \uD83C\uDF89"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "countdown"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    style: {
-      fontSize: '2rem',
-      marginBottom: '5px'
-    }
-  }, "\uD83D\uDCB3"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    style: {
-      fontWeight: '600'
-    }
-  }, "Carte bancaire")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    style: {
-      padding: '15px',
-      background: 'white',
-      borderRadius: '10px',
-      border: '2px solid #ff9500'
-    }
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    style: {
-      fontSize: '2rem',
-      marginBottom: '5px'
-    }
-  }, "\uD83D\uDCDD"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    style: {
-      fontWeight: '600'
-    }
-  }, "Ch\xE8que"))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    style: {
-      background: '#e3f2fd',
-      padding: '15px',
-      borderRadius: '10px',
-      marginBottom: '20px',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      gap: '10px'
-    }
-  }, loading ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    style: {
-      width: '20px',
-      height: '20px',
-      border: '2px solid #2196F3',
-      borderTop: '2px solid transparent',
-      borderRadius: '50%',
-      animation: 'spin 1s linear infinite'
-    }
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", null, "V\xE9rification du statut du paiement en cours...")) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", null, "\u23F3 En attente de validation par un b\xE9n\xE9vole")), error && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    style: {
-      marginBottom: '20px',
-      padding: '15px',
-      background: '#ff6b6b',
-      color: 'white',
-      borderRadius: '10px'
-    }
-  }, error), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    style: {
-      display: 'flex',
-      gap: '15px',
-      flexWrap: 'wrap'
-    }
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
-    onClick: handleRetourAccueil,
-    style: {
-      flex: 1,
-      padding: '15px 30px',
-      background: 'transparent',
-      color: '#667eea',
-      border: '2px solid #667eea',
-      borderRadius: '10px',
-      fontSize: '1.1rem',
-      fontWeight: '600',
-      cursor: 'pointer',
-      transition: 'all 0.3s',
-      minWidth: '150px'
-    }
-  }, "\uD83C\uDFE0 Retour \xE0 l'accueil"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
-    onClick: handleContactVolunteer,
-    style: {
-      flex: 1,
-      padding: '15px 30px',
-      background: 'linear-gradient(135deg, #ff9500, #ff8c00)',
-      color: 'white',
-      border: 'none',
-      borderRadius: '10px',
-      fontSize: '1.1rem',
-      fontWeight: '600',
-      cursor: 'pointer',
-      transition: 'all 0.3s',
-      minWidth: '150px'
-    }
-  }, "\uD83D\uDD14 Appeler b\xE9n\xE9vole")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("style", null, "\n                    @keyframes spin {\n                        0% { transform: rotate(0deg); }\n                        100% { transform: rotate(360deg); }\n                    }\n                ")));
+    className: "countdown-bar"
+  }), "Redirection vers l'accueil dans quelques secondes..."))), (paymentStatus === 'Annulé' || paymentStatus === 'Cancelled') && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "status-cancelled"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("span", {
+    className: "status-icon"
+  }, "\u274C"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "status-message"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("strong", null, "Paiement annul\xE9"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Le b\xE9n\xE9vole a annul\xE9 la transaction."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Contactez l'accueil pour plus d'informations."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Redirection vers l'accueil..."))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "info-section"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h4", null, "\uD83D\uDCCB Instructions:"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("ol", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("strong", null, "Rendez-vous \xE0 l'accueil"), " pour effectuer le paiement"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("strong", null, "Montrez cette page"), " au b\xE9n\xE9vole si n\xE9cessaire"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("strong", null, "Le b\xE9n\xE9vole validera"), " votre paiement dans le syst\xE8me"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("strong", null, "Cette page se mettra \xE0 jour"), " automatiquement"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("strong", null, "Vous serez redirig\xE9"), " vers l'accueil une fois valid\xE9"))));
 }
 
 /***/ }),
 
-/***/ "./src/components/ReglementPage.jsx":
-/*!******************************************!*\
-  !*** ./src/components/ReglementPage.jsx ***!
-  \******************************************/
+/***/ "./src/components/ReturningVisitorChoice.jsx":
+/*!***************************************************!*\
+  !*** ./src/components/ReturningVisitorChoice.jsx ***!
+  \***************************************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": function() { return /* binding */ ReglementPage; }
+/* harmony export */   "default": function() { return /* binding */ ReturningVisitorChoice; }
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/dist/index.js");
-/* harmony import */ var _styles_Styles_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../styles/Styles.css */ "./src/styles/Styles.css");
 
 
-
-function ReglementPage() {
+function ReturningVisitorChoice() {
   var navigate = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_1__.useNavigate)();
+  var handleReturningVisitor = function handleReturningVisitor() {
+    navigate('/returning-visitor-form');
+  };
+  var handleFirstVisit = function handleFirstVisit() {
+    navigate('/non-member');
+  };
+  var handleRetourAccueil = function handleRetourAccueil() {
+    navigate('/');
+  };
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "reglement-page"
+    className: "returning-visitor-choice"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "reglement-header"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h1", null, "R\xE8glement int\xE9rieur"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
-    className: "btn-close",
-    onClick: function onClick() {
-      return navigate(-1);
-    },
-    title: "Fermer"
-  }, "\u2715")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "reglement-body-responsive"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "reglement-section"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h2", null, "PR\xC9AMBULE"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Il est indispensable de ma\xEEtriser les techniques de s\xE9curit\xE9 et de respecter les r\xE8gles de fonctionnement de la salle pour une pratique de l'escalade dans les meilleures conditions de s\xE9curit\xE9.")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "reglement-section"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h2", null, "ARTICLE 1 : OBJET"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Le pr\xE9sent r\xE8glement a pour objet de d\xE9finir les conditions d'acc\xE8s et d'utilisation de la salle et notamment des \xE9quipements d'escalade."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Toute personne entrant dans cette enceinte sportive accepte de se conformer \xE0 ce r\xE8glement int\xE9rieur.")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "reglement-section"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h2", null, "Article 2 : Formalit\xE9s d'acc\xE8s"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Toute personne souhaitant utiliser les structures d'escalade doit, imp\xE9rativement, se rendre au pr\xE9alable \xE0 l'accueil. La pr\xE9sentation d'un titre en cours de validit\xE9 ou le r\xE8glement d'un droit d'entr\xE9e est obligatoire avant l'acc\xE8s aux installations."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Lors d'une premi\xE8re visite, il est obligatoire de remplir la \xAB Fiche \xBB sur la tablette ; l'utilisateur indiquera notamment son degr\xE9 d'autonomie et son niveau de ma\xEEtrise des r\xE8gles de s\xE9curit\xE9 en escalade."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Les licenci\xE9s FFME doivent pr\xE9senter leur licence f\xE9d\xE9rale en cours de validit\xE9 pour b\xE9n\xE9ficier des remises tarifaires qui leur sont octroy\xE9es ainsi que, le cas \xE9ch\xE9ant, leur Passeport FFME Escalade pour prouver leur degr\xE9 d'autonomie.")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "reglement-section"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h2", null, "Article 3 : Autonomie"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "autonomie-niveau"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h3", null, "Un grimpeur se d\xE9clarant \xAB autonome de niveau 1 \xBB s'engage \xE0 satisfaire aux obligations suivantes :"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("ul", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", null, "savoir mettre correctement son baudrier"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", null, "savoir s'encorder en utilisant un n\u0153ud de huit tress\xE9 avec un n\u0153ud d'arr\xEAt"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", null, "savoir utiliser un syst\xE8me d'assurage pour assurer en moulinette"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", null, "savoir parer une chute"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "autonomie-niveau"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h3", null, "Un grimpeur se d\xE9clarant \xAB autonome de niveau 2 \xBB s'engage \xE0 satisfaire aux obligations suivantes :"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("ul", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", null, "savoir mettre correctement son baudrier"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", null, "savoir s'encorder en utilisant un n\u0153ud de huit tress\xE9 avec un n\u0153ud d'arr\xEAt"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", null, "savoir utiliser un syst\xE8me d'assurage pour assurer en moulinette ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("strong", null, "et"), " en t\xEAte"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", null, "savoir grimper en t\xEAte"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", null, "savoir parer une chute")))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "reglement-section"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h2", null, "ARTICLE 4 : PASSEPORTS FFME ESCALADE"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Le Passeport FFME Escalade blanc atteste de l'autonomie de niveau 1 d\xE9finie \xE0 l'article 3. Le Passeport FFME Escalade jaune atteste de l'autonomie de niveau 2 d\xE9finie \xE0 l'article 3."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Les moniteurs de la salle sont habilit\xE9s \xE0 d\xE9livrer les Passeports FFME Escalade. La formation n\xE9cessaire \xE0 l'obtention du Passeport Escalade Blanc et Jaune est dispens\xE9e lors des cours payants.")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "reglement-section"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h2", null, "Article 5 : Acc\xE8s aux \xE9quipements de la salle BEM"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "La possibilit\xE9 de grimper en t\xEAte ou en moulinette sur la SAE \xE0 cordes d\xE9pend du degr\xE9 d'autonomie d\xE9clar\xE9. Les principales r\xE8gles d'acc\xE8s sont synth\xE9tis\xE9es dans le tableau ci-dessous :"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "table-container"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("table", {
-    className: "access-table-full"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("thead", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("tr", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("th", null, "\xC2GE"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("th", null, "CONDITIONS G\xC9N\xC9RALES D'ACC\xC8S"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("th", null, "AUTONOMIE / PASSEPORT"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("th", null, "ACC\xC8S AUX STRUCTURES"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("tbody", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("tr", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, "Moins de 14 ans"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, "Uniquement sous la responsabilit\xE9 d'un adulte. Doit pr\xE9senter l'autorisation parentale."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, "M\xEAme structures et m\xEAme pratique (moulinette, en t\xEAte) que l'adulte responsable.")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("tr", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", {
-    rowSpan: 3
-  }, "De 14 ans \xE0 18 ans"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", {
-    rowSpan: 3
-  }, "Doit pr\xE9senter l'autorisation parentale dans laquelle le responsable l\xE9gal certifie le niveau d'autonomie de l'enfant ou la possession d'un Passeport FFME."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, "Non autonome"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, "Structure Blocs uniquement")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("tr", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, "Passeport FFME Escalade blanc ou autonome niveau 1"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, "Structures Blocs et Cordes en moulinette")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("tr", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, "Passeport FFME Escalade jaune ou autonome niveau 2"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, "Toutes structures et escalade en t\xEAte sur le mur \xE0 cordes autoris\xE9e")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("tr", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", {
-    rowSpan: 3
-  }, "18 ans et plus"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", {
-    rowSpan: 3
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, "Se d\xE9clare non autonome"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, "Structures Blocs uniquement")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("tr", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, "Passeport FFME Escalade blanc ou se d\xE9clare autonome de niveau 1"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, "Structures Blocs et Cordes en moulinette")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("tr", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, "Passeport FFME Escalade jaune ou se d\xE9clare autonome de niveau 2"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("td", null, "Toutes structures et escalade en t\xEAte sur le mur \xE0 cordes autoris\xE9e")))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "reglement-section"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h2", null, "ARTICLE 6 : ACC\xC8S"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Les adh\xE9rents sont soumis aux r\xE8gles d'acc\xE8s du pr\xE9sent r\xE8glement."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Un responsable du club est obligatoirement pr\xE9sent."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Les mineurs sont obligatoirement encadr\xE9s lors de leur pr\xE9sence dans la salle. Le responsable de s\xE9ance fournit \xE0 l'avance la liste des personnes plac\xE9es sous sa responsabilit\xE9.")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "reglement-section"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h2", null, "Article 7 : Utilisation par des groupes"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Tous les organismes (associations, soci\xE9t\xE9s, scolaires, \xE9tablissements, etc.) seront autoris\xE9s \xE0 utiliser les installations sportives de l'Usine apr\xE8s avoir :"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("ul", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", null, "R\xE9serv\xE9 aupr\xE8s de la direction un ou plusieurs cr\xE9neaux"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", null, "\xC9tabli un contrat pr\xE9cisant \xE0 minima les conditions d'acc\xE8s, les tarifs, les conditions d'encadrement.")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Ces derni\xE8res doivent justifier d'une assurance en responsabilit\xE9 civile couvrant la personne morale, ses membres et ses pr\xE9pos\xE9s.")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "reglement-section"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h2", null, "Article 8 : Effectif maximum dans la salle d'escalade"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Les responsables de la salle \xAB l'Usine \xBB sont dans l'obligation d'interdire l'acc\xE8s lorsque le nombre d'utilisateurs atteint la jauge ERP : 80 personnes (salle BEM \u2013 5\u1D49 cat.).")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "reglement-section"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h2", null, "ARTICLE 9 : LOCATION DE MAT\xC9RIEL"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "La salle BEM pr\xEAte le mat\xE9riel de base n\xE9cessaire \xE0 l'escalade : chaussons, baudrier, syst\xE8me d'assurage. Le d\xE9p\xF4t d'une pi\xE8ce d'identit\xE9 est demand\xE9.")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "reglement-section"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h2", null, "Article 10 : Obligations des utilisateurs"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "sub-section"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h3", null, "10.1 \u2013 PROPRET\xC9"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("ul", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", null, "Utiliser des chaussons d'escalade dans la salle d'escalade (les chaussures de ville sont interdites dans la salle)"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", null, "Ne pas utiliser de chaussons d'escalade en dehors de la salle d'escalade (vestiaires, couloir, accueil)"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", null, "Laisser les sanitaires dans l'\xE9tat de propret\xE9 trouv\xE9."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", null, "Signaler tout probl\xE8me de propret\xE9 au b\xE9n\xE9vole de la salle."))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "sub-section"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h3", null, "10.2 \u2013 Utilisation des vestiaires"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("ul", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", null, "Utiliser imp\xE9rativement les vestiaires pour changer de tenue."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", null, "Utiliser les casiers de d\xE9p\xF4ts d'affaires mis \xE0 disposition dans l'espace de grimpe."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", null, "Lib\xE9rer en fin de s\xE9ance tout casier utilis\xE9.")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Le personnel de BEM se r\xE9serve le droit d'enlever, pour des raisons de s\xE9curit\xE9 et d'hygi\xE8ne, tout casier non lib\xE9r\xE9. Le personnel de BEM ne peut \xEAtre tenu responsable pour d'\xE9ventuels vols dans l'ensemble du b\xE2timent.")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "sub-section"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h3", null, "10.3 \u2013 Respect des lieux et d'autrui"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Dans l'enceinte du b\xE2timent, il est interdit :"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("ul", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", null, "De fumer"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", null, "De consommer de l'alcool et ou des stup\xE9fiants"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", null, "De jeter des d\xE9tritus"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", null, "De venir avec des animaux m\xEAme tenus en laisse"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", null, "D'utiliser des rollers, skate, v\xE9los, deux roues et tout engin motoris\xE9"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", null, "De jouer avec de l'eau ou de la nourriture"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", null, "De crier, de hurler et de causer une g\xEAne sonore pour les autres usagers"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", null, "De se d\xE9placer ou de grimper dans une tenue ind\xE9cente")))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "reglement-section"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h2", null, "Article 11 : Respects des r\xE8gles de s\xE9curit\xE9"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Tous les grimpeurs engagent leur responsabilit\xE9 en cas d'accident caus\xE9 \xE0 un tiers."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Au pied de toutes les structures d'escalade, des panneaux s\xE9curit\xE9 sont dispos\xE9s afin de rappeler les points cl\xE9s. Les \xE9crans d'information diffusent \xE9galement des conseils, tous les utilisateurs sont invit\xE9s \xE0 en prendre r\xE9guli\xE8rement connaissance."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Le b\xE9n\xE9vole se tient \xE0 la disposition des utilisateurs pour tout conseil. Il peut intervenir aupr\xE8s des usagers en cas de comportement inadapt\xE9 ou dangereux."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Le non-respect des conseils et consignes entra\xEEnera l'exclusion imm\xE9diate de la salle. Les utilisateurs doivent :"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("ul", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", null, "Signaler au responsable tout incident, tout comportement, toute anomalie, toute pr\xE9sence anormale pouvant repr\xE9senter un danger ou une menace."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", null, "Respecter les consignes de s\xE9curit\xE9 qui sont rappel\xE9es ci-dessous :")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "sub-section"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h3", null, "11.1- S\xE9curit\xE9 bloc"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("ul", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", null, "S'\xE9chauffer"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", null, "V\xE9rifier que la surface de r\xE9ception est totalement d\xE9gag\xE9e"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", null, "Priorit\xE9 au grimpeur :"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", null, "Ne pas circuler, ne pas stationner au-dessous d'autrui"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", null, "Ne pas grimper au-dessus ou au-dessous d'autrui."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", null, "Privil\xE9gier la d\xE9sescalade, rep\xE9rer un itin\xE9raire de descente"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", null, "En cas de chute ou de saut, amortir avec les jambes"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", null, "Se faire parer si besoin"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "sub-section"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h3", null, "11.2- S\xE9curit\xE9 difficult\xE9"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("strong", null, "En escalade en t\xEAte :")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("ul", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", null, "Mousquetonner toutes les d\xE9gaines (dans le bon sens)"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", null, "Parer le grimpeur avant l'utilisation du premier point d'assurage")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("strong", null, "V\xE9rifier les points cl\xE9s :")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("ol", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", null, "N\u0153ud d'encordement : double n\u0153ud de huit et n\u0153ud d'arr\xEAt"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", null, "Installation correcte du syst\xE8me d'assurage"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", null, "N\u0153ud en bout de corde")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("strong", null, "En moulinette :")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("ul", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", null, "Replacer la corde dans les d\xE9gaines \xE0 la descente"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", null, "Ma\xEEtriser la vitesse de descente du grimpeur"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", null, "Ne pas stationner sous les grimpeurs"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", null, "Ne pas grimper en solo (strictement interdit)"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", null, "Maintenir la surface de r\xE9ception totalement d\xE9gag\xE9e"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", null, "Ne pas faire de travers\xE9es sur la partie basse du mur"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", null, "Rester concentr\xE9 et anticiper les actions du grimpeur"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", null, "Ne pas assurer assis ou \xE0 une distance trop importante du pied de la structure"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", null, "Pr\xE9venir le personnel de toute anomalie sur la SAE : prises desserr\xE9es, maillons ou mousquetons us\xE9s, cordes endommag\xE9es\u2026"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "sub-section"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h3", null, "11.3- Manipulation du mat\xE9riel d'assurage"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("ul", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", null, "Les cordes utilis\xE9es pour les moulinettes sont install\xE9es \xE0 demeure et doivent \xEAtre remises en place"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", null, "L'escalade en moulinette est interdite dans la zone des grands d\xE9vers"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", null, "Les sangles des enrouleurs en place sur la SAE \xE0 cordes doivent syst\xE9matiquement \xEAtre attach\xE9es \xE0 l'aide des mousquetons au pied des voies dans les points pr\xE9vus \xE0 cet effet"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", null, "L'utilisation des cordes non mises \xE0 disposition par la salle l'Usine est interdite pour l'escalade en t\xEAte et en moulinette")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("strong", null, "Afin de pr\xE9server les cordes, il est interdit :")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("ul", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", null, "D'assurer au demi-cabestan"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", null, "D'effectuer des chutes volontaires et r\xE9p\xE9t\xE9es de mani\xE8re excessive"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", null, "D'effectuer des remont\xE9es sur cordes (en dehors des sessions d'instruction militaire, de formation et d'ouvertures de voies)"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("li", null, "La mise en place de \xAB via cordata \xBB est interdite")))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "reglement-section"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h2", null, "Article 12 : Assurances"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "La FFME est assur\xE9e pour les dommages engageant sa responsabilit\xE9 civile et celle de son personnel. La responsabilit\xE9 de la FFME ne pourra \xEAtre engag\xE9e en cas d'accident r\xE9sultant de l'utilisation inappropri\xE9e des installations ou encore du non-respect des r\xE8gles de s\xE9curit\xE9 en escalade."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "L'utilisateur de la salle doit \xEAtre assur\xE9 personnellement en responsabilit\xE9 civile."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "La salle recommande fortement \xE0 tous les utilisateurs de souscrire une assurance individuelle accident aupr\xE8s de la compagnie de son choix.")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "reglement-section"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h2", null, "Article 13 : Vid\xE9o surveillance"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Un syst\xE8me de vid\xE9o surveillance est mis en place pour des raisons de s\xE9curit\xE9. Aucun enregistrement n'est r\xE9alis\xE9. Le personnel de BEM est susceptible d'intervenir quand la s\xE9curit\xE9 des utilisateurs est compromise.")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "reglement-section"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h2", null, "Article 14 : Droit d'exclusion"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Le personnel de la salle se r\xE9serve le droit d'exclure, sans pr\xE9avis ni indemnit\xE9 d'aucune sorte, toute personne dont l'attitude ou le comportement serait contraire aux r\xE8gles de s\xE9curit\xE9 en escalade, aux bonnes m\u0153urs, ou notoirement g\xEAnant pour les autres membres, ou non conforme au pr\xE9sent r\xE8glement, ainsi que toute personne se livrant \xE0 des d\xE9gradations intentionnelles ou non intentionnelles des installations ou du mat\xE9riel de la salle.")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "reglement-section"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h2", null, "Article 15 : Droit \xE0 l'image"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Toutes les photos et vid\xE9os prises lors de l'utilisation des \xE9quipements de la salle, par ses responsables et pr\xE9pos\xE9s sont susceptibles d'\xEAtre affich\xE9es ou mises en ligne sur le site internet de BEM sauf si les personnes figurant sur ces supports ou leur responsable l\xE9gal en font la demande par \xE9crit pour les retirer.")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "reglement-section"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h2", null, "Article 16 : Secours"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Une trousse de premier secours est situ\xE9e dans le sas vers le local \xE0 prises."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Tous les utilisateurs acceptent que le personnel de BEM prenne toute mesure utile en cas d'accident.")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "reglement-section"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h2", null, "Article 17 : Divers"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "sub-section"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h3", null, "17.1- Initiation et enseignement"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Il est fortement d\xE9conseill\xE9 d'initier des d\xE9butants si vous n'\xEAtes pas un professionnel de l'enseignement de l'escalade. Seuls les salari\xE9s de BEM peuvent enseigner l'escalade contre r\xE9mun\xE9ration dans la salle \xE0 l'exception des personnes encadrant les groupes mentionn\xE9s \xE0 l'article 7.")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "sub-section"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h3", null, "17.2- Fermeture de la salle et modification des horaires"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Les horaires d'ouverture de la salle sont indiqu\xE9s \xE0 l'accueil et sur le site Web https://beyrede-escalade-montagne.pepsup.com/"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Le personnel de la salle se r\xE9serve le droit de modifier les horaires et/ou d'immobiliser tout ou partie des structures d'escalade pour des besoins particuliers d'exploitation (ouvertures, travaux, manifestations, etc.)."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "En cas de fermeture exceptionnelle, la salle informera les utilisateurs pr\xE9alablement par les moyens dont elle dispose : affichage, note sur le site internet, etc."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Sauf mention contraire, les utilisateurs acceptent de recevoir des informations par mail de la part de la salle.")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "sub-section"
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h3", null, "17.3- Modification"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, "Les responsables de la salle l'Usine Escalade se r\xE9servent le droit de modifier le pr\xE9sent R\xE8glement Int\xE9rieur sans pr\xE9avis."), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("strong", null, "Fait \xE0 Beyr\xE8de, le 30 juillet 2025")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("p", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("strong", null, "Beyr\xE8de Escalade Montagne : BEM"))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "reglement-footer"
+    className: "header-section"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h2", null, "Inscription Visiteur"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "header-buttons"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
-    className: "btn-retour-accueil",
-    onClick: function onClick() {
-      return navigate(-1);
+    onClick: handleRetourAccueil,
+    className: "btn-retour-accueil"
+  }, "\uD83C\uDFE0 Retour Accueil"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h3", null, "Choisissez votre situation :"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "choice-buttons"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
+    onClick: handleReturningVisitor,
+    className: "btn-choice btn-returning"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "choice-icon"
+  }, "\uD83D\uDD04"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "choice-title"
+  }, "D\xE9j\xE0 enregistr\xE9"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "choice-description"
+  }, "Acc\xE8s rapide")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
+    onClick: handleFirstVisit,
+    className: "btn-choice btn-first-visit"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "choice-icon"
+  }, "\u2728"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "choice-title"
+  }, "Premi\xE8re visite"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "choice-description"
+  }, "Inscription compl\xE8te"))));
+}
+
+/***/ }),
+
+/***/ "./src/components/ReturningVisitorForm.jsx":
+/*!*************************************************!*\
+  !*** ./src/components/ReturningVisitorForm.jsx ***!
+  \*************************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": function() { return /* binding */ ReturningVisitorForm; }
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/dist/index.js");
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+function _slicedToArray(r, e) { return _arrayWithHoles(r) || _iterableToArrayLimit(r, e) || _unsupportedIterableToArray(r, e) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
+function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
+function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t.return && (u = t.return(), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
+function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
+
+
+function ReturningVisitorForm() {
+  var navigate = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_1__.useNavigate)();
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({
+      nom: '',
+      prenom: '',
+      dateNaissance: ''
+    }),
+    _useState2 = _slicedToArray(_useState, 2),
+    form = _useState2[0],
+    setForm = _useState2[1];
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(''),
+    _useState4 = _slicedToArray(_useState3, 2),
+    error = _useState4[0],
+    setError = _useState4[1];
+  var handleSubmit = function handleSubmit(e) {
+    e.preventDefault();
+    if (!form.nom.trim() || !form.prenom.trim() || !form.dateNaissance) {
+      setError('Veuillez remplir tous les champs');
+      return;
     }
-  }, "Revenir")));
+
+    // ✅ SIMPLE: Just redirect to payment for now
+    // TODO: Add returning visitor lookup later
+    navigate('/paiement', {
+      state: {
+        presenceId: 'temp-id',
+        montant: 10,
+        nom: form.nom,
+        prenom: form.prenom
+      }
+    });
+  };
+  var handleRetourAccueil = function handleRetourAccueil() {
+    navigate('/');
+  };
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "returning-visitor-form"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "header-section"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h2", null, "Acc\xE8s rapide"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "header-buttons"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
+    onClick: handleRetourAccueil,
+    className: "btn-retour-accueil"
+  }, "\uD83C\uDFE0 Retour Accueil"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("form", {
+    onSubmit: handleSubmit
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "form-group"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", null, "Nom :"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
+    type: "text",
+    value: form.nom,
+    onChange: function onChange(e) {
+      return setForm(_objectSpread(_objectSpread({}, form), {}, {
+        nom: e.target.value
+      }));
+    },
+    required: true
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "form-group"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", null, "Pr\xE9nom :"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
+    type: "text",
+    value: form.prenom,
+    onChange: function onChange(e) {
+      return setForm(_objectSpread(_objectSpread({}, form), {}, {
+        prenom: e.target.value
+      }));
+    },
+    required: true
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "form-group"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("label", null, "Date de naissance :"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
+    type: "date",
+    value: form.dateNaissance,
+    onChange: function onChange(e) {
+      return setForm(_objectSpread(_objectSpread({}, form), {}, {
+        dateNaissance: e.target.value
+      }));
+    },
+    required: true
+  })), error && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    className: "error-message"
+  }, error), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
+    type: "submit",
+    className: "btn-continue"
+  }, "Continuer")));
 }
 
 /***/ }),
@@ -48922,87 +48245,6 @@ var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js
 
        /* harmony default export */ __webpack_exports__["default"] = (_node_modules_css_loader_dist_cjs_js_Styles_css__WEBPACK_IMPORTED_MODULE_6__["default"] && _node_modules_css_loader_dist_cjs_js_Styles_css__WEBPACK_IMPORTED_MODULE_6__["default"].locals ? _node_modules_css_loader_dist_cjs_js_Styles_css__WEBPACK_IMPORTED_MODULE_6__["default"].locals : undefined);
 
-
-/***/ }),
-
-/***/ "./src/utils/ageCalculation.js":
-/*!*************************************!*\
-  !*** ./src/utils/ageCalculation.js ***!
-  \*************************************/
-/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   calculateAge: function() { return /* binding */ calculateAge; },
-/* harmony export */   calculateAgeAndTarif: function() { return /* binding */ calculateAgeAndTarif; },
-/* harmony export */   calculateTarif: function() { return /* binding */ calculateTarif; }
-/* harmony export */ });
-function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
-function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
-function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
-function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
-function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
-function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-// Utility functions voor leeftijd en tarief berekening
-
-/**
- * Berekent de leeftijd op basis van geboortedatum
- * @param {string} dateNaissance - Geboortedatum in YYYY-MM-DD formaat
- * @returns {number} - Leeftijd in jaren
- */
-var calculateAge = function calculateAge(dateNaissance) {
-  if (!dateNaissance) return 0;
-  var today = new Date();
-  var birthDate = new Date(dateNaissance);
-  var age = today.getFullYear() - birthDate.getFullYear();
-  var monthDiff = today.getMonth() - birthDate.getMonth();
-
-  // Als de verjaardag dit jaar nog niet geweest is, trek 1 jaar af
-  if (monthDiff < 0 || monthDiff === 0 && today.getDate() < birthDate.getDate()) {
-    age--;
-  }
-  return Math.max(0, age); // Geen negatieve leeftijden
-};
-
-/**
- * Berekent het tarief op basis van leeftijd
- * @param {number} age - Leeftijd in jaren
- * @returns {object} - Object met tarief en beschrijving
- */
-var calculateTarif = function calculateTarif(age) {
-  if (age < 8) {
-    return {
-      tarif: 0,
-      description: 'Gratuit pour les enfants de moins de 8 ans',
-      category: 'enfant'
-    };
-  } else if (age >= 8 && age < 18) {
-    return {
-      tarif: 8,
-      description: 'Tarif réduit pour les mineurs (8-17 ans)',
-      category: 'mineur'
-    };
-  } else {
-    return {
-      tarif: 10,
-      description: 'Tarif normal pour les adultes (18 ans et plus)',
-      category: 'adulte'
-    };
-  }
-};
-
-/**
- * Berekent leeftijd EN tarief in één keer
- * @param {string} dateNaissance - Geboortedatum in YYYY-MM-DD formaat
- * @returns {object} - Object met age, tarief en beschrijving
- */
-var calculateAgeAndTarif = function calculateAgeAndTarif(dateNaissance) {
-  var age = calculateAge(dateNaissance);
-  var tarifInfo = calculateTarif(age);
-  return _objectSpread({
-    age: age
-  }, tarifInfo);
-};
 
 /***/ }),
 
@@ -49208,7 +48450,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom_client__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom/client */ "./node_modules/react-dom/client.js");
-/* harmony import */ var _App__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./App */ "./src/App.jsx");
+/* harmony import */ var _App__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./App */ "./src/App.js");
 /* harmony import */ var _styles_Styles_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./styles/Styles.css */ "./src/styles/Styles.css");
 
 
