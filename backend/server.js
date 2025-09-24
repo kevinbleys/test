@@ -3,6 +3,55 @@ const cors = require('cors');
 const path = require('path');
 const fs = require('fs');
 const cron = require('node-cron');
+const syncService = require('./sync-service');
+
+//===== VOEG TOE AAN JE backend/server.js =====
+// Plaats na de bestaande daily reset cron job
+
+// ===== PEPSUP SYNC CRON JOB =====
+cron.schedule('5 * * * *', async () => {
+  try {
+    console.log('⏰ DÉMARRAGE synchronisation Pepsup automatique');
+
+    if (syncService && syncService.syncMembers) {
+      const memberCount = await syncService.syncMembers();
+      console.log(`✅ Synchronisation Pepsup réussie: ${memberCount} membres synchronisés`);
+    } else {
+      console.warn('⚠️ Sync service non disponible');
+    }
+
+  } catch (error) {
+    console.error('❌ ERREUR lors de la synchronisation Pepsup automatique:', error.message);
+
+    // Log l'erreur vers le sync log file aussi
+    try {
+      const timestamp = new Date().toISOString();
+      const logEntry = `[${timestamp}] ERREUR CRON: ${error.message}\n`;
+      const logPath = path.join(__dirname, 'data', 'sync.log');
+      require('fs').appendFileSync(logPath, logEntry);
+    } catch (logError) {
+      console.error('Impossible d\'écrire vers sync.log:', logError);
+    }
+  }
+}, {
+  scheduled: true,
+  timezone: "Europe/Brussels" // Belgische tijdzone
+});
+
+// ===== SYNC ON STARTUP (OPTIONEEL) =====
+setTimeout(async () => {
+  try {
+    console.log('🚀 Synchronisation Pepsup au démarrage du serveur');
+    if (syncService && syncService.syncMembers) {
+      const memberCount = await syncService.syncMembers();
+      console.log(`✅ Synchronisation startup réussie: ${memberCount} membres`);
+    }
+  } catch (error) {
+    console.error('❌ Erreur synchronisation startup:', error.message);
+  }
+}, 5000);
+
+console.log('🔄 Synchronisation automatique Pepsup configurée - chaque heure à *:05');
 
 // Services
 let exportService;
