@@ -1,83 +1,76 @@
 @echo off
-title QUICK FIX - Most Common Issues
-color 0A
-
-echo ===============================================
-echo    QUICK FIX - MOST COMMON ISSUES
-echo ===============================================
-echo.
-
-echo This script will attempt to fix the most common
-echo issues that prevent the fixes from working.
-echo.
-echo Press any key to start quick fix...
-pause >nul
+echo =========================================
+echo QUICK FIX - Climbing Club EXE Builder
+echo =========================================
 
 echo.
-echo 1. Stopping all services...
-call stop-climbing-club.bat 2>nul
-timeout /t 3 >nul
+echo 1. Backup oude bestanden...
+if exist ClimbingClubTray.csproj copy ClimbingClubTray.csproj ClimbingClubTray.csproj.backup
+if exist ClimbingClubTray.cs copy ClimbingClubTray.cs ClimbingClubTray.cs.backup
 
-echo 2. Killing all Node.js processes...
-taskkill /F /IM node.exe 2>nul
-taskkill /F /IM npm.exe 2>nul
-timeout /t 2 >nul
+echo.
+echo 2. Vervang met gefixte bestanden...
+copy ClimbingClubTray-FIXED.csproj ClimbingClubTray.csproj
+copy ClimbingClubTray-FIXED.cs ClimbingClubTray.cs
 
-echo 3. Checking file replacements...
-findstr /C:"'0.0.0.0'" backend\server.js >nul
-if %errorlevel% == 0 (
-    echo ✅ Server.js correctly updated
-) else (
-    echo ❌ Server.js NOT updated - files not replaced!
-    echo    Please manually replace backend\server.js with new content
+echo.
+echo 3. Build C# Tray Application...
+dotnet build -c Release
+if errorlevel 1 (
+    echo ❌ Build gefaald
     pause
+    exit /b 1
 )
 
-findstr /C:"getCurrentSeasonName" backend\sync-service.js >nul
-if %errorlevel% == 0 (
-    echo ✅ Sync-service.js correctly updated  
+echo.
+echo 4. Kopieer EXE naar root...
+if exist "bin\Release\net6.0-windows\ClimbingClubTray.exe" (
+    copy "bin\Release\net6.0-windows\ClimbingClubTray.exe" .
+    echo ✅ ClimbingClubTray.exe ready!
 ) else (
-    echo ❌ Sync-service.js NOT updated - files not replaced!
-    echo    Please manually replace backend\sync-service.js with new content
+    echo ❌ EXE niet gevonden in expected location
+    dir "bin\Release\net6.0-windows\" /b
     pause
+    exit /b 1
 )
 
 echo.
-echo 4. Re-running sync service with new season filtering...
-cd backend
-echo Running season-aware sync...
-node sync-service.js
-cd..
-
-echo.
-echo 5. Starting services...
-start start-climbing-club.bat
-echo Waiting for services to start...
-timeout /t 10 >nul
-
-echo.
-echo 6. Testing server binding...
-netstat -ano | findstr :3001
-echo.
-
-echo 7. Testing health endpoint...
-timeout /t 5 >nul
-curl -s http://localhost:3001/api/health | findstr season
-if %errorlevel% == 0 (
-    echo ✅ Season info found in health endpoint
-) else (
-    echo ❌ No season info - server not correctly updated
+echo 5. Build NSIS Installer...
+set NSIS_PATH=
+if exist "C:\Program Files (x86)\NSIS\makensis.exe" (
+    set NSIS_PATH=C:\Program Files ^(x86^)\NSIS\makensis.exe
+)
+if exist "C:\Program Files\NSIS\makensis.exe" (
+    set NSIS_PATH=C:\Program Files\NSIS\makensis.exe
 )
 
+if "%NSIS_PATH%"=="" (
+    echo ❌ NSIS niet gevonden, skip installer build
+    echo Je hebt nu ClimbingClubTray.exe - dat is al bruikbaar!
+    goto success
+)
+
+"%NSIS_PATH%" installer.nsi
+if errorlevel 1 (
+    echo ❌ NSIS build gefaald, maar EXE is wel klaar
+    goto success
+)
+
+echo ✅ Installer created: ClimbingClubSoftware-Setup.exe
+
+:success
 echo.
-echo ===============================================
-echo          QUICK FIX COMPLETED
-echo ===============================================
+echo =========================================
+echo ✅ SUCCESS! 
+echo =========================================
 echo.
-echo Next steps:
-echo 1. Clear browser cache (Ctrl+Shift+Delete)
-echo 2. Hard refresh tablet browser (Ctrl+F5)  
-echo 3. Test tablet access: http://[PC-IP]:3000
-echo 4. If still not working, run complete-diagnose.bat
+if exist ClimbingClubTray.exe (
+    echo ✅ ClimbingClubTray.exe - Klaar voor gebruik
+)
+if exist ClimbingClubSoftware-Setup.exe (
+    echo ✅ ClimbingClubSoftware-Setup.exe - Complete installer
+)
+echo.
+echo Je kan nu ClimbingClubTray.exe testen door erop te dubbelklikken!
 echo.
 pause

@@ -1,49 +1,28 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import './Home.css';
 
 export default function Home() {
   const navigate = useNavigate();
 
-  const handleMemberClick = () => {
-    navigate('/member');
-  };
-
-  const handleNonMemberClick = () => {
-    navigate('/visitor-choice');
-  };
-
   return (
-    <div className="home-page">
-      <div className="header">
-        <h1>🧗‍♀️ Bienvenue à l'Escalade</h1>
-        <p>Système d'accès à la salle d'escalade</p>
-      </div>
-
-      {/* ✅ FIX: Removed success message display */}
-
-      <div className="main-choices">
+    <div className="home-container">
+      <h1>Bienvenue au Club d'Escalade</h1>
+      
+      <div className="buttons-container">
         <button 
-          onClick={handleMemberClick}
-          className="btn-main btn-member"
+          className="main-button member-button"
+          onClick={() => navigate('/member-check')}
         >
-          <div className="btn-icon">👤</div>
-          <div className="btn-title">Je suis membre du club</div>
-          <div className="btn-description">Vérification rapide avec votre adhésion</div>
+          Je suis membre du club
         </button>
-
+        
         <button 
-          onClick={handleNonMemberClick}
-          className="btn-main btn-non-member"
+          className="main-button non-member-button"
+          onClick={() => navigate('/non-member')}
         >
-          <div className="btn-icon">🎯</div>
-          <div className="btn-title">Je ne suis pas membre du club</div>
-          <div className="btn-description">Inscription visiteur</div>
+          Je ne suis pas membre du club
         </button>
-      </div>
-
-      <div className="info-footer">
-        <p><strong>ℹ️ Information :</strong></p>
-        <p>Choisissez votre situation pour accéder à l'escalade.</p>
       </div>
     </div>
   );

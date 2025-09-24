@@ -1,223 +1,302 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { playSuccessSound, playBuzzerSound } from '../utils/soundUtils';
+import { playBellSound, playSuccessSound } from '../utils/soundUtils';
 
-const getApiBaseUrl = () => {
-  const hostname = window.location.hostname;
-  const protocol = window.location.protocol;
-
-  if (hostname !== 'localhost' && hostname !== '127.0.0.1') {
-    return `${protocol}//${hostname}:3001`;
-  }
-  return 'http://localhost:3001';
-};
+// ✅ GECORRIGEERDE API BASE URL - WAS 4000, NU 3001
+const API_BASE_URL = 'http://localhost:3001';
 
 export default function PaymentPage() {
-  const location = useLocation();
-  const navigate = useNavigate();
-  const { state } = location;
+    const { state } = useLocation(); // presenceId + montant
+    const navigate = useNavigate();
+    const [error, setError] = useState('');
+    const [presenceData, setPresenceData] = useState(null);
+    const [isValidated, setIsValidated] = useState(false);
+    const [loading, setLoading] = useState(true);
 
-  const [presenceInfo, setPresenceInfo] = useState(null);
-  const [paymentStatus, setPaymentStatus] = useState('pending');
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    if (!state?.presenceId) {
-      navigate('/');
-      return;
-    }
-
-    const fetchPresenceInfo = async () => {
-      try {
-        const apiUrl = getApiBaseUrl();
-        const response = await axios.get(`${apiUrl}/presences/${state.presenceId}`);
-
-        if (response.data.success) {
-          setPresenceInfo(response.data.presence);
-          setPaymentStatus(response.data.presence.status);
+    // Poll elke 4 s of de betaling is gevalideerd
+    useEffect(() => {
+        if (!state?.presenceId) {
+            navigate('/');
+            return;
         }
-      } catch (err) {
-        console.error('Failed to fetch presence info:', err);
-      } finally {
-        setLoading(false);
-      }
+
+        const checkPaymentStatus = async () => {
+            try {
+                // ✅ GECORRIGEERDE API URL
+                const res = await axios.get(`${API_BASE_URL}/presences/${state.presenceId}`);
+                if (res.data.success) {
+                    setPresenceData(res.data.presence);
+                    setLoading(false);
+
+                    if (['Payé', 'Pay'].includes(res.data.presence.status)) {
+                        if (!isValidated) {
+                            setIsValidated(true);
+                            playSuccessSound();
+                            setTimeout(() => navigate('/'), 3000);
+                        }
+                    }
+                }
+            } catch (error) {
+                console.error('Erreur vérification statut:', error);
+                setError('Impossible de vérifier le statut du paiement');
+                setLoading(false);
+            }
+        };
+
+        // Vérification initiale
+        checkPaymentStatus();
+
+        // Vérification périodique
+        const interval = setInterval(checkPaymentStatus, 4000);
+
+        return () => clearInterval(interval);
+    }, [state, navigate, isValidated]);
+
+    const handleContactVolunteer = () => {
+        playBellSound();
+        // Optionnel: ajouter une logique pour notifier les bénévoles
     };
 
-    fetchPresenceInfo();
+    const handleRetourAccueil = () => {
+        navigate('/');
+    };
 
-    const pollInterval = setInterval(async () => {
-      try {
-        const apiUrl = getApiBaseUrl();
-        const response = await axios.get(`${apiUrl}/presences/${state.presenceId}`);
+    if (!state?.presenceId) return null;
 
-        if (response.data.success) {
-          const newStatus = response.data.presence.status;
+    // Si le paiement est validé
+    if (isValidated || presenceData?.status === 'Payé' || presenceData?.status === 'Pay') {
+        return (
+            <div style={{
+                minHeight: '100vh',
+                background: 'linear-gradient(135deg, #4CAF50 0%, #45a049 100%)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: '20px',
+                fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif"
+            }}>
+                <div style={{
+                    background: 'rgba(255, 255, 255, 0.95)',
+                    padding: '40px',
+                    borderRadius: '20px',
+                    boxShadow: '0 20px 60px rgba(0, 0, 0, 0.3)',
+                    width: '100%',
+                    maxWidth: '600px',
+                    textAlign: 'center'
+                }}>
+                    <div style={{ fontSize: '4rem', marginBottom: '20px' }}>✅</div>
+                    <h2 style={{ color: '#4CAF50', marginBottom: '20px', fontSize: '2rem' }}>
+                        Paiement validé !
+                    </h2>
+                    <p style={{ fontSize: '1.2rem', marginBottom: '15px', color: '#333' }}>
+                        Votre paiement de <strong>{state.montant}€</strong> a été confirmé.
+                    </p>
+                    {presenceData?.methodePaiement && (
+                        <p style={{ fontSize: '1.1rem', marginBottom: '20px', color: '#666' }}>
+                            Mode de paiement : <strong>{presenceData.methodePaiement}</strong>
+                        </p>
+                    )}
+                    <div style={{
+                        background: '#e8f5e8',
+                        padding: '15px',
+                        borderRadius: '10px',
+                        marginBottom: '20px',
+                        color: '#2e7d32'
+                    }}>
+                        Redirection automatique vers la page d'accueil dans 3 secondes...
+                    </div>
+                    <button
+                        onClick={handleRetourAccueil}
+                        style={{
+                            padding: '15px 30px',
+                            background: 'linear-gradient(135deg, #4CAF50, #45a049)',
+                            color: 'white',
+                            border: 'none',
+                            borderRadius: '10px',
+                            fontSize: '1.1rem',
+                            fontWeight: '600',
+                            cursor: 'pointer',
+                            transition: 'all 0.3s'
+                        }}
+                    >
+                        🏠 Retour immédiat à l'accueil
+                    </button>
+                </div>
+            </div>
+        );
+    }
 
-          if (newStatus === 'Payé' && paymentStatus !== 'Payé') {
-            playSuccessSound();
-            setPaymentStatus(newStatus);
-
-            // ✅ FEATURE 3: Enhanced success - longer display time (10 seconds)
-            setTimeout(() => {
-              navigate('/', {
-                state: {
-                  successMessage: '🎉 Paiement validé avec succès !\n\n✅ Votre session d\'escalade est confirmée\n🧗‍♀️ Équipez-vous et amusez-vous bien !\n\n🎯 Bonne grimpe !',
-                  paymentConfirmed: true
-                }
-              });
-            }, 10000); // Increased to 10 seconds
-
-          } else if ((newStatus === 'Annulé' || newStatus === 'Cancelled') && paymentStatus !== 'Annulé' && paymentStatus !== 'Cancelled') {
-            playBuzzerSound();
-            setPaymentStatus(newStatus);
-
-            setTimeout(() => {
-              navigate('/', {
-                state: {
-                  errorMessage: '❌ Paiement annulé par le bénévole.\n\nContactez l\'accueil si vous avez des questions.',
-                  paymentCancelled: true
-                }
-              });
-            }, 4000);
-          } else {
-            setPaymentStatus(newStatus);
-          }
-        }
-      } catch (err) {
-        console.error('Polling error:', err);
-      }
-    }, 3000);
-
-    return () => clearInterval(pollInterval);
-  }, [state, navigate, paymentStatus]);
-
-  if (loading) {
     return (
-      <div className="payment-page">
-        <div className="loading-message">
-          <span className="loading-icon">⏳</span>
-          Chargement des informations de paiement...
-        </div>
-      </div>
-    );
-  }
+        <div style={{
+            minHeight: '100vh',
+            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '20px',
+            fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif"
+        }}>
+            <div style={{
+                background: 'rgba(255, 255, 255, 0.95)',
+                padding: '40px',
+                borderRadius: '20px',
+                boxShadow: '0 20px 60px rgba(0, 0, 0, 0.3)',
+                width: '100%',
+                maxWidth: '700px',
+                textAlign: 'center'
+            }}>
+                <h2 style={{
+                    color: '#333',
+                    marginBottom: '20px',
+                    fontSize: '2rem',
+                    fontWeight: '300'
+                }}>
+                    💰 Montant à régler : {state.montant}€
+                </h2>
 
-  if (!state?.presenceId) {
-    return (
-      <div className="payment-page">
-        <div className="error-message">
-          <span className="error-icon">⚠️</span>
-          Erreur: Aucune information de paiement trouvée
-        </div>
-      </div>
-    );
-  }
+                <p style={{ fontSize: '1.2rem', marginBottom: '30px', color: '#666' }}>
+                    En attente de validation par un bénévole
+                </p>
 
-  return (
-    <div className="payment-page">
-      <div className="header-section">
-        <h2>💳 Paiement</h2>
-      </div>
+                {/* Section simplifiée - pas de sélection de mode */}
+                <div style={{ marginBottom: '30px' }}>
+                    <h3 style={{ color: '#667eea', marginBottom: '20px' }}>🏪 Présentez-vous à l'accueil</h3>
 
-      <div className="payment-info">
-        <div className="participant-info">
-          <h3>👤 Participant</h3>
-          <div><strong>Nom:</strong> {state.nom || 'N/A'}</div>
-          <div><strong>Prénom:</strong> {state.prenom || 'N/A'}</div>
-          {state.age && <div><strong>Catégorie:</strong> {state.tarifCategory || state.age}</div>}
+                    <div style={{
+                        background: '#f8f9fa',
+                        padding: '20px',
+                        borderRadius: '15px',
+                        marginBottom: '20px'
+                    }}>
+                        <p style={{ marginBottom: '20px', color: '#333', lineHeight: '1.6' }}>
+                            Un bénévole va vous aider à finaliser votre paiement avec l'un des modes suivants :
+                        </p>
 
-          {/* Enhanced info for returning visitors */}
-          {state.isReturningVisitor && (
-            <div className="returning-visitor-info">
-              <div><strong>🔄 Visiteur récurrent</strong></div>
-              <div>Visite n° {state.previousVisits || 'N/A'}</div>
-              {state.lastVisit && (
-                <div>Dernière visite: {new Date(state.lastVisit).toLocaleDateString('fr-FR')}</div>
-              )}
-            </div>
-          )}
-        </div>
-
-        <div className="amount-info">
-          <h3>💰 Montant à régler</h3>
-          <div className="amount-display">
-            {(() => {
-              // ✅ FIXED: Better tariff display logic
-              const amount = state.montant || state.tarif || presenceInfo?.tarif || 0;
-              return amount === 0 ? '🆓 GRATUIT' : `💶 ${amount}€`;
-            })()}
-          </div>
-          {state.tarifCategory && (
-            <div className="tarif-category">
-              {state.tarifCategory}
-            </div>
-          )}
-        </div>
-
-        <div className="payment-status">
-          {paymentStatus === 'pending' && (
-            <div className="status-pending">
-              <span className="status-icon">⏳</span>
-              <div className="status-message">
-                <strong>En attente de validation</strong>
-                <p>Rendez-vous à l'accueil pour effectuer le paiement.</p>
-                <p>Un bénévole validera votre paiement dans le système.</p>
-                <p>Cette page se mettra à jour automatiquement.</p>
-              </div>
-            </div>
-          )}
-
-          {paymentStatus === 'Payé' && (
-            <div className="status-paid-enhanced">
-              <div className="success-animation">🎉</div>
-              <div className="status-message">
-                <h3>🎉 Paiement validé avec succès !</h3>
-                <div className="success-details">
-                  <p><strong>✅ Votre session d'escalade est confirmée !</strong></p>
-                  <p>🧗‍♀️ Équipez-vous et amusez-vous bien !</p>
-
-                  <div className="access-info">
-                    <div>🎯 Accès autorisé à toutes les voies</div>
-                    <div>🥾 Matériel disponible à l'accueil</div>
-                    <div>🤝 N'hésitez pas à demander de l'aide si besoin</div>
-                  </div>
-
-                  <p><strong>Bonne grimpe ! 🎉</strong></p>
+                        <div style={{
+                            display: 'grid',
+                            gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
+                            gap: '15px'
+                        }}>
+                            <div style={{
+                                padding: '15px',
+                                background: 'white',
+                                borderRadius: '10px',
+                                border: '2px solid #4CAF50'
+                            }}>
+                                <div style={{ fontSize: '2rem', marginBottom: '5px' }}>💵</div>
+                                <div style={{ fontWeight: '600' }}>Espèces</div>
+                            </div>
+                            <div style={{
+                                padding: '15px',
+                                background: 'white',
+                                borderRadius: '10px',
+                                border: '2px solid #2196F3'
+                            }}>
+                                <div style={{ fontSize: '2rem', marginBottom: '5px' }}>💳</div>
+                                <div style={{ fontWeight: '600' }}>Carte bancaire</div>
+                            </div>
+                            <div style={{
+                                padding: '15px',
+                                background: 'white',
+                                borderRadius: '10px',
+                                border: '2px solid #ff9500'
+                            }}>
+                                <div style={{ fontSize: '2rem', marginBottom: '5px' }}>📝</div>
+                                <div style={{ fontWeight: '600' }}>Chèque</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-                <div className="countdown">
-                  <div className="countdown-bar"></div>
-                  Redirection vers l'accueil dans quelques secondes...
+                {/* Status de vérification */}
+                <div style={{
+                    background: '#e3f2fd',
+                    padding: '15px',
+                    borderRadius: '10px',
+                    marginBottom: '20px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '10px'
+                }}>
+                    {loading ? (
+                        <>
+                            <div style={{
+                                width: '20px',
+                                height: '20px',
+                                border: '2px solid #2196F3',
+                                borderTop: '2px solid transparent',
+                                borderRadius: '50%',
+                                animation: 'spin 1s linear infinite'
+                            }}></div>
+                            <span>Vérification du statut du paiement en cours...</span>
+                        </>
+                    ) : (
+                        <span>⏳ En attente de validation par un bénévole</span>
+                    )}
                 </div>
-              </div>
-            </div>
-          )}
 
-          {(paymentStatus === 'Annulé' || paymentStatus === 'Cancelled') && (
-            <div className="status-cancelled">
-              <span className="status-icon">❌</span>
-              <div className="status-message">
-                <strong>Paiement annulé</strong>
-                <p>Le bénévole a annulé la transaction.</p>
-                <p>Contactez l'accueil pour plus d'informations.</p>
-                <p>Redirection vers l'accueil...</p>
-              </div>
+                {error && (
+                    <div style={{
+                        marginBottom: '20px',
+                        padding: '15px',
+                        background: '#ff6b6b',
+                        color: 'white',
+                        borderRadius: '10px'
+                    }}>
+                        {error}
+                    </div>
+                )}
+
+                <div style={{ display: 'flex', gap: '15px', flexWrap: 'wrap' }}>
+                    <button
+                        onClick={handleRetourAccueil}
+                        style={{
+                            flex: 1,
+                            padding: '15px 30px',
+                            background: 'transparent',
+                            color: '#667eea',
+                            border: '2px solid #667eea',
+                            borderRadius: '10px',
+                            fontSize: '1.1rem',
+                            fontWeight: '600',
+                            cursor: 'pointer',
+                            transition: 'all 0.3s',
+                            minWidth: '150px'
+                        }}
+                    >
+                        🏠 Retour à l'accueil
+                    </button>
+
+                    <button
+                        onClick={handleContactVolunteer}
+                        style={{
+                            flex: 1,
+                            padding: '15px 30px',
+                            background: 'linear-gradient(135deg, #ff9500, #ff8c00)',
+                            color: 'white',
+                            border: 'none',
+                            borderRadius: '10px',
+                            fontSize: '1.1rem',
+                            fontWeight: '600',
+                            cursor: 'pointer',
+                            transition: 'all 0.3s',
+                            minWidth: '150px'
+                        }}
+                    >
+                        🔔 Appeler bénévole
+                    </button>
+                </div>
+
+                {/* CSS Animation */}
+                <style>{`
+                    @keyframes spin {
+                        0% { transform: rotate(0deg); }
+                        100% { transform: rotate(360deg); }
+                    }
+                `}</style>
             </div>
-          )}
         </div>
-      </div>
-
-      <div className="info-section">
-        <h4>📋 Instructions:</h4>
-        <ol>
-          <li><strong>Rendez-vous à l'accueil</strong> pour effectuer le paiement</li>
-          <li><strong>Montrez cette page</strong> au bénévole si nécessaire</li>
-          <li><strong>Le bénévole validera</strong> votre paiement dans le système</li>
-          <li><strong>Cette page se mettra à jour</strong> automatiquement</li>
-          <li><strong>Vous serez redirigé</strong> vers l'accueil une fois validé</li>
-        </ol>
-      </div>
-    </div>
-  );
+    );
 }

@@ -1,185 +1,394 @@
 import React, { useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { playBuzzerSound } from '../utils/soundUtils';
+import { calculateAgeAndTarif } from '../utils/ageCalculation';
 
-// ✅ KEEP: Dynamic API URL detection (WORKING!)
-const getApiBaseUrl = () => {
-  const hostname = window.location.hostname;
-  const protocol = window.location.protocol;
-
-  if (hostname !== 'localhost' && hostname !== '127.0.0.1') {
-    return `${protocol}//${hostname}:3001`;
-  }
-  return 'http://localhost:3001';
-};
+// ✅ GECORRIGEERDE API BASE URL
+const API_BASE_URL = 'http://localhost:3001';
 
 export default function NonMemberForm() {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const { form: memberForm, memberCheckFailed, reason } = location.state || {};
-
-  const [form, setForm] = useState({
-    nom: memberForm?.nom || '',
-    prenom: memberForm?.prenom || '',
-    email: '',
-    telephone: '',
-    dateNaissance: ''
-    // ✅ REMOVED: assuranceAccepted - belongs in AssurancePage!
-  });
-
-  const [error, setError] = useState('');
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    if (!form.nom.trim() || !form.prenom.trim()) {
-      setError('Nom et prénom sont requis');
-      playBuzzerSound();
-      return;
-    }
-
-    if (!form.dateNaissance) {
-      setError('Date de naissance est requise pour calculer le tarif');
-      playBuzzerSound();
-      return;
-    }
-
-    // ✅ RESTORED: Navigate to niveau page (original flow)
-    navigate('/niveau', {
-      state: {
-        form: form,
-        type: 'non-adherent'
-      }
+    const nav = useNavigate();
+    const [form, setForm] = useState({
+        nom: '', 
+        prenom: '', 
+        email: '',
+        telephone: '', 
+        dateNaissance: ''
     });
-  };
+    const [err, setErr] = useState('');
+    const [tarifPreview, setTarifPreview] = useState(null);
+    const [loading, setLoading] = useState(false);
 
-  const handleRetourAccueil = () => {
-    navigate('/');
-  };
+    const onChange = (e) => {
+        const { name, value } = e.target;
+        setForm({ ...form, [name]: value });
 
-  return (
-    <div className="non-member-form">
-      {/* ✅ RESTORED: Original header with retour button */}
-      <div className="header-section">
-        <h2>Inscription Visiteur</h2>
-        <div className="header-buttons">
-          <button onClick={handleRetourAccueil} className="btn-retour-accueil">
-            🏠 Retour Accueil
-          </button>
-        </div>
-      </div>
+        // Preview du tarif en temps réel
+        if (name === 'dateNaissance' && value) {
+            try {
+                const { age, tarif, description } = calculateAgeAndTarif(value);
+                setTarifPreview({ age, tarif, description });
+            } catch (error) {
+                setTarifPreview(null);
+            }
+        } else if (name === 'dateNaissance' && !value) {
+            setTarifPreview(null);
+        }
+    };
 
-      {/* DEBUG INFO - Small and unobtrusive */}
-      <div style={{ 
-        fontSize: '12px', 
-        color: '#666', 
-        marginBottom: '15px',
-        padding: '8px',
-        background: '#f8f9fa',
-        borderRadius: '4px',
-        opacity: 0.7
-      }}>
-        API: {getApiBaseUrl()} | Host: {window.location.hostname}
-      </div>
+    const next = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+        setErr('');
 
-      {/* ✅ RESTORED: Member check failed message */}
-      {memberCheckFailed && (
-        <div className="info-message">
-          <span className="info-icon">ℹ️</span>
-          Aucune adhésion trouvée. Veuillez vous inscrire comme visiteur.
-          {reason && (
-            <div className="info-detail">
-              Détail: {reason}
+        if (!form.nom || !form.prenom || !form.email) {
+            setErr('Champs obligatoires manquants'); 
+            playBuzzerSound(); 
+            setLoading(false);
+            return;
+        }
+
+        if (!form.dateNaissance) {
+            setErr('La date de naissance est obligatoire pour calculer le tarif');
+            playBuzzerSound();
+            setLoading(false);
+            return;
+        }
+
+        try {
+            // Calcul du tarif basé sur l'âge
+            const { age, tarif, description, category } = calculateAgeAndTarif(form.dateNaissance);
+
+            console.log('=== TARIF CALCULATION ===');
+            console.log('Date de naissance:', form.dateNaissance);
+            console.log('Âge calculé:', age);
+            console.log('Tarif calculé:', tarif);
+            console.log('Catégorie:', category);
+
+            // Optionnel: Sauvegarder dans non-members voor tracking
+            const nonMemberData = {
+                ...form,
+                age,
+                tarif,
+                tarifDescription: description,
+                tarifCategory: category,
+                status: 'form_completed'
+            };
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/non-members`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(nonMemberData)
+                });
+
+                if (response.ok) {
+                    console.log('✅ Non-member data saved for tracking');
+                } else {
+                    console.warn('⚠️ Could not save non-member data, but continuing...');
+                }
+            } catch (saveError) {
+                console.warn('⚠️ Save error, but continuing...', saveError);
+            }
+
+            // Navigation naar niveau pagina met alle data
+            nav('/niveau', { 
+                state: { 
+                    form,
+                    age,
+                    tarif,
+                    tarifDescription: description,
+                    tarifCategory: category
+                }
+            });
+
+        } catch (error) {
+            console.error('Error in form processing:', error);
+            setErr('Erreur lors du traitement du formulaire');
+            playBuzzerSound();
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    return (
+        <div style={{
+            minHeight: '100vh',
+            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '20px',
+            fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif"
+        }}>
+            <div style={{
+                background: 'rgba(255, 255, 255, 0.95)',
+                padding: '40px',
+                borderRadius: '20px',
+                boxShadow: '0 20px 60px rgba(0, 0, 0, 0.3)',
+                width: '100%',
+                maxWidth: '600px'
+            }}>
+                <h2 style={{
+                    color: '#333',
+                    marginBottom: '30px',
+                    fontSize: '2rem',
+                    fontWeight: '300',
+                    textAlign: 'center'
+                }}>
+                    Inscription non-membre
+                </h2>
+
+                <form onSubmit={next}>
+                    <div style={{
+                        display: 'grid',
+                        gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+                        gap: '20px',
+                        marginBottom: '20px'
+                    }}>
+                        <div>
+                            <label style={{
+                                display: 'block',
+                                marginBottom: '8px',
+                                fontSize: '1.1rem',
+                                color: '#555',
+                                fontWeight: '500'
+                            }}>
+                                Nom *
+                            </label>
+                            <input
+                                type="text"
+                                name="nom"
+                                value={form.nom}
+                                onChange={onChange}
+                                required
+                                disabled={loading}
+                                style={{
+                                    width: '100%',
+                                    padding: '15px',
+                                    border: '2px solid #ddd',
+                                    borderRadius: '10px',
+                                    fontSize: '1.1rem',
+                                    transition: 'border-color 0.3s',
+                                    boxSizing: 'border-box'
+                                }}
+                                onFocus={(e) => e.target.style.borderColor = '#667eea'}
+                                onBlur={(e) => e.target.style.borderColor = '#ddd'}
+                            />
+                        </div>
+
+                        <div>
+                            <label style={{
+                                display: 'block',
+                                marginBottom: '8px',
+                                fontSize: '1.1rem',
+                                color: '#555',
+                                fontWeight: '500'
+                            }}>
+                                Prénom *
+                            </label>
+                            <input
+                                type="text"
+                                name="prenom"
+                                value={form.prenom}
+                                onChange={onChange}
+                                required
+                                disabled={loading}
+                                style={{
+                                    width: '100%',
+                                    padding: '15px',
+                                    border: '2px solid #ddd',
+                                    borderRadius: '10px',
+                                    fontSize: '1.1rem',
+                                    transition: 'border-color 0.3s',
+                                    boxSizing: 'border-box'
+                                }}
+                                onFocus={(e) => e.target.style.borderColor = '#667eea'}
+                                onBlur={(e) => e.target.style.borderColor = '#ddd'}
+                            />
+                        </div>
+                    </div>
+
+                    <div style={{ marginBottom: '20px' }}>
+                        <label style={{
+                            display: 'block',
+                            marginBottom: '8px',
+                            fontSize: '1.1rem',
+                            color: '#555',
+                            fontWeight: '500'
+                        }}>
+                            Email *
+                        </label>
+                        <input
+                            type="email"
+                            name="email"
+                            value={form.email}
+                            onChange={onChange}
+                            required
+                            disabled={loading}
+                            style={{
+                                width: '100%',
+                                padding: '15px',
+                                border: '2px solid #ddd',
+                                borderRadius: '10px',
+                                fontSize: '1.1rem',
+                                transition: 'border-color 0.3s',
+                                boxSizing: 'border-box'
+                            }}
+                            onFocus={(e) => e.target.style.borderColor = '#667eea'}
+                            onBlur={(e) => e.target.style.borderColor = '#ddd'}
+                        />
+                    </div>
+
+                    <div style={{
+                        display: 'grid',
+                        gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+                        gap: '20px',
+                        marginBottom: '20px'
+                    }}>
+                        <div>
+                            <label style={{
+                                display: 'block',
+                                marginBottom: '8px',
+                                fontSize: '1.1rem',
+                                color: '#555',
+                                fontWeight: '500'
+                            }}>
+                                Téléphone
+                            </label>
+                            <input
+                                type="tel"
+                                name="telephone"
+                                value={form.telephone}
+                                onChange={onChange}
+                                disabled={loading}
+                                style={{
+                                    width: '100%',
+                                    padding: '15px',
+                                    border: '2px solid #ddd',
+                                    borderRadius: '10px',
+                                    fontSize: '1.1rem',
+                                    transition: 'border-color 0.3s',
+                                    boxSizing: 'border-box'
+                                }}
+                                onFocus={(e) => e.target.style.borderColor = '#667eea'}
+                                onBlur={(e) => e.target.style.borderColor = '#ddd'}
+                            />
+                        </div>
+
+                        <div>
+                            <label style={{
+                                display: 'block',
+                                marginBottom: '8px',
+                                fontSize: '1.1rem',
+                                color: '#555',
+                                fontWeight: '500'
+                            }}>
+                                Date de naissance *
+                            </label>
+                            <input
+                                type="date"
+                                name="dateNaissance"
+                                value={form.dateNaissance}
+                                onChange={onChange}
+                                required
+                                disabled={loading}
+                                style={{
+                                    width: '100%',
+                                    padding: '15px',
+                                    border: '2px solid #ddd',
+                                    borderRadius: '10px',
+                                    fontSize: '1.1rem',
+                                    transition: 'border-color 0.3s',
+                                    boxSizing: 'border-box'
+                                }}
+                                onFocus={(e) => e.target.style.borderColor = '#667eea'}
+                                onBlur={(e) => e.target.style.borderColor = '#ddd'}
+                            />
+                        </div>
+                    </div>
+
+                    {/* Tarif Preview */}
+                    {tarifPreview && (
+                        <div style={{
+                            background: 'linear-gradient(135deg, #4CAF50, #45a049)',
+                            color: 'white',
+                            padding: '20px',
+                            borderRadius: '15px',
+                            marginBottom: '20px',
+                            textAlign: 'center'
+                        }}>
+                            <h4 style={{ margin: '0 0 10px 0', fontSize: '1.3rem' }}>
+                                Tarif calculé : {tarifPreview.tarif === 0 ? 'GRATUIT' : `${tarifPreview.tarif}€`}
+                            </h4>
+                            <p style={{ margin: '5px 0', opacity: 0.9 }}>
+                                Âge : {tarifPreview.age} ans
+                            </p>
+                            <p style={{ margin: '5px 0', opacity: 0.9 }}>
+                                {tarifPreview.description}
+                            </p>
+                        </div>
+                    )}
+
+                    {err && (
+                        <div style={{
+                            marginBottom: '20px',
+                            padding: '15px',
+                            background: '#ff6b6b',
+                            color: 'white',
+                            borderRadius: '10px',
+                            textAlign: 'center'
+                        }}>
+                            {err}
+                        </div>
+                    )}
+
+                    <div style={{ display: 'flex', gap: '15px', flexWrap: 'wrap' }}>
+                        <button
+                            type="button"
+                            onClick={() => nav('/')}
+                            disabled={loading}
+                            style={{
+                                flex: 1,
+                                padding: '15px 30px',
+                                background: 'transparent',
+                                color: '#667eea',
+                                border: '2px solid #667eea',
+                                borderRadius: '10px',
+                                fontSize: '1.1rem',
+                                fontWeight: '600',
+                                cursor: 'pointer',
+                                transition: 'all 0.3s',
+                                minWidth: '150px'
+                            }}
+                        >
+                            ← Retour
+                        </button>
+
+                        <button
+                            type="submit"
+                            disabled={loading}
+                            style={{
+                                flex: 2,
+                                padding: '15px 30px',
+                                background: loading ? '#ccc' : 'linear-gradient(135deg, #667eea, #764ba2)',
+                                color: 'white',
+                                border: 'none',
+                                borderRadius: '10px',
+                                fontSize: '1.1rem',
+                                fontWeight: '600',
+                                cursor: loading ? 'not-allowed' : 'pointer',
+                                transition: 'all 0.3s',
+                                minWidth: '150px'
+                            }}
+                        >
+                            {loading ? 'Traitement...' : 'Continuer →'}
+                        </button>
+                    </div>
+                </form>
             </div>
-          )}
         </div>
-      )}
-
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="nom">Nom de famille *:</label>
-          <input
-            id="nom"
-            type="text"
-            value={form.nom}
-            onChange={(e) => setForm({...form, nom: e.target.value})}
-            placeholder="Votre nom de famille"
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="prenom">Prénom *:</label>
-          <input
-            id="prenom"
-            type="text"
-            value={form.prenom}
-            onChange={(e) => setForm({...form, prenom: e.target.value})}
-            placeholder="Votre prénom"
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="email">Email:</label>
-          <input
-            id="email"
-            type="email"
-            value={form.email}
-            onChange={(e) => setForm({...form, email: e.target.value})}
-            placeholder="votre@email.com"
-          />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="telephone">Téléphone:</label>
-          <input
-            id="telephone"
-            type="tel"
-            value={form.telephone}
-            onChange={(e) => setForm({...form, telephone: e.target.value})}
-            placeholder="06 12 34 56 78"
-          />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="dateNaissance">Date de naissance *:</label>
-          <input
-            id="dateNaissance"
-            type="date"
-            value={form.dateNaissance}
-            onChange={(e) => setForm({...form, dateNaissance: e.target.value})}
-            required
-          />
-        </div>
-
-        {/* ✅ RESTORED: Error message styling */}
-        {error && (
-          <div className="error-message">
-            <span className="error-icon">⚠️</span>
-            {error}
-          </div>
-        )}
-
-        {/* ✅ RESTORED: Original button styling */}
-        <button 
-          type="submit" 
-          className="btn-continue"
-          disabled={!form.nom.trim() || !form.prenom.trim() || !form.dateNaissance}
-        >
-          Continuer → Choisir Niveau
-        </button>
-      </form>
-
-      {/* ✅ RESTORED: Info section */}
-      <div className="info-section">
-        <p><strong>Prochaines étapes:</strong></p>
-        <ol>
-          <li>Choisir votre niveau d'escalade</li>
-          <li>Accepter les conditions d'assurance</li>
-          <li>Finaliser le paiement</li>
-        </ol>
-      </div>
-    </div>
-  );
+    );
 }

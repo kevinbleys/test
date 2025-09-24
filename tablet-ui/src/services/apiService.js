@@ -1,74 +1,207 @@
-// ✅ ONLY CHANGE: Dynamic API URL detection
-const getApiBaseUrl = () => {
-  const hostname = window.location.hostname;
-  const protocol = window.location.protocol;
+// API Service voor consistent API management
+// ✅ GECORRIGEERDE BASE URL - localhost:3001
 
-  if (hostname !== 'localhost' && hostname !== '127.0.0.1') {
-    return `${protocol}//${hostname}:3001`;
-  }
-  return 'http://localhost:3001';
-};
+const API_BASE_URL = 'http://localhost:3001';
 
-const API_BASE_URL = getApiBaseUrl();
-
-export const apiRequest = async (endpoint, options = {}) => {
-  try {
+// Helper function voor API calls
+const apiCall = async (endpoint, options = {}) => {
     const url = `${API_BASE_URL}${endpoint}`;
 
-    const response = await fetch(url, {
-      headers: {
-        'Content-Type': 'application/json',
-        ...options.headers,
-      },
-      ...options,
-    });
+    const config = {
+        headers: {
+            'Content-Type': 'application/json',
+            ...options.headers
+        },
+        ...options
+    };
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+    console.log(`API Call: ${config.method || 'GET'} ${url}`);
+    if (config.body) {
+        console.log('Request body:', JSON.parse(config.body));
     }
 
-    return await response.json();
-  } catch (error) {
-    console.error('API request failed:', error);
-    throw error;
-  }
+    try {
+        const response = await fetch(url, config);
+        const data = await response.json();
+
+        console.log(`API Response [${response.status}]:`, data);
+
+        if (!response.ok) {
+            throw new Error(data.error || `HTTP error! status: ${response.status}`);
+        }
+
+        return data;
+    } catch (error) {
+        console.error(`API Error for ${url}:`, error);
+        throw error;
+    }
 };
 
-export const getMembers = async () => {
-  return apiRequest('/members');
+// Member services
+export const memberService = {
+    // Check member status
+    checkMember: async (nom, prenom) => {
+        return apiCall(`/members/check?nom=${encodeURIComponent(nom)}&prenom=${encodeURIComponent(prenom)}`);
+    },
+
+    // Get all members
+    getAllMembers: async () => {
+        return apiCall('/members/all');
+    }
 };
 
-export const checkMember = async (nom, prenom) => {
-  return apiRequest(`/members/check?nom=${encodeURIComponent(nom)}&prenom=${encodeURIComponent(prenom)}`);
+// Presence services
+export const presenceService = {
+    // Add new presence
+    addPresence: async (presenceData) => {
+        return apiCall('/presences', {
+            method: 'POST',
+            body: JSON.stringify(presenceData)
+        });
+    },
+
+    // Get all presences
+    getPresences: async () => {
+        return apiCall('/presences');
+    },
+
+    // Delete presence
+    deletePresence: async (id) => {
+        return apiCall(`/presences/${id}`, {
+            method: 'DELETE'
+        });
+    }
 };
 
-export const createPresence = async (presenceData) => {
-  return apiRequest('/presences', {
-    method: 'POST',
-    body: JSON.stringify(presenceData),
-  });
+// Non-member services
+export const nonMemberService = {
+    // Add non-member
+    addNonMember: async (nonMemberData) => {
+        return apiCall('/non-members', {
+            method: 'POST',
+            body: JSON.stringify(nonMemberData)
+        });
+    },
+
+    // Get all non-members
+    getNonMembers: async () => {
+        return apiCall('/non-members');
+    }
 };
 
-export const validatePresence = async (presenceId, paymentData) => {
-  return apiRequest(`/presences/${presenceId}/valider`, {
-    method: 'POST',
-    body: JSON.stringify(paymentData),
-  });
+// Stats services
+export const statsService = {
+    // Get today's stats
+    getTodayStats: async () => {
+        return apiCall('/api/stats/today');
+    },
+
+    // Get general stats
+    getGeneralStats: async () => {
+        return apiCall('/api/stats');
+    }
 };
 
-export const createNonMember = async (nonMemberData) => {
-  return apiRequest('/non-members', {
-    method: 'POST',
-    body: JSON.stringify(nonMemberData),
-  });
+// Health check
+export const healthService = {
+    // Check API health
+    checkHealth: async () => {
+        return apiCall('/api/health');
+    },
+
+    // Check API status
+    checkStatus: async () => {
+        return apiCall('/api/status');
+    }
 };
 
-export const getPresences = async () => {
-  return apiRequest('/presences');
+// Combined workflow services
+export const workflowService = {
+    // Complete member check-in workflow
+    memberCheckIn: async (nom, prenom) => {
+        try {
+            // Step 1: Check member status
+            const memberCheck = await memberService.checkMember(nom, prenom);
+
+            if (!memberCheck.success) {
+                return memberCheck;
+            }
+
+            // Step 2: Register presence
+            const presenceData = {
+                type: 'adherent',
+                nom: nom.trim(),
+                prenom: prenom.trim()
+            };
+
+            const presenceResult = await presenceService.addPresence(presenceData);
+
+            return {
+                success: true,
+                member: memberCheck.membre,
+                presence: presenceResult.presence,
+                message: 'Check-in réussi pour le membre'
+            };
+        } catch (error) {
+            return {
+                success: false,
+                error: error.message || 'Erreur lors du check-in membre'
+            };
+        }
+    },
+
+    // Complete non-member registration workflow
+    nonMemberRegistration: async (formData, niveau, assuranceAccepted, paymentData) => {
+        try {
+            // Calculate complete presence data
+            const presenceData = {
+                type: 'non-adherent',
+                nom: formData.nom.trim(),
+                prenom: formData.prenom.trim(),
+                email: formData.email,
+                telephone: formData.telephone,
+                dateNaissance: formData.dateNaissance,
+                niveau: niveau,
+                tarif: paymentData.tarif,
+                methodePaiement: paymentData.methodePaiement,
+                status: paymentData.status,
+                assuranceAccepted: assuranceAccepted,
+                dateValidation: new Date().toISOString()
+            };
+
+            // Register presence
+            const presenceResult = await presenceService.addPresence(presenceData);
+
+            // Also save to non-members for tracking
+            const nonMemberData = {
+                ...formData,
+                niveau,
+                tarif: paymentData.tarif,
+                status: 'registered',
+                dateRegistered: new Date().toISOString()
+            };
+
+            await nonMemberService.addNonMember(nonMemberData);
+
+            return {
+                success: true,
+                presence: presenceResult.presence,
+                message: 'Inscription non-membre réussie'
+            };
+        } catch (error) {
+            return {
+                success: false,
+                error: error.message || 'Erreur lors de l'inscription non-membre'
+            };
+        }
+    }
 };
 
-export const getNonMembers = async () => {
-  return apiRequest('/non-members');
+export default {
+    memberService,
+    presenceService,
+    nonMemberService,
+    statsService,
+    healthService,
+    workflowService
 };
-
-export { API_BASE_URL };
