@@ -140,19 +140,26 @@ const writeJsonFile = (filePath, data) => {
   }
 };
 
-// Middleware
+// ===== CORS CONFIGURATION VOOR NETWERK TOEGANG =====
 app.use(cors({
   origin: [
+    // Localhost origins
     'http://localhost:3000', 
-    'http://localhost:3001', // ✅ TOEGEVOEGD: Admin interface zelf
+    'http://localhost:3001',
     'http://localhost:3002', 
     'http://127.0.0.1:3000', 
-    'http://127.0.0.1:3001', // ✅ TOEGEVOEGD: Admin interface zelf
-    'http://127.0.0.1:3002'
+    'http://127.0.0.1:3001',
+    'http://127.0.0.1:3002',
+    // Network IP origins - TOEGEVOEGD VOOR TABLET TOEGANG
+    'http://192.168.1.328:3000',
+    'http://192.168.1.328:3001', 
+    'http://192.168.1.328:3002',
+    // Wildcard voor lokaal netwerk - VEILIG VOOR THUISNETWERK
+    /^http:\/\/192\.168\.\d{1,3}\.\d{1,3}:(3000|3001|3002)$/
   ],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  allowedHeaders: ['Content-Type', 'Authorization', 'Accept', 'Origin']
 }));
 
 app.use(express.json());
@@ -163,7 +170,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Enhanced logging middleware
 app.use((req, res, next) => {
-  console.log(`🌐 ${new Date().toISOString()} - ${req.method} ${req.path}`);
+  console.log(`🌐 ${new Date().toISOString()} - ${req.method} ${req.path} - Origin: ${req.headers.origin || 'undefined'}`);
   if (req.body && Object.keys(req.body).length > 0) {
     console.log('📋 Request body:', JSON.stringify(req.body, null, 2));
   }
@@ -175,10 +182,12 @@ app.use((req, res, next) => {
 
 // ===== CRON JOBS =====
 
-// Daily reset at midnight
-cron.schedule('0 0 * * *', () => {
+// Daily reset at midnight met cleanup
+cron.schedule('0 0 * * *', async () => {
   try {
-    console.log('=== DAGELIJKSE RESET GESTART ===');
+    console.log('=== DAGELIJKSE RESET EN CLEANUP GESTART ===');
+
+    // 1. Existing presence archiving
     const currentPresences = readJsonFile(PRESENCES_FILE);
     if (currentPresences.length > 0) {
       const history = readJsonFile(PRESENCE_HISTORY_FILE);
@@ -194,9 +203,19 @@ cron.schedule('0 0 * * *', () => {
     } else {
       console.log('Geen presences om te archiveren');
     }
-    console.log('=== DAGELIJKSE RESET VOLTOOID ===');
+
+    // 2. Run cleanup service
+    if (cleanupService && cleanupService.runFullCleanup) {
+      console.log('=== STARTING FILE CLEANUP ===');
+      const cleanupResults = await cleanupService.runFullCleanup();
+      console.log(`✅ Cleanup voltooid: ${cleanupResults.totalDeleted} bestanden verwijderd, ${cleanupResults.totalKept} behouden`);
+    } else {
+      console.warn('⚠️ Cleanup service niet beschikbaar');
+    }
+
+    console.log('=== DAGELIJKSE RESET EN CLEANUP VOLTOOID ===');
   } catch (error) {
-    console.error('Fout bij dagelijkse reset:', error);
+    console.error('❌ Fout bij dagelijkse reset/cleanup:', error);
   }
 });
 
@@ -231,8 +250,7 @@ cron.schedule('5 * * * *', async () => {
   timezone: "Europe/Brussels" // Belgische tijdzone
 });
 
-// ===== SYNC ON STARTUP (OPTIONEEL) =====
-// Synchroniseer ook eenmalig bij server startup
+// ===== SYNC ON STARTUP =====
 setTimeout(async () => {
   try {
     console.log('🚀 Synchronisation Pepsup au démarrage du serveur');
@@ -243,7 +261,7 @@ setTimeout(async () => {
   } catch (error) {
     console.error('❌ Erreur synchronisation startup:', error.message);
   }
-}, 5000); // 5 seconden na server start
+}, 5000);
 
 console.log('🔄 Synchronisation automatique Pepsup configurée - chaque heure à *:05');
 
@@ -351,7 +369,6 @@ app.get('/members/all', (req, res) => {
 });
 
 // ===== PRESENCES ROUTES =====
-// ✅ GET /presences - CRITICAL ROUTE FOR ADMIN INTERFACE
 app.get('/presences', (req, res) => {
   console.log('📋 GET /presences - Admin interface requesting all presences');
   try {
@@ -371,7 +388,6 @@ app.get('/presences', (req, res) => {
   }
 });
 
-// ✅ GET /presences/:id - FOR PAYMENT PAGE STATUS CHECK
 app.get('/presences/:id', (req, res) => {
   const { id } = req.params;
   console.log(`🔍 GET /presences/${id} - Payment page checking status`);
@@ -393,7 +409,6 @@ app.get('/presences/:id', (req, res) => {
   }
 });
 
-// ✅ POST /presences - FOR CREATING NEW PRESENCES
 app.post('/presences', (req, res) => {
   console.log('=== NEW PRESENCE REQUEST ===');
   console.log('Request body:', JSON.stringify(req.body, null, 2));
@@ -458,7 +473,6 @@ app.post('/presences', (req, res) => {
   }
 });
 
-// ✅ POST /presences/:id/valider - FOR ADMIN VALIDATION
 app.post('/presences/:id/valider', (req, res) => {
   const { id } = req.params;
   const { montant, methodePaiement } = req.body;
@@ -494,7 +508,6 @@ app.post('/presences/:id/valider', (req, res) => {
   }
 });
 
-// ✅ DELETE /presences/:id - FOR ADMIN DELETION
 app.delete('/presences/:id', (req, res) => {
   const { id } = req.params;
   console.log(`🗑️ DELETING presence ${id}`);
@@ -748,12 +761,14 @@ app.use((error, req, res, next) => {
   });
 });
 
-// ===== SERVER STARTUP =====
-const server = app.listen(PORT, 'localhost', () => {
+// ===== SERVER STARTUP - LUISTERT OP ALLE INTERFACES =====
+const server = app.listen(PORT, '0.0.0.0', () => {
   console.log('🎉 ======================================');
   console.log('🎉 DEFINITIEVE BACKEND GESTART!');
   console.log('🎉 ======================================');
-  console.log(`✅ Backend: http://localhost:${PORT}`);
+  console.log(`✅ Backend: http://0.0.0.0:${PORT}`);
+  console.log(`✅ Local: http://localhost:${PORT}`);
+  console.log(`✅ Network: http://192.168.1.328:${PORT}`);
   console.log(`📊 Admin: http://localhost:${PORT}/admin`);
   console.log(`💚 Health: http://localhost:${PORT}/api/health`);
   console.log('🎉 ======================================');

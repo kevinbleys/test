@@ -2,9 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { playBellSound, playSuccessSound } from '../utils/soundUtils';
-
-// ✅ API BASE URL
-const API_BASE_URL = 'http://localhost:3001';
+import API_BASE_URL from '../services/apiService';
 
 export default function PaymentPage() {
   const { state } = useLocation(); // presenceId + montant
@@ -15,6 +13,10 @@ export default function PaymentPage() {
   const [loading, setLoading] = useState(true);
   const [countdown, setCountdown] = useState(5); // 5 seconden countdown
   const [showConfirmation, setShowConfirmation] = useState(false);
+
+  useEffect(() => {
+    console.log('🌐 PaymentPage using API URL:', API_BASE_URL);
+  }, []);
 
   // Poll elke 4 s of de betaling is gevalideerd  
   useEffect(() => {
@@ -190,6 +192,16 @@ export default function PaymentPage() {
           }}>
             Merci et bonne escalade ! 🧗‍♀️
           </p>
+
+          {/* Debug info */}
+          <div style={{ 
+            marginTop: '20px', 
+            fontSize: '0.8rem', 
+            color: '#666',
+            textAlign: 'center'
+          }}>
+            API: {API_BASE_URL}
+          </div>
         </div>
       </div>
     );
@@ -346,6 +358,16 @@ export default function PaymentPage() {
         >
           🏠 Retour à l'accueil
         </button>
+
+        {/* Debug info */}
+        <div style={{ 
+          marginTop: '20px', 
+          fontSize: '0.8rem', 
+          color: '#666',
+          textAlign: 'center'
+        }}>
+          API: {API_BASE_URL}
+        </div>
 
         {/* CSS Animation */}
         <style jsx>{`

@@ -2,9 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { playBuzzerSound, playBellSound, playSuccessSound, preloadSounds } from '../utils/soundUtils';
-
-// ✅ GECORRIGEERDE API BASE URL - WAS 4000, NU 3001
-const API_BASE_URL = 'http://localhost:3001';
+import API_BASE_URL from '../services/apiService';
 
 export default function MemberCheck() {
   const [nom, setNom] = useState('');
@@ -14,11 +12,12 @@ export default function MemberCheck() {
   const [message, setMessage] = useState('');
   const [benevoleCalled, setBenevoleCalled] = useState(false);
   const [isValidated, setIsValidated] = useState(false);
-  const [countdown, setCountdown] = useState(3); // Countdown voor betere UX
+  const [countdown, setCountdown] = useState(3);
   const navigate = useNavigate();
 
   useEffect(() => {
     preloadSounds();
+    console.log('🌐 MemberCheck using API URL:', API_BASE_URL);
   }, []);
 
   const handleVerification = async (e) => {
@@ -31,9 +30,10 @@ export default function MemberCheck() {
 
     try {
       console.log('=== STARTING MEMBER VERIFICATION ===');
+      console.log('API URL:', API_BASE_URL);
       console.log('Checking member:', nom, prenom);
 
-      // Étape 1: Vérification de l'adhésion - GECORRIGEERDE URL
+      // Étape 1: Vérification de l'adhésion
       const checkResponse = await axios.get(`${API_BASE_URL}/members/check`, {
         params: { nom, prenom }
       });
@@ -48,12 +48,11 @@ export default function MemberCheck() {
 
         console.log('=== MEMBER VALIDATED - REGISTERING PRESENCE ===');
 
-        // Étape 2: Enregistrement présence adherent - GECORRIGEERDE URL
+        // Étape 2: Enregistrement présence adherent
         const presenceData = {
           type: 'adherent',
           nom: nom.trim(),
           prenom: prenom.trim()
-          // Expliciet: geen andere velden voor adherents
         };
 
         console.log('Sending presence data:', presenceData);
@@ -69,13 +68,6 @@ export default function MemberCheck() {
         if (presenceResponse.data.success) {
           console.log('=== PRESENCE REGISTERED SUCCESSFULLY ===');
           console.log('Final presence object:', presenceResponse.data.presence);
-
-          // Verificatie dat geen tarif werd toegevoegd
-          if (presenceResponse.data.presence.tarif !== undefined) {
-            console.error('ERROR: Tarif was added to adherent!', presenceResponse.data.presence.tarif);
-          } else {
-            console.log('SUCCESS: No tarif field in adherent presence');
-          }
 
           // Start countdown voor betere UX ervaring
           const countdownTimer = setInterval(() => {
@@ -109,7 +101,7 @@ export default function MemberCheck() {
       } else if (error.response?.data?.error) {
         errorMessage = error.response.data.error;
       } else if (error.message) {
-        errorMessage = error.message;
+        errorMessage = `Erreur réseau: ${error.message}`;
       }
 
       setError(errorMessage);
@@ -407,6 +399,16 @@ export default function MemberCheck() {
             {message}
           </div>
         )}
+
+        {/* Debug info */}
+        <div style={{ 
+          marginTop: '20px', 
+          fontSize: '0.8rem', 
+          color: '#666',
+          textAlign: 'center'
+        }}>
+          API: {API_BASE_URL}
+        </div>
 
       </div>
     </div>
