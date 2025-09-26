@@ -140,7 +140,7 @@ const writeJsonFile = (filePath, data) => {
   }
 };
 
-// ===== ADVANCED CORS CONFIGURATION - SUPPORTS ALL LOCAL NETWORK =====
+// ===== ADVANCED CORS CONFIGURATION - SUPPORTS ALL 192.168.*.* NETWORK =====
 const createCorsOptions = () => {
   const allowedOrigins = [
     // Localhost origins (development)
@@ -164,14 +164,15 @@ const createCorsOptions = () => {
         return callback(null, true);
       }
 
-      // Check if origin matches local network pattern (192.168.1.x:3000-3002)
-      const localNetworkRegex = /^http:\/\/192\.168\.1\.(\d{1,3}):(3000|3001|3002)$/;
+      // Check if origin matches ANY local 192.168.*.* network pattern (not just 192.168.1.*)
+      const localNetworkRegex = /^http:\/\/192\.168\.(\d{1,3})\.(\d{1,3}):(3000|3001|3002)$/;
       const match = origin.match(localNetworkRegex);
 
       if (match) {
-        const ipLastOctet = parseInt(match[1]);
-        // Allow any IP in range 192.168.1.1 to 192.168.1.255
-        if (ipLastOctet >= 1 && ipLastOctet <= 255) {
+        const thirdOctet = parseInt(match[1]);
+        const fourthOctet = parseInt(match[2]);
+        // Allow any IP in range 192.168.0.0 to 192.168.255.255
+        if (thirdOctet >= 0 && thirdOctet <= 255 && fourthOctet >= 1 && fourthOctet <= 255) {
           console.log(`✅ CORS: Allowing origin ${origin}`);
           return callback(null, true);
         }
@@ -797,10 +798,10 @@ const server = app.listen(PORT, '0.0.0.0', () => {
   console.log('🎉 ======================================');
   console.log(`✅ Backend: http://0.0.0.0:${PORT}`);
   console.log(`✅ Local: http://localhost:${PORT}`);
-  console.log(`✅ Network Range: http://192.168.1.1-255:${PORT}`);
+  console.log(`✅ Network Range: http://192.168.*.*:${PORT}`);
   console.log(`📊 Admin: http://localhost:${PORT}/admin`);
   console.log(`💚 Health: http://localhost:${PORT}/api/health`);
-  console.log('🌐 CORS: Supports entire 192.168.1.x network');
+  console.log('🌐 CORS: Supports entire 192.168.*.* network');
   console.log('🎉 ======================================');
 
   // Test data files

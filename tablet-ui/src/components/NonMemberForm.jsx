@@ -21,20 +21,83 @@ export default function NonMemberForm() {
     console.log('🌐 NonMemberForm using API URL:', API_BASE_URL);
   }, []);
 
+  // ✅ NIEUWE FUNCTIE: Formateer datum input automatisch
+  const formatDateInput = (value) => {
+    // Verwijder alles behalve cijfers
+    const numbers = value.replace(/[^0-9]/g, '');
+
+    // Als er cijfers zijn, formateer ze als DD/MM/YYYY
+    if (numbers.length <= 2) {
+      return numbers;
+    } else if (numbers.length <= 4) {
+      return numbers.slice(0, 2) + '/' + numbers.slice(2);
+    } else if (numbers.length <= 8) {
+      return numbers.slice(0, 2) + '/' + numbers.slice(2, 4) + '/' + numbers.slice(4, 8);
+    } else {
+      return numbers.slice(0, 2) + '/' + numbers.slice(2, 4) + '/' + numbers.slice(4, 8);
+    }
+  };
+
+  // ✅ NIEUWE FUNCTIE: Converteer DD/MM/YYYY naar YYYY-MM-DD voor calculateAgeAndTarif
+  const convertToISODate = (dateString) => {
+    if (!dateString || dateString.length < 8) return '';
+
+    const parts = dateString.split('/');
+    if (parts.length !== 3) return '';
+
+    const [day, month, year] = parts;
+    if (day && month && year && year.length === 4) {
+      return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+    }
+    return '';
+  };
+
+  // ✅ NIEUWE FUNCTIE: Valideer datum
+  const isValidDate = (dateString) => {
+    if (!dateString || dateString.length !== 10) return false;
+
+    const parts = dateString.split('/');
+    if (parts.length !== 3) return false;
+
+    const [day, month, year] = parts.map(Number);
+
+    // Basis validatie
+    if (day < 1 || day > 31 || month < 1 || month > 12 || year < 1900 || year > new Date().getFullYear()) {
+      return false;
+    }
+
+    // Maand-specifieke validatie
+    const daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
+    // Schrikkeljaar check
+    const isLeapYear = (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
+    if (isLeapYear) daysInMonth[1] = 29;
+
+    return day <= daysInMonth[month - 1];
+  };
+
   const onChange = (e) => {
     const { name, value } = e.target;
-    setForm({ ...form, [name]: value });
 
-    // Preview du tarif en temps réel
-    if (name === 'dateNaissance' && value) {
-      try {
-        const { age, tarif, description } = calculateAgeAndTarif(value);
-        setTarifPreview({ age, tarif, description });
-      } catch (error) {
+    if (name === 'dateNaissance') {
+      // ✅ AANGEPAST: Format datum input automatisch
+      const formattedValue = formatDateInput(value);
+      setForm({ ...form, [name]: formattedValue });
+
+      // Preview du tarif en temps réel - alleen als datum volledig en geldig is
+      if (formattedValue.length === 10 && isValidDate(formattedValue)) {
+        try {
+          const isoDate = convertToISODate(formattedValue);
+          const { age, tarif, description } = calculateAgeAndTarif(isoDate);
+          setTarifPreview({ age, tarif, description });
+        } catch (error) {
+          setTarifPreview(null);
+        }
+      } else {
         setTarifPreview(null);
       }
-    } else if (name === 'dateNaissance' && !value) {
-      setTarifPreview(null);
+    } else {
+      setForm({ ...form, [name]: value });
     }
   };
 
@@ -57,11 +120,22 @@ export default function NonMemberForm() {
       return;
     }
 
+    // ✅ AANGEPAST: Valideer datum format
+    if (!isValidDate(form.dateNaissance)) {
+      setErr('Format de date invalide. Utilisez DD/MM/YYYY (ex: 15/03/1990)');
+      playBuzzerSound();
+      setLoading(false);
+      return;
+    }
+
     try {
-      // Calcul du tarif basé sur l'âge
-      const { age, tarif, description, category } = calculateAgeAndTarif(form.dateNaissance);
+      // ✅ AANGEPAST: Converteer naar ISO format voor calculations
+      const isoDate = convertToISODate(form.dateNaissance);
+      const { age, tarif, description, category } = calculateAgeAndTarif(isoDate);
+
       console.log('=== TARIF CALCULATION ===');
-      console.log('Date de naissance:', form.dateNaissance);
+      console.log('Date de naissance (input):', form.dateNaissance);
+      console.log('Date de naissance (ISO):', isoDate);
       console.log('Âge calculé:', age);
       console.log('Tarif calculé:', tarif);
       console.log('Catégorie:', category);
@@ -69,6 +143,7 @@ export default function NonMemberForm() {
       // Optioneel: Sauvegarder dans non-members voor tracking
       const nonMemberData = {
         ...form,
+        dateNaissance: isoDate, // ✅ AANGEPAST: Sla op in ISO format
         age,
         tarif,
         tarifDescription: description,
@@ -97,7 +172,10 @@ export default function NonMemberForm() {
       // Navigation naar niveau pagina met alle data
       nav('/niveau', {   
         state: {   
-          form,
+          form: {
+            ...form,
+            dateNaissance: isoDate // ✅ AANGEPAST: Geef ISO format door
+          },
           age,
           tarif,
           tarifDescription: description,
@@ -293,13 +371,17 @@ export default function NonMemberForm() {
               }}>
                 Date de naissance *
               </label>
+              {/* ✅ AANGEPAST: Van type="date" naar type="text" met placeholder */}
               <input 
-                type="date"
+                type="text"
                 name="dateNaissance"
                 value={form.dateNaissance}
                 onChange={onChange}
+                placeholder="JJ/MM/AAAA (ex: 15/03/1990)"
                 required
                 disabled={loading}
+                inputMode="numeric"
+                maxLength="10"
                 style={{
                   width: '100%',
                   padding: '15px',
@@ -312,11 +394,20 @@ export default function NonMemberForm() {
                 onFocus={(e) => e.target.style.borderColor = '#667eea'}
                 onBlur={(e) => e.target.style.borderColor = '#ddd'}
               />
+              {/* ✅ NIEUWE HELPER TEXT */}
+              <small style={{ 
+                color: '#666', 
+                fontSize: '0.9rem', 
+                marginTop: '5px', 
+                display: 'block' 
+              }}>
+                Tapez simplement les chiffres: jour, mois, année
+              </small>
             </div>
 
           </div>
 
-          {/* Tarif Preview */}
+          {/* Tarif Preview - EXACT HETZELFDE */}
           {tarifPreview && (
             <div style={{
               background: 'linear-gradient(135deg, #4CAF50, #45a049)',
@@ -394,16 +485,6 @@ export default function NonMemberForm() {
           >
             🏠 Retour à l'accueil
           </button>
-
-          {/* Debug info */}
-          <div style={{ 
-            marginTop: '20px', 
-            fontSize: '0.8rem', 
-            color: '#666',
-            textAlign: 'center'
-          }}>
-            API: {API_BASE_URL}
-          </div>
 
         </form>
       </div>

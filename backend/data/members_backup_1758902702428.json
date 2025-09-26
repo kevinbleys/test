@@ -14919,7 +14919,7 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "26/09/2025, 18:52",
+    "dateLastConnexion": "26/09/2025, 14:23",
     "emailValid": true,
     "notificationActive": true,
     "joinFileStatusLabel": null,
@@ -30868,7 +30868,7 @@
     "dateLastConnexion": null,
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "À payer",
+    "joinFileStatusLabel": null,
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -30887,7 +30887,7 @@
     "groups": [],
     "categories": [
       {
-        "label": "Adhérent"
+        "label": "Ancien adhérent"
       }
     ],
     "roles": [],
@@ -30942,7 +30942,7 @@
     "dateLastConnexion": "26/09/2025, 13:53",
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "À payer",
+    "joinFileStatusLabel": null,
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "Gestionnaire de 2 contacts : Gaspard MUR, Valentin MUR",
@@ -30969,7 +30969,7 @@
     "groups": [],
     "categories": [
       {
-        "label": "Adhérent"
+        "label": "Ancien adhérent"
       },
       {
         "label": "Parent"
@@ -31027,7 +31027,7 @@
     "dateLastConnexion": "26/09/2025, 12:51",
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "À payer",
+    "joinFileStatusLabel": null,
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -31046,7 +31046,7 @@
     "groups": [],
     "categories": [
       {
-        "label": "Adhérent"
+        "label": "Ancien adhérent"
       }
     ],
     "roles": [],
@@ -32568,7 +32568,7 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "26/09/2025, 18:09",
+    "dateLastConnexion": "25/09/2025, 21:11",
     "emailValid": true,
     "notificationActive": true,
     "joinFileStatusLabel": null,
@@ -40437,7 +40437,7 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "26/09/2025, 18:11",
+    "dateLastConnexion": "25/09/2025, 19:09",
     "emailValid": true,
     "notificationActive": true,
     "joinFileStatusLabel": "Payé",

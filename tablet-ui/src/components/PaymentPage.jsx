@@ -192,16 +192,6 @@ export default function PaymentPage() {
           }}>
             Merci et bonne escalade ! 🧗‍♀️
           </p>
-
-          {/* Debug info */}
-          <div style={{ 
-            marginTop: '20px', 
-            fontSize: '0.8rem', 
-            color: '#666',
-            textAlign: 'center'
-          }}>
-            API: {API_BASE_URL}
-          </div>
         </div>
       </div>
     );
@@ -358,16 +348,6 @@ export default function PaymentPage() {
         >
           🏠 Retour à l'accueil
         </button>
-
-        {/* Debug info */}
-        <div style={{ 
-          marginTop: '20px', 
-          fontSize: '0.8rem', 
-          color: '#666',
-          textAlign: 'center'
-        }}>
-          API: {API_BASE_URL}
-        </div>
 
         {/* CSS Animation */}
         <style jsx>{`
