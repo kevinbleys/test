@@ -1,416 +1,310 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import '../styles/Styles.css';
+import React, { useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { playSuccessSound, playBuzzerSound } from '../utils/soundUtils';
+import API_BASE_URL from '../services/apiService';
 
 export default function ReglementPage() {
+  const { state } = useLocation();
   const navigate = useNavigate();
+  const [reglementAccepted, setReglementAccepted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+
+  React.useEffect(() => {
+    console.log('🌐 ReglementPage using API URL:', API_BASE_URL);
+
+    if (!state?.form) {
+      console.error('No form data received, redirecting to home');
+      navigate('/');
+    }
+  }, [state, navigate]);
+
+  if (!state?.form) {
+    return null;
+  }
+
+  const { form, age, tarif, tarifDescription, niveau, assuranceAccepted } = state;
+
+  const handleFinalSubmit = async () => {
+    if (!reglementAccepted) {
+      setError('Vous devez accepter le règlement pour continuer');
+      playBuzzerSound();
+      return;
+    }
+
+    setLoading(true);
+    setError('');
+
+    try {
+      console.log('=== FINAL NON-MEMBER REGISTRATION ===');
+      console.log('API URL:', API_BASE_URL);
+
+      // Prepare final data
+      const finalData = {
+        type: 'non-adherent',
+        nom: form.nom,
+        prenom: form.prenom,
+        email: form.email,
+        telephone: form.telephone,
+        dateNaissance: form.dateNaissance,
+        niveau: niveau.toString(),
+        assuranceAccepted,
+        reglementAccepted: true,
+        tarif,
+        status: 'pending',
+        age
+      };
+
+      console.log('Final registration data:', finalData);
+
+      // Register presence
+      const response = await axios.post(`${API_BASE_URL}/presences`, finalData, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+      console.log('Registration response:', response.data);
+
+      if (response.data.success) {
+        console.log('✅ NON-MEMBER REGISTRATION SUCCESSFUL');
+        playSuccessSound();
+
+        // Navigate to payment page with presence ID
+        navigate('/paiement', {
+          state: {
+            presenceId: response.data.presence.id,
+            montant: tarif,
+            form,
+            age,
+            niveau
+          }
+        });
+      } else {
+        throw new Error(response.data.error || 'Registration failed');
+      }
+
+    } catch (error) {
+      console.error('❌ REGISTRATION ERROR:', error);
+      let errorMessage = 'Erreur lors de l\'enregistrement';
+
+      if (error.response?.data?.error) {
+        errorMessage = error.response.data.error;
+      } else if (error.message) {
+        errorMessage = `Erreur réseau: ${error.message}`;
+      }
+
+      setError(errorMessage);
+      playBuzzerSound();
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
-    <div className="reglement-page">
-      <div className="reglement-header">
-        <h1>Règlement intérieur</h1>
-        <button
-          className="btn-close"
-          onClick={() => navigate(-1)}
-          title="Fermer"
-        >
-          ✕
-        </button>
-      </div>
+    <div style={{
+      minHeight: '100vh',
+      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: '20px',
+      fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif"
+    }}>
+      <div style={{
+        background: 'rgba(255, 255, 255, 0.95)',
+        padding: '40px',
+        borderRadius: '20px',
+        boxShadow: '0 20px 60px rgba(0, 0, 0, 0.3)',
+        width: '100%',
+        maxWidth: '800px',
+        maxHeight: '90vh',
+        overflow: 'auto'
+      }}>
+        <h1 style={{
+          color: '#333',
+          marginBottom: '20px',
+          fontSize: '2rem',
+          fontWeight: '300',
+          textAlign: 'center'
+        }}>
+          Règlement du club
+        </h1>
 
-      <div className="reglement-body-responsive">
-        <div className="reglement-section">
-          <h2>PRÉAMBULE</h2>
-          <p>
-            Il est indispensable de maîtriser les techniques de sécurité et de respecter les règles 
-            de fonctionnement de la salle pour une pratique de l'escalade dans les meilleures 
-            conditions de sécurité.
-          </p>
+        <div style={{
+          background: 'linear-gradient(135deg, #4CAF50, #45a049)',
+          color: 'white',
+          padding: '15px',
+          borderRadius: '10px',
+          marginBottom: '30px',
+          textAlign: 'center'
+        }}>
+          <strong>{form.prenom} {form.nom}</strong> - {age} ans - Tarif: {tarif === 0 ? 'GRATUIT' : `${tarif}€`}
+          <br />
+          <small>Niveau: {['Débutant complet', 'Débutant', 'Intermédiaire', 'Confirmé', 'Expert'][parseInt(niveau)] || 'Non défini'}</small>
         </div>
 
-        <div className="reglement-section">
-          <h2>ARTICLE 1 : OBJET</h2>
-          <p>
-            Le présent règlement a pour objet de définir les conditions d'accès et d'utilisation 
-            de la salle et notamment des équipements d'escalade.
-          </p>
-          <p>
-            Toute personne entrant dans cette enceinte sportive accepte de se conformer à ce 
-            règlement intérieur.
-          </p>
-        </div>
+        <div style={{
+          background: '#f8f9fa',
+          padding: '25px',
+          borderRadius: '15px',
+          marginBottom: '30px',
+          border: '2px solid #e9ecef',
+          maxHeight: '400px',
+          overflow: 'auto'
+        }}>
+          <h3 style={{ color: '#495057', marginBottom: '20px', fontSize: '1.4rem' }}>
+            📋 Règlement intérieur - À lire attentivement
+          </h3>
 
-        <div className="reglement-section">
-          <h2>Article 2 : Formalités d'accès</h2>
-          <p>
-            Toute personne souhaitant utiliser les structures d'escalade doit, impérativement, 
-            se rendre au préalable à l'accueil. La présentation d'un titre en cours de validité 
-            ou le règlement d'un droit d'entrée est obligatoire avant l'accès aux installations.
-          </p>
-          <p>
-            Lors d'une première visite, il est obligatoire de remplir la « Fiche » sur la tablette ; 
-            l'utilisateur indiquera notamment son degré d'autonomie et son niveau de maîtrise des 
-            règles de sécurité en escalade.
-          </p>
-          <p>
-            Les licenciés FFME doivent présenter leur licence fédérale en cours de validité pour 
-            bénéficier des remises tarifaires qui leur sont octroyées ainsi que, le cas échéant, 
-            leur Passeport FFME Escalade pour prouver leur degré d'autonomie.
-          </p>
-        </div>
+          <div style={{ fontSize: '1rem', lineHeight: '1.6', color: '#6c757d' }}>
 
-        <div className="reglement-section">
-          <h2>Article 3 : Autonomie</h2>
-          <div className="autonomie-niveau">
-            <h3>Un grimpeur se déclarant « autonome de niveau 1 » s'engage à satisfaire aux obligations suivantes :</h3>
-            <ul>
-              <li>savoir mettre correctement son baudrier</li>
-              <li>savoir s'encorder en utilisant un nœud de huit tressé avec un nœud d'arrêt</li>
-              <li>savoir utiliser un système d'assurage pour assurer en moulinette</li>
-              <li>savoir parer une chute</li>
+            <h4 style={{ color: '#495057', marginTop: '20px', marginBottom: '10px' }}>🕐 Horaires</h4>
+            <ul style={{ paddingLeft: '20px', marginBottom: '15px' }}>
+              <li>Respecter les horaires d'ouverture</li>
+              <li>Évacuation 15 minutes avant la fermeture</li>
             </ul>
-          </div>
-          
-          <div className="autonomie-niveau">
-            <h3>Un grimpeur se déclarant « autonome de niveau 2 » s'engage à satisfaire aux obligations suivantes :</h3>
-            <ul>
-              <li>savoir mettre correctement son baudrier</li>
-              <li>savoir s'encorder en utilisant un nœud de huit tressé avec un nœud d'arrêt</li>
-              <li>savoir utiliser un système d'assurage pour assurer en moulinette <strong>et</strong> en tête</li>
-              <li>savoir grimper en tête</li>
-              <li>savoir parer une chute</li>
+
+            <h4 style={{ color: '#495057', marginTop: '20px', marginBottom: '10px' }}>👥 Encadrement</h4>
+            <ul style={{ paddingLeft: '20px', marginBottom: '15px' }}>
+              <li>Les mineurs doivent être accompagnés d'un adulte responsable</li>
+              <li>Suivre les consignes des encadrants</li>
+              <li>Demander conseil en cas de doute</li>
             </ul>
-          </div>
-        </div>
 
-        <div className="reglement-section">
-          <h2>ARTICLE 4 : PASSEPORTS FFME ESCALADE</h2>
-          <p>
-            Le Passeport FFME Escalade blanc atteste de l'autonomie de niveau 1 définie à l'article 3. 
-            Le Passeport FFME Escalade jaune atteste de l'autonomie de niveau 2 définie à l'article 3.
-          </p>
-          <p>
-            Les moniteurs de la salle sont habilités à délivrer les Passeports FFME Escalade.
-            La formation nécessaire à l'obtention du Passeport Escalade Blanc et Jaune est dispensée lors des cours payants.
-          </p>
-        </div>
-
-        <div className="reglement-section">
-          <h2>Article 5 : Accès aux équipements de la salle BEM</h2>
-          <p>
-            La possibilité de grimper en tête ou en moulinette sur la SAE à cordes dépend du degré d'autonomie déclaré. Les principales règles d'accès sont synthétisées dans le tableau ci-dessous :
-          </p>
-          
-          {/* TABEL MET ZICHTBARE LIJNEN */}
-          <div className="table-container">
-            <table className="access-table-full">
-              <thead>
-                <tr>
-                  <th>ÂGE</th>
-                  <th>CONDITIONS GÉNÉRALES D'ACCÈS</th>
-                  <th>AUTONOMIE / PASSEPORT</th>
-                  <th>ACCÈS AUX STRUCTURES</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Moins de 14 ans</td>
-                  <td>Uniquement sous la responsabilité d'un adulte. Doit présenter l'autorisation parentale.</td>
-                  <td></td>
-                  <td>Même structures et même pratique (moulinette, en tête) que l'adulte responsable.</td>
-                </tr>
-                <tr>
-                  <td rowSpan={3}>De 14 ans à 18 ans</td>
-                  <td rowSpan={3}>Doit présenter l'autorisation parentale dans laquelle le responsable légal certifie le niveau d'autonomie de l'enfant ou la possession d'un Passeport FFME.</td>
-                  <td>Non autonome</td>
-                  <td>Structure Blocs uniquement</td>
-                </tr>
-                <tr>
-                  <td>Passeport FFME Escalade blanc ou autonome niveau 1</td>
-                  <td>Structures Blocs et Cordes en moulinette</td>
-                </tr>
-                <tr>
-                  <td>Passeport FFME Escalade jaune ou autonome niveau 2</td>
-                  <td>Toutes structures et escalade en tête sur le mur à cordes autorisée</td>
-                </tr>
-                <tr>
-                  <td rowSpan={3}>18 ans et plus</td>
-                  <td rowSpan={3}></td>
-                  <td>Se déclare non autonome</td>
-                  <td>Structures Blocs uniquement</td>
-                </tr>
-                <tr>
-                  <td>Passeport FFME Escalade blanc ou se déclare autonome de niveau 1</td>
-                  <td>Structures Blocs et Cordes en moulinette</td>
-                </tr>
-                <tr>
-                  <td>Passeport FFME Escalade jaune ou se déclare autonome de niveau 2</td>
-                  <td>Toutes structures et escalade en tête sur le mur à cordes autorisée</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <div className="reglement-section">
-          <h2>ARTICLE 6 : ACCÈS</h2>
-          <p>Les adhérents sont soumis aux règles d'accès du présent règlement.</p>
-          <p>Un responsable du club est obligatoirement présent.</p>
-          <p>
-            Les mineurs sont obligatoirement encadrés lors de leur présence dans la salle. 
-            Le responsable de séance fournit à l'avance la liste des personnes placées sous sa responsabilité.
-          </p>
-        </div>
-
-        <div className="reglement-section">
-          <h2>Article 7 : Utilisation par des groupes</h2>
-          <p>
-            Tous les organismes (associations, sociétés, scolaires, établissements, etc.) seront autorisés à utiliser 
-            les installations sportives de l'Usine après avoir :
-          </p>
-          <ul>
-            <li>Réservé auprès de la direction un ou plusieurs créneaux</li>
-            <li>Établi un contrat précisant à minima les conditions d'accès, les tarifs, les conditions d'encadrement.</li>
-          </ul>
-          <p>
-            Ces dernières doivent justifier d'une assurance en responsabilité civile couvrant la personne morale, 
-            ses membres et ses préposés.
-          </p>
-        </div>
-
-        <div className="reglement-section">
-          <h2>Article 8 : Effectif maximum dans la salle d'escalade</h2>
-          <p>
-            Les responsables de la salle « l'Usine » sont dans l'obligation d'interdire l'accès lorsque le nombre 
-            d'utilisateurs atteint la jauge ERP : 80 personnes (salle BEM – 5ᵉ cat.).
-          </p>
-        </div>
-
-        <div className="reglement-section">
-          <h2>ARTICLE 9 : LOCATION DE MATÉRIEL</h2>
-          <p>
-            La salle BEM prête le matériel de base nécessaire à l'escalade : chaussons, baudrier, système d'assurage. 
-            Le dépôt d'une pièce d'identité est demandé.
-          </p>
-        </div>
-
-        <div className="reglement-section">
-          <h2>Article 10 : Obligations des utilisateurs</h2>
-          
-          <div className="sub-section">
-            <h3>10.1 – PROPRETÉ</h3>
-            <ul>
-              <li>Utiliser des chaussons d'escalade dans la salle d'escalade (les chaussures de ville sont interdites dans la salle)</li>
-              <li>Ne pas utiliser de chaussons d'escalade en dehors de la salle d'escalade (vestiaires, couloir, accueil)</li>
-              <li>Laisser les sanitaires dans l'état de propreté trouvé.</li>
-              <li>Signaler tout problème de propreté au bénévole de la salle.</li>
+            <h4 style={{ color: '#495057', marginTop: '20px', marginBottom: '10px' }}>🧗 Escalade</h4>
+            <ul style={{ paddingLeft: '20px', marginBottom: '15px' }}>
+              <li>Vérifier systématiquement son matériel et celui de son partenaire</li>
+              <li>Porter des chaussons d'escalade (location disponible)</li>
+              <li>Respecter les voies et leur cotation</li>
+              <li>Ne pas grimper seul sans autorisation</li>
             </ul>
-          </div>
 
-          <div className="sub-section">
-            <h3>10.2 – Utilisation des vestiaires</h3>
-            <ul>
-              <li>Utiliser impérativement les vestiaires pour changer de tenue.</li>
-              <li>Utiliser les casiers de dépôts d'affaires mis à disposition dans l'espace de grimpe.</li>
-              <li>Libérer en fin de séance tout casier utilisé.</li>
+            <h4 style={{ color: '#495057', marginTop: '20px', marginBottom: '10px' }}>🚫 Interdictions</h4>
+            <ul style={{ paddingLeft: '20px', marginBottom: '15px' }}>
+              <li>Alcool et substances interdites</li>
+              <li>Nourriture dans l'espace d'escalade</li>
+              <li>Téléphones portables pendant l'assurage</li>
+              <li>Comportement dangereux ou irrespectueux</li>
             </ul>
-            <p>
-              Le personnel de BEM se réserve le droit d'enlever, pour des raisons de sécurité et d'hygiène, 
-              tout casier non libéré. Le personnel de BEM ne peut être tenu responsable pour d'éventuels vols 
-              dans l'ensemble du bâtiment.
-            </p>
-          </div>
 
-          <div className="sub-section">
-            <h3>10.3 – Respect des lieux et d'autrui</h3>
-            <p>Dans l'enceinte du bâtiment, il est interdit :</p>
-            <ul>
-              <li>De fumer</li>
-              <li>De consommer de l'alcool et ou des stupéfiants</li>
-              <li>De jeter des détritus</li>
-              <li>De venir avec des animaux même tenus en laisse</li>
-              <li>D'utiliser des rollers, skate, vélos, deux roues et tout engin motorisé</li>
-              <li>De jouer avec de l'eau ou de la nourriture</li>
-              <li>De crier, de hurler et de causer une gêne sonore pour les autres usagers</li>
-              <li>De se déplacer ou de grimper dans une tenue indécente</li>
+            <h4 style={{ color: '#495057', marginTop: '20px', marginBottom: '10px' }}>🧹 Respect des lieux</h4>
+            <ul style={{ paddingLeft: '20px', marginBottom: '15px' }}>
+              <li>Maintenir la propreté des espaces</li>
+              <li>Ranger le matériel après utilisation</li>
+              <li>Respecter les autres usagers</li>
             </ul>
+
+            <div style={{
+              background: '#fff3cd',
+              border: '1px solid #ffeaa7',
+              padding: '15px',
+              borderRadius: '8px',
+              marginTop: '20px'
+            }}>
+              <strong>⚠️ Important :</strong> Le non-respect du règlement peut entraîner l'exclusion temporaire ou définitive du club.
+            </div>
           </div>
         </div>
 
-        <div className="reglement-section">
-          <h2>Article 11 : Respects des règles de sécurité</h2>
-          <p>Tous les grimpeurs engagent leur responsabilité en cas d'accident causé à un tiers.</p>
-          <p>
-            Au pied de toutes les structures d'escalade, des panneaux sécurité sont disposés afin de rappeler les points clés. 
-            Les écrans d'information diffusent également des conseils, tous les utilisateurs sont invités à en prendre 
-            régulièrement connaissance.
-          </p>
-          <p>
-            Le bénévole se tient à la disposition des utilisateurs pour tout conseil. 
-            Il peut intervenir auprès des usagers en cas de comportement inadapté ou dangereux.
-          </p>
-          <p>
-            Le non-respect des conseils et consignes entraînera l'exclusion immédiate de la salle. Les utilisateurs doivent :
-          </p>
-          <ul>
-            <li>Signaler au responsable tout incident, tout comportement, toute anomalie, toute présence anormale pouvant représenter un danger ou une menace.</li>
-            <li>Respecter les consignes de sécurité qui sont rappelées ci-dessous :</li>
-          </ul>
+        <div style={{
+          background: reglementAccepted ? '#d4edda' : '#f8d7da',
+          border: `2px solid ${reglementAccepted ? '#c3e6cb' : '#f1b0b7'}`,
+          padding: '20px',
+          borderRadius: '10px',
+          marginBottom: '20px'
+        }}>
+          <label style={{
+            display: 'flex',
+            alignItems: 'center',
+            cursor: 'pointer',
+            fontSize: '1.1rem',
+            fontWeight: '500'
+          }}>
+            <input
+              type="checkbox"
+              checked={reglementAccepted}
+              onChange={(e) => {
+                setReglementAccepted(e.target.checked);
+                setError('');
+              }}
+              style={{
+                width: '20px',
+                height: '20px',
+                marginRight: '15px',
+                cursor: 'pointer'
+              }}
+            />
+            <span style={{ color: reglementAccepted ? '#155724' : '#721c24' }}>
+              ✅ J'ai lu et j'accepte le règlement intérieur du club
+            </span>
+          </label>
+        </div>
 
-          <div className="sub-section">
-            <h3>11.1- Sécurité bloc</h3>
-            <ul>
-              <li>S'échauffer</li>
-              <li>Vérifier que la surface de réception est totalement dégagée</li>
-              <li>Priorité au grimpeur :</li>
-              <li>Ne pas circuler, ne pas stationner au-dessous d'autrui</li>
-              <li>Ne pas grimper au-dessus ou au-dessous d'autrui.</li>
-              <li>Privilégier la désescalade, repérer un itinéraire de descente</li>
-              <li>En cas de chute ou de saut, amortir avec les jambes</li>
-              <li>Se faire parer si besoin</li>
-            </ul>
+        {error && (
+          <div style={{
+            marginBottom: '20px',
+            padding: '15px',
+            background: '#ff6b6b',
+            color: 'white',
+            borderRadius: '10px',
+            textAlign: 'center'
+          }}>
+            {error}
           </div>
+        )}
 
-          <div className="sub-section">
-            <h3>11.2- Sécurité difficulté</h3>
-            <p><strong>En escalade en tête :</strong></p>
-            <ul>
-              <li>Mousquetonner toutes les dégaines (dans le bon sens)</li>
-              <li>Parer le grimpeur avant l'utilisation du premier point d'assurage</li>
-            </ul>
-            <p><strong>Vérifier les points clés :</strong></p>
-            <ol>
-              <li>Nœud d'encordement : double nœud de huit et nœud d'arrêt</li>
-              <li>Installation correcte du système d'assurage</li>
-              <li>Nœud en bout de corde</li>
-            </ol>
-            <p><strong>En moulinette :</strong></p>
-            <ul>
-              <li>Replacer la corde dans les dégaines à la descente</li>
-              <li>Maîtriser la vitesse de descente du grimpeur</li>
-              <li>Ne pas stationner sous les grimpeurs</li>
-              <li>Ne pas grimper en solo (strictement interdit)</li>
-              <li>Maintenir la surface de réception totalement dégagée</li>
-              <li>Ne pas faire de traversées sur la partie basse du mur</li>
-              <li>Rester concentré et anticiper les actions du grimpeur</li>
-              <li>Ne pas assurer assis ou à une distance trop importante du pied de la structure</li>
-              <li>Prévenir le personnel de toute anomalie sur la SAE : prises desserrées, maillons ou mousquetons usés, cordes endommagées…</li>
-            </ul>
-          </div>
+        <div style={{ display: 'flex', gap: '15px' }}>
+          <button
+            onClick={() => navigate(-1)}
+            disabled={loading}
+            style={{
+              flex: 1,
+              background: 'linear-gradient(135deg, #6b73ff 0%, #000dff 100%)',
+              color: 'white',
+              border: 'none',
+              padding: '15px 20px',
+              borderRadius: '10px',
+              fontSize: '1.1rem',
+              fontWeight: '600',
+              cursor: loading ? 'not-allowed' : 'pointer',
+              transition: 'all 0.3s ease',
+              opacity: loading ? 0.6 : 1
+            }}
+          >
+            ← Retour
+          </button>
 
-          <div className="sub-section">
-            <h3>11.3- Manipulation du matériel d'assurage</h3>
-            <ul>
-              <li>Les cordes utilisées pour les moulinettes sont installées à demeure et doivent être remises en place</li>
-              <li>L'escalade en moulinette est interdite dans la zone des grands dévers</li>
-              <li>Les sangles des enrouleurs en place sur la SAE à cordes doivent systématiquement être attachées à l'aide des mousquetons au pied des voies dans les points prévus à cet effet</li>
-              <li>L'utilisation des cordes non mises à disposition par la salle l'Usine est interdite pour l'escalade en tête et en moulinette</li>
-            </ul>
-            <p><strong>Afin de préserver les cordes, il est interdit :</strong></p>
-            <ul>
-              <li>D'assurer au demi-cabestan</li>
-              <li>D'effectuer des chutes volontaires et répétées de manière excessive</li>
-              <li>D'effectuer des remontées sur cordes (en dehors des sessions d'instruction militaire, de formation et d'ouvertures de voies)</li>
-              <li>La mise en place de « via cordata » est interdite</li>
-            </ul>
-          </div>
+          <button
+            onClick={handleFinalSubmit}
+            disabled={loading || !reglementAccepted}
+            style={{
+              flex: 2,
+              background: (!reglementAccepted || loading) ? '#cccccc' : 'linear-gradient(135deg, #FF6B35 0%, #F7931E 100%)',
+              color: 'white',
+              border: 'none',
+              padding: '15px 30px',
+              borderRadius: '10px',
+              fontSize: '1.1rem',
+              fontWeight: '600',
+              cursor: (!reglementAccepted || loading) ? 'not-allowed' : 'pointer',
+              transition: 'all 0.3s ease'
+            }}
+          >
+            {loading ? '⏳ Enregistrement...' : '💳 Finaliser l\'inscription'}
+          </button>
         </div>
 
-        <div className="reglement-section">
-          <h2>Article 12 : Assurances</h2>
-          <p>
-            La FFME est assurée pour les dommages engageant sa responsabilité civile et celle de son personnel.
-            La responsabilité de la FFME ne pourra être engagée en cas d'accident résultant de l'utilisation 
-            inappropriée des installations ou encore du non-respect des règles de sécurité en escalade.
-          </p>
-          <p>L'utilisateur de la salle doit être assuré personnellement en responsabilité civile.</p>
-          <p>
-            La salle recommande fortement à tous les utilisateurs de souscrire une assurance individuelle accident 
-            auprès de la compagnie de son choix.
-          </p>
+        {/* Debug info */}
+        <div style={{ 
+          marginTop: '20px', 
+          fontSize: '0.8rem', 
+          color: '#666',
+          textAlign: 'center'
+        }}>
+          API: {API_BASE_URL}
         </div>
-
-        <div className="reglement-section">
-          <h2>Article 13 : Vidéo surveillance</h2>
-          <p>
-            Un système de vidéo surveillance est mis en place pour des raisons de sécurité. Aucun enregistrement n'est réalisé.
-            Le personnel de BEM est susceptible d'intervenir quand la sécurité des utilisateurs est compromise.
-          </p>
-        </div>
-
-        <div className="reglement-section">
-          <h2>Article 14 : Droit d'exclusion</h2>
-          <p>
-            Le personnel de la salle se réserve le droit d'exclure, sans préavis ni indemnité d'aucune sorte, 
-            toute personne dont l'attitude ou le comportement serait contraire aux règles de sécurité en escalade, 
-            aux bonnes mœurs, ou notoirement gênant pour les autres membres, ou non conforme au présent règlement, 
-            ainsi que toute personne se livrant à des dégradations intentionnelles ou non intentionnelles des 
-            installations ou du matériel de la salle.
-          </p>
-        </div>
-
-        <div className="reglement-section">
-          <h2>Article 15 : Droit à l'image</h2>
-          <p>
-            Toutes les photos et vidéos prises lors de l'utilisation des équipements de la salle, par ses responsables 
-            et préposés sont susceptibles d'être affichées ou mises en ligne sur le site internet de BEM sauf si les 
-            personnes figurant sur ces supports ou leur responsable légal en font la demande par écrit pour les retirer.
-          </p>
-        </div>
-
-        <div className="reglement-section">
-          <h2>Article 16 : Secours</h2>
-          <p>Une trousse de premier secours est située dans le sas vers le local à prises.</p>
-          <p>Tous les utilisateurs acceptent que le personnel de BEM prenne toute mesure utile en cas d'accident.</p>
-        </div>
-
-        <div className="reglement-section">
-          <h2>Article 17 : Divers</h2>
-          
-          <div className="sub-section">
-            <h3>17.1- Initiation et enseignement</h3>
-            <p>
-              Il est fortement déconseillé d'initier des débutants si vous n'êtes pas un professionnel de l'enseignement 
-              de l'escalade. Seuls les salariés de BEM peuvent enseigner l'escalade contre rémunération dans la salle à 
-              l'exception des personnes encadrant les groupes mentionnés à l'article 7.
-            </p>
-          </div>
-
-          <div className="sub-section">
-            <h3>17.2- Fermeture de la salle et modification des horaires</h3>
-            <p>
-              Les horaires d'ouverture de la salle sont indiqués à l'accueil et sur le site Web 
-              https://beyrede-escalade-montagne.pepsup.com/
-            </p>
-            <p>
-              Le personnel de la salle se réserve le droit de modifier les horaires et/ou d'immobiliser tout ou partie 
-              des structures d'escalade pour des besoins particuliers d'exploitation (ouvertures, travaux, manifestations, etc.).
-            </p>
-            <p>
-              En cas de fermeture exceptionnelle, la salle informera les utilisateurs préalablement par les moyens dont 
-              elle dispose : affichage, note sur le site internet, etc.
-            </p>
-            <p>
-              Sauf mention contraire, les utilisateurs acceptent de recevoir des informations par mail de la part de la salle.
-            </p>
-          </div>
-
-          <div className="sub-section">
-            <h3>17.3- Modification</h3>
-            <p>
-              Les responsables de la salle l'Usine Escalade se réservent le droit de modifier le présent Règlement 
-              Intérieur sans préavis.
-            </p>
-            <p><strong>Fait à Beyrède, le 30 juillet 2025</strong></p>
-            <p><strong>Beyrède Escalade Montagne : BEM</strong></p>
-          </div>
-        </div>
-      </div>
-
-      <div className="reglement-footer">
-        <button className="btn-retour-accueil" onClick={() => navigate(-1)}>
-          Revenir
-        </button>
       </div>
     </div>
   );

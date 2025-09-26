@@ -35,7 +35,16 @@
     "tarif": 8,
     "niveau": "2",
     "assuranceAccepted": true,
-    "status": "pending",
-    "methodePaiement": "Especes"
+    "status": "Payé",
+    "methodePaiement": "Especes",
+    "dateValidation": "2025-09-24T11:15:59.653Z"
+  },
+  {
+    "id": "1758781331439",
+    "type": "adherent",
+    "nom": "Bleys",
+    "prenom": "Kevin",
+    "date": "2025-09-25T06:22:11.439Z",
+    "status": "adherent"
   }
 ]

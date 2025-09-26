@@ -6850,7 +6850,7 @@
       },
       {
         "label": "code postale Ville de naissance",
-        "value": null
+        "value": "65000"
       },
       {
         "label": "Pays de naissance",
@@ -6884,7 +6884,7 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "05/09/2024, 10:32",
+    "dateLastConnexion": "25/09/2025, 12:50",
     "emailValid": true,
     "notificationActive": true,
     "joinFileStatusLabel": null,
@@ -6935,7 +6935,7 @@
       },
       {
         "label": "code postale Ville de naissance",
-        "value": null
+        "value": "64400"
       },
       {
         "label": "Pays de naissance",
@@ -7009,7 +7009,7 @@
       },
       {
         "label": "code postale Ville de naissance",
-        "value": null
+        "value": "65000"
       },
       {
         "label": "Pays de naissance",
@@ -8761,7 +8761,7 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "21/09/2025, 17:20",
+    "dateLastConnexion": "25/09/2025, 18:57",
     "emailValid": true,
     "notificationActive": true,
     "joinFileStatusLabel": "En cours de paiement",
@@ -10105,10 +10105,10 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "23/09/2025, 16:11",
+    "dateLastConnexion": "25/09/2025, 11:07",
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "À payer",
+    "joinFileStatusLabel": "Payé",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -11618,7 +11618,7 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "14/09/2025, 19:50",
+    "dateLastConnexion": "25/09/2025, 19:46",
     "emailValid": true,
     "notificationActive": true,
     "joinFileStatusLabel": "À payer",
@@ -14919,7 +14919,7 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "24/09/2025, 11:56",
+    "dateLastConnexion": "25/09/2025, 19:47",
     "emailValid": true,
     "notificationActive": true,
     "joinFileStatusLabel": null,
@@ -26949,7 +26949,7 @@
     "firstname": "Léo",
     "lastname": "Malfuson",
     "dateOfBirth": "26/09/1994",
-    "age": 30,
+    "age": 31,
     "gender": "homme",
     "address": "65 rue peyrourier",
     "additional": null,
@@ -31011,7 +31011,7 @@
     "age": 22,
     "gender": "homme",
     "address": "valoukungfu@gmail.com",
-    "additional": null,
+    "additional": "705 route de Couplau",
     "postalCode": "65410",
     "town": "BEYREDE JUMET",
     "country": "France",
@@ -31023,9 +31023,9 @@
     "personToContactPhoneNumber": "+33617456243",
     "corporateName": null,
     "office": null,
-    "account": false,
+    "account": true,
     "dateLastConnexion": null,
-    "emailValid": true,
+    "emailValid": false,
     "notificationActive": true,
     "joinFileStatusLabel": null,
     "joinFileLastPaymentType": null,
@@ -31064,7 +31064,7 @@
       },
       {
         "label": "code postale Ville de naissance",
-        "value": null
+        "value": "65000"
       },
       {
         "label": "Pays de naissance",
@@ -32568,7 +32568,7 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "23/09/2025, 20:00",
+    "dateLastConnexion": "25/09/2025, 21:11",
     "emailValid": true,
     "notificationActive": true,
     "joinFileStatusLabel": null,
@@ -40437,7 +40437,7 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "24/09/2025, 14:17",
+    "dateLastConnexion": "25/09/2025, 19:09",
     "emailValid": true,
     "notificationActive": true,
     "joinFileStatusLabel": "Payé",

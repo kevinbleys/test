@@ -140,27 +140,56 @@ const writeJsonFile = (filePath, data) => {
   }
 };
 
-// ===== CORS CONFIGURATION VOOR NETWERK TOEGANG =====
-app.use(cors({
-  origin: [
-    // Localhost origins
+// ===== ADVANCED CORS CONFIGURATION - SUPPORTS ALL LOCAL NETWORK =====
+const createCorsOptions = () => {
+  const allowedOrigins = [
+    // Localhost origins (development)
     'http://localhost:3000', 
     'http://localhost:3001',
     'http://localhost:3002', 
     'http://127.0.0.1:3000', 
     'http://127.0.0.1:3001',
-    'http://127.0.0.1:3002',
-    // Network IP origins - TOEGEVOEGD VOOR TABLET TOEGANG
-    'http://192.168.1.328:3000',
-    'http://192.168.1.328:3001', 
-    'http://192.168.1.328:3002',
-    // Wildcard voor lokaal netwerk - VEILIG VOOR THUISNETWERK
-    /^http:\/\/192\.168\.\d{1,3}\.\d{1,3}:(3000|3001|3002)$/
-  ],
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'Accept', 'Origin']
-}));
+    'http://127.0.0.1:3002'
+  ];
+
+  return {
+    origin: (origin, callback) => {
+      // Allow requests with no origin (mobile apps, curl, etc.)
+      if (!origin) {
+        return callback(null, true);
+      }
+
+      // Check if origin is in allowed list
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      // Check if origin matches local network pattern (192.168.1.x:3000-3002)
+      const localNetworkRegex = /^http:\/\/192\.168\.1\.(\d{1,3}):(3000|3001|3002)$/;
+      const match = origin.match(localNetworkRegex);
+
+      if (match) {
+        const ipLastOctet = parseInt(match[1]);
+        // Allow any IP in range 192.168.1.1 to 192.168.1.255
+        if (ipLastOctet >= 1 && ipLastOctet <= 255) {
+          console.log(`✅ CORS: Allowing origin ${origin}`);
+          return callback(null, true);
+        }
+      }
+
+      console.warn(`⚠️ CORS: Blocking origin ${origin}`);
+      callback(new Error('Not allowed by CORS'));
+    },
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'Accept', 'Origin', 'X-Requested-With']
+  };
+};
+
+app.use(cors(createCorsOptions()));
+
+// Preflight requests handler
+app.options('*', cors(createCorsOptions()));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -768,9 +797,10 @@ const server = app.listen(PORT, '0.0.0.0', () => {
   console.log('🎉 ======================================');
   console.log(`✅ Backend: http://0.0.0.0:${PORT}`);
   console.log(`✅ Local: http://localhost:${PORT}`);
-  console.log(`✅ Network: http://192.168.1.328:${PORT}`);
+  console.log(`✅ Network Range: http://192.168.1.1-255:${PORT}`);
   console.log(`📊 Admin: http://localhost:${PORT}/admin`);
   console.log(`💚 Health: http://localhost:${PORT}/api/health`);
+  console.log('🌐 CORS: Supports entire 192.168.1.x network');
   console.log('🎉 ======================================');
 
   // Test data files
