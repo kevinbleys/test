@@ -671,3 +671,44 @@
 [2025-09-25T22:00:00.361Z] === FULL CLEANUP COMPLETED ===
 [2025-09-25T22:00:00.362Z] Total files deleted: 20
 [2025-09-25T22:00:00.364Z] Total files kept: 9
+[2025-09-26T22:00:00.456Z] === FULL CLEANUP STARTED ===
+[2025-09-26T22:00:00.458Z] === CLEANUP OLD BACKUPS STARTED ===
+[2025-09-26T22:00:00.460Z] Found 31 backup files
+[2025-09-26T22:00:00.462Z] Keeping 5 most recent backup files
+[2025-09-26T22:00:00.464Z] Deleting 26 old backup files
+[2025-09-26T22:00:00.466Z] Deleted: members_backup_1758902702428.json
+[2025-09-26T22:00:00.468Z] Deleted: members_backup_1758901708633.json
+[2025-09-26T22:00:00.469Z] Deleted: members_backup_1758899102695.json
+[2025-09-26T22:00:00.471Z] Deleted: members_backup_1758895503573.json
+[2025-09-26T22:00:00.472Z] Deleted: members_backup_1758891903027.json
+[2025-09-26T22:00:00.474Z] Deleted: members_backup_1758888304042.json
+[2025-09-26T22:00:00.476Z] Deleted: members_backup_1758884702450.json
+[2025-09-26T22:00:00.477Z] Deleted: members_backup_1758881101826.json
+[2025-09-26T22:00:00.479Z] Deleted: members_backup_1758877502635.json
+[2025-09-26T22:00:00.480Z] Deleted: members_backup_1758873903280.json
+[2025-09-26T22:00:00.482Z] Deleted: members_backup_1758870302700.json
+[2025-09-26T22:00:00.484Z] Deleted: members_backup_1758867581974.json
+[2025-09-26T22:00:00.485Z] Deleted: members_backup_1758866704230.json
+[2025-09-26T22:00:00.487Z] Deleted: members_backup_1758863102079.json
+[2025-09-26T22:00:00.488Z] Deleted: members_backup_1758859502183.json
+[2025-09-26T22:00:00.490Z] Deleted: members_backup_1758855903101.json
+[2025-09-26T22:00:00.492Z] Deleted: members_backup_1758852301863.json
+[2025-09-26T22:00:00.493Z] Deleted: members_backup_1758848702833.json
+[2025-09-26T22:00:00.495Z] Deleted: members_backup_1758845101967.json
+[2025-09-26T22:00:00.496Z] Deleted: members_backup_1758841503270.json
+[2025-09-26T22:00:00.498Z] Deleted: members_backup_1758837903561.json
+[2025-09-26T22:00:00.499Z] Deleted: members_backup_1758834302323.json
+[2025-09-26T22:00:00.501Z] Deleted: members_backup_1758830702207.json
+[2025-09-26T22:00:00.502Z] Deleted: members_backup_1758827103091.json
+[2025-09-26T22:00:00.504Z] Deleted: members_backup_1758823502562.json
+[2025-09-26T22:00:00.506Z] Deleted: members_backup_1758819902475.json
+[2025-09-26T22:00:00.507Z] === CLEANUP COMPLETED: 26 files deleted, 5 files kept ===
+[2025-09-26T22:00:00.509Z] === CLEANUP OLD EXPORTS STARTED ===
+[2025-09-26T22:00:00.510Z] Found 2 export files
+[2025-09-26T22:00:00.512Z] 10 or fewer export files found, keeping all
+[2025-09-26T22:00:00.513Z] === CLEANUP OLD LOGS STARTED ===
+[2025-09-26T22:00:00.515Z] Found 2 log files (excluding cleanup.log)
+[2025-09-26T22:00:00.516Z] === LOG CLEANUP COMPLETED: 0 files deleted, 2 files kept ===
+[2025-09-26T22:00:00.518Z] === FULL CLEANUP COMPLETED ===
+[2025-09-26T22:00:00.519Z] Total files deleted: 26
+[2025-09-26T22:00:00.520Z] Total files kept: 9

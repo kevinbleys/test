@@ -5298,7 +5298,7 @@
     "firstname": "Julien",
     "lastname": "BOLZACCHINI",
     "dateOfBirth": "27/09/1982",
-    "age": 42,
+    "age": 43,
     "gender": "homme",
     "address": "01 rue de la fontaine",
     "additional": null,
@@ -5372,7 +5372,7 @@
     "firstname": "julien",
     "lastname": "BOLZACCHINI",
     "dateOfBirth": "27/09/1982",
-    "age": 42,
+    "age": 43,
     "gender": "homme",
     "address": "01 rue de la fontaine",
     "additional": null,
@@ -6813,7 +6813,7 @@
     "dateLastConnexion": null,
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": null,
+    "joinFileStatusLabel": "À payer",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -6832,7 +6832,7 @@
     "groups": [],
     "categories": [
       {
-        "label": "Ancien adhérent"
+        "label": "Adhérent"
       }
     ],
     "roles": [],
@@ -6887,7 +6887,7 @@
     "dateLastConnexion": "25/09/2025, 12:50",
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": null,
+    "joinFileStatusLabel": "À payer",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "Gestionnaire de 2 contacts : Lou BROUCA-CABARRECQ, Martin Brouca-Cabarrecq",
@@ -6914,7 +6914,7 @@
     "groups": [],
     "categories": [
       {
-        "label": "Ancien adhérent"
+        "label": "Adhérent"
       },
       {
         "label": "Parent"
@@ -6972,7 +6972,7 @@
     "dateLastConnexion": null,
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": null,
+    "joinFileStatusLabel": "À payer",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -6991,7 +6991,7 @@
     "groups": [],
     "categories": [
       {
-        "label": "Ancien adhérent"
+        "label": "Adhérent"
       }
     ],
     "roles": [],
@@ -14919,7 +14919,7 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "26/09/2025, 18:52",
+    "dateLastConnexion": "27/09/2025, 08:51",
     "emailValid": true,
     "notificationActive": true,
     "joinFileStatusLabel": null,
@@ -19002,6 +19002,71 @@
     ]
   },
   {
+    "membreId": 1168950,
+    "currentPictureUrl": "https://cdn.pepsup.com/resources/images/MEMBERS/000/116/895/1168950/IMAGE/1168950_s.png?1758916011816",
+    "firstname": "William",
+    "lastname": "Golvin",
+    "dateOfBirth": "03/12/1989",
+    "age": 35,
+    "gender": "homme",
+    "address": "5 rue du Bédat",
+    "additional": null,
+    "postalCode": "65240",
+    "town": "Arreau",
+    "country": "France",
+    "phoneNumber": null,
+    "mobilePhoneNumber": "+33760030607",
+    "email": "wgolvin@icloud.com",
+    "allergy": null,
+    "personToContact": null,
+    "personToContactPhoneNumber": null,
+    "corporateName": null,
+    "office": null,
+    "account": true,
+    "dateLastConnexion": "26/09/2025, 22:15",
+    "emailValid": true,
+    "notificationActive": true,
+    "joinFileStatusLabel": null,
+    "joinFileLastPaymentType": null,
+    "joinFileLastPaymentDate": null,
+    "childsLabel": "",
+    "childMembers": [],
+    "parentsLabel": "",
+    "parentMembers": [],
+    "groups": [],
+    "categories": [
+      {
+        "label": "Nouveau contact (adhésion)"
+      }
+    ],
+    "roles": [],
+    "medicalCertificateUrl": null,
+    "dateMedicalCertificate": null,
+    "licence": null,
+    "customFields": [
+      {
+        "label": "documents utiles",
+        "value": null
+      },
+      {
+        "label": "Ville de naissance",
+        "value": "Saint Cyr l’école"
+      },
+      {
+        "label": "code postale Ville de naissance",
+        "value": "78"
+      },
+      {
+        "label": "Pays de naissance",
+        "value": "France"
+      },
+      {
+        "label": "Nationalité",
+        "value": "Française"
+      }
+    ]
+  },
+  {
     "membreId": 926620,
     "currentPictureUrl": null,
     "firstname": "Alvaro",
@@ -21537,7 +21602,7 @@
     "firstname": "ju",
     "lastname": "ju",
     "dateOfBirth": "27/09/1982",
-    "age": 42,
+    "age": 43,
     "gender": "homme",
     "address": "eeee",
     "additional": null,
@@ -24086,7 +24151,7 @@
     "dateLastConnexion": null,
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "À payer",
+    "joinFileStatusLabel": "En cours de paiement",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -24157,7 +24222,7 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "24/07/2025, 08:15",
+    "dateLastConnexion": "27/09/2025, 07:59",
     "emailValid": true,
     "notificationActive": true,
     "joinFileStatusLabel": null,
@@ -30939,7 +31004,7 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "26/09/2025, 13:53",
+    "dateLastConnexion": "26/09/2025, 19:31",
     "emailValid": true,
     "notificationActive": true,
     "joinFileStatusLabel": "À payer",
@@ -33403,7 +33468,7 @@
     "dateOfBirth": "10/07/1977",
     "age": 48,
     "gender": "homme",
-    "address": "GRANGES DU GOURRON",
+    "address": "22 rue du castech",
     "additional": null,
     "postalCode": "31110",
     "town": "ST AVENTIN",
@@ -33417,10 +33482,10 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "19/02/2025, 16:22",
+    "dateLastConnexion": "27/09/2025, 08:16",
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": null,
+    "joinFileStatusLabel": "Payé",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -33430,7 +33495,7 @@
     "groups": [],
     "categories": [
       {
-        "label": "Ancien adhérent"
+        "label": "Adhérent"
       }
     ],
     "roles": [],
@@ -33448,7 +33513,7 @@
       },
       {
         "label": "code postale Ville de naissance",
-        "value": null
+        "value": "17000"
       },
       {
         "label": "Pays de naissance",
@@ -34302,7 +34367,7 @@
     "firstname": "Yvanne",
     "lastname": "Piorkowski",
     "dateOfBirth": "27/09/1999",
-    "age": 25,
+    "age": 26,
     "gender": "homme",
     "address": "2 chemin des aubépines",
     "additional": null,
@@ -38680,7 +38745,7 @@
     "firstname": "Mathieu",
     "lastname": "Royer",
     "dateOfBirth": "27/09/1985",
-    "age": 39,
+    "age": 40,
     "gender": "homme",
     "address": "1 rue des tistalhers",
     "additional": null,
@@ -40437,7 +40502,7 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "26/09/2025, 18:11",
+    "dateLastConnexion": "26/09/2025, 19:06",
     "emailValid": true,
     "notificationActive": true,
     "joinFileStatusLabel": "Payé",
@@ -44367,7 +44432,7 @@
     "dateLastConnexion": null,
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "Payé",
+    "joinFileStatusLabel": "En cours de paiement",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -44441,7 +44506,7 @@
     "dateLastConnexion": null,
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "Payé",
+    "joinFileStatusLabel": "En cours de paiement",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -44589,7 +44654,7 @@
     "dateLastConnexion": "19/07/2025, 12:06",
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "Payé",
+    "joinFileStatusLabel": "En cours de paiement",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "Gestionnaire de 4 contacts : Tilan Truong, Liven Truong, Youen TRUONG, Mona Truong",

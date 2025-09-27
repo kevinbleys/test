@@ -2842,7 +2842,7 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "10/09/2025, 18:19",
+    "dateLastConnexion": "26/09/2025, 15:21",
     "emailValid": true,
     "notificationActive": true,
     "joinFileStatusLabel": null,
@@ -14919,7 +14919,7 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "25/09/2025, 19:47",
+    "dateLastConnexion": "26/09/2025, 18:52",
     "emailValid": true,
     "notificationActive": true,
     "joinFileStatusLabel": null,
@@ -18998,6 +18998,71 @@
       {
         "label": "Nationalité",
         "value": null
+      }
+    ]
+  },
+  {
+    "membreId": 1168950,
+    "currentPictureUrl": "https://cdn.pepsup.com/resources/images/MEMBERS/000/116/895/1168950/IMAGE/1168950_s.png?1758916011816",
+    "firstname": "William",
+    "lastname": "Golvin",
+    "dateOfBirth": "03/12/1989",
+    "age": 35,
+    "gender": "homme",
+    "address": "5 rue du Bédat",
+    "additional": null,
+    "postalCode": "65240",
+    "town": "Arreau",
+    "country": "France",
+    "phoneNumber": null,
+    "mobilePhoneNumber": "+33760030607",
+    "email": "wgolvin@icloud.com",
+    "allergy": null,
+    "personToContact": null,
+    "personToContactPhoneNumber": null,
+    "corporateName": null,
+    "office": null,
+    "account": true,
+    "dateLastConnexion": "26/09/2025, 22:15",
+    "emailValid": true,
+    "notificationActive": true,
+    "joinFileStatusLabel": null,
+    "joinFileLastPaymentType": null,
+    "joinFileLastPaymentDate": null,
+    "childsLabel": "",
+    "childMembers": [],
+    "parentsLabel": "",
+    "parentMembers": [],
+    "groups": [],
+    "categories": [
+      {
+        "label": "Nouveau contact (adhésion)"
+      }
+    ],
+    "roles": [],
+    "medicalCertificateUrl": null,
+    "dateMedicalCertificate": null,
+    "licence": null,
+    "customFields": [
+      {
+        "label": "documents utiles",
+        "value": null
+      },
+      {
+        "label": "Ville de naissance",
+        "value": "Saint Cyr l’école"
+      },
+      {
+        "label": "code postale Ville de naissance",
+        "value": "78"
+      },
+      {
+        "label": "Pays de naissance",
+        "value": "France"
+      },
+      {
+        "label": "Nationalité",
+        "value": "Française"
       }
     ]
   },
@@ -23706,7 +23771,7 @@
     "dateLastConnexion": null,
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "À payer",
+    "joinFileStatusLabel": "En cours de paiement",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -23780,7 +23845,7 @@
     "dateLastConnexion": null,
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "À payer",
+    "joinFileStatusLabel": "En cours de paiement",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -28407,8 +28472,8 @@
     "personToContactPhoneNumber": "+33641890232",
     "corporateName": null,
     "office": null,
-    "account": false,
-    "dateLastConnexion": null,
+    "account": true,
+    "dateLastConnexion": "05/09/2025, 09:00",
     "emailValid": true,
     "notificationActive": true,
     "joinFileStatusLabel": null,
@@ -30851,7 +30916,7 @@
     "dateOfBirth": "19/09/2012",
     "age": 13,
     "gender": "homme",
-    "address": "Chemin du val",
+    "address": "705 Route de Couplau 65410 Beyrède-Jumet-Camous",
     "additional": null,
     "postalCode": "65410",
     "town": "Beyrede jumet",
@@ -30868,7 +30933,7 @@
     "dateLastConnexion": null,
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": null,
+    "joinFileStatusLabel": "À payer",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -30887,7 +30952,7 @@
     "groups": [],
     "categories": [
       {
-        "label": "Ancien adhérent"
+        "label": "Adhérent"
       }
     ],
     "roles": [],
@@ -30905,7 +30970,7 @@
       },
       {
         "label": "code postale Ville de naissance",
-        "value": null
+        "value": "65000"
       },
       {
         "label": "Pays de naissance",
@@ -30925,7 +30990,7 @@
     "dateOfBirth": "12/12/1968",
     "age": 56,
     "gender": "homme",
-    "address": "Chemin du val",
+    "address": "705 Route de Couplau 65410 Beyrède-Jumet-Camous",
     "additional": null,
     "postalCode": "65410",
     "town": "Beyrede jumet",
@@ -30939,10 +31004,10 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "08/09/2024, 19:34",
+    "dateLastConnexion": "26/09/2025, 19:31",
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": null,
+    "joinFileStatusLabel": "À payer",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "Gestionnaire de 2 contacts : Gaspard MUR, Valentin MUR",
@@ -30969,7 +31034,7 @@
     "groups": [],
     "categories": [
       {
-        "label": "Ancien adhérent"
+        "label": "Adhérent"
       },
       {
         "label": "Parent"
@@ -30990,7 +31055,7 @@
       },
       {
         "label": "code postale Ville de naissance",
-        "value": null
+        "value": "65300"
       },
       {
         "label": "Pays de naissance",
@@ -31024,10 +31089,10 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": null,
-    "emailValid": false,
+    "dateLastConnexion": "26/09/2025, 12:51",
+    "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": null,
+    "joinFileStatusLabel": "À payer",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -31046,7 +31111,7 @@
     "groups": [],
     "categories": [
       {
-        "label": "Ancien adhérent"
+        "label": "Adhérent"
       }
     ],
     "roles": [],
@@ -32568,7 +32633,7 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "25/09/2025, 21:11",
+    "dateLastConnexion": "26/09/2025, 18:09",
     "emailValid": true,
     "notificationActive": true,
     "joinFileStatusLabel": null,
@@ -40437,7 +40502,7 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "25/09/2025, 19:09",
+    "dateLastConnexion": "26/09/2025, 19:06",
     "emailValid": true,
     "notificationActive": true,
     "joinFileStatusLabel": "Payé",
