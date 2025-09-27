@@ -15,7 +15,7 @@ export default function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/member-check" element={<MemberCheck />} />
+        <Route path="/members" element={<MemberCheck />} />
         <Route path="/non-member" element={<NonMemberForm />} />
         <Route path="/niveau" element={<LevelPage />} />
         <Route path="/assurance" element={<AssurancePage />} />

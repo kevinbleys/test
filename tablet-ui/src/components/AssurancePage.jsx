@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import { playSuccessSound, playBuzzerSound } from '../utils/soundUtils';
-// ✅ GECORRIGEERDE API BASE URL - NU DYNAMISCH IN PLAATS VAN HARDCODED
 import API_BASE_URL from '../services/apiService';
 
 export default function AssurancePage() {
@@ -208,7 +207,15 @@ export default function AssurancePage() {
             text: (
               <>
                 J'ai pris connaissance du{' '}
-                <Link to="/reglement" style={{ color: '#667eea', textDecoration: 'underline' }}>
+                <Link 
+                  to="/reglement" 
+                  state={state}
+                  style={{ 
+                    color: '#667eea', 
+                    textDecoration: 'underline',
+                    fontWeight: '500'
+                  }}
+                >
                   Règlement intérieur
                 </Link>
                 {' '}et je m'engage à le respecter.
