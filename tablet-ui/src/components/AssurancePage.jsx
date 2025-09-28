@@ -61,6 +61,34 @@ export default function AssurancePage() {
       if (response.data.success) {
         console.log('=== REGISTRATION SUCCESS ===');
         console.log('Registered presence:', response.data.presence);
+
+        // ✅ NIEUWE FUNCTIONALITEIT: Sla niet-lid op voor toekomstige snelle registratie
+        try {
+          const saveNonMemberData = {
+            nom: state.form.nom,
+            prenom: state.form.prenom,
+            email: state.form.email,
+            telephone: state.form.telephone,
+            dateNaissance: state.form.dateNaissance,
+            niveau: state.niveau,
+            assuranceAccepted: true,
+            age: state.age,
+            tarif: state.tarif
+          };
+
+          console.log('Saving non-member for future quick registration:', saveNonMemberData);
+
+          const saveResponse = await axios.post(`${API_BASE_URL}/save-non-member`, saveNonMemberData);
+
+          if (saveResponse.data.success) {
+            console.log('✅ Non-member saved for quick registration');
+          } else {
+            console.warn('⚠️ Could not save non-member, but continuing...');
+          }
+        } catch (saveError) {
+          console.warn('⚠️ Save non-member error, but continuing...', saveError);
+        }
+
         playSuccessSound();
 
         navigate('/paiement', {

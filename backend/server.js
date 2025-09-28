@@ -791,6 +791,192 @@ app.use((error, req, res, next) => {
   });
 });
 
+
+// ===== NIEUWE NIET-LEDEN OPSLAG ENDPOINTS =====
+
+// Pad naar niet-leden bestand
+const NON_MEMBERS_FILE = path.join(__dirname, 'data', 'saved-non-members.json');
+
+// Zorg dat saved-non-members.json bestand bestaat
+if (!fs.existsSync(NON_MEMBERS_FILE)) {
+  fs.writeFileSync(NON_MEMBERS_FILE, JSON.stringify([], null, 2));
+  console.log('✅ saved-non-members.json bestand aangemaakt');
+}
+
+// Helper functie om niet-leden te laden
+function loadSavedNonMembers() {
+  try {
+    if (fs.existsSync(NON_MEMBERS_FILE)) {
+      const data = fs.readFileSync(NON_MEMBERS_FILE, 'utf8');
+      return JSON.parse(data);
+    }
+  } catch (error) {
+    console.error('Error loading saved non-members:', error);
+  }
+  return [];
+}
+
+// Helper functie om niet-leden op te slaan
+function saveSavedNonMembers(nonMembers) {
+  try {
+    fs.writeFileSync(NON_MEMBERS_FILE, JSON.stringify(nonMembers, null, 2));
+    console.log(`✅ Saved non-members bijgewerkt: ${nonMembers.length} entries`);
+    return true;
+  } catch (error) {
+    console.error('Error saving non-members:', error);
+    return false;
+  }
+}
+
+// POST /save-non-member - Sla niet-lid op na volledige registratie
+app.post('/save-non-member', (req, res) => {
+  try {
+    console.log('=== SAVE NON-MEMBER REQUEST ===');
+    console.log('Request body:', req.body);
+
+    const { nom, prenom, email, telephone, dateNaissance, niveau, assuranceAccepted, age, tarif } = req.body;
+
+    // Valideer verplichte velden
+    if (!nom || !prenom || !email || !dateNaissance || niveau === undefined) {
+      return res.status(400).json({
+        success: false,
+        error: 'Verplichte velden ontbreken'
+      });
+    }
+
+    // Laad huidige niet-leden
+    const savedNonMembers = loadSavedNonMembers();
+
+    // Check of deze niet-lid al bestaat (op basis van naam, voornaam en geboortedatum)
+    const existingIndex = savedNonMembers.findIndex(member => 
+      member.nom.toLowerCase() === nom.toLowerCase() &&
+      member.prenom.toLowerCase() === prenom.toLowerCase() &&
+      member.dateNaissance === dateNaissance
+    );
+
+    const nonMemberData = {
+      id: existingIndex >= 0 ? savedNonMembers[existingIndex].id : Date.now().toString(),
+      nom: nom.trim(),
+      prenom: prenom.trim(),
+      email: email.trim(),
+      telephone: telephone || '',
+      dateNaissance,
+      niveau: parseInt(niveau),
+      assuranceAccepted: assuranceAccepted || true,
+      age,
+      tarif,
+      savedAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+
+    if (existingIndex >= 0) {
+      // Update bestaande entry
+      nonMemberData.savedAt = savedNonMembers[existingIndex].savedAt; // Behoud originele datum
+      savedNonMembers[existingIndex] = nonMemberData;
+      console.log(`✅ Non-member bijgewerkt: ${nom} ${prenom}`);
+    } else {
+      // Nieuwe entry toevoegen
+      savedNonMembers.push(nonMemberData);
+      console.log(`✅ Nieuwe non-member opgeslagen: ${nom} ${prenom}`);
+    }
+
+    // Sla op naar bestand
+    if (saveSavedNonMembers(savedNonMembers)) {
+      res.json({
+        success: true,
+        message: 'Niet-lid succesvol opgeslagen',
+        nonMember: nonMemberData
+      });
+    } else {
+      throw new Error('Fout bij opslaan naar bestand');
+    }
+
+  } catch (error) {
+    console.error('❌ SAVE NON-MEMBER ERROR:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Server error bij opslaan niet-lid'
+    });
+  }
+});
+
+// POST /quick-non-member - Zoek opgeslagen niet-lid voor snelle registratie
+app.post('/quick-non-member', (req, res) => {
+  try {
+    console.log('=== QUICK NON-MEMBER LOOKUP ===');
+    console.log('Request body:', req.body);
+
+    const { nom, prenom, dateNaissance } = req.body;
+
+    if (!nom || !prenom || !dateNaissance) {
+      return res.status(400).json({
+        success: false,
+        error: 'Naam, voornaam en geboortedatum zijn verplicht'
+      });
+    }
+
+    // Laad opgeslagen niet-leden
+    const savedNonMembers = loadSavedNonMembers();
+    console.log(`Zoeken in ${savedNonMembers.length} opgeslagen niet-leden`);
+
+    // Zoek match (case-insensitive voor namen)
+    const foundMember = savedNonMembers.find(member => 
+      member.nom.toLowerCase().trim() === nom.toLowerCase().trim() &&
+      member.prenom.toLowerCase().trim() === prenom.toLowerCase().trim() &&
+      member.dateNaissance === dateNaissance
+    );
+
+    if (foundMember) {
+      console.log(`✅ Niet-lid gevonden: ${foundMember.nom} ${foundMember.prenom}`);
+      res.json({
+        success: true,
+        message: 'Niet-lid gevonden',
+        nonMember: foundMember
+      });
+    } else {
+      console.log(`❌ Geen match gevonden voor: ${nom} ${prenom} ${dateNaissance}`);
+      res.json({
+        success: false,
+        message: 'Aucune inscription trouvée avec ces données. Vérifiez l\'orthographe ou utilisez "Première inscription".'
+      });
+    }
+
+  } catch (error) {
+    console.error('❌ QUICK NON-MEMBER LOOKUP ERROR:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Server error bij zoeken niet-lid'
+    });
+  }
+});
+
+// GET /saved-non-members - Lijst alle opgeslagen niet-leden (voor debug/admin)
+app.get('/saved-non-members', (req, res) => {
+  try {
+    const savedNonMembers = loadSavedNonMembers();
+    res.json({
+      success: true,
+      count: savedNonMembers.length,
+      nonMembers: savedNonMembers.map(member => ({
+        id: member.id,
+        nom: member.nom,
+        prenom: member.prenom,
+        dateNaissance: member.dateNaissance,
+        niveau: member.niveau,
+        savedAt: member.savedAt,
+        updatedAt: member.updatedAt
+      }))
+    });
+  } catch (error) {
+    console.error('❌ GET SAVED NON-MEMBERS ERROR:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Server error bij ophalen niet-leden lijst'
+    });
+  }
+});
+
+
 // ===== SERVER STARTUP - LUISTERT OP ALLE INTERFACES =====
 const server = app.listen(PORT, '0.0.0.0', () => {
   console.log('🎉 ======================================');
