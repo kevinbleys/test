@@ -4,52 +4,6 @@ const path = require('path');
 const fs = require('fs');
 const cron = require('node-cron');
 
-// Services
-let exportService;
-let cleanupService;
-let syncService;
-
-// Probeer services te laden
-try {
-  exportService = require('./export-service');
-  console.log('✅ Export service loaded');
-} catch (error) {
-  console.warn('⚠️ Export service not found, using fallback');
-  exportService = null;
-}
-
-try {
-  cleanupService = require('./cleanup-service');
-  console.log('✅ Cleanup service loaded');
-} catch (error) {
-  console.warn('⚠️ Cleanup service not found, using fallback');
-  cleanupService = null;
-}
-
-// Sync service loading
-try {
-  const syncServicePath = path.join(__dirname, 'sync-service');
-  if (fs.existsSync(syncServicePath + '.js')) {
-    syncService = require('./sync-service');
-    console.log('✅ Sync service loaded');
-  }
-} catch (error) {
-  console.warn('⚠️ Sync service loading failed:', error.message);
-}
-
-if (!syncService) {
-  syncService = {
-    getMembers: () => {
-      console.log('⚠️ Using fallback sync service');
-      return [];
-    },
-    syncMembers: () => {
-      console.log('⚠️ Sync function not available');
-      return Promise.resolve(0);
-    }
-  };
-}
-
 const app = express();
 const PORT = process.env.PORT || 3001;
 
@@ -61,6 +15,7 @@ const DATA_DIR = path.join(__dirname, 'data');
 const PRESENCES_FILE = path.join(DATA_DIR, 'presences.json');
 const NON_MEMBERS_FILE = path.join(DATA_DIR, 'non-members.json');
 const PRESENCE_HISTORY_FILE = path.join(DATA_DIR, 'presence-history.json');
+const SAVED_NON_MEMBERS_FILE = path.join(DATA_DIR, 'saved-non-members.json'); // ✅ NIEUWE FILE
 const EXPORTS_DIR = path.join(DATA_DIR, 'exports');
 
 // Ensure data directories exist
@@ -73,7 +28,6 @@ const setupDataDirectories = () => {
     }
   });
 };
-
 setupDataDirectories();
 
 // Initialize data files
@@ -101,6 +55,7 @@ const initDataFile = (filePath, defaultData = []) => {
 initDataFile(PRESENCES_FILE);
 initDataFile(NON_MEMBERS_FILE);
 initDataFile(PRESENCE_HISTORY_FILE);
+initDataFile(SAVED_NON_MEMBERS_FILE); // ✅ NIEUWE FILE INITIALISATIE
 
 // File operations with extensive logging
 const readJsonFile = (filePath) => {
@@ -126,11 +81,13 @@ const writeJsonFile = (filePath, data) => {
       console.error(`❌ Attempted to write non-array data to ${path.basename(filePath)}`);
       return false;
     }
+
     // Create backup
     if (fs.existsSync(filePath)) {
       const backupPath = filePath + '.backup';
       fs.copyFileSync(filePath, backupPath);
     }
+
     fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
     console.log(`💾 Wrote ${data.length} records to ${path.basename(filePath)}`);
     return true;
@@ -140,57 +97,20 @@ const writeJsonFile = (filePath, data) => {
   }
 };
 
-// ===== ADVANCED CORS CONFIGURATION - SUPPORTS ALL 192.168.*.* NETWORK =====
-const createCorsOptions = () => {
-  const allowedOrigins = [
-    // Localhost origins (development)
-    'http://localhost:3000', 
+// Middleware
+app.use(cors({
+  origin: [
+    'http://localhost:3000',
     'http://localhost:3001',
-    'http://localhost:3002', 
-    'http://127.0.0.1:3000', 
+    'http://localhost:3002',
+    'http://127.0.0.1:3000',
     'http://127.0.0.1:3001',
     'http://127.0.0.1:3002'
-  ];
-
-  return {
-    origin: (origin, callback) => {
-      // Allow requests with no origin (mobile apps, curl, etc.)
-      if (!origin) {
-        return callback(null, true);
-      }
-
-      // Check if origin is in allowed list
-      if (allowedOrigins.includes(origin)) {
-        return callback(null, true);
-      }
-
-      // Check if origin matches ANY local 192.168.*.* network pattern (not just 192.168.1.*)
-      const localNetworkRegex = /^http:\/\/192\.168\.(\d{1,3})\.(\d{1,3}):(3000|3001|3002)$/;
-      const match = origin.match(localNetworkRegex);
-
-      if (match) {
-        const thirdOctet = parseInt(match[1]);
-        const fourthOctet = parseInt(match[2]);
-        // Allow any IP in range 192.168.0.0 to 192.168.255.255
-        if (thirdOctet >= 0 && thirdOctet <= 255 && fourthOctet >= 1 && fourthOctet <= 255) {
-          console.log(`✅ CORS: Allowing origin ${origin}`);
-          return callback(null, true);
-        }
-      }
-
-      console.warn(`⚠️ CORS: Blocking origin ${origin}`);
-      callback(new Error('Not allowed by CORS'));
-    },
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'Accept', 'Origin', 'X-Requested-With']
-  };
-};
-
-app.use(cors(createCorsOptions()));
-
-// Preflight requests handler
-app.options('*', cors(createCorsOptions()));
+  ],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -200,7 +120,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Enhanced logging middleware
 app.use((req, res, next) => {
-  console.log(`🌐 ${new Date().toISOString()} - ${req.method} ${req.path} - Origin: ${req.headers.origin || 'undefined'}`);
+  console.log(`🌐 ${new Date().toISOString()} - ${req.method} ${req.path}`);
   if (req.body && Object.keys(req.body).length > 0) {
     console.log('📋 Request body:', JSON.stringify(req.body, null, 2));
   }
@@ -210,61 +130,93 @@ app.use((req, res, next) => {
   next();
 });
 
+// Sync service loading
+let syncService = null;
+try {
+  const syncServicePath = path.join(__dirname, 'sync-service');
+  if (fs.existsSync(syncServicePath + '.js')) {
+    syncService = require('./sync-service');
+    console.log('✅ Sync service loaded');
+  }
+} catch (error) {
+  console.warn('⚠️ Sync service loading failed:', error.message);
+}
+
+if (!syncService) {
+  syncService = {
+    getMembers: () => {
+      console.log('⚠️ Using fallback sync service');
+      return [];
+    },
+    syncMembers: async () => {
+      console.log('⚠️ Using fallback sync - no actual sync performed');
+      return 0;
+    }
+  };
+}
+
+// Services
+let exportService;
+let cleanupService;
+
+// Try to load services
+try {
+  exportService = require('./export-service');
+  console.log('✅ Export service loaded');
+} catch (error) {
+  console.warn('⚠️ Export service not found, using fallback');
+  exportService = null;
+}
+
+try {
+  cleanupService = require('./cleanup-service');
+  console.log('✅ Cleanup service loaded');
+} catch (error) {
+  console.warn('⚠️ Cleanup service not found, using fallback');
+  cleanupService = null;
+}
+
 // ===== CRON JOBS =====
-
-// Daily reset at midnight met cleanup
-cron.schedule('0 0 * * *', async () => {
+// Daily reset at midnight
+cron.schedule('0 0 * * *', () => {
   try {
-    console.log('=== DAGELIJKSE RESET EN CLEANUP GESTART ===');
-
-    // 1. Existing presence archiving
+    console.log('=== DAGELIJKSE RESET GESTART ===');
     const currentPresences = readJsonFile(PRESENCES_FILE);
     if (currentPresences.length > 0) {
       const history = readJsonFile(PRESENCE_HISTORY_FILE);
       const today = new Date().toISOString().split('T')[0];
+
       history.push({
         date: today,
         presences: currentPresences
       });
+
       writeJsonFile(PRESENCE_HISTORY_FILE, history);
       console.log(`${currentPresences.length} presences gearchiveerd voor ${today}`);
+
       writeJsonFile(PRESENCES_FILE, []);
       console.log('Huidige presences gereset voor nieuwe dag');
     } else {
       console.log('Geen presences om te archiveren');
     }
-
-    // 2. Run cleanup service
-    if (cleanupService && cleanupService.runFullCleanup) {
-      console.log('=== STARTING FILE CLEANUP ===');
-      const cleanupResults = await cleanupService.runFullCleanup();
-      console.log(`✅ Cleanup voltooid: ${cleanupResults.totalDeleted} bestanden verwijderd, ${cleanupResults.totalKept} behouden`);
-    } else {
-      console.warn('⚠️ Cleanup service niet beschikbaar');
-    }
-
-    console.log('=== DAGELIJKSE RESET EN CLEANUP VOLTOOID ===');
+    console.log('=== DAGELIJKSE RESET VOLTOOID ===');
   } catch (error) {
-    console.error('❌ Fout bij dagelijkse reset/cleanup:', error);
+    console.error('Fout bij dagelijkse reset:', error);
   }
 });
 
 // ===== PEPSUP SYNC CRON JOB =====
-// Synchroniseer leden data elk uur om 5 minuten over het uur
 cron.schedule('5 * * * *', async () => {
   try {
     console.log('⏰ DÉMARRAGE synchronisation Pepsup automatique');
-
     if (syncService && syncService.syncMembers) {
       const memberCount = await syncService.syncMembers();
       console.log(`✅ Synchronisation Pepsup réussie: ${memberCount} membres synchronisés`);
     } else {
       console.warn('⚠️ Sync service non disponible');
     }
-
   } catch (error) {
     console.error('❌ ERREUR lors de la synchronisation Pepsup automatique:', error.message);
-
     // Log l'erreur vers le sync log file aussi
     try {
       const timestamp = new Date().toISOString();
@@ -277,10 +229,10 @@ cron.schedule('5 * * * *', async () => {
   }
 }, {
   scheduled: true,
-  timezone: "Europe/Brussels" // Belgische tijdzone
+  timezone: "Europe/Brussels"
 });
 
-// ===== SYNC ON STARTUP =====
+// ===== SYNC ON STARTUP (OPTIONEEL) =====
 setTimeout(async () => {
   try {
     console.log('🚀 Synchronisation Pepsup au démarrage du serveur');
@@ -300,19 +252,23 @@ app.get('/', (req, res) => {
   res.json({
     status: 'success',
     message: 'API Logiciel Escalade - DEFINITIEVE VERSIE',
-    version: '2.0.0',
+    version: '2.1.0',
     timestamp: new Date().toISOString(),
     endpoints: {
       health: '/api/health',
       admin: '/admin',
       members: '/members/check',
-      presences: '/presences'
+      presences: '/presences',
+      quickNonMember: '/quick-non-member',
+      saveNonMember: '/save-non-member'
     }
   });
 });
 
 app.get('/api/health', (req, res) => {
   const presences = readJsonFile(PRESENCES_FILE);
+  const savedNonMembers = readJsonFile(SAVED_NON_MEMBERS_FILE);
+
   const health = {
     status: 'healthy',
     uptime: process.uptime(),
@@ -320,10 +276,13 @@ app.get('/api/health', (req, res) => {
     timestamp: new Date().toISOString(),
     dataFiles: {
       presences: presences.length,
+      savedNonMembers: savedNonMembers.length,
       presencesFile: fs.existsSync(PRESENCES_FILE),
+      savedNonMembersFile: fs.existsSync(SAVED_NON_MEMBERS_FILE),
       dataDir: fs.existsSync(DATA_DIR)
     }
   };
+
   console.log('💚 Health check:', health);
   res.json(health);
 });
@@ -337,6 +296,7 @@ app.get('/admin', (req, res) => {
 // ===== MEMBERS ROUTES =====
 app.get('/members/check', (req, res) => {
   const { nom, prenom } = req.query;
+
   if (!nom || !prenom) {
     return res.status(400).json({
       success: false,
@@ -398,7 +358,159 @@ app.get('/members/all', (req, res) => {
   }
 });
 
+// ===== ✅ NIEUWE NIET-LEDEN OPSLAG ENDPOINTS ===== 
+
+// POST /save-non-member - Sla niet-lid op na volledige registratie
+app.post('/save-non-member', (req, res) => {
+  try {
+    console.log('=== SAVE NON-MEMBER REQUEST ===');
+    console.log('Request body:', req.body);
+
+    const { nom, prenom, email, telephone, dateNaissance, niveau, assuranceAccepted, age, tarif } = req.body;
+
+    // Valideer verplichte velden
+    if (!nom || !prenom || !email || !dateNaissance || niveau === undefined) {
+      return res.status(400).json({
+        success: false,
+        error: 'Verplichte velden ontbreken'
+      });
+    }
+
+    // Laad huidige niet-leden
+    const savedNonMembers = readJsonFile(SAVED_NON_MEMBERS_FILE);
+
+    // Check of deze niet-lid al bestaat (op basis van naam, voornaam en geboortedatum)
+    const existingIndex = savedNonMembers.findIndex(member => 
+      member.nom.toLowerCase() === nom.toLowerCase() &&
+      member.prenom.toLowerCase() === prenom.toLowerCase() &&
+      member.dateNaissance === dateNaissance
+    );
+
+    const nonMemberData = {
+      id: existingIndex >= 0 ? savedNonMembers[existingIndex].id : Date.now().toString(),
+      nom: nom.trim(),
+      prenom: prenom.trim(),
+      email: email.trim(),
+      telephone: telephone || '',
+      dateNaissance,
+      niveau: parseInt(niveau),
+      assuranceAccepted: assuranceAccepted || true,
+      age,
+      tarif,
+      savedAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+
+    if (existingIndex >= 0) {
+      // Update bestaande entry
+      nonMemberData.savedAt = savedNonMembers[existingIndex].savedAt; // Behoud originele datum
+      savedNonMembers[existingIndex] = nonMemberData;
+      console.log(`✅ Non-member bijgewerkt: ${nom} ${prenom}`);
+    } else {
+      // Nieuwe entry toevoegen
+      savedNonMembers.push(nonMemberData);
+      console.log(`✅ Nieuwe non-member opgeslagen: ${nom} ${prenom}`);
+    }
+
+    // Sla op naar bestand
+    if (writeJsonFile(SAVED_NON_MEMBERS_FILE, savedNonMembers)) {
+      res.json({
+        success: true,
+        message: 'Niet-lid succesvol opgeslagen',
+        nonMember: nonMemberData
+      });
+    } else {
+      throw new Error('Fout bij opslaan naar bestand');
+    }
+
+  } catch (error) {
+    console.error('❌ SAVE NON-MEMBER ERROR:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Server error bij opslaan niet-lid'
+    });
+  }
+});
+
+// POST /quick-non-member - Zoek opgeslagen niet-lid voor snelle registratie
+app.post('/quick-non-member', (req, res) => {
+  try {
+    console.log('=== QUICK NON-MEMBER LOOKUP ===');
+    console.log('Request body:', req.body);
+
+    const { nom, prenom, dateNaissance } = req.body;
+
+    if (!nom || !prenom || !dateNaissance) {
+      return res.status(400).json({
+        success: false,
+        error: 'Naam, voornaam en geboortedatum zijn verplicht'
+      });
+    }
+
+    // Laad opgeslagen niet-leden
+    const savedNonMembers = readJsonFile(SAVED_NON_MEMBERS_FILE);
+    console.log(`Zoeken in ${savedNonMembers.length} opgeslagen niet-leden`);
+
+    // Zoek match (case-insensitive voor namen)
+    const foundMember = savedNonMembers.find(member => 
+      member.nom.toLowerCase().trim() === nom.toLowerCase().trim() &&
+      member.prenom.toLowerCase().trim() === prenom.toLowerCase().trim() &&
+      member.dateNaissance === dateNaissance
+    );
+
+    if (foundMember) {
+      console.log(`✅ Niet-lid gevonden: ${foundMember.nom} ${foundMember.prenom}`);
+      res.json({
+        success: true,
+        message: 'Niet-lid gevonden',
+        nonMember: foundMember
+      });
+    } else {
+      console.log(`❌ Geen match gevonden voor: ${nom} ${prenom} ${dateNaissance}`);
+      res.json({
+        success: false,
+        message: 'Aucune inscription trouvée avec ces données. Vérifiez l\'orthographe ou utilisez "Première inscription".'
+      });
+    }
+
+  } catch (error) {
+    console.error('❌ QUICK NON-MEMBER LOOKUP ERROR:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Server error bij zoeken niet-lid'
+    });
+  }
+});
+
+// GET /saved-non-members - Lijst alle opgeslagen niet-leden (voor debug/admin)
+app.get('/saved-non-members', (req, res) => {
+  try {
+    const savedNonMembers = readJsonFile(SAVED_NON_MEMBERS_FILE);
+    res.json({
+      success: true,
+      count: savedNonMembers.length,
+      nonMembers: savedNonMembers.map(member => ({
+        id: member.id,
+        nom: member.nom,
+        prenom: member.prenom,
+        dateNaissance: member.dateNaissance,
+        niveau: member.niveau,
+        savedAt: member.savedAt,
+        updatedAt: member.updatedAt
+      }))
+    });
+  } catch (error) {
+    console.error('❌ GET SAVED NON-MEMBERS ERROR:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Server error bij ophalen niet-leden lijst'
+    });
+  }
+});
+
 // ===== PRESENCES ROUTES =====
+
+// ✅ GET /presences - CRITICAL ROUTE FOR ADMIN INTERFACE
 app.get('/presences', (req, res) => {
   console.log('📋 GET /presences - Admin interface requesting all presences');
   try {
@@ -418,19 +530,23 @@ app.get('/presences', (req, res) => {
   }
 });
 
+// ✅ GET /presences/:id - FOR PAYMENT PAGE STATUS CHECK
 app.get('/presences/:id', (req, res) => {
   const { id } = req.params;
   console.log(`🔍 GET /presences/${id} - Payment page checking status`);
+
   try {
     const presences = readJsonFile(PRESENCES_FILE);
     const presence = presences.find(p => p.id === id);
+
     if (!presence) {
       console.log(`❌ Presence ${id} not found`);
-      return res.status(404).json({ 
-        success: false, 
-        error: 'Présence non trouvée' 
+      return res.status(404).json({
+        success: false,
+        error: 'Présence non trouvée'
       });
     }
+
     console.log(`✅ Found presence ${id}, status: ${presence.status}`);
     res.json({ success: true, presence });
   } catch (error) {
@@ -439,6 +555,7 @@ app.get('/presences/:id', (req, res) => {
   }
 });
 
+// ✅ POST /presences - FOR CREATING NEW PRESENCES
 app.post('/presences', (req, res) => {
   console.log('=== NEW PRESENCE REQUEST ===');
   console.log('Request body:', JSON.stringify(req.body, null, 2));
@@ -454,6 +571,7 @@ app.post('/presences', (req, res) => {
 
   try {
     const presences = readJsonFile(PRESENCES_FILE);
+
     const newPresence = {
       id: Date.now().toString(),
       type,
@@ -474,12 +592,14 @@ app.post('/presences', (req, res) => {
       newPresence.status = req.body.status || 'pending';
       newPresence.tarif = req.body.tarif || 10;
       newPresence.methodePaiement = req.body.methodePaiement || 'Especes';
+
       // Extra fields for non-members
       if (req.body.email) newPresence.email = req.body.email;
       if (req.body.telephone) newPresence.telephone = req.body.telephone;
       if (req.body.dateNaissance) newPresence.dateNaissance = req.body.dateNaissance;
       if (req.body.niveau !== undefined) newPresence.niveau = req.body.niveau.toString();
       if (req.body.assuranceAccepted !== undefined) newPresence.assuranceAccepted = req.body.assuranceAccepted;
+      if (req.body.quickRegistration) newPresence.quickRegistration = true;
     }
 
     presences.push(newPresence);
@@ -494,6 +614,7 @@ app.post('/presences', (req, res) => {
     } else {
       throw new Error('Failed to write presence file');
     }
+
   } catch (error) {
     console.error('❌ Error saving presence:', error);
     res.status(500).json({
@@ -503,6 +624,7 @@ app.post('/presences', (req, res) => {
   }
 });
 
+// ✅ POST /presences/:id/valider - FOR ADMIN VALIDATION
 app.post('/presences/:id/valider', (req, res) => {
   const { id } = req.params;
   const { montant, methodePaiement } = req.body;
@@ -513,6 +635,7 @@ app.post('/presences/:id/valider', (req, res) => {
   try {
     const presences = readJsonFile(PRESENCES_FILE);
     const index = presences.findIndex(p => p.id === id);
+
     if (index === -1) {
       return res.status(404).json({ success: false, error: 'Présence non trouvée' });
     }
@@ -532,18 +655,22 @@ app.post('/presences/:id/valider', (req, res) => {
     } else {
       throw new Error('Failed to write presence file');
     }
+
   } catch (error) {
     console.error('❌ Error validating payment:', error);
     res.status(500).json({ success: false, error: 'Server error' });
   }
 });
 
+// ✅ DELETE /presences/:id - FOR ADMIN DELETION
 app.delete('/presences/:id', (req, res) => {
   const { id } = req.params;
   console.log(`🗑️ DELETING presence ${id}`);
+
   try {
     const presences = readJsonFile(PRESENCES_FILE);
     const filteredPresences = presences.filter(p => p.id !== id);
+
     if (filteredPresences.length === presences.length) {
       return res.status(404).json({ success: false, error: 'Présence non trouvée' });
     }
@@ -554,6 +681,7 @@ app.delete('/presences/:id', (req, res) => {
     } else {
       throw new Error('Failed to write presence file');
     }
+
   } catch (error) {
     console.error('❌ Error deleting presence:', error);
     res.status(500).json({ success: false, error: 'Server error' });
@@ -576,9 +704,11 @@ app.get('/presences/history/:date', (req, res) => {
     const { date } = req.params;
     const history = readJsonFile(PRESENCE_HISTORY_FILE);
     const dayHistory = history.find(h => h.date === date);
+
     if (!dayHistory) {
       return res.json({ success: true, presences: [] });
     }
+
     res.json({ success: true, presences: dayHistory.presences });
   } catch (error) {
     res.status(500).json({ success: false, error: 'Server error' });
@@ -604,9 +734,9 @@ app.post('/presences/archive', (req, res) => {
     writeJsonFile(PRESENCE_HISTORY_FILE, history);
     writeJsonFile(PRESENCES_FILE, []);
 
-    res.json({ 
-      success: true, 
-      message: `${currentPresences.length} presences gearchiveerd voor ${today}` 
+    res.json({
+      success: true,
+      message: `${currentPresences.length} presences gearchiveerd voor ${today}`
     });
   } catch (error) {
     res.status(500).json({ success: false, error: 'Server error' });
@@ -633,6 +763,7 @@ app.get('/non-members', (req, res) => {
 app.post('/non-members', (req, res) => {
   console.log('=== NEW NON-MEMBER REQUEST ===');
   console.log('Request body:', JSON.stringify(req.body, null, 2));
+
   try {
     const nonMembers = readJsonFile(NON_MEMBERS_FILE);
     const newNonMember = {
@@ -667,12 +798,14 @@ app.get('/api/stats/today', (req, res) => {
   try {
     const presences = readJsonFile(PRESENCES_FILE);
     const today = new Date().toISOString().split('T')[0];
-    const todayPresences = presences.filter(p => 
+
+    const todayPresences = presences.filter(p =>
       p.date && p.date.startsWith(today)
     );
 
     const adherents = todayPresences.filter(p => p.type === 'adherent').length;
     const nonAdherents = todayPresences.filter(p => p.type === 'non-adherent').length;
+
     const totalRevenue = todayPresences
       .filter(p => p.tarif && typeof p.tarif === 'number')
       .reduce((sum, p) => sum + p.tarif, 0);
@@ -737,6 +870,7 @@ if (exportService) {
     try {
       const { year } = req.params;
       const yearInt = parseInt(year);
+
       if (!yearInt || yearInt < 2020 || yearInt > 2030) {
         return res.status(400).json({
           success: false,
@@ -777,7 +911,10 @@ app.use((req, res) => {
       'GET /presences/:id',
       'POST /presences/:id/valider',
       'DELETE /presences/:id',
-      'GET /api/stats/today'
+      'GET /api/stats/today',
+      'POST /save-non-member',
+      'POST /quick-non-member',
+      'GET /saved-non-members'
     ]
   });
 });
@@ -791,209 +928,22 @@ app.use((error, req, res, next) => {
   });
 });
 
-
-// ===== NIEUWE NIET-LEDEN OPSLAG ENDPOINTS =====
-
-// Pad naar niet-leden bestand
-const NON_MEMBERS_FILE = path.join(__dirname, 'data', 'saved-non-members.json');
-
-// Zorg dat saved-non-members.json bestand bestaat
-if (!fs.existsSync(NON_MEMBERS_FILE)) {
-  fs.writeFileSync(NON_MEMBERS_FILE, JSON.stringify([], null, 2));
-  console.log('✅ saved-non-members.json bestand aangemaakt');
-}
-
-// Helper functie om niet-leden te laden
-function loadSavedNonMembers() {
-  try {
-    if (fs.existsSync(NON_MEMBERS_FILE)) {
-      const data = fs.readFileSync(NON_MEMBERS_FILE, 'utf8');
-      return JSON.parse(data);
-    }
-  } catch (error) {
-    console.error('Error loading saved non-members:', error);
-  }
-  return [];
-}
-
-// Helper functie om niet-leden op te slaan
-function saveSavedNonMembers(nonMembers) {
-  try {
-    fs.writeFileSync(NON_MEMBERS_FILE, JSON.stringify(nonMembers, null, 2));
-    console.log(`✅ Saved non-members bijgewerkt: ${nonMembers.length} entries`);
-    return true;
-  } catch (error) {
-    console.error('Error saving non-members:', error);
-    return false;
-  }
-}
-
-// POST /save-non-member - Sla niet-lid op na volledige registratie
-app.post('/save-non-member', (req, res) => {
-  try {
-    console.log('=== SAVE NON-MEMBER REQUEST ===');
-    console.log('Request body:', req.body);
-
-    const { nom, prenom, email, telephone, dateNaissance, niveau, assuranceAccepted, age, tarif } = req.body;
-
-    // Valideer verplichte velden
-    if (!nom || !prenom || !email || !dateNaissance || niveau === undefined) {
-      return res.status(400).json({
-        success: false,
-        error: 'Verplichte velden ontbreken'
-      });
-    }
-
-    // Laad huidige niet-leden
-    const savedNonMembers = loadSavedNonMembers();
-
-    // Check of deze niet-lid al bestaat (op basis van naam, voornaam en geboortedatum)
-    const existingIndex = savedNonMembers.findIndex(member => 
-      member.nom.toLowerCase() === nom.toLowerCase() &&
-      member.prenom.toLowerCase() === prenom.toLowerCase() &&
-      member.dateNaissance === dateNaissance
-    );
-
-    const nonMemberData = {
-      id: existingIndex >= 0 ? savedNonMembers[existingIndex].id : Date.now().toString(),
-      nom: nom.trim(),
-      prenom: prenom.trim(),
-      email: email.trim(),
-      telephone: telephone || '',
-      dateNaissance,
-      niveau: parseInt(niveau),
-      assuranceAccepted: assuranceAccepted || true,
-      age,
-      tarif,
-      savedAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
-    };
-
-    if (existingIndex >= 0) {
-      // Update bestaande entry
-      nonMemberData.savedAt = savedNonMembers[existingIndex].savedAt; // Behoud originele datum
-      savedNonMembers[existingIndex] = nonMemberData;
-      console.log(`✅ Non-member bijgewerkt: ${nom} ${prenom}`);
-    } else {
-      // Nieuwe entry toevoegen
-      savedNonMembers.push(nonMemberData);
-      console.log(`✅ Nieuwe non-member opgeslagen: ${nom} ${prenom}`);
-    }
-
-    // Sla op naar bestand
-    if (saveSavedNonMembers(savedNonMembers)) {
-      res.json({
-        success: true,
-        message: 'Niet-lid succesvol opgeslagen',
-        nonMember: nonMemberData
-      });
-    } else {
-      throw new Error('Fout bij opslaan naar bestand');
-    }
-
-  } catch (error) {
-    console.error('❌ SAVE NON-MEMBER ERROR:', error);
-    res.status(500).json({
-      success: false,
-      error: 'Server error bij opslaan niet-lid'
-    });
-  }
-});
-
-// POST /quick-non-member - Zoek opgeslagen niet-lid voor snelle registratie
-app.post('/quick-non-member', (req, res) => {
-  try {
-    console.log('=== QUICK NON-MEMBER LOOKUP ===');
-    console.log('Request body:', req.body);
-
-    const { nom, prenom, dateNaissance } = req.body;
-
-    if (!nom || !prenom || !dateNaissance) {
-      return res.status(400).json({
-        success: false,
-        error: 'Naam, voornaam en geboortedatum zijn verplicht'
-      });
-    }
-
-    // Laad opgeslagen niet-leden
-    const savedNonMembers = loadSavedNonMembers();
-    console.log(`Zoeken in ${savedNonMembers.length} opgeslagen niet-leden`);
-
-    // Zoek match (case-insensitive voor namen)
-    const foundMember = savedNonMembers.find(member => 
-      member.nom.toLowerCase().trim() === nom.toLowerCase().trim() &&
-      member.prenom.toLowerCase().trim() === prenom.toLowerCase().trim() &&
-      member.dateNaissance === dateNaissance
-    );
-
-    if (foundMember) {
-      console.log(`✅ Niet-lid gevonden: ${foundMember.nom} ${foundMember.prenom}`);
-      res.json({
-        success: true,
-        message: 'Niet-lid gevonden',
-        nonMember: foundMember
-      });
-    } else {
-      console.log(`❌ Geen match gevonden voor: ${nom} ${prenom} ${dateNaissance}`);
-      res.json({
-        success: false,
-        message: 'Aucune inscription trouvée avec ces données. Vérifiez l\'orthographe ou utilisez "Première inscription".'
-      });
-    }
-
-  } catch (error) {
-    console.error('❌ QUICK NON-MEMBER LOOKUP ERROR:', error);
-    res.status(500).json({
-      success: false,
-      error: 'Server error bij zoeken niet-lid'
-    });
-  }
-});
-
-// GET /saved-non-members - Lijst alle opgeslagen niet-leden (voor debug/admin)
-app.get('/saved-non-members', (req, res) => {
-  try {
-    const savedNonMembers = loadSavedNonMembers();
-    res.json({
-      success: true,
-      count: savedNonMembers.length,
-      nonMembers: savedNonMembers.map(member => ({
-        id: member.id,
-        nom: member.nom,
-        prenom: member.prenom,
-        dateNaissance: member.dateNaissance,
-        niveau: member.niveau,
-        savedAt: member.savedAt,
-        updatedAt: member.updatedAt
-      }))
-    });
-  } catch (error) {
-    console.error('❌ GET SAVED NON-MEMBERS ERROR:', error);
-    res.status(500).json({
-      success: false,
-      error: 'Server error bij ophalen niet-leden lijst'
-    });
-  }
-});
-
-
-// ===== SERVER STARTUP - LUISTERT OP ALLE INTERFACES =====
-const server = app.listen(PORT, '0.0.0.0', () => {
+// ===== SERVER STARTUP =====
+const server = app.listen(PORT, 'localhost', () => {
   console.log('🎉 ======================================');
   console.log('🎉 DEFINITIEVE BACKEND GESTART!');
   console.log('🎉 ======================================');
-  console.log(`✅ Backend: http://0.0.0.0:${PORT}`);
-  console.log(`✅ Local: http://localhost:${PORT}`);
-  console.log(`✅ Network Range: http://192.168.*.*:${PORT}`);
+  console.log(`✅ Backend: http://localhost:${PORT}`);
   console.log(`📊 Admin: http://localhost:${PORT}/admin`);
   console.log(`💚 Health: http://localhost:${PORT}/api/health`);
-  console.log('🌐 CORS: Supports entire 192.168.*.* network');
   console.log('🎉 ======================================');
 
   // Test data files
   setTimeout(() => {
     const presences = readJsonFile(PRESENCES_FILE);
+    const savedNonMembers = readJsonFile(SAVED_NON_MEMBERS_FILE);
     console.log(`📊 Current presences count: ${presences.length}`);
+    console.log(`📊 Saved non-members count: ${savedNonMembers.length}`);
   }, 1000);
 });
 
