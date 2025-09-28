@@ -133,10 +133,10 @@ const logFailedLoginAttempt = (nom, prenom, failureReason) => {
 app.use(cors({
   origin: [
     'http://localhost:3000',
-    'http://localhost:3001',
+    'http://localhost:3001', // ✅ TOEGEVOEGD: Admin interface zelf
     'http://localhost:3002',
     'http://127.0.0.1:3000',
-    'http://127.0.0.1:3001',
+    'http://127.0.0.1:3001', // ✅ TOEGEVOEGD: Admin interface zelf
     'http://127.0.0.1:3002'
   ],
   credentials: true,
@@ -191,7 +191,7 @@ if (!syncService) {
 let exportService;
 let cleanupService;
 
-// Try to load services
+// Probeer services te laden
 try {
   exportService = require('./export-service');
   console.log('✅ Export service loaded');
@@ -261,7 +261,7 @@ cron.schedule('5 * * * *', async () => {
   }
 }, {
   scheduled: true,
-  timezone: "Europe/Brussels"
+  timezone: "Europe/Brussels" // Belgische tijdzone
 });
 
 // ===== SYNC ON STARTUP (OPTIONEEL) =====
@@ -326,7 +326,7 @@ app.get('/admin', (req, res) => {
 });
 
 // ===== MEMBERS ROUTES =====
-// ✅ UPDATED: Nu met failed login attempt logging
+// ✅ FIXED: Nu kijkt naar joinFileStatusLabel in plaats van categories
 app.get('/members/check', (req, res) => {
   const { nom, prenom } = req.query;
 
@@ -359,15 +359,44 @@ app.get('/members/check', (req, res) => {
       });
     }
 
-    const isAdherent = Array.isArray(member.categories) &&
-      member.categories.some(c =>
-        typeof c.label === 'string' &&
-        c.label.toLowerCase().includes('adhérent')
-      );
+    console.log('✅ Member found in PepSup, checking payment status...');
+    console.log('📋 Member data:', {
+      name: `${member.firstname} ${member.lastname}`,
+      joinFileStatusLabel: member.joinFileStatusLabel,
+      categories: member.categories ? member.categories.map(c => c.label).join(', ') : 'No categories'
+    });
 
-    if (isAdherent) {
-      // ✅ SUCCESS: Lid gevonden en is adherent - normale presence aanmaken
-      console.log('✅ Member found and is adherent - creating successful presence');
+    // ✅ FIXED: Check joinFileStatusLabel instead of categories
+    const joinStatus = member.joinFileStatusLabel;
+
+    if (!joinStatus) {
+      console.log('❌ No joinFileStatusLabel found - logging failed attempt');
+      logFailedLoginAttempt(nom, prenom, 'tentative non-adhérent');
+
+      return res.json({
+        success: false,
+        error: "Statut d'adhésion non trouvé. Merci de vous inscrire comme visiteur."
+      });
+    }
+
+    console.log(`💳 Join file status: "${joinStatus}"`);
+
+    // ✅ FIXED: Specific check for "À payer" status
+    if (joinStatus === "À payer") {
+      console.log('❌ Member has "À payer" status - logging failed attempt');
+
+      // ✅ LOG FAILED ATTEMPT: lid gevonden maar nog niet betaald
+      logFailedLoginAttempt(nom, prenom, 'tentative non-payé');
+
+      return res.json({
+        success: false,
+        error: "Vous n'avez pas encore payé votre adhésion"
+      });
+    }
+
+    // ✅ FIXED: Allow "Payé" and "En cours de paiement"
+    if (joinStatus === "Payé" || joinStatus === "En cours de paiement") {
+      console.log(`✅ Member has valid payment status: "${joinStatus}" - creating successful presence`);
 
       const presences = readJsonFile(PRESENCES_FILE);
 
@@ -381,7 +410,8 @@ app.get('/members/check', (req, res) => {
         niveau: 'N/A', // Niveau niet beschikbaar vanuit PepSup
         tarif: 0, // Gratis voor adherents
         methodePaiement: 'N/A',
-        membre: member
+        membre: member,
+        joinFileStatus: joinStatus
       };
 
       presences.push(successfulLogin);
@@ -394,16 +424,17 @@ app.get('/members/check', (req, res) => {
         membre: member
       });
     } else {
-      console.log('❌ Member found but not adherent - logging failed attempt');
+      console.log(`❌ Member has unknown payment status: "${joinStatus}" - logging failed attempt`);
 
-      // ✅ LOG FAILED ATTEMPT: lid gevonden maar niet betaald/adherent
+      // ✅ LOG FAILED ATTEMPT: onbekende status
       logFailedLoginAttempt(nom, prenom, 'tentative non-payé');
 
       return res.json({
         success: false,
-        error: "Vous n'êtes pas enregistré comme adhérent. Merci de vous inscrire comme visiteur."
+        error: "Statut d'adhésion non reconnu. Merci de contacter l'administration."
       });
     }
+
   } catch (error) {
     console.error('Error in member check:', error);
     return res.status(500).json({
@@ -908,7 +939,7 @@ app.get('/api/stats/today', (req, res) => {
   }
 });
 
-// ===== ✅ EXPORT ROUTES MET WERKENDE JAREN FUNCTIONALITEIT =====
+// ===== EXPORT ROUTES =====
 if (exportService) {
   app.post('/admin/export/season', (req, res) => {
     try {

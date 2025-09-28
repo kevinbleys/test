@@ -164,5 +164,89 @@
     "methodePaiement": "N/A",
     "failedLoginReason": "tentative non-adhérent",
     "isFailedAttempt": true
+  },
+  {
+    "id": "1759071300383",
+    "type": "adherent",
+    "nom": "clarens",
+    "prenom": "isaure",
+    "date": "2025-09-28T14:55:00.383Z",
+    "status": "adherent",
+    "niveau": "N/A",
+    "tarif": 0,
+    "methodePaiement": "N/A",
+    "membre": {
+      "membreId": 481848,
+      "currentPictureUrl": null,
+      "firstname": "ISAURE",
+      "lastname": "CLARENS",
+      "dateOfBirth": "16/12/1985",
+      "age": 39,
+      "gender": "femme",
+      "address": "rue de Strasbourg",
+      "additional": null,
+      "postalCode": "65300",
+      "town": "LANNEMEZAN",
+      "country": "FRANCE",
+      "phoneNumber": null,
+      "mobilePhoneNumber": "+33660733139",
+      "email": "isaure.clarens@laposte.net",
+      "allergy": null,
+      "personToContact": null,
+      "personToContactPhoneNumber": "+33660733139",
+      "corporateName": null,
+      "office": null,
+      "account": true,
+      "dateLastConnexion": "04/09/2025, 15:15",
+      "emailValid": true,
+      "notificationActive": true,
+      "joinFileStatusLabel": "À payer",
+      "joinFileLastPaymentType": null,
+      "joinFileLastPaymentDate": null,
+      "childsLabel": "",
+      "childMembers": [],
+      "parentsLabel": "",
+      "parentMembers": [],
+      "groups": [],
+      "categories": [
+        {
+          "label": "Adhérent"
+        }
+      ],
+      "roles": [],
+      "medicalCertificateUrl": null,
+      "dateMedicalCertificate": null,
+      "licence": "712 828",
+      "customFields": [
+        {
+          "label": "documents utiles",
+          "value": null
+        },
+        {
+          "label": "Ville de naissance",
+          "value": "LANNEMEZAN"
+        },
+        {
+          "label": "code postale Ville de naissance",
+          "value": null
+        },
+        {
+          "label": "Pays de naissance",
+          "value": "FRANCE"
+        },
+        {
+          "label": "Nationalité",
+          "value": "française"
+        }
+      ]
+    }
+  },
+  {
+    "id": "1759071300395",
+    "type": "adherent",
+    "nom": "clarens",
+    "prenom": "isaure",
+    "date": "2025-09-28T14:55:00.395Z",
+    "status": "adherent"
   }
 ]
