@@ -833,7 +833,7 @@ app.get('/api/stats/today', (req, res) => {
   }
 });
 
-// ===== EXPORT ROUTES =====
+// ===== ✅ EXPORT ROUTES MET WERKENDE JAREN FUNCTIONALITEIT =====
 if (exportService) {
   app.post('/admin/export/season', (req, res) => {
     try {

@@ -11,9 +11,7 @@ const EXPORTS_DIR = path.join(DATA_DIR, 'exports');
 const logMessage = (message) => {
   const timestamp = new Date().toISOString();
   const logEntry = `[${timestamp}] ${message}\n`;
-
   console.log(logEntry.trim());
-
   try {
     const logPath = path.join(DATA_DIR, 'export.log');
     fs.appendFileSync(logPath, logEntry);
@@ -34,30 +32,37 @@ const ensureExportsDir = () => {
 const readJsonFile = (filePath) => {
   try {
     if (!fs.existsSync(filePath)) {
+      console.log(`⚠️ File ${path.basename(filePath)} does not exist, returning empty array`);
       return [];
     }
     const data = fs.readFileSync(filePath, 'utf8');
-    return JSON.parse(data);
+    const parsed = JSON.parse(data);
+    return Array.isArray(parsed) ? parsed : [];
   } catch (error) {
-    logMessage(`Error reading ${path.basename(filePath)}: ${error.message}`);
+    console.error(`❌ Error reading ${path.basename(filePath)}:`, error.message);
     return [];
   }
 };
 
 // Get all presence data (current + history)
 const getAllPresences = () => {
+  console.log('🔍 Loading all presences from files...');
   const currentPresences = readJsonFile(PRESENCES_FILE);
   const history = readJsonFile(PRESENCE_HISTORY_FILE);
 
   let allPresences = [...currentPresences];
+  console.log(`📋 Current presences: ${currentPresences.length}`);
 
   // Add historical presences
-  history.forEach(dayData => {
-    if (dayData.presences && Array.isArray(dayData.presences)) {
-      allPresences = allPresences.concat(dayData.presences);
-    }
-  });
+  if (Array.isArray(history)) {
+    history.forEach(dayData => {
+      if (dayData.presences && Array.isArray(dayData.presences)) {
+        allPresences = allPresences.concat(dayData.presences);
+      }
+    });
+  }
 
+  console.log(`📊 Total presences loaded: ${allPresences.length}`);
   return allPresences;
 };
 
@@ -81,7 +86,7 @@ const getCurrentSeason = () => {
 };
 
 // Export season data to Excel
-const exportSeasonToExcel = () => {
+const exportSeasonToExcel = async () => {
   try {
     ensureExportsDir();
     logMessage('=== EXPORT SEASON TO EXCEL STARTED ===');
@@ -255,20 +260,26 @@ const exportYearToExcel = async (year) => {
 // Get available years from data
 const getAvailableYears = () => {
   try {
+    console.log('🔍 Getting available years from presence data...');
     const allPresences = getAllPresences();
     const years = new Set();
 
     allPresences.forEach(presence => {
       if (presence.date) {
         const year = new Date(presence.date).getFullYear();
-        years.add(year);
+        if (year >= 2020 && year <= 2030) { // Reasonable range
+          years.add(year);
+        }
       }
     });
 
-    return Array.from(years).sort((a, b) => b - a); // Most recent first
+    const yearList = Array.from(years).sort((a, b) => b - a); // Most recent first
+    console.log(`📊 Available years: ${yearList.join(', ')}`);
+
+    return yearList;
 
   } catch (error) {
-    logMessage(`ERROR in getAvailableYears: ${error.message}`);
+    console.error(`❌ ERROR in getAvailableYears: ${error.message}`);
     return [];
   }
 };
@@ -276,5 +287,7 @@ const getAvailableYears = () => {
 module.exports = {
   exportSeasonToExcel,
   exportYearToExcel,
-  getAvailableYears
+  getAvailableYears,
+  getAllPresences,
+  getCurrentSeason
 };

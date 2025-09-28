@@ -1,0 +1,16 @@
+[
+  {
+    "id": "1759056324612",
+    "nom": "bleys",
+    "prenom": "joke",
+    "email": "bleysjoke@gmail.com",
+    "telephone": "0562409746",
+    "dateNaissance": "1983-03-02",
+    "niveau": 2,
+    "assuranceAccepted": true,
+    "age": 42,
+    "tarif": 10,
+    "savedAt": "2025-09-28T10:45:24.612Z",
+    "updatedAt": "2025-09-28T10:45:24.612Z"
+  }
+]

@@ -11,7 +11,42 @@
     "tarif": 10,
     "niveau": "1",
     "assuranceAccepted": true,
-    "status": "pending",
-    "methodePaiement": "Especes"
+    "status": "Payé",
+    "methodePaiement": "Especes",
+    "dateValidation": "2025-09-27T11:39:58.636Z"
+  },
+  {
+    "id": "1759056324601",
+    "type": "non-adherent",
+    "nom": "bleys",
+    "prenom": "joke",
+    "date": "2025-09-28T10:45:24.601Z",
+    "email": "bleysjoke@gmail.com",
+    "telephone": "0562409746",
+    "dateNaissance": "1983-03-02",
+    "tarif": 10,
+    "niveau": "2",
+    "assuranceAccepted": true,
+    "status": "Payé",
+    "methodePaiement": "Especes",
+    "dateValidation": "2025-09-28T10:45:35.260Z"
+  },
+  {
+    "id": "1759056354298",
+    "type": "non-adherent",
+    "nom": "bleys",
+    "prenom": "joke",
+    "date": "2025-09-28T10:45:54.298Z",
+    "email": "bleysjoke@gmail.com",
+    "telephone": "0562409746",
+    "dateNaissance": "1983-03-02",
+    "niveau": "2",
+    "assuranceAccepted": true,
+    "tarif": 10,
+    "status": "Payé",
+    "age": 42,
+    "quickRegistration": true,
+    "methodePaiement": "Especes",
+    "dateValidation": "2025-09-28T10:46:04.711Z"
   }
 ]
