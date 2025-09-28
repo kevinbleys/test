@@ -97,6 +97,38 @@ const writeJsonFile = (filePath, data) => {
   }
 };
 
+// ✅ NIEUWE FUNCTIE: LOG FAILED LOGIN ATTEMPTS
+const logFailedLoginAttempt = (nom, prenom, failureReason) => {
+  try {
+    console.log(`🚨 FAILED LOGIN ATTEMPT: ${nom} ${prenom} - ${failureReason}`);
+
+    const presences = readJsonFile(PRESENCES_FILE);
+
+    // Maak een failed login entry (ziet eruit als normale presence maar met failed status)
+    const failedAttempt = {
+      id: Date.now().toString(),
+      type: 'failed-login',
+      nom: nom.trim(),
+      prenom: prenom.trim(),
+      date: new Date().toISOString(),
+      status: failureReason, // "tentative non-payé" of "tentative non-adhérent"
+      tarif: 0, // Geen tarief voor failed attempts
+      methodePaiement: 'N/A',
+      failedLoginReason: failureReason,
+      isFailedAttempt: true // Flag om te identificeren
+    };
+
+    presences.push(failedAttempt);
+
+    if (writeJsonFile(PRESENCES_FILE, presences)) {
+      console.log(`✅ Failed login attempt logged: ${nom} ${prenom} - ${failureReason}`);
+    }
+
+  } catch (error) {
+    console.error('❌ Error logging failed login attempt:', error);
+  }
+};
+
 // Middleware
 app.use(cors({
   origin: [
@@ -294,6 +326,7 @@ app.get('/admin', (req, res) => {
 });
 
 // ===== MEMBERS ROUTES =====
+// ✅ UPDATED: Nu met failed login attempt logging
 app.get('/members/check', (req, res) => {
   const { nom, prenom } = req.query;
 
@@ -315,6 +348,11 @@ app.get('/members/check', (req, res) => {
     );
 
     if (!member) {
+      console.log('❌ Member not found - logging failed attempt');
+
+      // ✅ LOG FAILED ATTEMPT: lid niet gevonden
+      logFailedLoginAttempt(nom, prenom, 'tentative non-adhérent');
+
       return res.json({
         success: false,
         error: "Aucun membre trouvé avec ce nom et prénom"
@@ -328,6 +366,27 @@ app.get('/members/check', (req, res) => {
       );
 
     if (isAdherent) {
+      // ✅ SUCCESS: Lid gevonden en is adherent - normale presence aanmaken
+      console.log('✅ Member found and is adherent - creating successful presence');
+
+      const presences = readJsonFile(PRESENCES_FILE);
+
+      const successfulLogin = {
+        id: Date.now().toString(),
+        type: 'adherent',
+        nom: nom.trim(),
+        prenom: prenom.trim(),
+        date: new Date().toISOString(),
+        status: 'adherent',
+        niveau: 'N/A', // Niveau niet beschikbaar vanuit PepSup
+        tarif: 0, // Gratis voor adherents
+        methodePaiement: 'N/A',
+        membre: member
+      };
+
+      presences.push(successfulLogin);
+      writeJsonFile(PRESENCES_FILE, presences);
+
       return res.json({
         success: true,
         isPaid: true,
@@ -335,6 +394,11 @@ app.get('/members/check', (req, res) => {
         membre: member
       });
     } else {
+      console.log('❌ Member found but not adherent - logging failed attempt');
+
+      // ✅ LOG FAILED ATTEMPT: lid gevonden maar niet betaald/adherent
+      logFailedLoginAttempt(nom, prenom, 'tentative non-payé');
+
       return res.json({
         success: false,
         error: "Vous n'êtes pas enregistré comme adhérent. Merci de vous inscrire comme visiteur."
@@ -600,6 +664,12 @@ app.post('/presences', (req, res) => {
       if (req.body.niveau !== undefined) newPresence.niveau = req.body.niveau.toString();
       if (req.body.assuranceAccepted !== undefined) newPresence.assuranceAccepted = req.body.assuranceAccepted;
       if (req.body.quickRegistration) newPresence.quickRegistration = true;
+    } else if (type === 'failed-login') {
+      // ✅ Handle failed login entries (voor export purposes)
+      newPresence.status = req.body.status || 'tentative failed';
+      newPresence.tarif = 0;
+      newPresence.methodePaiement = 'N/A';
+      newPresence.isFailedAttempt = true;
     }
 
     presences.push(newPresence);
@@ -803,20 +873,25 @@ app.get('/api/stats/today', (req, res) => {
       p.date && p.date.startsWith(today)
     );
 
-    const adherents = todayPresences.filter(p => p.type === 'adherent').length;
-    const nonAdherents = todayPresences.filter(p => p.type === 'non-adherent').length;
+    // ✅ UPDATED: Exclude failed attempts from main counts (maar toon ze wel in admin)
+    const validPresences = todayPresences.filter(p => p.type !== 'failed-login');
+    const failedAttempts = todayPresences.filter(p => p.type === 'failed-login');
 
-    const totalRevenue = todayPresences
+    const adherents = validPresences.filter(p => p.type === 'adherent').length;
+    const nonAdherents = validPresences.filter(p => p.type === 'non-adherent').length;
+
+    const totalRevenue = validPresences
       .filter(p => p.tarif && typeof p.tarif === 'number')
       .reduce((sum, p) => sum + p.tarif, 0);
 
     const stats = {
       date: today,
-      total: todayPresences.length,
+      total: validPresences.length,
       adherents,
       nonAdherents,
       revenue: totalRevenue,
-      presences: todayPresences
+      failedAttempts: failedAttempts.length, // ✅ Aantal failed attempts
+      presences: todayPresences // Alle presences inclusief failed attempts
     };
 
     console.log('📊 TODAY STATS:', stats);

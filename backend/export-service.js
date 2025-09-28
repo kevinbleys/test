@@ -44,9 +44,9 @@ const readJsonFile = (filePath) => {
   }
 };
 
-// Get all presence data (current + history)
+// Get all presence data (current + history) - ✅ INCLUDES FAILED ATTEMPTS
 const getAllPresences = () => {
-  console.log('🔍 Loading all presences from files...');
+  console.log('🔍 Loading all presences from files (including failed attempts)...');
   const currentPresences = readJsonFile(PRESENCES_FILE);
   const history = readJsonFile(PRESENCE_HISTORY_FILE);
 
@@ -62,7 +62,17 @@ const getAllPresences = () => {
     });
   }
 
-  console.log(`📊 Total presences loaded: ${allPresences.length}`);
+  console.log(`📊 Total presences loaded (including failed attempts): ${allPresences.length}`);
+
+  // ✅ Log breakdown by type
+  const breakdown = {
+    adherents: allPresences.filter(p => p.type === 'adherent').length,
+    nonAdherents: allPresences.filter(p => p.type === 'non-adherent').length,
+    failedAttempts: allPresences.filter(p => p.type === 'failed-login').length
+  };
+
+  console.log(`📊 Breakdown - Adherents: ${breakdown.adherents}, Non-adherents: ${breakdown.nonAdherents}, Failed attempts: ${breakdown.failedAttempts}`);
+
   return allPresences;
 };
 
@@ -85,11 +95,11 @@ const getCurrentSeason = () => {
   };
 };
 
-// Export season data to Excel
+// ✅ UPDATED: Export season data to Excel INCLUDING FAILED ATTEMPTS
 const exportSeasonToExcel = async () => {
   try {
     ensureExportsDir();
-    logMessage('=== EXPORT SEASON TO EXCEL STARTED ===');
+    logMessage('=== EXPORT SEASON TO EXCEL STARTED (INCLUDING FAILED ATTEMPTS) ===');
 
     const season = getCurrentSeason();
     const allPresences = getAllPresences();
@@ -101,16 +111,25 @@ const exportSeasonToExcel = async () => {
       return presenceDate >= season.startDate && presenceDate <= season.endDate;
     });
 
-    logMessage(`Found ${seasonPresences.length} presences for season ${season.name}`);
+    logMessage(`Found ${seasonPresences.length} total presences for season ${season.name}`);
+
+    // ✅ Breakdown by type including failed attempts
+    const breakdown = {
+      adherents: seasonPresences.filter(p => p.type === 'adherent').length,
+      nonAdherents: seasonPresences.filter(p => p.type === 'non-adherent').length,
+      failedAttempts: seasonPresences.filter(p => p.type === 'failed-login').length
+    };
+
+    logMessage(`Season breakdown - Adherents: ${breakdown.adherents}, Non-adherents: ${breakdown.nonAdherents}, Failed attempts: ${breakdown.failedAttempts}`);
 
     // Create workbook
     const workbook = new ExcelJS.Workbook();
     const worksheet = workbook.addWorksheet(`Saison ${season.name}`);
 
-    // Add headers
+    // ✅ UPDATED: Add headers with status column to show failed attempts
     worksheet.columns = [
       { header: 'Date', key: 'date', width: 12 },
-      { header: 'Type', key: 'type', width: 15 },
+      { header: 'Type', key: 'type', width: 20 },
       { header: 'Nom', key: 'nom', width: 20 },
       { header: 'Prénom', key: 'prenom', width: 20 },
       { header: 'Email', key: 'email', width: 25 },
@@ -119,25 +138,44 @@ const exportSeasonToExcel = async () => {
       { header: 'Niveau', key: 'niveau', width: 10 },
       { header: 'Tarif', key: 'tarif', width: 8 },
       { header: 'Méthode Paiement', key: 'methodePaiement', width: 15 },
-      { header: 'Status', key: 'status', width: 12 },
-      { header: 'Assurance', key: 'assuranceAccepted', width: 12 }
+      { header: 'Statut', key: 'status', width: 20 },
+      { header: 'Assurance', key: 'assuranceAccepted', width: 12 },
+      { header: 'Type Tentative', key: 'attemptType', width: 25 }
     ];
 
     // Add data rows
     seasonPresences.forEach(presence => {
+      // ✅ UPDATED: Handle different types including failed attempts
+      let typeDisplay, statusDisplay, attemptTypeDisplay = '';
+
+      if (presence.type === 'failed-login') {
+        typeDisplay = 'Tentative Échec';
+        statusDisplay = presence.status || 'Failed Login';
+        attemptTypeDisplay = presence.failedLoginReason || presence.status || 'Login Failed';
+      } else if (presence.type === 'adherent') {
+        typeDisplay = 'Adhérent';
+        statusDisplay = 'Adhérent Valide';
+        attemptTypeDisplay = 'Login Réussi';
+      } else {
+        typeDisplay = 'Non-adhérent';
+        statusDisplay = presence.status || 'Pending';
+        attemptTypeDisplay = 'Registration Réussie';
+      }
+
       worksheet.addRow({
         date: presence.date ? new Date(presence.date).toLocaleDateString('fr-FR') : '',
-        type: presence.type || '',
+        type: typeDisplay,
         nom: presence.nom || '',
         prenom: presence.prenom || '',
         email: presence.email || '',
         telephone: presence.telephone || '',
         dateNaissance: presence.dateNaissance || '',
         niveau: presence.niveau || '',
-        tarif: presence.tarif || '',
-        methodePaiement: presence.methodePaiement || '',
-        status: presence.status || '',
-        assuranceAccepted: presence.assuranceAccepted ? 'Oui' : 'Non'
+        tarif: presence.type === 'failed-login' ? 'N/A' : (presence.tarif || ''),
+        methodePaiement: presence.type === 'failed-login' ? 'N/A' : (presence.methodePaiement || ''),
+        status: statusDisplay,
+        assuranceAccepted: presence.assuranceAccepted ? 'Oui' : (presence.type === 'failed-login' ? 'N/A' : 'Non'),
+        attemptType: attemptTypeDisplay
       });
     });
 
@@ -150,19 +188,38 @@ const exportSeasonToExcel = async () => {
       fgColor: { argb: 'FFE0E0E0' }
     };
 
+    // ✅ NOUVEAU: Highlight failed attempts in red
+    for (let i = 2; i <= seasonPresences.length + 1; i++) {
+      const row = worksheet.getRow(i);
+      const typeCell = row.getCell(2); // Type column
+
+      if (typeCell.value === 'Tentative Échec') {
+        row.fill = {
+          type: 'pattern',
+          pattern: 'solid',
+          fgColor: { argb: 'FFFEE2E2' } // Light red background
+        };
+
+        // Make text red for failed attempts
+        row.font = { color: { argb: 'FFDC2626' } };
+      }
+    }
+
     // Save file
-    const filename = `Export_Saison_${season.name}.xlsx`;
+    const filename = `Export_Saison_${season.name}_avec_tentatives.xlsx`;
     const filepath = path.join(EXPORTS_DIR, filename);
 
     await workbook.xlsx.writeFile(filepath);
 
     logMessage(`Excel export saved: ${filename}`);
+    logMessage(`Total records: ${seasonPresences.length} (Adherents: ${breakdown.adherents}, Non-adherents: ${breakdown.nonAdherents}, Failed: ${breakdown.failedAttempts})`);
     logMessage('=== EXPORT SEASON TO EXCEL COMPLETED ===');
 
     return {
       filename,
       recordCount: seasonPresences.length,
       seasonName: season.name,
+      breakdown,
       filepath
     };
 
@@ -172,11 +229,11 @@ const exportSeasonToExcel = async () => {
   }
 };
 
-// Export specific year data to Excel
+// ✅ UPDATED: Export specific year data to Excel INCLUDING FAILED ATTEMPTS
 const exportYearToExcel = async (year) => {
   try {
     ensureExportsDir();
-    logMessage(`=== EXPORT YEAR ${year} TO EXCEL STARTED ===`);
+    logMessage(`=== EXPORT YEAR ${year} TO EXCEL STARTED (INCLUDING FAILED ATTEMPTS) ===`);
 
     const allPresences = getAllPresences();
 
@@ -187,16 +244,25 @@ const exportYearToExcel = async (year) => {
       return presenceDate.getFullYear() === year;
     });
 
-    logMessage(`Found ${yearPresences.length} presences for year ${year}`);
+    logMessage(`Found ${yearPresences.length} total presences for year ${year}`);
+
+    // ✅ Breakdown by type including failed attempts
+    const breakdown = {
+      adherents: yearPresences.filter(p => p.type === 'adherent').length,
+      nonAdherents: yearPresences.filter(p => p.type === 'non-adherent').length,
+      failedAttempts: yearPresences.filter(p => p.type === 'failed-login').length
+    };
+
+    logMessage(`Year ${year} breakdown - Adherents: ${breakdown.adherents}, Non-adherents: ${breakdown.nonAdherents}, Failed attempts: ${breakdown.failedAttempts}`);
 
     // Create workbook
     const workbook = new ExcelJS.Workbook();
     const worksheet = workbook.addWorksheet(`Année ${year}`);
 
-    // Add headers (same as season export)
+    // ✅ UPDATED: Same headers as season export
     worksheet.columns = [
       { header: 'Date', key: 'date', width: 12 },
-      { header: 'Type', key: 'type', width: 15 },
+      { header: 'Type', key: 'type', width: 20 },
       { header: 'Nom', key: 'nom', width: 20 },
       { header: 'Prénom', key: 'prenom', width: 20 },
       { header: 'Email', key: 'email', width: 25 },
@@ -205,25 +271,44 @@ const exportYearToExcel = async (year) => {
       { header: 'Niveau', key: 'niveau', width: 10 },
       { header: 'Tarif', key: 'tarif', width: 8 },
       { header: 'Méthode Paiement', key: 'methodePaiement', width: 15 },
-      { header: 'Status', key: 'status', width: 12 },
-      { header: 'Assurance', key: 'assuranceAccepted', width: 12 }
+      { header: 'Statut', key: 'status', width: 20 },
+      { header: 'Assurance', key: 'assuranceAccepted', width: 12 },
+      { header: 'Type Tentative', key: 'attemptType', width: 25 }
     ];
 
     // Add data rows
     yearPresences.forEach(presence => {
+      // ✅ Same logic as season export
+      let typeDisplay, statusDisplay, attemptTypeDisplay = '';
+
+      if (presence.type === 'failed-login') {
+        typeDisplay = 'Tentative Échec';
+        statusDisplay = presence.status || 'Failed Login';
+        attemptTypeDisplay = presence.failedLoginReason || presence.status || 'Login Failed';
+      } else if (presence.type === 'adherent') {
+        typeDisplay = 'Adhérent';
+        statusDisplay = 'Adhérent Valide';
+        attemptTypeDisplay = 'Login Réussi';
+      } else {
+        typeDisplay = 'Non-adhérent';
+        statusDisplay = presence.status || 'Pending';
+        attemptTypeDisplay = 'Registration Réussie';
+      }
+
       worksheet.addRow({
         date: presence.date ? new Date(presence.date).toLocaleDateString('fr-FR') : '',
-        type: presence.type || '',
+        type: typeDisplay,
         nom: presence.nom || '',
         prenom: presence.prenom || '',
         email: presence.email || '',
         telephone: presence.telephone || '',
         dateNaissance: presence.dateNaissance || '',
         niveau: presence.niveau || '',
-        tarif: presence.tarif || '',
-        methodePaiement: presence.methodePaiement || '',
-        status: presence.status || '',
-        assuranceAccepted: presence.assuranceAccepted ? 'Oui' : 'Non'
+        tarif: presence.type === 'failed-login' ? 'N/A' : (presence.tarif || ''),
+        methodePaiement: presence.type === 'failed-login' ? 'N/A' : (presence.methodePaiement || ''),
+        status: statusDisplay,
+        assuranceAccepted: presence.assuranceAccepted ? 'Oui' : (presence.type === 'failed-login' ? 'N/A' : 'Non'),
+        attemptType: attemptTypeDisplay
       });
     });
 
@@ -236,18 +321,37 @@ const exportYearToExcel = async (year) => {
       fgColor: { argb: 'FFE0E0E0' }
     };
 
+    // ✅ Highlight failed attempts in red
+    for (let i = 2; i <= yearPresences.length + 1; i++) {
+      const row = worksheet.getRow(i);
+      const typeCell = row.getCell(2); // Type column
+
+      if (typeCell.value === 'Tentative Échec') {
+        row.fill = {
+          type: 'pattern',
+          pattern: 'solid',
+          fgColor: { argb: 'FFFEE2E2' } // Light red background
+        };
+
+        // Make text red for failed attempts
+        row.font = { color: { argb: 'FFDC2626' } };
+      }
+    }
+
     // Save file
-    const filename = `Export_Année_${year}.xlsx`;
+    const filename = `Export_Année_${year}_avec_tentatives.xlsx`;
     const filepath = path.join(EXPORTS_DIR, filename);
 
     await workbook.xlsx.writeFile(filepath);
 
     logMessage(`Excel export saved: ${filename}`);
+    logMessage(`Total records: ${yearPresences.length} (Adherents: ${breakdown.adherents}, Non-adherents: ${breakdown.nonAdherents}, Failed: ${breakdown.failedAttempts})`);
     logMessage(`=== EXPORT YEAR ${year} TO EXCEL COMPLETED ===`);
 
     return {
       filename,
       recordCount: yearPresences.length,
+      breakdown,
       filepath
     };
 
