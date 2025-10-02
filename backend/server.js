@@ -97,10 +97,43 @@ const writeJsonFile = (filePath, data) => {
   }
 };
 
+// ✅ NIEUWE FUNCTIE: CHECK FOR DUPLICATE PRESENCE TODAY
+const checkDuplicatePresence = (nom, prenom, type) => {
+  try {
+    const presences = readJsonFile(PRESENCES_FILE);
+    const today = new Date().toISOString().split('T')[0];
+
+    const existingPresence = presences.find(p => 
+      p.nom && p.prenom && 
+      p.nom.toLowerCase().trim() === nom.toLowerCase().trim() &&
+      p.prenom.toLowerCase().trim() === prenom.toLowerCase().trim() &&
+      p.type === type &&
+      p.date && p.date.startsWith(today)
+    );
+
+    if (existingPresence) {
+      console.log(`🚨 DUPLICATE DETECTED: ${nom} ${prenom} (${type}) already registered today`);
+      return existingPresence;
+    }
+
+    return null;
+  } catch (error) {
+    console.error('❌ Error checking duplicate presence:', error);
+    return null;
+  }
+};
+
 // ✅ NIEUWE FUNCTIE: LOG FAILED LOGIN ATTEMPTS
 const logFailedLoginAttempt = (nom, prenom, failureReason) => {
   try {
     console.log(`🚨 FAILED LOGIN ATTEMPT: ${nom} ${prenom} - ${failureReason}`);
+
+    // ✅ ADDED: Check for duplicate failed attempt first
+    const existingFailedAttempt = checkDuplicatePresence(nom, prenom, 'failed-login');
+    if (existingFailedAttempt) {
+      console.log(`⚠️ Failed attempt already logged today for ${nom} ${prenom}`);
+      return existingFailedAttempt;
+    }
 
     const presences = readJsonFile(PRESENCES_FILE);
 
@@ -122,10 +155,13 @@ const logFailedLoginAttempt = (nom, prenom, failureReason) => {
 
     if (writeJsonFile(PRESENCES_FILE, presences)) {
       console.log(`✅ Failed login attempt logged: ${nom} ${prenom} - ${failureReason}`);
+      return failedAttempt;
     }
 
+    return null;
   } catch (error) {
     console.error('❌ Error logging failed login attempt:', error);
+    return null;
   }
 };
 
@@ -326,7 +362,7 @@ app.get('/admin', (req, res) => {
 });
 
 // ===== MEMBERS ROUTES =====
-// ✅ FIXED: Nu kijkt naar joinFileStatusLabel in plaats van categories
+// ✅ FIXED: Nu kijkt naar joinFileStatusLabel en VOORKOMT DUPLICATES
 app.get('/members/check', (req, res) => {
   const { nom, prenom } = req.query;
 
@@ -396,8 +432,22 @@ app.get('/members/check', (req, res) => {
 
     // ✅ FIXED: Allow "Payé" and "En cours de paiement"
     if (joinStatus === "Payé" || joinStatus === "En cours de paiement") {
-      console.log(`✅ Member has valid payment status: "${joinStatus}" - creating successful presence`);
+      console.log(`✅ Member has valid payment status: "${joinStatus}" - checking for duplicate presence`);
 
+      // ✅ ADDED: Check for duplicate presence before creating
+      const existingPresence = checkDuplicatePresence(nom, prenom, 'adherent');
+      if (existingPresence) {
+        console.log(`⚠️ Member ${nom} ${prenom} already registered today - returning existing presence`);
+        return res.json({
+          success: true,
+          isPaid: true,
+          message: "Adhésion reconnue. Vous êtes déjà enregistré aujourd'hui!",
+          membre: member,
+          presence: existingPresence
+        });
+      }
+
+      console.log('✅ Creating new successful presence for member');
       const presences = readJsonFile(PRESENCES_FILE);
 
       const successfulLogin = {
@@ -650,7 +700,7 @@ app.get('/presences/:id', (req, res) => {
   }
 });
 
-// ✅ POST /presences - FOR CREATING NEW PRESENCES
+// ✅ POST /presences - FOR CREATING NEW PRESENCES - MET DUPLICATE PREVENTION
 app.post('/presences', (req, res) => {
   console.log('=== NEW PRESENCE REQUEST ===');
   console.log('Request body:', JSON.stringify(req.body, null, 2));
@@ -665,6 +715,18 @@ app.post('/presences', (req, res) => {
   }
 
   try {
+    // ✅ ADDED: Check for duplicate presence before creating
+    const existingPresence = checkDuplicatePresence(nom, prenom, type);
+    if (existingPresence) {
+      console.log(`⚠️ Duplicate presence detected for ${nom} ${prenom} (${type}) - returning existing`);
+      return res.json({
+        success: true,
+        message: 'Personne déjà enregistrée aujourd\'hui',
+        presence: existingPresence,
+        isDuplicate: true
+      });
+    }
+
     const presences = readJsonFile(PRESENCES_FILE);
 
     const newPresence = {
@@ -941,9 +1003,13 @@ app.get('/api/stats/today', (req, res) => {
 
 // ===== EXPORT ROUTES =====
 if (exportService) {
-  app.post('/admin/export/season', (req, res) => {
+  app.post('/admin/export/season', async (req, res) => {
     try {
-      const result = exportService.exportSeasonToExcel();
+      console.log('📊 Starting season export...');
+      const result = await exportService.exportSeasonToExcel();
+
+      console.log('✅ Season export result:', result);
+
       res.json({
         success: true,
         message: `Excel export voor seizoen ${result.seasonName} bijgewerkt`,
@@ -952,7 +1018,7 @@ if (exportService) {
         seasonName: result.seasonName
       });
     } catch (error) {
-      console.error('Season export error:', error);
+      console.error('❌ Season export error:', error);
       res.status(500).json({
         success: false,
         error: 'Fout bij seizoen export: ' + error.message
@@ -972,7 +1038,7 @@ if (exportService) {
     }
   });
 
-  app.post('/admin/export/:year', (req, res) => {
+  app.post('/admin/export/:year', async (req, res) => {
     try {
       const { year } = req.params;
       const yearInt = parseInt(year);
@@ -984,7 +1050,11 @@ if (exportService) {
         });
       }
 
-      const result = exportService.exportYearToExcel(yearInt);
+      console.log(`📊 Starting year ${year} export...`);
+      const result = await exportService.exportYearToExcel(yearInt);
+
+      console.log(`✅ Year ${year} export result:`, result);
+
       res.json({
         success: true,
         message: `Excel export voor ${year} succesvol aangemaakt`,
@@ -992,6 +1062,7 @@ if (exportService) {
         recordCount: result.recordCount
       });
     } catch (error) {
+      console.error(`❌ Year ${req.params.year} export error:`, error);
       res.status(500).json({
         success: false,
         error: 'Fout bij Excel export: ' + error.message

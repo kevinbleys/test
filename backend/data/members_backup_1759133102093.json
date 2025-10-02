@@ -3701,10 +3701,10 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "01/10/2025, 10:41",
-    "emailValid": true,
+    "dateLastConnexion": null,
+    "emailValid": false,
     "notificationActive": true,
-    "joinFileStatusLabel": "À payer",
+    "joinFileStatusLabel": null,
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -3714,7 +3714,7 @@
     "groups": [],
     "categories": [
       {
-        "label": "Adhérent"
+        "label": "Nouveau contact (adhésion)"
       }
     ],
     "roles": [],
@@ -3732,7 +3732,7 @@
       },
       {
         "label": "code postale Ville de naissance",
-        "value": "06130"
+        "value": null
       },
       {
         "label": "Pays de naissance",
@@ -4398,80 +4398,6 @@
       {
         "label": "Nationalité",
         "value": "Française"
-      }
-    ]
-  },
-  {
-    "membreId": 1170017,
-    "currentPictureUrl": null,
-    "firstname": "Mélissa",
-    "lastname": "Bitaudeau",
-    "dateOfBirth": null,
-    "age": null,
-    "gender": null,
-    "address": null,
-    "additional": null,
-    "postalCode": null,
-    "town": null,
-    "country": null,
-    "phoneNumber": null,
-    "mobilePhoneNumber": null,
-    "email": "melissa.bitaudeau@gmail.com",
-    "allergy": null,
-    "personToContact": null,
-    "personToContactPhoneNumber": null,
-    "corporateName": null,
-    "office": null,
-    "account": true,
-    "dateLastConnexion": "30/09/2025, 14:06",
-    "emailValid": true,
-    "notificationActive": true,
-    "joinFileStatusLabel": null,
-    "joinFileLastPaymentType": null,
-    "joinFileLastPaymentDate": null,
-    "childsLabel": "Gestionnaire de 1 contact : Milo VALAIS",
-    "childMembers": [
-      {
-        "membreId": 1170028,
-        "firstname": "Milo",
-        "lastname": "VALAIS",
-        "phoneNumber": null,
-        "mobilePhoneNumber": "+33645856023",
-        "email": "melissa.bitaudeau@gmail.com"
-      }
-    ],
-    "parentsLabel": "",
-    "parentMembers": [],
-    "groups": [],
-    "categories": [
-      {
-        "label": "Parent"
-      }
-    ],
-    "roles": [],
-    "medicalCertificateUrl": null,
-    "dateMedicalCertificate": null,
-    "licence": null,
-    "customFields": [
-      {
-        "label": "documents utiles",
-        "value": null
-      },
-      {
-        "label": "Ville de naissance",
-        "value": null
-      },
-      {
-        "label": "code postale Ville de naissance",
-        "value": null
-      },
-      {
-        "label": "Pays de naissance",
-        "value": null
-      },
-      {
-        "label": "Nationalité",
-        "value": null
       }
     ]
   },
@@ -11692,7 +11618,7 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "01/10/2025, 15:17",
+    "dateLastConnexion": "25/09/2025, 19:46",
     "emailValid": true,
     "notificationActive": true,
     "joinFileStatusLabel": "À payer",
@@ -14993,7 +14919,7 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "01/10/2025, 14:00",
+    "dateLastConnexion": "28/09/2025, 16:38",
     "emailValid": true,
     "notificationActive": true,
     "joinFileStatusLabel": null,
@@ -15421,7 +15347,7 @@
     "firstname": "Clément",
     "lastname": "Fauré",
     "dateOfBirth": "02/10/1993",
-    "age": 32,
+    "age": 31,
     "gender": "homme",
     "address": "15 route du Hailla",
     "additional": null,
@@ -15771,10 +15697,10 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "30/09/2025, 12:59",
+    "dateLastConnexion": "21/09/2025, 15:32",
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "En cours de paiement",
+    "joinFileStatusLabel": "À payer",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "Gestionnaire de 1 contact : Isabelle CHAZAL",
@@ -16036,7 +15962,7 @@
     "firstname": "Élodie",
     "lastname": "Fillatreau",
     "dateOfBirth": "01/10/1982",
-    "age": 43,
+    "age": 42,
     "gender": "femme",
     "address": "1 impasse du bedat",
     "additional": null,
@@ -17357,10 +17283,10 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "29/09/2025, 18:10",
+    "dateLastConnexion": "11/09/2024, 17:50",
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "À payer",
+    "joinFileStatusLabel": null,
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -17370,7 +17296,7 @@
     "groups": [],
     "categories": [
       {
-        "label": "Adhérent"
+        "label": "Ancien adhérent"
       }
     ],
     "roles": [],
@@ -17388,7 +17314,7 @@
       },
       {
         "label": "code postale Ville de naissance",
-        "value": "65000"
+        "value": null
       },
       {
         "label": "Pays de naissance",
@@ -18805,71 +18731,6 @@
     ]
   },
   {
-    "membreId": 1171039,
-    "currentPictureUrl": null,
-    "firstname": "chloé",
-    "lastname": "ghiandai",
-    "dateOfBirth": "14/05/2004",
-    "age": 21,
-    "gender": "femme",
-    "address": "1 Rue de l'Ahoues",
-    "additional": null,
-    "postalCode": "65240",
-    "town": "Arreau",
-    "country": "France",
-    "phoneNumber": null,
-    "mobilePhoneNumber": "+33628805030",
-    "email": "chloe.ghiandai@gmail.com",
-    "allergy": null,
-    "personToContact": null,
-    "personToContactPhoneNumber": null,
-    "corporateName": null,
-    "office": null,
-    "account": true,
-    "dateLastConnexion": "01/10/2025, 12:38",
-    "emailValid": true,
-    "notificationActive": true,
-    "joinFileStatusLabel": "Payé",
-    "joinFileLastPaymentType": null,
-    "joinFileLastPaymentDate": null,
-    "childsLabel": "",
-    "childMembers": [],
-    "parentsLabel": "",
-    "parentMembers": [],
-    "groups": [],
-    "categories": [
-      {
-        "label": "Adhérent"
-      }
-    ],
-    "roles": [],
-    "medicalCertificateUrl": null,
-    "dateMedicalCertificate": null,
-    "licence": null,
-    "customFields": [
-      {
-        "label": "documents utiles",
-        "value": null
-      },
-      {
-        "label": "Ville de naissance",
-        "value": "marseille"
-      },
-      {
-        "label": "code postale Ville de naissance",
-        "value": "13000"
-      },
-      {
-        "label": "Pays de naissance",
-        "value": "france"
-      },
-      {
-        "label": "Nationalité",
-        "value": "française"
-      }
-    ]
-  },
-  {
     "membreId": 864872,
     "currentPictureUrl": null,
     "firstname": "alexia",
@@ -19622,71 +19483,6 @@
       {
         "label": "Nationalité",
         "value": "Française"
-      }
-    ]
-  },
-  {
-    "membreId": 1171286,
-    "currentPictureUrl": "https://cdn.pepsup.com/resources/images/MEMBERS/000/117/128/1171286/IMAGE/1171286_s.png?1759255852070",
-    "firstname": "Clement",
-    "lastname": "Guilhem",
-    "dateOfBirth": "10/10/1991",
-    "age": 33,
-    "gender": "homme",
-    "address": "1 rue de l’ahoues",
-    "additional": null,
-    "postalCode": "65240",
-    "town": "Arreau",
-    "country": "France",
-    "phoneNumber": null,
-    "mobilePhoneNumber": "+33643098396",
-    "email": "guilhemclement56@gmail.com",
-    "allergy": null,
-    "personToContact": null,
-    "personToContactPhoneNumber": null,
-    "corporateName": null,
-    "office": null,
-    "account": true,
-    "dateLastConnexion": "30/09/2025, 22:21",
-    "emailValid": true,
-    "notificationActive": true,
-    "joinFileStatusLabel": "À payer",
-    "joinFileLastPaymentType": null,
-    "joinFileLastPaymentDate": null,
-    "childsLabel": "",
-    "childMembers": [],
-    "parentsLabel": "",
-    "parentMembers": [],
-    "groups": [],
-    "categories": [
-      {
-        "label": "Adhérent"
-      }
-    ],
-    "roles": [],
-    "medicalCertificateUrl": null,
-    "dateMedicalCertificate": null,
-    "licence": null,
-    "customFields": [
-      {
-        "label": "documents utiles",
-        "value": null
-      },
-      {
-        "label": "Ville de naissance",
-        "value": "Vannes"
-      },
-      {
-        "label": "code postale Ville de naissance",
-        "value": "56000"
-      },
-      {
-        "label": "Pays de naissance",
-        "value": "France"
-      },
-      {
-        "label": "Nationalité",
-        "value": "Francaise"
       }
     ]
   },
@@ -22587,71 +22383,6 @@
     ]
   },
   {
-    "membreId": 1171351,
-    "currentPictureUrl": null,
-    "firstname": "Lisa",
-    "lastname": "LAFOND",
-    "dateOfBirth": "10/05/1999",
-    "age": 26,
-    "gender": "femme",
-    "address": "1 rue de l’Ahoues",
-    "additional": null,
-    "postalCode": "65240",
-    "town": "ARREAU",
-    "country": "FRANCE",
-    "phoneNumber": null,
-    "mobilePhoneNumber": "+33785578413",
-    "email": "lisalafond10@gmail.com",
-    "allergy": null,
-    "personToContact": null,
-    "personToContactPhoneNumber": null,
-    "corporateName": null,
-    "office": null,
-    "account": true,
-    "dateLastConnexion": "30/09/2025, 22:40",
-    "emailValid": true,
-    "notificationActive": true,
-    "joinFileStatusLabel": "À payer",
-    "joinFileLastPaymentType": null,
-    "joinFileLastPaymentDate": null,
-    "childsLabel": "",
-    "childMembers": [],
-    "parentsLabel": "",
-    "parentMembers": [],
-    "groups": [],
-    "categories": [
-      {
-        "label": "Adhérent"
-      }
-    ],
-    "roles": [],
-    "medicalCertificateUrl": null,
-    "dateMedicalCertificate": null,
-    "licence": null,
-    "customFields": [
-      {
-        "label": "documents utiles",
-        "value": null
-      },
-      {
-        "label": "Ville de naissance",
-        "value": "BAYONNE"
-      },
-      {
-        "label": "code postale Ville de naissance",
-        "value": "64100"
-      },
-      {
-        "label": "Pays de naissance",
-        "value": "FRANCE"
-      },
-      {
-        "label": "Nationalité",
-        "value": "Française"
-      }
-    ]
-  },
-  {
     "membreId": 858725,
     "currentPictureUrl": null,
     "firstname": "Axel",
@@ -23587,7 +23318,7 @@
     "firstname": "William",
     "lastname": "Latka Deparis",
     "dateOfBirth": "01/10/2021",
-    "age": 4,
+    "age": 3,
     "gender": "homme",
     "address": "12 rue du minjot",
     "additional": null,
@@ -24763,10 +24494,10 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "30/09/2025, 15:07",
+    "dateLastConnexion": "15/10/2024, 09:55",
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "À payer",
+    "joinFileStatusLabel": null,
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -24776,7 +24507,7 @@
     "groups": [],
     "categories": [
       {
-        "label": "Adhérent"
+        "label": "Ancien adhérent"
       }
     ],
     "roles": [],
@@ -24794,7 +24525,7 @@
       },
       {
         "label": "code postale Ville de naissance",
-        "value": "65300"
+        "value": null
       },
       {
         "label": "Pays de naissance",
@@ -25616,18 +25347,18 @@
     "town": "Arreau",
     "country": "France",
     "phoneNumber": null,
-    "mobilePhoneNumber": "+33645489953",
+    "mobilePhoneNumber": "06 45 48 99 53",
     "email": "levrardfred@gmail.com",
     "allergy": null,
     "personToContact": "HERBERT Mélanie",
-    "personToContactPhoneNumber": "+33608635384",
+    "personToContactPhoneNumber": "06 08 63 53 84",
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "01/10/2025, 19:03",
+    "dateLastConnexion": "08/10/2022, 18:23",
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "Payé",
+    "joinFileStatusLabel": null,
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -25637,7 +25368,7 @@
     "groups": [],
     "categories": [
       {
-        "label": "Adhérent"
+        "label": "Ancien adhérent"
       }
     ],
     "roles": [],
@@ -25655,7 +25386,7 @@
       },
       {
         "label": "code postale Ville de naissance",
-        "value": "72000"
+        "value": null
       },
       {
         "label": "Pays de naissance",
@@ -26206,71 +25937,6 @@
       {
         "label": "code postale Ville de naissance",
         "value": "65100"
-      },
-      {
-        "label": "Pays de naissance",
-        "value": "France"
-      },
-      {
-        "label": "Nationalité",
-        "value": "Française"
-      }
-    ]
-  },
-  {
-    "membreId": 1171529,
-    "currentPictureUrl": null,
-    "firstname": "Jonathan",
-    "lastname": "LOMBARDO",
-    "dateOfBirth": "09/07/1991",
-    "age": 34,
-    "gender": "homme",
-    "address": "1 rue de l ahoues",
-    "additional": null,
-    "postalCode": "65240",
-    "town": "Arreau",
-    "country": "France",
-    "phoneNumber": null,
-    "mobilePhoneNumber": "+33626171939",
-    "email": "jonathan.lombardo31190@gmail.com",
-    "allergy": null,
-    "personToContact": null,
-    "personToContactPhoneNumber": null,
-    "corporateName": null,
-    "office": null,
-    "account": true,
-    "dateLastConnexion": null,
-    "emailValid": false,
-    "notificationActive": true,
-    "joinFileStatusLabel": "À payer",
-    "joinFileLastPaymentType": null,
-    "joinFileLastPaymentDate": null,
-    "childsLabel": "",
-    "childMembers": [],
-    "parentsLabel": "",
-    "parentMembers": [],
-    "groups": [],
-    "categories": [
-      {
-        "label": "Adhérent"
-      }
-    ],
-    "roles": [],
-    "medicalCertificateUrl": null,
-    "dateMedicalCertificate": null,
-    "licence": null,
-    "customFields": [
-      {
-        "label": "documents utiles",
-        "value": null
-      },
-      {
-        "label": "Ville de naissance",
-        "value": "Muret"
-      },
-      {
-        "label": "code postale Ville de naissance",
-        "value": "31800"
       },
       {
         "label": "Pays de naissance",
@@ -34060,7 +33726,7 @@
     "firstname": "Laurent",
     "lastname": "Perrin",
     "dateOfBirth": "01/10/1993",
-    "age": 32,
+    "age": 31,
     "gender": "homme",
     "address": "Arreau",
     "additional": null,
@@ -34717,10 +34383,10 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "30/09/2025, 13:06",
+    "dateLastConnexion": "11/09/2025, 18:33",
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "En cours de paiement",
+    "joinFileStatusLabel": "À payer",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -39650,7 +39316,7 @@
     "firstname": "Théo",
     "lastname": "SAINT GERMES",
     "dateOfBirth": "30/09/1995",
-    "age": 30,
+    "age": 29,
     "gender": "homme",
     "address": "35 rue d'anglade",
     "additional": null,
@@ -45204,80 +44870,6 @@
     ]
   },
   {
-    "membreId": 1170028,
-    "currentPictureUrl": null,
-    "firstname": "Milo",
-    "lastname": "VALAIS",
-    "dateOfBirth": "23/02/2014",
-    "age": 11,
-    "gender": "homme",
-    "address": "2 rue principale",
-    "additional": null,
-    "postalCode": "65170",
-    "town": "BAZUS AURE",
-    "country": "FRANCE",
-    "phoneNumber": null,
-    "mobilePhoneNumber": "+33645856023",
-    "email": "melissa.bitaudeau@gmail.com",
-    "allergy": null,
-    "personToContact": "BITAUDEAU Mélissa",
-    "personToContactPhoneNumber": "+33645856023",
-    "corporateName": null,
-    "office": null,
-    "account": false,
-    "dateLastConnexion": null,
-    "emailValid": true,
-    "notificationActive": true,
-    "joinFileStatusLabel": "À payer",
-    "joinFileLastPaymentType": null,
-    "joinFileLastPaymentDate": null,
-    "childsLabel": "",
-    "childMembers": [],
-    "parentsLabel": "Géré par 1 contact : Mélissa Bitaudeau",
-    "parentMembers": [
-      {
-        "membreId": 1170017,
-        "firstname": "Mélissa",
-        "lastname": "Bitaudeau",
-        "phoneNumber": null,
-        "mobilePhoneNumber": null,
-        "email": "melissa.bitaudeau@gmail.com"
-      }
-    ],
-    "groups": [],
-    "categories": [
-      {
-        "label": "Adhérent"
-      }
-    ],
-    "roles": [],
-    "medicalCertificateUrl": null,
-    "dateMedicalCertificate": null,
-    "licence": null,
-    "customFields": [
-      {
-        "label": "documents utiles",
-        "value": null
-      },
-      {
-        "label": "Ville de naissance",
-        "value": "Saint Gaudens"
-      },
-      {
-        "label": "code postale Ville de naissance",
-        "value": "31"
-      },
-      {
-        "label": "Pays de naissance",
-        "value": "FRANCE"
-      },
-      {
-        "label": "Nationalité",
-        "value": "FRANCAISE"
-      }
-    ]
-  },
-  {
     "membreId": 846297,
     "currentPictureUrl": null,
     "firstname": "Erwan",
@@ -45783,7 +45375,7 @@
     "firstname": "Maïté",
     "lastname": "Vandoorne",
     "dateOfBirth": "01/10/1991",
-    "age": 34,
+    "age": 33,
     "gender": "femme",
     "address": "1 Impasse du Rioumaou",
     "additional": null,

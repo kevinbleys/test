@@ -124,3 +124,15 @@
 [2025-09-28T17:12:21.669Z] Excel export saved: Export_Année_2025_avec_tentatives.xlsx
 [2025-09-28T17:12:21.671Z] Total records: 35 (Adherents: 18, Non-adherents: 14, Failed: 3)
 [2025-09-28T17:12:21.672Z] === EXPORT YEAR 2025 TO EXCEL COMPLETED ===
+[2025-09-28T17:38:58.828Z] === EXPORT YEAR 2025 TO EXCEL STARTED (INCLUDING FAILED ATTEMPTS) ===
+[2025-09-28T17:38:58.831Z] Found 29 total presences for year 2025
+[2025-09-28T17:38:58.833Z] Year 2025 breakdown - Adherents: 14, Non-adherents: 13, Failed attempts: 2
+[2025-09-28T17:38:58.843Z] Excel export saved: Export_Année_2025_avec_tentatives.xlsx
+[2025-09-28T17:38:58.846Z] Total records: 29 (Adherents: 14, Non-adherents: 13, Failed: 2)
+[2025-09-28T17:38:58.848Z] === EXPORT YEAR 2025 TO EXCEL COMPLETED ===
+[2025-09-29T06:24:45.937Z] === EXPORT YEAR 2025 TO EXCEL STARTED (INCLUDING FAILED ATTEMPTS) ===
+[2025-09-29T06:24:45.940Z] Found 34 total presences for year 2025
+[2025-09-29T06:24:45.942Z] Year 2025 breakdown - Adherents: 18, Non-adherents: 14, Failed attempts: 2
+[2025-09-29T06:24:45.978Z] Excel export saved: Export_Année_2025_avec_tentatives.xlsx
+[2025-09-29T06:24:45.981Z] Total records: 34 (Adherents: 18, Non-adherents: 14, Failed: 2)
+[2025-09-29T06:24:45.982Z] === EXPORT YEAR 2025 TO EXCEL COMPLETED ===
