@@ -165,30 +165,58 @@ const logFailedLoginAttempt = (nom, prenom, failureReason) => {
   }
 };
 
-// Middleware
+// ✅ FIXED: Middleware - TOEGANG VOOR ALLE 192.168.*.* ADRESSEN
 app.use(cors({
   origin: [
+    // Development URLs
     'http://localhost:3000',
-    'http://localhost:3001', // ✅ TOEGEVOEGD: Admin interface zelf
+    'http://localhost:3001',
     'http://localhost:3002',
     'http://127.0.0.1:3000',
-    'http://127.0.0.1:3001', // ✅ TOEGEVOEGD: Admin interface zelf
-    'http://127.0.0.1:3002'
+    'http://127.0.0.1:3001',
+    'http://127.0.0.1:3002',
+
+    // ✅ ADDED: Alle 192.168.*.* netwerk adressen
+    /^http:\/\/192\.168\.\d+\.\d+(:\d+)?$/,
+
+    // Specific IPs die je gebruikt
+    'http://192.168.1.100:3000',
+    'http://192.168.1.100:3001', 
+    'http://192.168.1.101:3000',
+    'http://192.168.1.101:3001',
+    'http://192.168.1.102:3000',
+    'http://192.168.1.102:3001',
+    'http://192.168.1.103:3000',
+    'http://192.168.1.103:3001',
+    'http://192.168.1.104:3000',
+    'http://192.168.1.104:3001',
+    'http://192.168.1.105:3000',
+    'http://192.168.1.105:3001'
   ],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
+  optionsSuccessStatus: 200 // ✅ ADDED: Voor oude browsers
 }));
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: '50mb' })); // ✅ ADDED: Verhoogd limit
+app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
-// Serve static files for admin interface
-app.use(express.static(path.join(__dirname, 'public')));
-
-// Enhanced logging middleware
+// ✅ ADDED: Extra middleware voor debugging
 app.use((req, res, next) => {
-  console.log(`🌐 ${new Date().toISOString()} - ${req.method} ${req.path}`);
+  const clientIP = req.ip || req.connection.remoteAddress || req.socket.remoteAddress || 
+                  (req.connection.socket ? req.connection.socket.remoteAddress : null) ||
+                  req.headers['x-forwarded-for'] || req.headers['x-real-ip'];
+
+  console.log(`🌐 ${new Date().toISOString()} - ${req.method} ${req.path} from ${clientIP}`);
+
+  // CORS preflight debugging  
+  if (req.method === 'OPTIONS') {
+    console.log('🔍 CORS preflight request');
+    console.log('Origin:', req.headers.origin);
+    console.log('Headers requested:', req.headers['access-control-request-headers']);
+  }
+
   if (req.body && Object.keys(req.body).length > 0) {
     console.log('📋 Request body:', JSON.stringify(req.body, null, 2));
   }
@@ -198,7 +226,10 @@ app.use((req, res, next) => {
   next();
 });
 
-// Sync service loading
+// Serve static files for admin interface
+app.use(express.static(path.join(__dirname, 'public')));
+
+// ✅ FIXED: Sync service loading met betere error handling
 let syncService = null;
 try {
   const syncServicePath = path.join(__dirname, 'sync-service');
@@ -213,7 +244,7 @@ try {
 if (!syncService) {
   syncService = {
     getMembers: () => {
-      console.log('⚠️ Using fallback sync service');
+      console.log('⚠️ Using fallback sync service - returning empty array');
       return [];
     },
     syncMembers: async () => {
@@ -322,6 +353,10 @@ app.get('/', (req, res) => {
     message: 'API Logiciel Escalade - DEFINITIEVE VERSIE',
     version: '2.1.0',
     timestamp: new Date().toISOString(),
+    network: {
+      allowedOrigins: '192.168.*.* + localhost',
+      corsEnabled: true
+    },
     endpoints: {
       health: '/api/health',
       admin: '/admin',
@@ -342,6 +377,11 @@ app.get('/api/health', (req, res) => {
     uptime: process.uptime(),
     memory: process.memoryUsage(),
     timestamp: new Date().toISOString(),
+    network: {
+      corsEnabled: true,
+      allowedNetworks: ['localhost', '127.0.0.1', '192.168.*.*'],
+      serverIP: getServerIP()
+    },
     dataFiles: {
       presences: presences.length,
       savedNonMembers: savedNonMembers.length,
@@ -354,6 +394,22 @@ app.get('/api/health', (req, res) => {
   console.log('💚 Health check:', health);
   res.json(health);
 });
+
+// ✅ NIEUWE FUNCTIE: Get server IP address
+function getServerIP() {
+  const { networkInterfaces } = require('os');
+  const nets = networkInterfaces();
+  const results = [];
+
+  for (const name of Object.keys(nets)) {
+    for (const net of nets[name]) {
+      if (net.family === 'IPv4' && !net.internal) {
+        results.push(net.address);
+      }
+    }
+  }
+  return results;
+}
 
 // ===== ADMIN INTERFACE ROUTE =====
 app.get('/admin', (req, res) => {
@@ -378,6 +434,8 @@ app.get('/members/check', (req, res) => {
 
   try {
     const members = syncService.getMembers();
+    console.log(`📊 Total members available: ${members.length}`);
+
     const member = members.find(m =>
       m.lastname?.trim().toLowerCase() === nom.trim().toLowerCase() &&
       m.firstname?.trim().toLowerCase() === prenom.trim().toLowerCase()
@@ -486,7 +544,7 @@ app.get('/members/check', (req, res) => {
     }
 
   } catch (error) {
-    console.error('Error in member check:', error);
+    console.error('❌ Error in member check:', error);
     return res.status(500).json({
       success: false,
       error: 'Erreur lors de la vérification du membre'
@@ -1106,13 +1164,17 @@ app.use((error, req, res, next) => {
 });
 
 // ===== SERVER STARTUP =====
-const server = app.listen(PORT, 'localhost', () => {
+// ✅ FIXED: Listen op alle interfaces (0.0.0.0) in plaats van alleen localhost
+const server = app.listen(PORT, '0.0.0.0', () => {
   console.log('🎉 ======================================');
   console.log('🎉 DEFINITIEVE BACKEND GESTART!');
   console.log('🎉 ======================================');
   console.log(`✅ Backend: http://localhost:${PORT}`);
+  console.log(`✅ Network: http://0.0.0.0:${PORT} (alle interfaces)`);
   console.log(`📊 Admin: http://localhost:${PORT}/admin`);
   console.log(`💚 Health: http://localhost:${PORT}/api/health`);
+  console.log('🌐 Network IPs:', getServerIP().join(', '));
+  console.log('🌐 CORS: 192.168.*.* + localhost toegestaan');
   console.log('🎉 ======================================');
 
   // Test data files

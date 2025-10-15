@@ -106,5 +106,131 @@
       ]
     },
     "joinFileStatus": "En cours de paiement"
+  },
+  {
+    "id": "1759386004944",
+    "type": "non-adherent",
+    "nom": "bleys",
+    "prenom": "joke",
+    "date": "2025-10-02T06:20:04.944Z",
+    "email": "bleysjoke@gmail.com",
+    "telephone": "0562409746",
+    "dateNaissance": "1983-03-02",
+    "niveau": "2",
+    "assuranceAccepted": true,
+    "tarif": 10,
+    "status": "Payé",
+    "age": 42,
+    "quickRegistration": true,
+    "methodePaiement": "Especes",
+    "dateValidation": "2025-10-02T06:20:16.676Z"
+  },
+  {
+    "id": "1760533163768",
+    "type": "adherent",
+    "nom": "bleys",
+    "prenom": "kevin",
+    "date": "2025-10-15T12:59:23.768Z",
+    "status": "adherent",
+    "niveau": "N/A",
+    "tarif": 0,
+    "methodePaiement": "N/A",
+    "membre": {
+      "membreId": 469508,
+      "currentPictureUrl": "https://cdn.pepsup.com/resources/images/MEMBERS/000/046/950/469508/IMAGE/469508_s.png?1736948670724",
+      "firstname": "kevin",
+      "lastname": "bleys",
+      "dateOfBirth": "02/03/1983",
+      "age": 42,
+      "gender": "homme",
+      "address": "7 chemin de la gardele",
+      "additional": null,
+      "postalCode": "65670",
+      "town": "monleon magnoac",
+      "country": "France",
+      "phoneNumber": "+33562409746",
+      "mobilePhoneNumber": "+33643033147",
+      "email": "kevinbleys65@gmail.com",
+      "allergy": null,
+      "personToContact": "joke bleys",
+      "personToContactPhoneNumber": "+33681202378",
+      "corporateName": null,
+      "office": null,
+      "account": true,
+      "dateLastConnexion": "01/09/2025, 21:28",
+      "emailValid": true,
+      "notificationActive": true,
+      "joinFileStatusLabel": "En cours de paiement",
+      "joinFileLastPaymentType": null,
+      "joinFileLastPaymentDate": null,
+      "childsLabel": "Gestionnaire de 3 contacts : Emma Bleys, Théo Bleys, Joke Bleys",
+      "childMembers": [
+        {
+          "membreId": 480381,
+          "firstname": "Emma",
+          "lastname": "Bleys",
+          "phoneNumber": null,
+          "mobilePhoneNumber": "+33643033147",
+          "email": "kevinbleys65@gmail.com"
+        },
+        {
+          "membreId": 508484,
+          "firstname": "Théo",
+          "lastname": "Bleys",
+          "phoneNumber": "+33643033147",
+          "mobilePhoneNumber": "+33643033147",
+          "email": "kevinbleys65@gmail.com"
+        },
+        {
+          "membreId": 623877,
+          "firstname": "Joke",
+          "lastname": "Bleys",
+          "phoneNumber": "+33562409746",
+          "mobilePhoneNumber": "+33681202378",
+          "email": "bleysjoke@gmail.com"
+        }
+      ],
+      "parentsLabel": "",
+      "parentMembers": [],
+      "groups": [],
+      "categories": [
+        {
+          "label": "Adhérent"
+        },
+        {
+          "label": "Membre du Bureau"
+        },
+        {
+          "label": "Parent"
+        }
+      ],
+      "roles": [],
+      "medicalCertificateUrl": null,
+      "dateMedicalCertificate": null,
+      "licence": "659899",
+      "customFields": [
+        {
+          "label": "documents utiles",
+          "value": null
+        },
+        {
+          "label": "Ville de naissance",
+          "value": "turnhout"
+        },
+        {
+          "label": "code postale Ville de naissance",
+          "value": null
+        },
+        {
+          "label": "Pays de naissance",
+          "value": "belgique"
+        },
+        {
+          "label": "Nationalité",
+          "value": "français"
+        }
+      ]
+    },
+    "joinFileStatus": "En cours de paiement"
   }
 ]
