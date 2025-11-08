@@ -905,5 +905,50 @@
     "assuranceAccepted": true,
     "status": "Payé",
     "methodePaiement": "CB"
+  },
+  {
+    "id": "1762609179886_206e0484f5466fb7",
+    "type": "product-sale",
+    "nom": "Vente",
+    "prenom": "tshirt",
+    "date": "2025-11-08T13:39:39.886Z",
+    "tarif": 20,
+    "methodePaiement": "CB",
+    "status": "Payé"
+  },
+  {
+    "id": "1762609245866_dcd4f5a8f9aca368",
+    "requestId": "1762609245855_eb92b5c3",
+    "type": "adherent",
+    "nom": "elbaz",
+    "prenom": "esteban",
+    "date": "2025-11-08T13:40:45.867Z",
+    "status": "adherent",
+    "niveau": "N/A",
+    "tarif": 0,
+    "methodePaiement": "N/A"
+  },
+  {
+    "id": "1762609245887_f6b9e62b11d14b55",
+    "type": "adherent",
+    "nom": "elbaz",
+    "prenom": "esteban",
+    "date": "2025-11-08T13:40:45.887Z",
+    "tarif": 0
+  },
+  {
+    "id": "1762609300690_94c6c0c4badef286",
+    "type": "non-adherent",
+    "nom": "test",
+    "prenom": "test",
+    "date": "2025-11-08T13:41:40.690Z",
+    "tarif": 8,
+    "email": "test@test.com",
+    "telephone": "",
+    "dateNaissance": "2016-10-20",
+    "niveau": "1",
+    "assuranceAccepted": true,
+    "status": "Payé",
+    "methodePaiement": "CB"
   }
 ]

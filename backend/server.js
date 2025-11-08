@@ -9,8 +9,8 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 console.log('╔════════════════════════════════════════════════════════════╗');
-console.log('║  🚀 CLIMBING CLUB - SERVER.JS v5.0 FINAL                ║');
-console.log('║  Duplicate Prevention + Auto-Fill + Product Sales      ║');
+console.log('║  🚀 CLIMBING CLUB - SERVER v5.0 FINAL + ALL FIXES        ║');
+console.log('║  Duplicate Prevention + Auto-Fill + Product Sales + History║');
 console.log('╚════════════════════════════════════════════════════════════╝');
 console.log(`Port: ${PORT}\n`);
 
@@ -134,13 +134,6 @@ try {
     console.log('✅ Sync service loaded');
 } catch (error) {
     syncService = { getMembers: () => [], syncMembers: async () => 0 };
-}
-
-let exportService = null;
-try {
-    exportService = require('./export-service');
-} catch (error) {
-    exportService = null;
 }
 
 cron.schedule('0 0 * * *', () => {
@@ -279,6 +272,7 @@ app.get('/members/all', (req, res) => {
     }
 });
 
+// ===== PRESENCES ENDPOINTS =====
 app.get('/presences', (req, res) => {
     try {
         const presences = readJsonFile(PRESENCES_FILE);
@@ -296,10 +290,7 @@ app.get('/presences', (req, res) => {
         for (const p of todayOnly) {
             if (p.type === 'adherent') {
                 const sig = `${(p.nom || '').trim().toLowerCase()}_${(p.prenom || '').trim().toLowerCase()}`;
-                if (seen.has(sig)) {
-                    console.log(`[PRESENCES API] Filtered duplicate: ${p.nom} ${p.prenom}`);
-                    continue;
-                }
+                if (seen.has(sig)) continue;
                 seen.add(sig);
             }
             deduped.push(p);
@@ -307,7 +298,8 @@ app.get('/presences', (req, res) => {
         
         res.json({ success: true, presences: deduped, count: deduped.length });
     } catch (error) {
-        res.status(500).json({ success: false, presences: [] });
+        console.error('Error:', error);
+        res.status(500).json({ success: false, presences: [], count: 0 });
     }
 });
 
@@ -371,11 +363,14 @@ app.delete('/presences/:id', (req, res) => {
     }
 });
 
+// ===== HISTORY ENDPOINTS =====
 app.get('/presences/history', (req, res) => {
     try {
         const history = readJsonFile(PRESENCE_HISTORY_FILE);
-        res.json({ success: true, dates: history.map(h => h.date).sort().reverse() });
+        const dates = history.map(h => h.date).sort().reverse();
+        res.json({ success: true, dates });
     } catch (error) {
+        console.error('Error:', error);
         res.status(500).json({ success: false, dates: [] });
     }
 });
@@ -386,6 +381,7 @@ app.get('/presences/history/:date', (req, res) => {
         const day = history.find(h => h.date === req.params.date);
         res.json({ success: true, presences: day?.presences || [] });
     } catch (error) {
+        console.error('Error:', error);
         res.status(500).json({ success: false, presences: [] });
     }
 });
@@ -410,6 +406,7 @@ app.post('/presences/archive', (req, res) => {
     }
 });
 
+// ===== NON-MEMBERS =====
 app.post('/save-non-member', (req, res) => {
     try {
         const { nom, prenom, email, dateNaissance, niveau } = req.body;
@@ -451,6 +448,7 @@ app.post('/quick-non-member', (req, res) => {
     }
 });
 
+// ===== STATS =====
 app.get('/api/stats/today', (req, res) => {
     try {
         const presences = readJsonFile(PRESENCES_FILE);
@@ -474,37 +472,20 @@ app.get('/api/stats/today', (req, res) => {
     }
 });
 
+// ===== EXPORT YEARS =====
 app.get('/admin/export/years', (req, res) => {
     try {
         const history = readJsonFile(PRESENCE_HISTORY_FILE);
         const years = [...new Set(history.map(h => {
             try { return new Date(h.date).getFullYear(); } catch (e) { return null; }
-        }))].filter(y => y && y > 2000).sort().reverse();
+        }))].filter(y => y && y > 2000).sort((a, b) => b - a);
+        
         res.json({ success: true, years });
     } catch (error) {
+        console.error('Error:', error);
         res.status(500).json({ success: false, years: [] });
     }
 });
-
-if (exportService) {
-    app.post('/admin/export/season', async (req, res) => {
-        try {
-            const result = await exportService.exportSeasonToExcel();
-            res.json({ success: true, filename: result.filename });
-        } catch (error) {
-            res.status(500).json({ success: false });
-        }
-    });
-    
-    app.post('/admin/export/:year', async (req, res) => {
-        try {
-            const result = await exportService.exportYearToExcel(parseInt(req.params.year));
-            res.json({ success: true, filename: result.filename });
-        } catch (error) {
-            res.status(500).json({ success: false });
-        }
-    });
-}
 
 app.use((req, res) => res.status(404).json({ error: 'Not found' }));
 app.use((error, req, res) => {
@@ -515,7 +496,7 @@ app.use((error, req, res) => {
 const server = app.listen(PORT, '0.0.0.0', () => {
     console.log('╔════════════════════════════════════════════════════════════╗');
     console.log('║  ✅ Server running on http://localhost:' + PORT + '              ║');
-    console.log('║  🔒 WITH DUPLICATE PREVENTION & NEW FEATURES           ║');
+    console.log('║  ✅ ALL FIXES APPLIED - Ready to use!                  ║');
     console.log('╚════════════════════════════════════════════════════════════╝\n');
 });
 

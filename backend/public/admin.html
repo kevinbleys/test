@@ -51,6 +51,7 @@
             font-size: 13px;
             color: #666;
             font-family: 'Courier New', monospace;
+            line-height: 1.6;
         }
 
         .date-selector {
@@ -65,7 +66,8 @@
             flex-wrap: wrap;
         }
 
-        .date-selector input[type="date"] {
+        .date-selector input[type="date"],
+        .date-selector select {
             padding: 8px 12px;
             border: 1px solid #ddd;
             border-radius: 6px;
@@ -189,7 +191,6 @@
             border: 1px solid #ddd;
             border-radius: 6px;
             font-size: 14px;
-            font-family: inherit;
         }
 
         .form-group input:focus,
@@ -252,6 +253,25 @@
         .btn-export:hover {
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .export-year-section {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 10px;
+        }
+
+        .export-year-section select {
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            width: 100%;
+        }
+
+        .export-year-section button {
+            width: 100%;
+            grid-column: 1 / -1;
         }
 
         .table-section {
@@ -334,7 +354,6 @@
             cursor: pointer;
             font-size: 12px;
             font-weight: 600;
-            transition: background 0.2s;
         }
 
         .btn-validate:hover {
@@ -349,11 +368,20 @@
             border-radius: 4px;
             cursor: pointer;
             font-size: 14px;
-            transition: background 0.2s;
         }
 
         .btn-delete:hover {
             background: #dc2626;
+        }
+
+        .status-text {
+            background: #dcfce7;
+            color: #166534;
+            padding: 6px 12px;
+            border-radius: 16px;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-block;
         }
 
         .modal {
@@ -385,7 +413,6 @@
         .modal-content h2 {
             margin: 0 0 20px 0;
             color: #333;
-            font-size: 20px;
         }
 
         .modal-form {
@@ -406,7 +433,6 @@
             border: 2px solid #e0e0e0;
             border-radius: 6px;
             font-size: 14px;
-            font-family: inherit;
         }
 
         .modal-form input:focus,
@@ -429,7 +455,6 @@
             border-radius: 6px;
             cursor: pointer;
             font-weight: 600;
-            font-size: 14px;
         }
 
         .modal-buttons .btn-cancel {
@@ -445,7 +470,6 @@
         @media (max-width: 768px) {
             .vente-form { grid-template-columns: 1fr; }
             .stats { grid-template-columns: 1fr; }
-            .export-buttons { flex-direction: column; }
         }
     </style>
 </head>
@@ -459,8 +483,8 @@
             API URL: http://localhost:3001<br>
             Current Date: <span id="currentDate"></span><br>
             Selected: <span id="selectedDate"></span><br>
-            Historical Mode: No<br>
-            Last Update: <span id="lastUpdate"></span><br>
+            Historical Mode: <span id="historicalMode">No</span><br>
+            Last Update: <span id="lastUpdate">14:22:25</span><br>
             Status: Loaded <span id="presenceCount">0</span> presences (live)
         </div>
 
@@ -515,18 +539,16 @@
 
         <div class="export-section">
             <h3>📥 Export Saison Actuelle</h3>
-            <div class="export-buttons">
-                <button class="btn-export" onclick="exportToExcel()">📄 Exporter Saison</button>
-            </div>
+            <button class="btn-export" onclick="exportToday()">📄 Exporter Saison</button>
         </div>
 
         <div class="export-section">
             <h3>📊 Export Excel Historique</h3>
-            <div style="display: grid; gap: 10px;">
-                <select id="yearSelect" style="padding: 10px; border: 1px solid #ddd; border-radius: 6px;">
+            <div class="export-year-section">
+                <select id="yearSelect">
                     <option value="">Sélectionner une année...</option>
                 </select>
-                <button class="btn-export" onclick="exportYearToExcel()" style="width: 100%;">📊 Exporter</button>
+                <button class="btn-export" onclick="exportYear()">📊 Exporter</button>
             </div>
         </div>
 
@@ -534,15 +556,15 @@
             <table>
                 <thead>
                     <tr>
-                        <th>Date/Heure</th>
-                        <th>Type</th>
-                        <th>Nom</th>
-                        <th>Prénom</th>
-                        <th>Niveau</th>
-                        <th>Tarif</th>
-                        <th>Paiement</th>
-                        <th>Statut</th>
-                        <th>Actions</th>
+                        <th>DATE/HEURE</th>
+                        <th>TYPE</th>
+                        <th>NOM</th>
+                        <th>PRÉNOM</th>
+                        <th>NIVEAU</th>
+                        <th>TARIF</th>
+                        <th>PAIEMENT</th>
+                        <th>STATUT</th>
+                        <th>ACTIONS</th>
                     </tr>
                 </thead>
                 <tbody id="presencesTableBody"></tbody>
@@ -573,6 +595,8 @@
     <script>
         const API_URL = 'http://localhost:3001';
         let validationPresenceId = null;
+        let currentMode = 'today';
+        let currentHistoryDate = null;
 
         // INIT
         document.addEventListener('DOMContentLoaded', () => {
@@ -580,25 +604,47 @@
             document.getElementById('dateInput').value = today;
             document.getElementById('currentDate').textContent = today;
             document.getElementById('selectedDate').textContent = today;
+            
             loadPresences();
             loadYears();
+            
             setInterval(() => {
-                document.getElementById('lastUpdate').textContent = new Date().toLocaleTimeString('fr-FR');
+                const now = new Date();
+                document.getElementById('lastUpdate').textContent = 
+                    String(now.getHours()).padStart(2, '0') + ':' +
+                    String(now.getMinutes()).padStart(2, '0') + ':' +
+                    String(now.getSeconds()).padStart(2, '0');
             }, 1000);
         });
 
         // LOAD PRESENCES
         async function loadPresences() {
             try {
-                const response = await fetch(`${API_URL}/presences`);
-                if (!response.ok) throw new Error('Failed');
+                const dateInput = document.getElementById('dateInput').value;
+                
+                let url;
+                if (currentMode === 'history' && currentHistoryDate) {
+                    url = `${API_URL}/presences/history/${currentHistoryDate}`;
+                    document.getElementById('historicalMode').textContent = 'Yes';
+                } else {
+                    url = `${API_URL}/presences`;
+                    currentMode = 'today';
+                    document.getElementById('historicalMode').textContent = 'No';
+                }
+                
+                const response = await fetch(url);
+                if (!response.ok) throw new Error('Failed to load');
+                
                 const data = await response.json();
                 const presences = data.presences || [];
+                
                 renderPresences(presences);
                 updateStats(presences);
                 document.getElementById('presenceCount').textContent = presences.length;
+                document.getElementById('selectedDate').textContent = dateInput;
+                
             } catch (error) {
-                console.error('Error:', error);
+                console.error('Error loading presences:', error);
             }
         }
 
@@ -611,32 +657,45 @@
                 const row = document.createElement('tr');
                 
                 if (presence.type === 'product-sale') {
+                    // PRODUCT SALE
                     row.innerHTML = `
                         <td>${formatDate(presence.date)}</td>
                         <td><span class="badge vente">Vente</span></td>
-                        <td colspan="2" style="font-weight: bold;">🛍️ ${presence.prenom}</td>
+                        <td colspan="2">🛍️ ${presence.prenom}</td>
                         <td>N/A</td>
-                        <td class="price">${presence.tarif.toFixed(2)}€</td>
+                        <td class="price">${(presence.tarif || 0).toFixed(2)}€</td>
                         <td>${presence.methodePaiement || 'N/A'}</td>
-                        <td><span class="badge paid">payé</span></td>
+                        <td><span class="status-text">produit</span></td>
                         <td><button class="btn-delete" onclick="deletePresence('${presence.id}')">🗑️</button></td>
                     `;
-                } else {
-                    const typeClass = presence.type === 'adherent' ? 'adherent' : 'non-adherent';
-                    const typeText = presence.type === 'adherent' ? 'Adhérent' : 'Non-adhérent';
-                    const statusBadge = presence.status === 'Payé' 
-                        ? '<span class="badge paid">adherent</span>'
-                        : `<button class="btn-validate" onclick="showValidationPopup('${presence.id}')">À valider</button>`;
-                    
+                } else if (presence.type === 'adherent') {
+                    // ADHERENT (MEMBER)
                     row.innerHTML = `
                         <td>${formatDate(presence.date)}</td>
-                        <td><span class="badge ${typeClass}">${typeText}</span></td>
-                        <td>${presence.nom}</td>
-                        <td>${presence.prenom}</td>
+                        <td><span class="badge adherent">Adhérent</span></td>
+                        <td>${presence.nom || ''}</td>
+                        <td>${presence.prenom || ''}</td>
                         <td>${presence.niveau || 'N/A'}</td>
-                        <td class="price">${presence.tarif ? presence.tarif.toFixed(2) + '€' : 'Gratuit'}</td>
+                        <td class="price">${presence.tarif ? (presence.tarif || 0).toFixed(2) + '€' : 'Gratuit'}</td>
                         <td>${presence.methodePaiement || 'N/A'}</td>
-                        <td>${statusBadge}</td>
+                        <td><span class="status-text">adhérent</span></td>
+                        <td><button class="btn-delete" onclick="deletePresence('${presence.id}')">🗑️</button></td>
+                    `;
+                } else if (presence.type === 'non-adherent') {
+                    // NON-ADHERENT (NON-MEMBER)
+                    row.innerHTML = `
+                        <td>${formatDate(presence.date)}</td>
+                        <td><span class="badge non-adherent">Non-adhérent</span></td>
+                        <td>${presence.nom || ''}</td>
+                        <td>${presence.prenom || ''}</td>
+                        <td>${presence.niveau || 'N/A'}</td>
+                        <td class="price">${presence.tarif ? (presence.tarif || 0).toFixed(2) + '€' : 'Gratuit'}</td>
+                        <td>${presence.methodePaiement || 'N/A'}</td>
+                        <td>
+                            ${presence.status === 'Payé' 
+                                ? '<span class="status-text">non-adhérent</span>' 
+                                : `<button class="btn-validate" onclick="showValidationPopup('${presence.id}')">À valider</button>`}
+                        </td>
                         <td><button class="btn-delete" onclick="deletePresence('${presence.id}')">🗑️</button></td>
                     `;
                 }
@@ -686,11 +745,10 @@
                 
                 document.getElementById('productName').value = '';
                 document.getElementById('productPrice').value = '';
-                document.getElementById('productPayment').selectedIndex = 0;
-                
                 loadPresences();
             } catch (error) {
                 console.error('Error:', error);
+                alert('Erreur lors de l\'ajout');
             }
         }
 
@@ -704,7 +762,6 @@
                     const presence = data.presence;
                     const montantInput = document.getElementById('validationMontant');
                     
-                    // AUTO-FILL AVEC TARIF
                     if (presence.tarif && presence.tarif > 0) {
                         montantInput.value = presence.tarif.toFixed(2);
                     } else {
@@ -713,7 +770,8 @@
                     
                     document.getElementById('validationMethode').value = 'Especes';
                     document.getElementById('validationModal').classList.add('show');
-                });
+                })
+                .catch(err => console.error('Error:', err));
         }
 
         function closeValidationModal() {
@@ -745,6 +803,7 @@
                 loadPresences();
             } catch (error) {
                 console.error('Error:', error);
+                alert('Erreur lors de la validation');
             }
         }
 
@@ -760,8 +819,8 @@
             }
         }
 
-        // EXPORT
-        async function exportToExcel() {
+        // EXPORT TODAY
+        async function exportToday() {
             try {
                 const response = await fetch(`${API_URL}/presences`);
                 const data = await response.json();
@@ -776,7 +835,7 @@
                     'Niveau': p.niveau || 'N/A',
                     'Tarif': p.tarif || 0,
                     'Paiement': p.methodePaiement || 'N/A',
-                    'Statut': p.status || 'N/A'
+                    'Statut': p.type === 'product-sale' ? 'Produit' : (p.type === 'adherent' ? 'Adhérent' : 'Non-adhérent')
                 }));
                 
                 const ws = XLSX.utils.json_to_sheet(excelData);
@@ -787,9 +846,11 @@
                 XLSX.writeFile(wb, `presences_${today}.xlsx`);
             } catch (error) {
                 console.error('Error:', error);
+                alert('Erreur lors de l\'export');
             }
         }
 
+        // LOAD YEARS
         async function loadYears() {
             try {
                 const response = await fetch(`${API_URL}/admin/export/years`);
@@ -803,38 +864,91 @@
                     select.appendChild(option);
                 });
             } catch (error) {
-                console.error('Error:', error);
+                console.error('Error loading years:', error);
             }
         }
 
-        async function exportYearToExcel() {
+        // EXPORT YEAR
+        async function exportYear() {
             const year = document.getElementById('yearSelect').value;
             if (!year) {
                 alert('Sélectionnez une année');
                 return;
             }
-            alert('Export pour ' + year + ' (à implémenter)');
-        }
-
-        // ARCHIVE
-        async function archivePresences() {
-            if (!confirm('Archiver les présences?')) return;
+            
             try {
-                const response = await fetch(`${API_URL}/presences/archive`, { method: 'POST' });
-                if (!response.ok) throw new Error('Failed');
-                loadPresences();
+                const response = await fetch(`${API_URL}/presences/history`);
+                const data = await response.json();
+                const allDates = data.dates || [];
+                
+                const yearData = allDates.filter(date => date.startsWith(year));
+                
+                if (yearData.length === 0) {
+                    alert('Aucune donnée pour cette année');
+                    return;
+                }
+                
+                let allPresences = [];
+                
+                for (const date of yearData) {
+                    const response = await fetch(`${API_URL}/presences/history/${date}`);
+                    const data = await response.json();
+                    allPresences = allPresences.concat(data.presences || []);
+                }
+                
+                const excelData = allPresences.map(p => ({
+                    'Date': formatDate(p.date),
+                    'Heure': formatTime(p.date),
+                    'Type': p.type === 'product-sale' ? 'Vente Libre' : (p.type === 'adherent' ? 'Adhérent' : 'Non-adhérent'),
+                    'Nom': p.nom || '',
+                    'Prénom': p.prenom,
+                    'Niveau': p.niveau || 'N/A',
+                    'Tarif': p.tarif || 0,
+                    'Paiement': p.methodePaiement || 'N/A',
+                    'Statut': p.type === 'product-sale' ? 'Produit' : (p.type === 'adherent' ? 'Adhérent' : 'Non-adhérent')
+                }));
+                
+                const ws = XLSX.utils.json_to_sheet(excelData);
+                const wb = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(wb, ws, 'Presences');
+                
+                XLSX.writeFile(wb, `presences_${year}.xlsx`);
             } catch (error) {
                 console.error('Error:', error);
+                alert('Erreur lors de l\'export');
             }
         }
 
         // SELECT TODAY
         function selectToday() {
+            currentMode = 'today';
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('dateInput').value = today;
-            document.getElementById('selectedDate').textContent = today;
             loadPresences();
         }
+
+        // ARCHIVE
+        async function archivePresences() {
+            if (!confirm('Êtes-vous sûr de vouloir archiver les présences?')) return;
+            try {
+                const response = await fetch(`${API_URL}/presences/archive`, { method: 'POST' });
+                if (!response.ok) throw new Error('Failed');
+                alert('Présences archivées');
+                loadPresences();
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Erreur lors de l\'archivage');
+            }
+        }
+
+        // DATE INPUT CHANGE
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('dateInput').addEventListener('change', function() {
+                currentHistoryDate = this.value;
+                currentMode = 'history';
+                loadPresences();
+            });
+        });
 
         // HELPERS
         function formatDate(dateString) {
