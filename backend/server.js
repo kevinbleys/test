@@ -9,8 +9,8 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 console.log('╔════════════════════════════════════════════════════════════╗');
-console.log('║  🚀 CLIMBING CLUB - SERVER v5.1 FINAL                   ║');
-console.log('║  + Login Attempts Tracking + All Features               ║');
+console.log('║  🚀 CLIMBING CLUB - SERVER v5.2 FINAL COMPLETE           ║');
+console.log('║  + Tentative Tracking + French Messages + All Features  ║');
 console.log('╚════════════════════════════════════════════════════════════╝');
 console.log(`Port: ${PORT}\n`);
 
@@ -155,7 +155,7 @@ cron.schedule('5 * * * *', async () => {
     } catch (error) {}
 }, { timezone: "Europe/Brussels" });
 
-app.get('/', (req, res) => res.json({ status: 'ok', version: '5.1.0' }));
+app.get('/', (req, res) => res.json({ status: 'ok', version: '5.2.0' }));
 app.get('/api/health', (req, res) => res.json({ status: 'healthy' }));
 app.get('/admin', (req, res) => res.sendFile(path.join(__dirname, 'public', 'admin.html')));
 
@@ -223,7 +223,10 @@ app.get('/members/check', (req, res) => {
             presences.push(attemptPresence);
             writeJsonFile(PRESENCES_FILE, presences);
             
-            return res.json({ success: false, error: "Not paid" });
+            return res.json({ 
+                success: false, 
+                error: "Vous avez encore à régler votre adhésion"
+            });
         }
         
         // ===== SUCCESS: Valid member =====
@@ -535,7 +538,7 @@ app.use((error, req, res) => {
 const server = app.listen(PORT, '0.0.0.0', () => {
     console.log('╔════════════════════════════════════════════════════════════╗');
     console.log('║  ✅ Server running on http://localhost:' + PORT + '              ║');
-    console.log('║  ✅ LOGIN ATTEMPTS TRACKED - Ready!                    ║');
+    console.log('║  ✅ FRENCH MESSAGES + TENTATIVE TRACKING ENABLED        ║');
     console.log('╚════════════════════════════════════════════════════════════╝\n');
 });
 
