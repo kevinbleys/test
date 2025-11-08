@@ -937,18 +937,19 @@
     "tarif": 0
   },
   {
-    "id": "1762609300690_94c6c0c4badef286",
+    "id": "1762614420475_5ed9ce6aa378ea31",
     "type": "non-adherent",
     "nom": "test",
     "prenom": "test",
-    "date": "2025-11-08T13:41:40.690Z",
+    "date": "2025-11-08T15:07:00.475Z",
     "tarif": 8,
     "email": "test@test.com",
     "telephone": "",
     "dateNaissance": "2016-10-20",
-    "niveau": "1",
-    "assuranceAccepted": true,
+    "niveau": 1,
     "status": "Payé",
-    "methodePaiement": "CB"
+    "age": 9,
+    "quickRegistration": true,
+    "methodePaiement": "Especes"
   }
 ]
