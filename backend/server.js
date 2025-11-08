@@ -9,8 +9,8 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 console.log('╔════════════════════════════════════════════════════════════╗');
-console.log('║  🚀 BACKEND - FINAL COMPLETE SOLUTION v5.0               ║');
-console.log('║  AGGRESSIVE DUPLICATE PREVENTION + FIX                   ║');
+console.log('║  🚀 CLIMBING CLUB - SERVER.JS v5.0 FINAL                ║');
+console.log('║  Duplicate Prevention + Auto-Fill + Product Sales      ║');
 console.log('╚════════════════════════════════════════════════════════════╝');
 console.log(`Port: ${PORT}\n`);
 
@@ -21,7 +21,7 @@ const PRESENCE_HISTORY_FILE = path.join(DATA_DIR, 'presence-history.json');
 const SAVED_NON_MEMBERS_FILE = path.join(DATA_DIR, 'saved-non-members.json');
 const EXPORTS_DIR = path.join(DATA_DIR, 'exports');
 
-// ====== AGGRESSIVE STARTUP CLEANUP ======
+// ====== STARTUP CLEANUP ======
 const cleanupAllDuplicates = () => {
     try {
         const presences = fs.existsSync(PRESENCES_FILE) 
@@ -40,7 +40,6 @@ const cleanupAllDuplicates = () => {
         let oldEntriesRemoved = 0;
         
         const cleaned = presences.filter(p => {
-            // Remove entries from previous days (only keep today for presences)
             if (p.date && p.type === 'adherent') {
                 const pDate = new Date(p.date).toISOString().split('T')[0];
                 if (pDate !== today) {
@@ -49,7 +48,6 @@ const cleanupAllDuplicates = () => {
                 }
             }
             
-            // Check duplicates for today's entries
             if (p.date && p.type === 'adherent') {
                 const nom = (p.nom || '').trim().toLowerCase();
                 const prenom = (p.prenom || '').trim().toLowerCase();
@@ -57,7 +55,6 @@ const cleanupAllDuplicates = () => {
                 
                 if (signatures.has(sig)) {
                     duplicateCount++;
-                    console.log(`  ❌ DUPLICATE REMOVED: ${p.nom} ${p.prenom}`);
                     return false;
                 }
                 signatures.set(sig, true);
@@ -81,11 +78,9 @@ const cleanupAllDuplicates = () => {
 
 cleanupAllDuplicates();
 
-// Setup directories
 if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
 if (!fs.existsSync(EXPORTS_DIR)) fs.mkdirSync(EXPORTS_DIR, { recursive: true });
 
-// Initialize data files
 const initDataFile = (filePath) => {
     if (!fs.existsSync(filePath)) {
         fs.writeFileSync(filePath, JSON.stringify([], null, 2));
@@ -97,7 +92,6 @@ initDataFile(NON_MEMBERS_FILE);
 initDataFile(PRESENCE_HISTORY_FILE);
 initDataFile(SAVED_NON_MEMBERS_FILE);
 
-// File operations
 const readJsonFile = (filePath) => {
     try {
         if (!fs.existsSync(filePath)) return [];
@@ -122,7 +116,6 @@ const writeJsonFile = (filePath, data) => {
     }
 };
 
-// Middleware
 app.use(cors({
     origin: ['http://localhost:3000', 'http://localhost:3001', 'http://localhost:3002',
              'http://127.0.0.1:3000', 'http://127.0.0.1:3001', 'http://127.0.0.1:3002',
@@ -135,7 +128,6 @@ app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 app.use(express.static('public'));
 
-// Sync service
 let syncService = null;
 try {
     syncService = require('./sync-service');
@@ -144,7 +136,6 @@ try {
     syncService = { getMembers: () => [], syncMembers: async () => 0 };
 }
 
-// Export service
 let exportService = null;
 try {
     exportService = require('./export-service');
@@ -152,7 +143,6 @@ try {
     exportService = null;
 }
 
-// CRON: Daily reset
 cron.schedule('0 0 * * *', () => {
     const presences = readJsonFile(PRESENCES_FILE);
     if (presences.length > 0) {
@@ -166,19 +156,16 @@ cron.schedule('0 0 * * *', () => {
     }
 });
 
-// CRON: Sync
 cron.schedule('5 * * * *', async () => {
     try {
         if (syncService?.syncMembers) await syncService.syncMembers();
     } catch (error) {}
 }, { timezone: "Europe/Brussels" });
 
-// Routes
 app.get('/', (req, res) => res.json({ status: 'ok', version: '5.0.0' }));
 app.get('/api/health', (req, res) => res.json({ status: 'healthy' }));
 app.get('/admin', (req, res) => res.sendFile(path.join(__dirname, 'public', 'admin.html')));
 
-// ====== BULLETPROOF MEMBERS CHECK ======
 app.get('/members/check', (req, res) => {
     const { nom, prenom } = req.query;
     if (!nom || !prenom) return res.status(400).json({ success: false });
@@ -213,7 +200,6 @@ app.get('/members/check', (req, res) => {
         const presences = readJsonFile(PRESENCES_FILE);
         console.log(`    📋 Database has ${presences.length} entries`);
         
-        // AGGRESSIVE DUPLICATE CHECK
         const exists = presences.find(p => {
             if (!p.date || p.type !== 'adherent') return false;
             const pDate = new Date(p.date).toISOString().split('T')[0];
@@ -248,13 +234,11 @@ app.get('/members/check', (req, res) => {
         
         presences.push(newPresence);
         
-        // FINAL DEDUPLICATION BEFORE SAVE
         const deduped = presences.filter(p => {
             if (!p.date || p.type !== 'adherent') return true;
             const pDate = new Date(p.date).toISOString().split('T')[0];
             if (pDate !== today) return true;
             
-            // Count how many times this person appears TODAY
             const count = presences.filter(p2 => 
                 p2.date && 
                 new Date(p2.date).toISOString().split('T')[0] === today &&
@@ -262,7 +246,6 @@ app.get('/members/check', (req, res) => {
                 (p2.prenom || '').trim().toLowerCase() === (p.prenom || '').trim().toLowerCase()
             ).length;
             
-            // Only keep first occurrence
             return count === 1 || presences.indexOf(p) === presences.findIndex(p2 =>
                 p2.date &&
                 new Date(p2.date).toISOString().split('T')[0] === today &&
@@ -296,20 +279,17 @@ app.get('/members/all', (req, res) => {
     }
 });
 
-// PRESENCES - ONLY TODAY
 app.get('/presences', (req, res) => {
     try {
         const presences = readJsonFile(PRESENCES_FILE);
         const today = new Date().toISOString().split('T')[0];
         
-        // FILTER: Only return TODAY's entries
         const todayOnly = presences.filter(p => {
             if (!p.date) return false;
             const pDate = new Date(p.date).toISOString().split('T')[0];
             return pDate === today;
         });
         
-        // DEDUP: Remove any remaining duplicates
         const deduped = [];
         const seen = new Set();
         
@@ -343,14 +323,16 @@ app.get('/presences/:id', (req, res) => {
 
 app.post('/presences', (req, res) => {
     try {
-        const { type, nom, prenom, ...other } = req.body;
+        const { type, nom, prenom, tarif, ...other } = req.body;
         if (!type || !nom || !prenom) return res.status(400).json({ success: false });
         
         const presences = readJsonFile(PRESENCES_FILE);
         const newPresence = {
             id: `${Date.now()}_${crypto.randomBytes(8).toString('hex')}`,
             type, nom: nom.trim(), prenom: prenom.trim(),
-            date: new Date().toISOString(), ...other
+            date: new Date().toISOString(),
+            tarif: tarif || 0,
+            ...other
         };
         
         presences.push(newPresence);
@@ -389,7 +371,6 @@ app.delete('/presences/:id', (req, res) => {
     }
 });
 
-// HISTORY
 app.get('/presences/history', (req, res) => {
     try {
         const history = readJsonFile(PRESENCE_HISTORY_FILE);
@@ -429,7 +410,6 @@ app.post('/presences/archive', (req, res) => {
     }
 });
 
-// NON-MEMBERS
 app.post('/save-non-member', (req, res) => {
     try {
         const { nom, prenom, email, dateNaissance, niveau } = req.body;
@@ -471,12 +451,13 @@ app.post('/quick-non-member', (req, res) => {
     }
 });
 
-// STATS
 app.get('/api/stats/today', (req, res) => {
     try {
         const presences = readJsonFile(PRESENCES_FILE);
         const today = new Date().toISOString().split('T')[0];
         const valid = presences.filter(p => p.date && new Date(p.date).toISOString().split('T')[0] === today);
+        
+        const totalRevenue = valid.reduce((sum, p) => sum + (p.tarif || 0), 0);
         
         res.json({
             success: true,
@@ -484,7 +465,8 @@ app.get('/api/stats/today', (req, res) => {
                 total: valid.length,
                 adherents: valid.filter(p => p.type === 'adherent').length,
                 nonAdherents: valid.filter(p => p.type === 'non-adherent').length,
-                revenue: valid.filter(p => p.tarif).reduce((s, p) => s + p.tarif, 0)
+                productSales: valid.filter(p => p.type === 'product-sale').length,
+                revenue: totalRevenue
             }
         });
     } catch (error) {
@@ -492,7 +474,6 @@ app.get('/api/stats/today', (req, res) => {
     }
 });
 
-// EXPORT
 app.get('/admin/export/years', (req, res) => {
     try {
         const history = readJsonFile(PRESENCE_HISTORY_FILE);
@@ -534,7 +515,7 @@ app.use((error, req, res) => {
 const server = app.listen(PORT, '0.0.0.0', () => {
     console.log('╔════════════════════════════════════════════════════════════╗');
     console.log('║  ✅ Server running on http://localhost:' + PORT + '              ║');
-    console.log('║  🔒 FINAL DUPLICATE PREVENTION ACTIVE                    ║');
+    console.log('║  🔒 WITH DUPLICATE PREVENTION & NEW FEATURES           ║');
     console.log('╚════════════════════════════════════════════════════════════╝\n');
 });
 
