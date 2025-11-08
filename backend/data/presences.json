@@ -812,5 +812,101 @@
     "nom": "caumont",
     "prenom": "florent",
     "date": "2025-11-08T11:35:31.955Z"
+  },
+  {
+    "id": "1762602636663_142cea09b42959d6",
+    "requestId": "1762602636653_8a112c9a",
+    "type": "adherent",
+    "nom": "mamelin",
+    "prenom": "claudine",
+    "date": "2025-11-08T11:50:36.663Z",
+    "status": "adherent",
+    "niveau": "N/A",
+    "tarif": 0,
+    "methodePaiement": "N/A",
+    "membre": {
+      "membreId": 485680,
+      "currentPictureUrl": null,
+      "firstname": "Claudine",
+      "lastname": "MAMELIN",
+      "dateOfBirth": "18/08/1972",
+      "age": 53,
+      "gender": "femme",
+      "address": "Résidence Pey - Appartement 1",
+      "additional": "Route d'Estensan",
+      "postalCode": "65170",
+      "town": "CAMPARAN",
+      "country": "FRANCE",
+      "phoneNumber": null,
+      "mobilePhoneNumber": "+33609576785",
+      "email": "cmamelin@hotmail.com",
+      "allergy": null,
+      "personToContact": null,
+      "personToContactPhoneNumber": null,
+      "corporateName": null,
+      "office": null,
+      "account": true,
+      "dateLastConnexion": "29/08/2025, 10:51",
+      "emailValid": true,
+      "notificationActive": true,
+      "joinFileStatusLabel": "Payé",
+      "joinFileLastPaymentType": null,
+      "joinFileLastPaymentDate": null,
+      "childsLabel": "Gestionnaire de 1 contact : TITOUAN MAROBIN",
+      "childMembers": [
+        {
+          "membreId": 492183,
+          "firstname": "TITOUAN",
+          "lastname": "MAROBIN",
+          "phoneNumber": null,
+          "mobilePhoneNumber": "+33631509574",
+          "email": "christophe.marobin@gmail.com"
+        }
+      ],
+      "parentsLabel": "",
+      "parentMembers": [],
+      "groups": [],
+      "categories": [
+        {
+          "label": "Adhérent"
+        },
+        {
+          "label": "Parent"
+        }
+      ],
+      "roles": [],
+      "medicalCertificateUrl": "https://www.pepsup.com/resources/documents/MEMBERS/000/048/568/485680/MEDICAL_CERTIFICATES/9489.pdf?1664281738000",
+      "dateMedicalCertificate": "20/09/2022",
+      "licence": "400414",
+      "customFields": [
+        {
+          "label": "documents utiles",
+          "value": null
+        },
+        {
+          "label": "Ville de naissance",
+          "value": "Toulouse"
+        },
+        {
+          "label": "code postale Ville de naissance",
+          "value": null
+        },
+        {
+          "label": "Pays de naissance",
+          "value": "france"
+        },
+        {
+          "label": "Nationalité",
+          "value": "francaise"
+        }
+      ]
+    }
+  },
+  {
+    "id": "1762602636691_273651ea4e915589",
+    "type": "adherent",
+    "nom": "mamelin",
+    "prenom": "claudine",
+    "date": "2025-11-08T11:50:36.691Z"
   }
 ]
