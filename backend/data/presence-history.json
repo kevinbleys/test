@@ -1,1 +1,243 @@
-[]
+[
+  {
+    "date": "2023-01-15",
+    "presences": [
+      {
+        "id": "1673740800000_aaa1bbb2ccc3ddd4",
+        "type": "adherent",
+        "nom": "Lefevre",
+        "prenom": "Alain",
+        "date": "2023-01-15T09:00:00.000Z",
+        "status": "adherent",
+        "niveau": "N/A",
+        "tarif": 0,
+        "methodePaiement": "N/A"
+      }
+    ]
+  },
+  {
+    "date": "2023-06-20",
+    "presences": [
+      {
+        "id": "1687267200000_eee5fff6ggg7hhh8",
+        "type": "non-adherent",
+        "nom": "Rousseau",
+        "prenom": "Luc",
+        "date": "2023-06-20T14:15:00.000Z",
+        "status": "Payé",
+        "niveau": "Niveau 1",
+        "tarif": 20.00,
+        "methodePaiement": "CB"
+      }
+    ]
+  },
+  {
+    "date": "2024-03-15",
+    "presences": [
+      {
+        "id": "1710510000000_iii9jjj0kkk1lll2",
+        "type": "adherent",
+        "nom": "Fontaine",
+        "prenom": "Marc",
+        "date": "2024-03-15T10:30:00.000Z",
+        "status": "adherent",
+        "niveau": "N/A",
+        "tarif": 0,
+        "methodePaiement": "N/A"
+      }
+    ]
+  },
+  {
+    "date": "2024-09-25",
+    "presences": [
+      {
+        "id": "1727222400000_mmm3nnn4ooo5ppp6",
+        "type": "product-sale",
+        "nom": "Vente",
+        "prenom": "Baudrier",
+        "date": "2024-09-25T15:45:00.000Z",
+        "status": "Payé",
+        "niveau": "N/A",
+        "tarif": 25.00,
+        "methodePaiement": "Especes"
+      }
+    ]
+  },
+  {
+    "date": "2025-01-10",
+    "presences": [
+      {
+        "id": "1736424600000_qqq7rrr8sss9ttt0",
+        "type": "adherent",
+        "nom": "Garnier",
+        "prenom": "David",
+        "date": "2025-01-10T11:00:00.000Z",
+        "status": "adherent",
+        "niveau": "N/A",
+        "tarif": 0,
+        "methodePaiement": "N/A"
+      },
+      {
+        "id": "1736424700000_uuu1vvv2www3xxx4",
+        "type": "non-adherent",
+        "nom": "Nicolas",
+        "prenom": "Anne",
+        "date": "2025-01-10T11:20:00.000Z",
+        "status": "Payé",
+        "niveau": "Niveau 2",
+        "tarif": 16.00,
+        "methodePaiement": "CB"
+      }
+    ]
+  },
+  {
+    "date": "2025-07-15",
+    "presences": [
+      {
+        "id": "1752604800000_yyy5zzz6aaa7bbb8",
+        "type": "adherent",
+        "nom": "Mercier",
+        "prenom": "Francoise",
+        "date": "2025-07-15T09:30:00.000Z",
+        "status": "adherent",
+        "niveau": "N/A",
+        "tarif": 0,
+        "methodePaiement": "N/A"
+      }
+    ]
+  },
+  {
+    "date": "2025-08-10",
+    "presences": [
+      {
+        "id": "1754788800000_ccc9ddd0eee1fff2",
+        "type": "non-adherent",
+        "nom": "Laurent",
+        "prenom": "Pascal",
+        "date": "2025-08-10T14:00:00.000Z",
+        "status": "Payé",
+        "niveau": "Niveau 1",
+        "tarif": 18.00,
+        "methodePaiement": "Especes"
+      }
+    ]
+  },
+  {
+    "date": "2025-08-29",
+    "presences": [
+      {
+        "id": "1756412400000_ggg3hhh4iii5jjj6",
+        "type": "product-sale",
+        "nom": "Vente",
+        "prenom": "Corde",
+        "date": "2025-08-29T16:30:00.000Z",
+        "status": "Payé",
+        "niveau": "N/A",
+        "tarif": 30.00,
+        "methodePaiement": "CB"
+      }
+    ]
+  },
+  {
+    "date": "2025-08-30",
+    "presences": [
+      {
+        "id": "1756498800000_kkk7lll8mmm9nnn0",
+        "type": "adherent",
+        "nom": "Bertrand",
+        "prenom": "Sylvie",
+        "date": "2025-08-30T10:15:00.000Z",
+        "status": "adherent",
+        "niveau": "N/A",
+        "tarif": 0,
+        "methodePaiement": "N/A"
+      }
+    ]
+  },
+  {
+    "date": "2025-09-25",
+    "presences": [
+      {
+        "id": "1758955200000_ooo1ppp2qqq3rrr4",
+        "type": "non-adherent",
+        "nom": "Blanchard",
+        "prenom": "Helene",
+        "date": "2025-09-25T13:45:00.000Z",
+        "status": "Payé",
+        "niveau": "Niveau 3",
+        "tarif": 22.00,
+        "methodePaiement": "Cheque"
+      }
+    ]
+  },
+  {
+    "date": "2025-09-26",
+    "presences": [
+      {
+        "id": "1759041600000_sss5ttt6uuu7vvv8",
+        "type": "adherent",
+        "nom": "Lemaire",
+        "prenom": "Jean-Claude",
+        "date": "2025-09-26T09:00:00.000Z",
+        "status": "adherent",
+        "niveau": "N/A",
+        "tarif": 0,
+        "methodePaiement": "N/A"
+      }
+    ]
+  },
+  {
+    "date": "2025-10-01",
+    "presences": [
+      {
+        "id": "1759340400000_www9xxx0yyy1zzz2",
+        "type": "product-sale",
+        "nom": "Vente",
+        "prenom": "Chaussons",
+        "date": "2025-10-01T15:20:00.000Z",
+        "status": "Payé",
+        "niveau": "N/A",
+        "tarif": 15.00,
+        "methodePaiement": "Especes"
+      }
+    ]
+  },
+  {
+    "date": "2025-11-05",
+    "presences": [
+      {
+        "id": "1730786400000_a1b2c3d4e5f6g7h8",
+        "type": "adherent",
+        "nom": "Dupont",
+        "prenom": "Jean",
+        "date": "2025-11-05T14:30:00.000Z",
+        "status": "adherent",
+        "niveau": "N/A",
+        "tarif": 0,
+        "methodePaiement": "N/A"
+      },
+      {
+        "id": "1730786500000_i2j3k4l5m6n7o8p9",
+        "type": "non-adherent",
+        "nom": "Martin",
+        "prenom": "Sophie",
+        "date": "2025-11-05T15:45:00.000Z",
+        "status": "Payé",
+        "niveau": "Niveau 2",
+        "tarif": 15.00,
+        "methodePaiement": "Especes"
+      },
+      {
+        "id": "1730786600000_q0r1s2t3u4v5w6x7",
+        "type": "product-sale",
+        "nom": "Vente",
+        "prenom": "T-shirt",
+        "date": "2025-11-05T16:20:00.000Z",
+        "status": "Payé",
+        "niveau": "N/A",
+        "tarif": 12.50,
+        "methodePaiement": "CB"
+      }
+    ]
+  }
+]
