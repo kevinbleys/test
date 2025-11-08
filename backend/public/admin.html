@@ -331,7 +331,7 @@
             <div class="export-section-info">✅ <strong>SÛREMENT:</strong> Cet export lit les données de l'historique SANS les modifier. Aucune donnée ne sera supprimée.</div>
             <div class="export-year-section">
                 <select id="yearSelect"><option value="">Sélectionner une année...</option></select>
-                <button class="btn-export" onclick="exportYear()">📊 Exporter</button>
+                <button class="btn-export" onclick="exportYearWithAutoArchive()">📊 Exporter</button>
             </div>
         </div>
         <div class="table-section">
@@ -410,9 +410,7 @@ function renderPresences(presences) {
         else if (presence.type === 'adherent') badge = '<span class="badge adherent">Adhérent</span>';
         else if (presence.type === 'non-adherent') badge = '<span class="badge non-adherent">Non-adhérent</span>';
         else badge = '<span class="badge tentative">Tentative</span>';
-        
         statusDisplay = presence.status === 'Payé' ? '<span class="status-text">payé</span>' : presence.type === 'non-adherent' ? `<button class="btn-validate" onclick="showValidationPopup('${presence.id}')">À valider</button>` : '<span class="status-text tentative">' + (presence.status || 'N/A') + '</span>';
-        
         row.innerHTML = `<td>${formatDate(presence.date)}</td><td>${badge}</td><td>${presence.nom || ''}</td><td>${presence.prenom || ''}</td><td>${presence.niveau || 'N/A'}</td><td class="price">${presence.tarif ? (presence.tarif || 0).toFixed(2) + '€' : '-'}</td><td>${presence.methodePaiement || 'N/A'}</td><td>${statusDisplay}</td><td><button class="btn-delete" onclick="deletePresence('${presence.id}')">🗑️</button></td>`;
         tbody.appendChild(row);
     });
@@ -522,31 +520,61 @@ async function loadYears() {
     } catch (error) { console.error('Error:', error); }
 }
 
-async function exportYear() {
+// NEW: AUTO-ARCHIVE BEFORE EXPORT
+async function exportYearWithAutoArchive() {
     const year = document.getElementById('yearSelect').value;
     if (!year) { alert('Sélectionnez une année'); return; }
+    
     try {
+        // STEP 1: Auto-archive today's data first
+        console.log('[EXPORT] Auto-archiving today data...');
+        await fetch(`${API_URL}/presences/archive`, { method: 'POST' });
+        
+        // STEP 2: Reload years after archiving
+        console.log('[EXPORT] Reloading years...');
+        await loadYears();
+        
+        // STEP 3: Now do the export
+        console.log(`[EXPORT] Exporting year ${year}...`);
         const historyResponse = await fetch(`${API_URL}/presences/history`);
         const historyData = await historyResponse.json();
         const allDates = historyData.dates || [];
+        
         const yearDates = allDates.filter(date => date.startsWith(String(year)));
-        if (yearDates.length === 0) { alert(`Aucune donnée pour l'année ${year}`); return; }
+        
+        if (yearDates.length === 0) {
+            alert(`Aucune donnée pour l'année ${year}`);
+            return;
+        }
+        
         let allPresences = [];
         for (const date of yearDates) {
             const response = await fetch(`${API_URL}/presences/history/${date}`);
             const data = await response.json();
             allPresences = allPresences.concat(data.presences || []);
         }
-        if (allPresences.length === 0) { alert(`Aucunes données à exporter pour l'année ${year}`); return; }
+        
+        if (allPresences.length === 0) {
+            alert(`Aucunes données à exporter pour l'année ${year}`);
+            return;
+        }
+        
         const excelData = allPresences.map(p => ({
             'Date': formatDate(p.date), 'Heure': formatTime(p.date), 'Type': p.type === 'product-sale' ? 'Vente Libre' : (p.type === 'adherent' ? 'Adhérent' : 'Non-adhérent'),
             'Nom': p.nom || '', 'Prénom': p.prenom, 'Niveau': p.niveau || 'N/A', 'Tarif': p.tarif || 0, 'Paiement': p.methodePaiement || 'N/A', 'Statut': p.status || p.type
         }));
+        
         const ws = XLSX.utils.json_to_sheet(excelData);
         const wb = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(wb, ws, 'Presences');
         XLSX.writeFile(wb, `presences_${year}.xlsx`);
-    } catch (error) { alert('Erreur lors de l\'export'); }
+        
+        // Reload presences after
+        await loadPresences();
+    } catch (error) {
+        console.error('[EXPORT] Error:', error);
+        alert('Erreur lors de l\'export');
+    }
 }
 
 function selectToday() {
