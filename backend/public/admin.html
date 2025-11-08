@@ -680,7 +680,6 @@
                 const row = document.createElement('tr');
                 
                 if (presence.type === 'product-sale') {
-                    // PRODUCT SALE
                     row.innerHTML = `
                         <td>${formatDate(presence.date)}</td>
                         <td><span class="badge vente">Vente</span></td>
@@ -692,7 +691,6 @@
                         <td><button class="btn-delete" onclick="deletePresence('${presence.id}')">🗑️</button></td>
                     `;
                 } else if (presence.type === 'tentative-non-adherent') {
-                    // TENTATIVE NON-ADHERENT
                     row.innerHTML = `
                         <td>${formatDate(presence.date)}</td>
                         <td><span class="badge tentative">Tentative</span></td>
@@ -705,7 +703,6 @@
                         <td><button class="btn-delete" onclick="deletePresence('${presence.id}')">🗑️</button></td>
                     `;
                 } else if (presence.type === 'tentative-non-payé') {
-                    // TENTATIVE NON-PAYÉ
                     row.innerHTML = `
                         <td>${formatDate(presence.date)}</td>
                         <td><span class="badge tentative">Tentative</span></td>
@@ -718,7 +715,6 @@
                         <td><button class="btn-delete" onclick="deletePresence('${presence.id}')">🗑️</button></td>
                     `;
                 } else if (presence.type === 'adherent') {
-                    // ADHERENT (MEMBER)
                     row.innerHTML = `
                         <td>${formatDate(presence.date)}</td>
                         <td><span class="badge adherent">Adhérent</span></td>
@@ -731,7 +727,6 @@
                         <td><button class="btn-delete" onclick="deletePresence('${presence.id}')">🗑️</button></td>
                     `;
                 } else if (presence.type === 'non-adherent') {
-                    // NON-ADHERENT (NON-MEMBER)
                     row.innerHTML = `
                         <td>${formatDate(presence.date)}</td>
                         <td><span class="badge non-adherent">Non-adhérent</span></td>
@@ -902,9 +897,20 @@
         // LOAD YEARS
         async function loadYears() {
             try {
+                console.log('[loadYears] Fetching available years...');
                 const response = await fetch(`${API_URL}/admin/export/years`);
                 const data = await response.json();
                 const select = document.getElementById('yearSelect');
+                
+                console.log('[loadYears] Years received:', data.years);
+                
+                if (!data.years || data.years.length === 0) {
+                    console.log('[loadYears] No years available - data/presence-history.json may be empty');
+                    select.innerHTML = '<option value="">Aucune donnée disponible</option>';
+                    return;
+                }
+                
+                select.innerHTML = '<option value="">Sélectionner une année...</option>';
                 
                 (data.years || []).forEach(year => {
                     const option = document.createElement('option');
@@ -912,8 +918,12 @@
                     option.textContent = year;
                     select.appendChild(option);
                 });
+                
+                console.log('[loadYears] Years loaded successfully');
             } catch (error) {
                 console.error('Error loading years:', error);
+                const select = document.getElementById('yearSelect');
+                select.innerHTML = '<option value="">Erreur de chargement</option>';
             }
         }
 
@@ -926,14 +936,20 @@
             }
             
             try {
-                const response = await fetch(`${API_URL}/presences/history`);
-                const data = await response.json();
-                const allDates = data.dates || [];
+                console.log(`[exportYear] Exporting year ${year}...`);
+                
+                const historyResponse = await fetch(`${API_URL}/presences/history`);
+                const historyData = await historyResponse.json();
+                const allDates = historyData.dates || [];
+                
+                console.log(`[exportYear] Total history dates: ${allDates.length}`);
                 
                 const yearData = allDates.filter(date => date.startsWith(year));
                 
+                console.log(`[exportYear] Dates matching year ${year}: ${yearData.length}`);
+                
                 if (yearData.length === 0) {
-                    alert('Aucune donnée pour cette année');
+                    alert(`Aucune donnée pour l'année ${year}`);
                     return;
                 }
                 
@@ -942,8 +958,12 @@
                 for (const date of yearData) {
                     const response = await fetch(`${API_URL}/presences/history/${date}`);
                     const data = await response.json();
+                    const count = (data.presences || []).length;
+                    console.log(`  [exportYear] ${date}: ${count} entries`);
                     allPresences = allPresences.concat(data.presences || []);
                 }
+                
+                console.log(`[exportYear] Total entries to export: ${allPresences.length}`);
                 
                 const excelData = allPresences.map(p => ({
                     'Date': formatDate(p.date),
@@ -962,8 +982,9 @@
                 XLSX.utils.book_append_sheet(wb, ws, 'Presences');
                 
                 XLSX.writeFile(wb, `presences_${year}.xlsx`);
+                console.log(`[exportYear] Export complete!`);
             } catch (error) {
-                console.error('Error:', error);
+                console.error('[exportYear] Error:', error);
                 alert('Erreur lors de l\'export');
             }
         }
@@ -984,6 +1005,7 @@
                 if (!response.ok) throw new Error('Failed');
                 alert('Présences archivées et sauvegardées!');
                 loadPresences();
+                loadYears();
             } catch (error) {
                 console.error('Error:', error);
                 alert('Erreur lors de l\'archivage');

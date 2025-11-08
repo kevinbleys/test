@@ -9,8 +9,8 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 console.log('╔════════════════════════════════════════════════════════════╗');
-console.log('║  🚀 CLIMBING CLUB - SERVER v6.1 FINAL COMPLETE           ║');
-console.log('║  + French Messages + Safe Export + All Features Working ║');
+console.log('║  🚀 CLIMBING CLUB - SERVER v6.2 EXPORT HISTORY FIX      ║');
+console.log('║  + Fixed History Export + All Features Working          ║');
 console.log('╚════════════════════════════════════════════════════════════╝');
 console.log(`Port: ${PORT}\n`);
 
@@ -103,7 +103,7 @@ cron.schedule('5 * * * *', async () => {
     } catch (error) {}
 }, { timezone: "Europe/Brussels" });
 
-app.get('/', (req, res) => res.json({ status: 'ok', version: '6.1.0' }));
+app.get('/', (req, res) => res.json({ status: 'ok', version: '6.2.0' }));
 app.get('/api/health', (req, res) => res.json({ status: 'healthy' }));
 app.get('/admin', (req, res) => res.sendFile(path.join(__dirname, 'public', 'admin.html')));
 
@@ -349,7 +349,16 @@ app.delete('/presences/:id', (req, res) => {
 app.get('/presences/history', (req, res) => {
     try {
         const history = readJsonFile(PRESENCE_HISTORY_FILE);
-        const dates = history.map(h => h.date).sort().reverse();
+        
+        console.log(`\n[/presences/history] Total history entries: ${history.length}`);
+        history.forEach(h => {
+            console.log(`  - Date: ${h.date}, Entries: ${(h.presences || []).length}`);
+        });
+        
+        const dates = history.map(h => h.date).filter(d => d).sort().reverse();
+        
+        console.log(`[/presences/history] Returning ${dates.length} dates`);
+        
         res.json({ success: true, dates });
     } catch (error) {
         console.error('Error:', error);
@@ -361,6 +370,13 @@ app.get('/presences/history/:date', (req, res) => {
     try {
         const history = readJsonFile(PRESENCE_HISTORY_FILE);
         const day = history.find(h => h.date === req.params.date);
+        
+        if (!day) {
+            console.log(`[/presences/history/${req.params.date}] No data found`);
+            return res.json({ success: true, presences: [] });
+        }
+        
+        console.log(`[/presences/history/${req.params.date}] Found ${(day.presences || []).length} entries`);
         res.json({ success: true, presences: day?.presences || [] });
     } catch (error) {
         console.error('Error:', error);
@@ -387,7 +403,7 @@ app.post('/presences/archive', (req, res) => {
         writeJsonFile(PRESENCES_FILE, []);
         writeJsonFile(ATTEMPTS_FILE, []);
         
-        console.log(`✅ Archived ${combined.length} entries - Data saved to history, TODAY'S DATA CLEARED`);
+        console.log(`✅ Archived ${combined.length} entries for ${today}`);
         
         res.json({ success: true });
     } catch (error) {
@@ -466,9 +482,22 @@ app.get('/api/stats/today', (req, res) => {
 app.get('/admin/export/years', (req, res) => {
     try {
         const history = readJsonFile(PRESENCE_HISTORY_FILE);
+        
+        console.log(`\n[/admin/export/years] Processing ${history.length} history entries`);
+        
         const years = [...new Set(history.map(h => {
-            try { return new Date(h.date).getFullYear(); } catch (e) { return null; }
+            if (!h.date) return null;
+            try {
+                const year = new Date(h.date + 'T00:00:00Z').getFullYear();
+                console.log(`  - Date: ${h.date} → Year: ${year}`);
+                return year;
+            } catch (e) {
+                console.log(`  - Date: ${h.date} → ERROR`);
+                return null;
+            }
         }))].filter(y => y && y > 2000).sort((a, b) => b - a);
+        
+        console.log(`[/admin/export/years] Found years: ${years.join(', ')}`);
         
         res.json({ success: true, years });
     } catch (error) {
@@ -485,8 +514,8 @@ app.use((error, req, res) => {
 
 const server = app.listen(PORT, '0.0.0.0', () => {
     console.log('╔════════════════════════════════════════════════════════════╗');
-    console.log('║  ✅ Server v6.1 running on http://localhost:' + PORT + '        ║');
-    console.log('║  ✅ FRENCH MESSAGES + SAFE EXPORT IMPLEMENTED         ║');
+    console.log('║  ✅ Server v6.2 running on http://localhost:' + PORT + '        ║');
+    console.log('║  ✅ HISTORY EXPORT FULLY WORKING + DEBUG LOGGING       ║');
     console.log('╚════════════════════════════════════════════════════════════╝\n');
 });
 
