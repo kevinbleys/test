@@ -232,6 +232,17 @@
             font-size: 16px;
         }
 
+        .export-section-info {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            font-size: 13px;
+            color: #92400e;
+            font-weight: 500;
+        }
+
         .export-buttons {
             display: flex;
             gap: 10px;
@@ -545,11 +556,17 @@
 
         <div class="export-section">
             <h3>📥 Export Saison Actuelle</h3>
+            <div class="export-section-info">
+                ⚠️ <strong>ATTENTION:</strong> Cet export génère un fichier Excel avec les données d'aujourd'hui. Le bouton "Archiver" plus bas sauvegarde ces données à l'historique AVANT de vider la liste.
+            </div>
             <button class="btn-export" onclick="exportToday()">📄 Exporter Saison</button>
         </div>
 
         <div class="export-section">
             <h3>📊 Export Excel Historique</h3>
+            <div class="export-section-info">
+                ✅ <strong>SÛREMENT:</strong> Cet export lit les données de l'historique SANS les modifier. Aucune donnée ne sera supprimée.
+            </div>
             <div class="export-year-section">
                 <select id="yearSelect">
                     <option value="">Sélectionner une année...</option>
@@ -961,11 +978,11 @@
 
         // ARCHIVE
         async function archivePresences() {
-            if (!confirm('Êtes-vous sûr de vouloir archiver les présences?')) return;
+            if (!confirm('Êtes-vous sûr de vouloir archiver les présences? Les données d\'aujourd\'hui seront sauvegardées à l\'historique et la liste sera vidée.')) return;
             try {
                 const response = await fetch(`${API_URL}/presences/archive`, { method: 'POST' });
                 if (!response.ok) throw new Error('Failed');
-                alert('Présences archivées');
+                alert('Présences archivées et sauvegardées!');
                 loadPresences();
             } catch (error) {
                 console.error('Error:', error);

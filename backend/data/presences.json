@@ -951,5 +951,15 @@
     "age": 9,
     "quickRegistration": true,
     "methodePaiement": "Especes"
+  },
+  {
+    "id": "1762615186999_13de9b4b56aeba56",
+    "type": "product-sale",
+    "nom": "Vente",
+    "prenom": "baudrier",
+    "date": "2025-11-08T15:19:46.999Z",
+    "tarif": 40,
+    "methodePaiement": "Especes",
+    "status": "Payé"
   }
 ]

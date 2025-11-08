@@ -9,8 +9,8 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 console.log('╔════════════════════════════════════════════════════════════╗');
-console.log('║  🚀 CLIMBING CLUB - SERVER v6.0 COMPLETE WORKING FIX    ║');
-console.log('║  + Separate Attempts Tracking + All Features Working    ║');
+console.log('║  🚀 CLIMBING CLUB - SERVER v6.1 FINAL COMPLETE           ║');
+console.log('║  + French Messages + Safe Export + All Features Working ║');
 console.log('╚════════════════════════════════════════════════════════════╝');
 console.log(`Port: ${PORT}\n`);
 
@@ -103,7 +103,7 @@ cron.schedule('5 * * * *', async () => {
     } catch (error) {}
 }, { timezone: "Europe/Brussels" });
 
-app.get('/', (req, res) => res.json({ status: 'ok', version: '6.0.0' }));
+app.get('/', (req, res) => res.json({ status: 'ok', version: '6.1.0' }));
 app.get('/api/health', (req, res) => res.json({ status: 'healthy' }));
 app.get('/admin', (req, res) => res.sendFile(path.join(__dirname, 'public', 'admin.html')));
 
@@ -147,9 +147,11 @@ app.get('/members/check', (req, res) => {
             attempts.push(attemptEntry);
             const saved = writeJsonFile(ATTEMPTS_FILE, attempts);
             console.log(`    💾 TENTATIVE NON-ADHERENT SAVED: ${saved ? 'YES ✅' : 'NO ❌'}`);
-            console.log(`    📊 Total attempts file: ${attempts.length}`);
             
-            return res.json({ success: false, error: "Not a member" });
+            return res.json({ 
+                success: false, 
+                error: "Vous n'êtes pas membre du club. Inscrivez-vous en tant que non-membre du club"
+            });
         }
         
         // ===== CASE 2: Member found but not paid =====
@@ -173,7 +175,6 @@ app.get('/members/check', (req, res) => {
             attempts.push(attemptEntry);
             const saved = writeJsonFile(ATTEMPTS_FILE, attempts);
             console.log(`    💾 TENTATIVE NON-PAYÉ SAVED: ${saved ? 'YES ✅' : 'NO ❌'}`);
-            console.log(`    📊 Total attempts file: ${attempts.length}`);
             
             return res.json({ 
                 success: false, 
@@ -219,7 +220,6 @@ app.get('/members/check', (req, res) => {
         presences.push(newPresence);
         const saved = writeJsonFile(PRESENCES_FILE, presences);
         console.log(`    💾 ADHERENT SAVED: ${saved ? 'YES ✅' : 'NO ❌'}`);
-        console.log(`    📊 Total presences file: ${presences.length}`);
         
         return res.json({
             success: true, isPaid: true,
@@ -250,7 +250,6 @@ app.get('/presences', (req, res) => {
         const attempts = readJsonFile(ATTEMPTS_FILE);
         const today = new Date().toISOString().split('T')[0];
         
-        // Combine presences and attempts
         const allEntries = [...presences, ...attempts];
         
         const todayOnly = allEntries.filter(p => {
@@ -259,9 +258,6 @@ app.get('/presences', (req, res) => {
             return pDate === today;
         });
         
-        console.log(`\n[/presences] Presences: ${presences.length}, Attempts: ${attempts.length}, Total: ${todayOnly.length}`);
-        
-        // Dedup only adherents
         const deduped = [];
         const seen = new Set();
         
@@ -390,6 +386,9 @@ app.post('/presences/archive', (req, res) => {
         writeJsonFile(PRESENCE_HISTORY_FILE, history);
         writeJsonFile(PRESENCES_FILE, []);
         writeJsonFile(ATTEMPTS_FILE, []);
+        
+        console.log(`✅ Archived ${combined.length} entries - Data saved to history, TODAY'S DATA CLEARED`);
+        
         res.json({ success: true });
     } catch (error) {
         res.status(500).json({ success: false });
@@ -486,8 +485,8 @@ app.use((error, req, res) => {
 
 const server = app.listen(PORT, '0.0.0.0', () => {
     console.log('╔════════════════════════════════════════════════════════════╗');
-    console.log('║  ✅ Server v6.0 running on http://localhost:' + PORT + '        ║');
-    console.log('║  ✅ SEPARATE ATTEMPTS TRACKING = ALWAYS SAVED          ║');
+    console.log('║  ✅ Server v6.1 running on http://localhost:' + PORT + '        ║');
+    console.log('║  ✅ FRENCH MESSAGES + SAFE EXPORT IMPLEMENTED         ║');
     console.log('╚════════════════════════════════════════════════════════════╝\n');
 });
 
