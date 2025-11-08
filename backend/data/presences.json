@@ -892,13 +892,6 @@
     "methodePaiement": "N/A"
   },
   {
-    "id": "1762604458826_25b3f2690980a1ea",
-    "type": "adherent",
-    "nom": "brunet",
-    "prenom": "denis",
-    "date": "2025-11-08T12:20:58.826Z"
-  },
-  {
     "id": "1762604517080_a59eac6fe4ed139b",
     "type": "non-adherent",
     "nom": "truong",
