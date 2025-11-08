@@ -243,12 +243,6 @@
             font-weight: 500;
         }
 
-        .export-buttons {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
         .btn-export {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
@@ -676,6 +670,11 @@
             const tbody = document.getElementById('presencesTableBody');
             tbody.innerHTML = '';
             
+            if (!presences || presences.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;color:#999;">Aucune présence</td></tr>';
+                return;
+            }
+            
             presences.forEach(presence => {
                 const row = document.createElement('tr');
                 
@@ -897,15 +896,11 @@
         // LOAD YEARS
         async function loadYears() {
             try {
-                console.log('[loadYears] Fetching available years...');
                 const response = await fetch(`${API_URL}/admin/export/years`);
                 const data = await response.json();
                 const select = document.getElementById('yearSelect');
                 
-                console.log('[loadYears] Years received:', data.years);
-                
                 if (!data.years || data.years.length === 0) {
-                    console.log('[loadYears] No years available');
                     return;
                 }
                 
@@ -918,77 +913,44 @@
                     select.appendChild(option);
                 });
                 
-                console.log('[loadYears] Years loaded successfully');
             } catch (error) {
                 console.error('Error loading years:', error);
             }
         }
 
-        // EXPORT YEAR - FIXED VERSION
+        // EXPORT YEAR
         async function exportYear() {
-    const year = document.getElementById('yearSelect').value;
-    if (!year) {
-        alert('Sélectionnez une année');
-        return;
-    }
-    
-    try {
-        console.log('\n╔═══════════════════════════════════════════════════╗');
-        console.log(`║ [EXPORT] Starting export for year: ${year}${' '.repeat(Math.max(1, 32 - String(year).length))}║`);
-        console.log('╚═══════════════════════════════════════════════════╝\n');
-        
-        // STEP 1: Get all history dates
-        console.log('[EXPORT STEP 1] Fetching all history dates...');
-        const historyResponse = await fetch(`${API_URL}/presences/history`);
-        if (!historyResponse.ok) throw new Error('Failed to fetch history');
-        const historyData = await historyResponse.json();
-        const allDates = historyData.dates || [];
-        
-        console.log(`[EXPORT STEP 1] ✓ Received ${allDates.length} total dates`);
-        console.log(`[EXPORT STEP 1] All dates:`, allDates);
-        
-        // STEP 2: Filter dates for the year
-        console.log(`\n[EXPORT STEP 2] Filtering dates for year ${year}...`);
-        const yearDates = [];
-        allDates.forEach(date => {
-            const dateYear = date.substring(0, 4);
-            if (dateYear === String(year)) {
-                yearDates.push(date);
-                console.log(`  ✓ ${date} matches`);
-            } else {
-                console.log(`  ✗ ${date} (${dateYear}) does not match`);
+            const year = document.getElementById('yearSelect').value;
+            if (!year) {
+                alert('Sélectionnez une année');
+                return;
             }
-        });
-        
-        console.log(`[EXPORT STEP 2] ✓ Found ${yearDates.length} dates for year ${year}`);
-        
-        if (yearDates.length === 0) {
-            console.log(`[EXPORT STEP 2] ❌ NO DATA FOR YEAR ${year}`);
-            alert(`Aucune donnée disponible pour l'année ${year}`);
-            return;
-        }
-        
-        // STEP 3: Fetch all presences for these dates
-        console.log(`\n[EXPORT STEP 3] Fetching presences for those dates
-                let allPresences = [];
+            
+            try {
+                const historyResponse = await fetch(`${API_URL}/presences/history`);
+                const historyData = await historyResponse.json();
+                const allDates = historyData.dates || [];
                 
-                for (const date of yearDates) {
-                    console.log(`[exportYear] Fetching data for ${date}...`);
-                    const response = await fetch(`${API_URL}/presences/history/${date}`);
-                    const data = await response.json();
-                    const datePresences = data.presences || [];
-                    console.log(`[exportYear]   → Found ${datePresences.length} entries`);
-                    allPresences = allPresences.concat(datePresences);
-                }
+                const yearDates = allDates.filter(date => date.startsWith(String(year)));
                 
-                console.log(`[exportYear] Total entries to export: ${allPresences.length}`);
-                
-                if (allPresences.length === 0) {
-                    alert(`Aucune données à exporter pour l'année ${year}`);
+                if (yearDates.length === 0) {
+                    alert(`Aucune donnée pour l'année ${year}`);
                     return;
                 }
                 
-                // STEP 4: Convert to Excel
+                let allPresences = [];
+                
+                for (const date of yearDates) {
+                    const response = await fetch(`${API_URL}/presences/history/${date}`);
+                    const data = await response.json();
+                    allPresences = allPresences.concat(data.presences || []);
+                }
+                
+                if (allPresences.length === 0) {
+                    alert(`Aucunes données à exporter pour l'année ${year}`);
+                    return;
+                }
+                
                 const excelData = allPresences.map(p => ({
                     'Date': formatDate(p.date),
                     'Heure': formatTime(p.date),
@@ -1006,9 +968,8 @@
                 XLSX.utils.book_append_sheet(wb, ws, 'Presences');
                 
                 XLSX.writeFile(wb, `presences_${year}.xlsx`);
-                console.log(`[exportYear] ✅ Export complete!`);
             } catch (error) {
-                console.error('[exportYear] Error:', error);
+                console.error('Error:', error);
                 alert('Erreur lors de l\'export');
             }
         }
