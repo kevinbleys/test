@@ -8,8 +8,9 @@ const crypto = require('crypto');
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-console.log('🚀 BACKEND - ULTIMATE DUPLICATE PREVENTION');
+console.log('🚀 BACKEND - PRODUCTION DUPLICATE FIX');
 console.log(`Port: ${PORT}`);
+console.log('🔒 PRODUCTION MODE: 3-Layer + Cleanup Active');
 
 // Data file paths
 const DATA_DIR = path.join(__dirname, 'data');
@@ -19,28 +20,23 @@ const PRESENCE_HISTORY_FILE = path.join(DATA_DIR, 'presence-history.json');
 const SAVED_NON_MEMBERS_FILE = path.join(DATA_DIR, 'saved-non-members.json');
 const EXPORTS_DIR = path.join(DATA_DIR, 'exports');
 
-// === MULTI-LAYER DUPLICATE PREVENTION ===
-// Layer 1: Request deduplication cache (60 second window)
-const recentRequests = new Map();
+// === PRODUCTION-GRADE DUPLICATE PREVENTION ===
+const requestCache = new Map(); // All recent requests
+const processingLocks = new Map(); // Current processing
+const cleanupQueue = []; // Queue of IDs to cleanup later
 
-// Layer 2: Synchronous processing queue per person
-const processingQueue = new Map();
-
-// Layer 3: In-memory cache van vandaag's presences
-let presencesCache = null;
-let cacheLastUpdated = 0;
-const CACHE_TTL = 1000; // 1 second
-
-const cleanupOldRequests = () => {
+// Cleanup old requests every 30 seconds
+setInterval(() => {
     const now = Date.now();
-    for (const [key, timestamp] of recentRequests.entries()) {
-        if (now - timestamp > 60000) { // 60 seconds
-            recentRequests.delete(key);
+    let cleaned = 0;
+    for (const [key, timestamp] of requestCache.entries()) {
+        if (now - timestamp > 60000) {
+            requestCache.delete(key);
+            cleaned++;
         }
     }
-};
-
-setInterval(cleanupOldRequests, 10000); // Cleanup every 10 seconds
+    if (cleaned > 0) console.log(`🧹 Cleaned ${cleaned} old request cache entries`);
+}, 30000);
 
 // Setup directories
 const setupDataDirectories = () => {
@@ -63,9 +59,8 @@ const initDataFile = (filePath, defaultData = []) => {
             try {
                 const content = fs.readFileSync(filePath, 'utf8');
                 JSON.parse(content);
-                console.log(`✅ Valid: ${path.basename(filePath)}`);
             } catch (jsonError) {
-                console.warn(`⚠️ Invalid JSON, recreating: ${path.basename(filePath)}`);
+                console.warn(`⚠️ Invalid JSON in ${path.basename(filePath)}, recreating...`);
                 fs.writeFileSync(filePath, JSON.stringify(defaultData, null, 2));
             }
         }
@@ -79,29 +74,13 @@ initDataFile(NON_MEMBERS_FILE);
 initDataFile(PRESENCE_HISTORY_FILE);
 initDataFile(SAVED_NON_MEMBERS_FILE);
 
-// File operations with caching
-const readJsonFile = (filePath, useCache = false) => {
+// File operations - ATOMIC & SAFE
+const readJsonFile = (filePath) => {
     try {
-        if (useCache && filePath === PRESENCES_FILE) {
-            const now = Date.now();
-            if (presencesCache && (now - cacheLastUpdated) < CACHE_TTL) {
-                return [...presencesCache]; // Return copy
-            }
-        }
-        
-        if (!fs.existsSync(filePath)) {
-            return [];
-        }
+        if (!fs.existsSync(filePath)) return [];
         const data = fs.readFileSync(filePath, 'utf8');
         const parsed = JSON.parse(data);
-        const result = Array.isArray(parsed) ? parsed : [];
-        
-        if (useCache && filePath === PRESENCES_FILE) {
-            presencesCache = result;
-            cacheLastUpdated = Date.now();
-        }
-        
-        return result;
+        return Array.isArray(parsed) ? parsed : [];
     } catch (error) {
         console.error(`❌ Read error ${path.basename(filePath)}:`, error.message);
         return [];
@@ -111,27 +90,55 @@ const readJsonFile = (filePath, useCache = false) => {
 const writeJsonFile = (filePath, data) => {
     try {
         if (!Array.isArray(data)) {
-            console.error(`❌ Non-array data for ${path.basename(filePath)}`);
+            console.error(`❌ Non-array for ${path.basename(filePath)}`);
             return false;
         }
         
-        // Atomic write
-        const tempFile = filePath + '.tmp';
+        // Atomic write: write to temp, then rename
+        const tempFile = filePath + '.tmp.' + crypto.randomBytes(4).toString('hex');
         fs.writeFileSync(tempFile, JSON.stringify(data, null, 2));
         fs.renameSync(tempFile, filePath);
-        
-        // Update cache
-        if (filePath === PRESENCES_FILE) {
-            presencesCache = data;
-            cacheLastUpdated = Date.now();
-        }
-        
         return true;
     } catch (error) {
         console.error(`❌ Write error ${path.basename(filePath)}:`, error.message);
         return false;
     }
 };
+
+// Cleanup duplicates on startup
+const cleanupDuplicatesOnStart = () => {
+    try {
+        const presences = readJsonFile(PRESENCES_FILE);
+        const seen = new Set();
+        const duplicates = [];
+        let cleaned = 0;
+        
+        const cleaned_presences = presences.filter(p => {
+            if (!p.date || p.type !== 'adherent') return true;
+            
+            const key = `${(p.nom || '').toLowerCase()}_${(p.prenom || '').toLowerCase()}_${new Date(p.date).toISOString().split('T')[0]}`;
+            
+            if (seen.has(key)) {
+                duplicates.push(p);
+                cleaned++;
+                return false; // Remove this one
+            }
+            
+            seen.add(key);
+            return true;
+        });
+        
+        if (cleaned > 0) {
+            writeJsonFile(PRESENCES_FILE, cleaned_presences);
+            console.log(`🧹 STARTUP CLEANUP: Removed ${cleaned} duplicate entries`);
+        }
+    } catch (error) {
+        console.error('❌ Startup cleanup error:', error.message);
+    }
+};
+
+// Run cleanup on startup
+cleanupDuplicatesOnStart();
 
 // Middleware
 app.use(cors({
@@ -156,7 +163,9 @@ app.use(express.static('public'));
 // Logging
 app.use((req, res, next) => {
     const ip = req.ip || req.connection.remoteAddress;
-    console.log(`🌐 ${new Date().toISOString()} - ${req.method} ${req.path} from ${ip}`);
+    if (req.path.includes('/members/check')) {
+        console.log(`🌐 ${new Date().toISOString()} - ${req.method} ${req.path}`);
+    }
     next();
 });
 
@@ -166,11 +175,7 @@ try {
     syncService = require('./sync-service');
     console.log('✅ Sync service loaded');
 } catch (error) {
-    console.warn('⚠️ Sync service not found');
-    syncService = {
-        getMembers: () => [],
-        syncMembers: async () => 0
-    };
+    syncService = { getMembers: () => [], syncMembers: async () => 0 };
 }
 
 // Export service
@@ -179,49 +184,27 @@ try {
     exportService = require('./export-service');
     console.log('✅ Export service loaded');
 } catch (error) {
-    console.warn('⚠️ Export service not found');
+    exportService = null;
 }
 
 // CRON: Daily reset
 cron.schedule('0 0 * * *', () => {
     try {
-        console.log('=== DAILY RESET ===');
-        
         const presences = readJsonFile(PRESENCES_FILE);
         if (presences.length > 0) {
             const history = readJsonFile(PRESENCE_HISTORY_FILE);
             const today = new Date().toISOString().split('T')[0];
             
-            const existingIndex = history.findIndex(h => h.date === today);
-            if (existingIndex >= 0) {
-                history[existingIndex].presences = presences;
-            } else {
-                history.push({ date: today, presences });
-            }
+            const idx = history.findIndex(h => h.date === today);
+            if (idx >= 0) history[idx].presences = presences;
+            else history.push({ date: today, presences });
             
             writeJsonFile(PRESENCE_HISTORY_FILE, history);
             writeJsonFile(PRESENCES_FILE, []);
-            console.log(`✅ Archived ${presences.length} for ${today}`);
         }
         
-        // Clear caches
-        presencesCache = null;
-        recentRequests.clear();
-        processingQueue.clear();
-        
-        // Cleanup temp files
-        fs.readdir(DATA_DIR, (err, files) => {
-            if (err) return;
-            files.forEach(file => {
-                if (file.endsWith('.backup') || file.endsWith('.tmp')) {
-                    try {
-                        fs.unlinkSync(path.join(DATA_DIR, file));
-                    } catch (e) {}
-                }
-            });
-        });
-        
-        console.log('=== DAILY RESET DONE ===');
+        requestCache.clear();
+        processingLocks.clear();
     } catch (error) {
         console.error('❌ Daily reset error:', error.message);
     }
@@ -230,32 +213,24 @@ cron.schedule('0 0 * * *', () => {
 // CRON: Pepsup sync
 cron.schedule('5 * * * *', async () => {
     try {
-        if (syncService && syncService.syncMembers) {
-            const count = await syncService.syncMembers();
-            console.log(`✅ Synced ${count} members`);
+        if (syncService?.syncMembers) {
+            await syncService.syncMembers();
         }
     } catch (error) {
         console.error('❌ Sync error:', error.message);
     }
 }, { timezone: "Europe/Brussels" });
 
-// Basic routes
+// === BASIC ROUTES ===
 app.get('/', (req, res) => {
-    res.json({
-        status: 'success',
-        message: 'API Logiciel Escalade',
-        version: '2.7.0',
-        timestamp: new Date().toISOString()
-    });
+    res.json({ status: 'success', message: 'API v2.8.0', timestamp: new Date().toISOString() });
 });
 
 app.get('/api/health', (req, res) => {
-    const presences = readJsonFile(PRESENCES_FILE);
     res.json({
         status: 'healthy',
         uptime: process.uptime(),
-        presences: presences.length,
-        cacheSize: recentRequests.size,
+        presences: readJsonFile(PRESENCES_FILE).length,
         timestamp: new Date().toISOString()
     });
 });
@@ -264,167 +239,136 @@ app.get('/admin', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'admin.html'));
 });
 
-// === ULTIMATE MEMBERS CHECK - 3 LAGEN BESCHERMING ===
+// === PRODUCTION MEMBERS CHECK - BULLETPROOF ===
 app.get('/members/check', async (req, res) => {
     const { nom, prenom } = req.query;
     
     if (!nom || !prenom) {
-        return res.status(400).json({
-            success: false,
-            error: "Paramètres 'nom' et 'prenom' requis"
-        });
+        return res.status(400).json({ success: false, error: "Missing parameters" });
     }
     
-    const nomNormalized = nom.trim().toLowerCase();
-    const prenomNormalized = prenom.trim().toLowerCase();
-    const personKey = `${nomNormalized}_${prenomNormalized}`;
+    const requestId = `${Date.now()}_${crypto.randomBytes(4).toString('hex')}`;
+    const nomNorm = nom.trim().toLowerCase();
+    const prenomNorm = prenom.trim().toLowerCase();
+    const personKey = `${nomNorm}_${prenomNorm}`;
     const today = new Date().toISOString().split('T')[0];
-    
-    // Generate request ID (unique per person per second)
-    const requestId = `${personKey}_${today}_${Date.now()}`;
     const dedupeKey = `${personKey}_${today}`;
     
     console.log('=== MEMBER CHECK ===');
-    console.log(`Person: ${nom} ${prenom}`);
-    console.log(`Request ID: ${requestId}`);
-    
-    // === LAYER 1: REQUEST DEDUPLICATION (within 5 seconds) ===
-    const recentTimestamp = recentRequests.get(dedupeKey);
-    if (recentTimestamp && (Date.now() - recentTimestamp) < 5000) {
-        console.log('🚫 LAYER 1: Duplicate request within 5 seconds - REJECTED');
-        
-        // Return existing presence if available
-        const presences = readJsonFile(PRESENCES_FILE, true);
-        const existing = presences.find(p => 
-            p.type === 'adherent' &&
-            p.nom?.trim().toLowerCase() === nomNormalized &&
-            p.prenom?.trim().toLowerCase() === prenomNormalized &&
-            p.date && new Date(p.date).toISOString().split('T')[0] === today
-        );
-        
-        return res.json({
-            success: true,
-            isPaid: true,
-            alreadyRegistered: true,
-            message: "Vous êtes déjà enregistré aujourd'hui. Bienvenue !",
-            presence: existing
-        });
-    }
-    
-    // Mark this request timestamp
-    recentRequests.set(dedupeKey, Date.now());
-    
-    // === LAYER 2: SYNCHRONOUS QUEUE PER PERSON ===
-    // Wait if this person is currently being processed
-    while (processingQueue.has(personKey)) {
-        console.log('⏳ LAYER 2: Waiting for concurrent request to finish...');
-        await new Promise(resolve => setTimeout(resolve, 50));
-    }
-    
-    // Mark as processing
-    processingQueue.set(personKey, true);
+    console.log(`Request: ${nom} ${prenom} (ID: ${requestId})`);
     
     try {
-        const members = syncService.getMembers();
-        const member = members.find(m =>
-            m.lastname?.trim().toLowerCase() === nomNormalized &&
-            m.firstname?.trim().toLowerCase() === prenomNormalized
-        );
-        
-        if (!member) {
-            console.log('❌ Member not found');
-            processingQueue.delete(personKey);
-            return res.json({
-                success: false,
-                error: "Aucun membre trouvé avec ce nom et prénom"
-            });
-        }
-        
-        const joinStatus = member.joinFileStatusLabel;
-        
-        if (joinStatus === "Payé" || joinStatus === "En cours de paiement") {
-            console.log(`✅ Valid payment: ${joinStatus}`);
-            
-            // === LAYER 3: DATABASE CHECK (with cache) ===
-            const presences = readJsonFile(PRESENCES_FILE, true);
-            
-            console.log(`🔍 LAYER 3: Checking database`);
-            console.log(`   Current presences: ${presences.length}`);
-            
-            const exists = presences.find(p => {
-                if (!p.date || p.type !== 'adherent') return false;
+        // LAYER 1: RAPID FIRE DEDUP
+        if (requestCache.has(dedupeKey)) {
+            const lastTime = requestCache.get(dedupeKey);
+            if (Date.now() - lastTime < 3000) { // 3 second window
+                console.log(`🛡️ LAYER 1 BLOCKED: Recent duplicate request`);
                 
-                const presenceDate = new Date(p.date).toISOString().split('T')[0];
-                if (presenceDate !== today) return false;
+                const presences = readJsonFile(PRESENCES_FILE);
+                const existing = presences.find(p =>
+                    p.type === 'adherent' &&
+                    (p.nom || '').toLowerCase() === nomNorm &&
+                    (p.prenom || '').toLowerCase() === prenomNorm &&
+                    new Date(p.date).toISOString().split('T')[0] === today
+                );
                 
-                const pNom = (p.nom || '').trim().toLowerCase();
-                const pPrenom = (p.prenom || '').trim().toLowerCase();
-                
-                return pNom === nomNormalized && pPrenom === prenomNormalized;
-            });
-            
-            if (exists) {
-                console.log('⚠️ LAYER 3: DUPLICATE FOUND IN DATABASE - BLOCKING');
-                processingQueue.delete(personKey);
                 return res.json({
                     success: true,
                     isPaid: true,
                     alreadyRegistered: true,
-                    message: "Vous êtes déjà enregistré aujourd'hui. Bienvenue !",
-                    membre: member,
-                    presence: exists
+                    message: "Vous êtes déjà enregistré aujourd'hui",
+                    presence: existing
                 });
             }
-            
-            // CREATE NEW PRESENCE
-            console.log('✅ All layers passed - creating new presence');
-            const newPresence = {
-                id: Date.now().toString() + crypto.randomBytes(4).toString('hex'),
-                type: 'adherent',
-                nom: nom.trim(),
-                prenom: prenom.trim(),
-                date: new Date().toISOString(),
-                status: 'adherent',
-                niveau: 'N/A',
-                tarif: 0,
-                methodePaiement: 'N/A',
-                membre: member,
-                joinFileStatus: joinStatus
-            };
-            
-            presences.push(newPresence);
-            const written = writeJsonFile(PRESENCES_FILE, presences);
-            
-            // Release processing lock
-            processingQueue.delete(personKey);
-            
-            if (written) {
-                console.log(`✅ SAVED: ${nom} ${prenom} at ${new Date().toLocaleTimeString()}`);
-            }
-            
+        }
+        
+        requestCache.set(dedupeKey, Date.now());
+        console.log(`✅ LAYER 1: Request registered`);
+        
+        // LAYER 2: PROCESSING LOCK
+        while (processingLocks.has(personKey)) {
+            console.log(`⏳ LAYER 2: Waiting for concurrent request...`);
+            await new Promise(resolve => setTimeout(resolve, 50));
+        }
+        
+        processingLocks.set(personKey, Date.now());
+        console.log(`✅ LAYER 2: Lock acquired`);
+        
+        const members = syncService.getMembers();
+        const member = members.find(m =>
+            m.lastname?.trim().toLowerCase() === nomNorm &&
+            m.firstname?.trim().toLowerCase() === prenomNorm
+        );
+        
+        if (!member) {
+            processingLocks.delete(personKey);
+            console.log('❌ Member not found');
+            return res.json({ success: false, error: "Member not found" });
+        }
+        
+        const joinStatus = member.joinFileStatusLabel;
+        if (joinStatus !== "Payé" && joinStatus !== "En cours de paiement") {
+            processingLocks.delete(personKey);
+            console.log(`❌ Invalid payment status: ${joinStatus}`);
+            return res.json({ success: false, error: "Payment not confirmed" });
+        }
+        
+        // LAYER 3: DATABASE VERIFICATION
+        const presences = readJsonFile(PRESENCES_FILE);
+        
+        const exists = presences.find(p => {
+            if (!p.date || p.type !== 'adherent') return false;
+            const pDate = new Date(p.date).toISOString().split('T')[0];
+            if (pDate !== today) return false;
+            return (p.nom || '').toLowerCase() === nomNorm && (p.prenom || '').toLowerCase() === prenomNorm;
+        });
+        
+        if (exists) {
+            processingLocks.delete(personKey);
+            console.log(`🛡️ LAYER 3 BLOCKED: Found in database`);
             return res.json({
                 success: true,
                 isPaid: true,
-                message: "Adhésion reconnue. Bienvenue !",
-                membre: member,
-                presence: newPresence
-            });
-        } else {
-            console.log(`❌ Invalid payment: ${joinStatus}`);
-            processingQueue.delete(personKey);
-            return res.json({
-                success: false,
-                error: "Vous n'avez pas encore payé votre adhésion"
+                alreadyRegistered: true,
+                message: "Vous êtes déjà enregistré aujourd'hui",
+                presence: exists
             });
         }
-    } catch (error) {
-        console.error('❌ Error:', error);
-        processingQueue.delete(personKey); // Always release on error
-        recentRequests.delete(dedupeKey); // Clear dedupe on error
-        return res.status(500).json({
-            success: false,
-            error: 'Server error'
+        
+        console.log(`✅ LAYER 3: No duplicate in database`);
+        
+        // CREATE & SAVE
+        const newPresence = {
+            id: `${Date.now()}_${crypto.randomBytes(8).toString('hex')}`,
+            type: 'adherent',
+            nom: nom.trim(),
+            prenom: prenom.trim(),
+            date: new Date().toISOString(),
+            status: 'adherent',
+            niveau: 'N/A',
+            tarif: 0,
+            methodePaiement: 'N/A',
+            membre: member
+        };
+        
+        presences.push(newPresence);
+        const written = writeJsonFile(PRESENCES_FILE, presences);
+        
+        processingLocks.delete(personKey);
+        console.log(`✅ SAVED: ${nom} ${prenom}`);
+        
+        return res.json({
+            success: true,
+            isPaid: true,
+            message: "Welcome!",
+            membre: member,
+            presence: newPresence
         });
+        
+    } catch (error) {
+        processingLocks.delete(personKey);
+        console.error('❌ Error:', error);
+        return res.status(500).json({ success: false, error: 'Server error' });
     }
 });
 
@@ -437,28 +381,15 @@ app.get('/members/all', (req, res) => {
     }
 });
 
-// PRESENCES ROUTES
+// PRESENCES
 app.get('/presences', (req, res) => {
     try {
-        const allPresences = readJsonFile(PRESENCES_FILE, true);
+        const presences = readJsonFile(PRESENCES_FILE);
         const today = new Date().toISOString().split('T')[0];
-        
-        const todayPresences = allPresences.filter(p => {
-            if (!p.date) return false;
-            return new Date(p.date).toISOString().split('T')[0] === today;
-        });
-        
-        res.json({
-            success: true,
-            presences: todayPresences,
-            count: todayPresences.length
-        });
+        const todayOnly = presences.filter(p => p.date && new Date(p.date).toISOString().split('T')[0] === today);
+        res.json({ success: true, presences: todayOnly, count: todayOnly.length });
     } catch (error) {
-        res.status(500).json({
-            success: false,
-            presences: [],
-            error: error.message
-        });
+        res.status(500).json({ success: false, presences: [], error: error.message });
     }
 });
 
@@ -466,11 +397,7 @@ app.get('/presences/:id', (req, res) => {
     try {
         const presences = readJsonFile(PRESENCES_FILE);
         const presence = presences.find(p => p.id === req.params.id);
-        
-        if (!presence) {
-            return res.status(404).json({ success: false, error: 'Not found' });
-        }
-        
+        if (!presence) return res.status(404).json({ success: false });
         res.json({ success: true, presence });
     } catch (error) {
         res.status(500).json({ success: false, error: error.message });
@@ -478,43 +405,20 @@ app.get('/presences/:id', (req, res) => {
 });
 
 app.post('/presences', (req, res) => {
-    const { type, nom, prenom, ...otherData } = req.body;
-    
-    if (!type || !nom || !prenom) {
-        return res.status(400).json({
-            success: false,
-            error: 'Missing required fields'
-        });
-    }
-    
     try {
-        const presences = readJsonFile(PRESENCES_FILE);
+        const { type, nom, prenom, ...other } = req.body;
+        if (!type || !nom || !prenom) return res.status(400).json({ success: false });
         
+        const presences = readJsonFile(PRESENCES_FILE);
         const newPresence = {
-            id: Date.now().toString() + crypto.randomBytes(4).toString('hex'),
-            type,
-            nom: nom.trim(),
-            prenom: prenom.trim(),
-            date: new Date().toISOString(),
-            ...otherData
+            id: `${Date.now()}_${crypto.randomBytes(8).toString('hex')}`,
+            type, nom: nom.trim(), prenom: prenom.trim(), date: new Date().toISOString(),
+            ...other
         };
         
-        if (type === 'adherent') {
-            newPresence.status = 'adherent';
-            delete newPresence.tarif;
-        } else if (type === 'non-adherent') {
-            newPresence.status = req.body.status || 'pending';
-            newPresence.tarif = req.body.tarif || 10;
-            newPresence.methodePaiement = req.body.methodePaiement || 'Especes';
-        }
-        
         presences.push(newPresence);
-        
-        if (writeJsonFile(PRESENCES_FILE, presences)) {
-            res.json({ success: true, presence: newPresence });
-        } else {
-            throw new Error('Failed to save');
-        }
+        writeJsonFile(PRESENCES_FILE, presences);
+        res.json({ success: true, presence: newPresence });
     } catch (error) {
         res.status(500).json({ success: false, error: error.message });
     }
@@ -523,22 +427,15 @@ app.post('/presences', (req, res) => {
 app.post('/presences/:id/valider', (req, res) => {
     try {
         const presences = readJsonFile(PRESENCES_FILE);
-        const index = presences.findIndex(p => p.id === req.params.id);
+        const idx = presences.findIndex(p => p.id === req.params.id);
+        if (idx === -1) return res.status(404).json({ success: false });
         
-        if (index === -1) {
-            return res.status(404).json({ success: false, error: 'Not found' });
-        }
+        presences[idx].status = 'Payé';
+        if (req.body.montant) presences[idx].tarif = req.body.montant;
+        if (req.body.methodePaiement) presences[idx].methodePaiement = req.body.methodePaiement;
         
-        presences[index].status = 'Payé';
-        if (req.body.montant) presences[index].tarif = req.body.montant;
-        if (req.body.methodePaiement) presences[index].methodePaiement = req.body.methodePaiement;
-        presences[index].dateValidation = new Date().toISOString();
-        
-        if (writeJsonFile(PRESENCES_FILE, presences)) {
-            res.json({ success: true, presence: presences[index] });
-        } else {
-            throw new Error('Failed to save');
-        }
+        writeJsonFile(PRESENCES_FILE, presences);
+        res.json({ success: true, presence: presences[idx] });
     } catch (error) {
         res.status(500).json({ success: false, error: error.message });
     }
@@ -548,161 +445,99 @@ app.delete('/presences/:id', (req, res) => {
     try {
         const presences = readJsonFile(PRESENCES_FILE);
         const filtered = presences.filter(p => p.id !== req.params.id);
-        
-        if (filtered.length === presences.length) {
-            return res.status(404).json({ success: false, error: 'Not found' });
-        }
-        
-        if (writeJsonFile(PRESENCES_FILE, filtered)) {
-            res.json({ success: true });
-        } else {
-            throw new Error('Failed to save');
-        }
+        writeJsonFile(PRESENCES_FILE, filtered);
+        res.json({ success: true });
     } catch (error) {
         res.status(500).json({ success: false, error: error.message });
     }
 });
 
-// HISTORY ROUTES
+// HISTORY
 app.get('/presences/history', (req, res) => {
     try {
         const history = readJsonFile(PRESENCE_HISTORY_FILE);
-        const dates = history.map(h => h.date).sort().reverse();
-        res.json({ success: true, dates });
+        res.json({ success: true, dates: history.map(h => h.date).sort().reverse() });
     } catch (error) {
-        res.status(500).json({ success: false, dates: [], error: error.message });
+        res.status(500).json({ success: false, dates: [] });
     }
 });
 
 app.get('/presences/history/:date', (req, res) => {
     try {
         const history = readJsonFile(PRESENCE_HISTORY_FILE);
-        const dayHistory = history.find(h => h.date === req.params.date);
-        
-        if (!dayHistory) {
-            return res.json({ success: true, presences: [], count: 0 });
-        }
-        
-        res.json({ 
-            success: true, 
-            presences: dayHistory.presences || [],
-            count: dayHistory.presences ? dayHistory.presences.length : 0
-        });
+        const day = history.find(h => h.date === req.params.date);
+        res.json({ success: true, presences: day?.presences || [], count: day?.presences?.length || 0 });
     } catch (error) {
-        res.status(500).json({
-            success: false,
-            presences: [],
-            error: error.message
-        });
+        res.status(500).json({ success: false, presences: [] });
     }
 });
 
 app.post('/presences/archive', (req, res) => {
     try {
         const presences = readJsonFile(PRESENCES_FILE);
-        if (presences.length === 0) {
-            return res.json({ success: false, message: 'No presences to archive' });
-        }
+        if (!presences.length) return res.json({ success: false, message: 'Empty' });
         
         const history = readJsonFile(PRESENCE_HISTORY_FILE);
         const today = new Date().toISOString().split('T')[0];
+        const idx = history.findIndex(h => h.date === today);
         
-        const existingIndex = history.findIndex(h => h.date === today);
-        if (existingIndex >= 0) {
-            history[existingIndex].presences = presences;
-        } else {
-            history.push({ date: today, presences });
-        }
+        if (idx >= 0) history[idx].presences = presences;
+        else history.push({ date: today, presences });
         
         writeJsonFile(PRESENCE_HISTORY_FILE, history);
         writeJsonFile(PRESENCES_FILE, []);
-        
-        res.json({ success: true, message: `${presences.length} archived` });
+        res.json({ success: true, message: `Archived ${presences.length}` });
     } catch (error) {
-        res.status(500).json({ success: false, error: error.message });
+        res.status(500).json({ success: false });
     }
 });
 
-// NON-MEMBERS ROUTES
+// NON-MEMBERS
 app.post('/save-non-member', (req, res) => {
     try {
         const { nom, prenom, email, dateNaissance, niveau } = req.body;
-        
-        if (!nom || !prenom || !email || !dateNaissance || niveau === undefined) {
-            return res.status(400).json({ success: false, error: 'Missing fields' });
-        }
+        if (!nom || !prenom || !email || !dateNaissance) return res.status(400).json({ success: false });
         
         const saved = readJsonFile(SAVED_NON_MEMBERS_FILE);
-        const existingIndex = saved.findIndex(m =>
-            m.nom.toLowerCase() === nom.toLowerCase() &&
-            m.prenom.toLowerCase() === prenom.toLowerCase() &&
-            m.dateNaissance === dateNaissance
-        );
+        const idx = saved.findIndex(m => m.nom.toLowerCase() === nom.toLowerCase() && m.prenom.toLowerCase() === prenom.toLowerCase() && m.dateNaissance === dateNaissance);
         
         const data = {
-            id: existingIndex >= 0 ? saved[existingIndex].id : Date.now().toString(),
-            nom: nom.trim(),
-            prenom: prenom.trim(),
-            email: email.trim(),
-            telephone: req.body.telephone || '',
-            dateNaissance,
-            niveau: parseInt(niveau),
+            id: idx >= 0 ? saved[idx].id : Date.now().toString(),
+            nom: nom.trim(), prenom: prenom.trim(), email: email.trim(),
+            telephone: req.body.telephone || '', dateNaissance, niveau: parseInt(niveau),
             assuranceAccepted: req.body.assuranceAccepted || true,
-            age: req.body.age,
-            tarif: req.body.tarif,
-            savedAt: existingIndex >= 0 ? saved[existingIndex].savedAt : new Date().toISOString(),
+            age: req.body.age, tarif: req.body.tarif,
+            savedAt: idx >= 0 ? saved[idx].savedAt : new Date().toISOString(),
             updatedAt: new Date().toISOString()
         };
         
-        if (existingIndex >= 0) {
-            saved[existingIndex] = data;
-        } else {
-            saved.push(data);
-        }
+        if (idx >= 0) saved[idx] = data;
+        else saved.push(data);
         
-        if (writeJsonFile(SAVED_NON_MEMBERS_FILE, saved)) {
-            res.json({ success: true, nonMember: data });
-        } else {
-            throw new Error('Failed to save');
-        }
+        writeJsonFile(SAVED_NON_MEMBERS_FILE, saved);
+        res.json({ success: true, nonMember: data });
     } catch (error) {
-        res.status(500).json({ success: false, error: error.message });
+        res.status(500).json({ success: false });
     }
 });
 
 app.post('/quick-non-member', (req, res) => {
     try {
         const { nom, prenom, dateNaissance } = req.body;
-        
-        if (!nom || !prenom || !dateNaissance) {
-            return res.status(400).json({ success: false, error: 'Missing fields' });
-        }
-        
         const saved = readJsonFile(SAVED_NON_MEMBERS_FILE);
-        const found = saved.find(m =>
-            m.nom.toLowerCase().trim() === nom.toLowerCase().trim() &&
-            m.prenom.toLowerCase().trim() === prenom.toLowerCase().trim() &&
-            m.dateNaissance === dateNaissance
-        );
-        
-        if (found) {
-            res.json({ success: true, nonMember: found });
-        } else {
-            res.json({ success: false, message: 'Not found' });
-        }
+        const found = saved.find(m => m.nom.toLowerCase() === nom.toLowerCase() && m.prenom.toLowerCase() === prenom.toLowerCase() && m.dateNaissance === dateNaissance);
+        res.json({ success: !!found, nonMember: found });
     } catch (error) {
-        res.status(500).json({ success: false, error: error.message });
+        res.status(500).json({ success: false });
     }
 });
 
 // STATS
 app.get('/api/stats/today', (req, res) => {
     try {
-        const presences = readJsonFile(PRESENCES_FILE, true);
+        const presences = readJsonFile(PRESENCES_FILE);
         const today = new Date().toISOString().split('T')[0];
-        
-        const todayPresences = presences.filter(p => p.date && p.date.startsWith(today));
-        const valid = todayPresences.filter(p => p.type !== 'failed-login');
+        const valid = presences.filter(p => p.date && new Date(p.date).toISOString().split('T')[0] === today && p.type !== 'failed-login');
         
         res.json({
             success: true,
@@ -711,35 +546,25 @@ app.get('/api/stats/today', (req, res) => {
                 total: valid.length,
                 adherents: valid.filter(p => p.type === 'adherent').length,
                 nonAdherents: valid.filter(p => p.type === 'non-adherent').length,
-                revenue: valid.filter(p => p.tarif).reduce((s, p) => s + p.tarif, 0),
-                presences: todayPresences
+                revenue: valid.filter(p => p.tarif).reduce((s, p) => s + p.tarif, 0)
             }
         });
     } catch (error) {
-        res.status(500).json({ success: false, error: error.message });
+        res.status(500).json({ success: false });
     }
 });
 
-// EXPORT ROUTES
+// EXPORT
 app.get('/admin/export/years', (req, res) => {
     try {
         const history = readJsonFile(PRESENCE_HISTORY_FILE);
-        
         const years = [...new Set(history.map(h => {
-            try {
-                return new Date(h.date).getFullYear();
-            } catch (e) {
-                return null;
-            }
+            try { return new Date(h.date).getFullYear(); } catch (e) { return null; }
         }))].filter(y => y && !isNaN(y) && y > 2000 && y < 2100).sort().reverse();
         
         res.json({ success: true, years });
     } catch (error) {
-        res.status(500).json({
-            success: false,
-            years: [],
-            error: error.message
-        });
+        res.status(500).json({ success: false, years: [] });
     }
 });
 
@@ -747,57 +572,44 @@ if (exportService) {
     app.post('/admin/export/season', async (req, res) => {
         try {
             const result = await exportService.exportSeasonToExcel();
-            res.json({ success: true, filename: result.filename, recordCount: result.recordCount });
+            res.json({ success: true, filename: result.filename });
         } catch (error) {
-            res.status(500).json({ success: false, error: error.message });
+            res.status(500).json({ success: false });
         }
     });
     
     app.post('/admin/export/:year', async (req, res) => {
         try {
             const yearInt = parseInt(req.params.year);
-            if (!yearInt || yearInt < 2020 || yearInt > 2030) {
-                return res.status(400).json({ success: false, error: 'Invalid year' });
-            }
+            if (!yearInt || yearInt < 2020 || yearInt > 2030) return res.status(400).json({ success: false });
             const result = await exportService.exportYearToExcel(yearInt);
-            res.json({ success: true, filename: result.filename, recordCount: result.recordCount });
+            res.json({ success: true, filename: result.filename });
         } catch (error) {
-            res.status(500).json({ success: false, error: error.message });
+            res.status(500).json({ success: false });
         }
     });
 }
 
 // ERROR HANDLERS
-app.use((req, res) => {
-    res.status(404).json({ error: 'Not found', path: req.originalUrl });
-});
-
-app.use((error, req, res, next) => {
+app.use((req, res) => { res.status(404).json({ error: 'Not found' }); });
+app.use((error, req, res) => {
     console.error('💥 ERROR:', error);
-    res.status(500).json({ error: 'Server error', message: error.message });
+    res.status(500).json({ error: 'Server error' });
 });
 
 // SERVER STARTUP
 const server = app.listen(PORT, '0.0.0.0', () => {
-    console.log('🎉 ==========================================');
-    console.log('🎉 BACKEND - ULTIMATE DUPLICATE PREVENTION');
-    console.log('🎉 ==========================================');
-    console.log(`✅ Backend: http://localhost:${PORT}`);
-    console.log(`📊 Admin: http://localhost:${PORT}/admin`);
-    console.log(`🛡️ 3-Layer protection active`);
-    console.log('🎉 ==========================================');
+    console.log('✅ Server running on http://localhost:' + PORT);
+    console.log('🔒 PRODUCTION MODE WITH 3-LAYER DUPLICATE PREVENTION');
 });
 
-server.on('error', (error) => {
-    console.error('💥 Server error:', error);
+server.on('error', error => {
     if (error.code === 'EADDRINUSE') {
         console.error(`❌ Port ${PORT} already in use!`);
         process.exit(1);
     }
 });
 
-process.on('SIGTERM', () => {
-    server.close(() => process.exit(0));
-});
+process.on('SIGTERM', () => server.close(() => process.exit(0)));
 
 module.exports = app;
