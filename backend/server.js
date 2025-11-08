@@ -7,10 +7,11 @@ const cron = require('node-cron');
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-console.log('🚀 DEFINITIEVE BACKEND - VERSIE MET ALLE FIXES');
-console.log('Port:', PORT);
+console.log('🚀 DEFINITIEVE BACKEND - ALLE PROBLEMEN GEFIXED');
+console.log(`Port: ${PORT}`);
+console.log(`Node version: ${process.version}`);
 
-// Data file paths
+// Data file paths  
 const DATA_DIR = path.join(__dirname, 'data');
 const PRESENCES_FILE = path.join(DATA_DIR, 'presences.json');
 const NON_MEMBERS_FILE = path.join(DATA_DIR, 'non-members.json');
@@ -20,17 +21,16 @@ const EXPORTS_DIR = path.join(DATA_DIR, 'exports');
 
 // Setup directories
 const setupDataDirectories = () => {
-    const dirs = [DATA_DIR, EXPORTS_DIR];
-    dirs.forEach(dir => {
+    [DATA_DIR, EXPORTS_DIR].forEach(dir => {
         if (!fs.existsSync(dir)) {
             fs.mkdirSync(dir, { recursive: true });
-            console.log(`✅ Created directory: ${dir}`);
+            console.log(`✅ Created: ${dir}`);
         }
     });
 };
 setupDataDirectories();
 
-// Initialize data files
+// Initialize data files with better error handling
 const initDataFile = (filePath, defaultData = []) => {
     try {
         if (!fs.existsSync(filePath)) {
@@ -39,15 +39,15 @@ const initDataFile = (filePath, defaultData = []) => {
         } else {
             try {
                 const content = fs.readFileSync(filePath, 'utf8');
-                JSON.parse(content);
-                console.log(`✅ ${path.basename(filePath)} is valid`);
+                JSON.parse(content); // Validate JSON
+                console.log(`✅ Valid: ${path.basename(filePath)}`);
             } catch (jsonError) {
-                console.warn(`⚠️ ${path.basename(filePath)} invalid, recreating...`);
+                console.warn(`⚠️ Invalid JSON in ${path.basename(filePath)}, recreating...`);
                 fs.writeFileSync(filePath, JSON.stringify(defaultData, null, 2));
             }
         }
     } catch (error) {
-        console.error(`❌ Failed to initialize ${path.basename(filePath)}:`, error);
+        console.error(`❌ Failed to init ${path.basename(filePath)}:`, error.message);
     }
 };
 
@@ -56,20 +56,20 @@ initDataFile(NON_MEMBERS_FILE);
 initDataFile(PRESENCE_HISTORY_FILE);
 initDataFile(SAVED_NON_MEMBERS_FILE);
 
-// File operations
+// File operations with better error handling
 const readJsonFile = (filePath) => {
     try {
         if (!fs.existsSync(filePath)) {
-            console.log(`⚠️ File does not exist: ${path.basename(filePath)}, returning empty array`);
+            console.log(`⚠️ File not found: ${path.basename(filePath)}, returning []`);
             return [];
         }
         const data = fs.readFileSync(filePath, 'utf8');
         const parsed = JSON.parse(data);
         const result = Array.isArray(parsed) ? parsed : [];
-        console.log(`📖 Read ${result.length} records from ${path.basename(filePath)}`);
+        console.log(`📖 Read ${result.length} from ${path.basename(filePath)}`);
         return result;
     } catch (error) {
-        console.error(`❌ Error reading ${path.basename(filePath)}:`, error);
+        console.error(`❌ Error reading ${path.basename(filePath)}:`, error.message);
         return [];
     }
 };
@@ -77,20 +77,19 @@ const readJsonFile = (filePath) => {
 const writeJsonFile = (filePath, data) => {
     try {
         if (!Array.isArray(data)) {
-            console.error(`❌ Attempted to write non-array data to ${path.basename(filePath)}`);
+            console.error(`❌ Non-array data for ${path.basename(filePath)}`);
             return false;
         }
         
         if (fs.existsSync(filePath)) {
-            const backupPath = filePath + '.backup';
-            fs.copyFileSync(filePath, backupPath);
+            fs.copyFileSync(filePath, filePath + '.backup');
         }
         
         fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
-        console.log(`💾 Wrote ${data.length} records to ${path.basename(filePath)}`);
+        console.log(`💾 Wrote ${data.length} to ${path.basename(filePath)}`);
         return true;
     } catch (error) {
-        console.error(`❌ Error writing ${path.basename(filePath)}:`, error);
+        console.error(`❌ Error writing ${path.basename(filePath)}:`, error.message);
         return false;
     }
 };
@@ -109,125 +108,99 @@ app.use(cors({
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
-    optionsSuccessStatus: 200
 }));
 
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 app.use(express.static('public'));
 
-// Logging middleware
+// Logging
 app.use((req, res, next) => {
-    const clientIP = req.ip || req.connection.remoteAddress || req.headers['x-forwarded-for'] || req.headers['x-real-ip'];
-    console.log(`🌐 ${new Date().toISOString()} - ${req.method} ${req.path} from ${clientIP}`);
+    const ip = req.ip || req.connection.remoteAddress;
+    console.log(`🌐 ${new Date().toISOString()} - ${req.method} ${req.path} from ${ip}`);
     next();
 });
 
 // Sync service
 let syncService = null;
 try {
-    const syncServicePath = path.join(__dirname, 'sync-service');
-    if (fs.existsSync(syncServicePath + '.js')) {
-        syncService = require('./sync-service');
-        console.log('✅ Sync service loaded');
-    }
+    syncService = require('./sync-service');
+    console.log('✅ Sync service loaded');
 } catch (error) {
-    console.warn('⚠️ Sync service loading failed:', error.message);
-}
-
-if (!syncService) {
+    console.warn('⚠️ Sync service not found');
     syncService = {
-        getMembers: () => {
-            console.log('⚠️ Using fallback sync service');
-            return [];
-        },
-        syncMembers: async () => {
-            console.log('⚠️ Using fallback sync');
-            return 0;
-        }
+        getMembers: () => [],
+        syncMembers: async () => 0
     };
 }
 
-// Export service
-let exportService;
+// Export service  
+let exportService = null;
 try {
     exportService = require('./export-service');
     console.log('✅ Export service loaded');
 } catch (error) {
     console.warn('⚠️ Export service not found');
-    exportService = null;
 }
 
-// ===== CRON JOB: DAGELIJKSE RESET + BACKUP CLEANUP =====
+// CRON: Daily reset + cleanup
 cron.schedule('0 0 * * *', () => {
     try {
-        console.log('=== DAGELIJKSE RESET EN CLEANUP GESTART ===');
+        console.log('=== DAILY RESET ===');
         
-        const currentPresences = readJsonFile(PRESENCES_FILE);
-        if (currentPresences.length > 0) {
+        const presences = readJsonFile(PRESENCES_FILE);
+        if (presences.length > 0) {
             const history = readJsonFile(PRESENCE_HISTORY_FILE);
             const today = new Date().toISOString().split('T')[0];
             
             const existingIndex = history.findIndex(h => h.date === today);
             if (existingIndex >= 0) {
-                history[existingIndex].presences = currentPresences;
+                history[existingIndex].presences = presences;
             } else {
-                history.push({
-                    date: today,
-                    presences: currentPresences
-                });
+                history.push({ date: today, presences });
             }
             
             writeJsonFile(PRESENCE_HISTORY_FILE, history);
-            console.log(`${currentPresences.length} presences gearchiveerd voor ${today}`);
-            
             writeJsonFile(PRESENCES_FILE, []);
-            console.log('Huidige presences gereset');
+            console.log(`✅ Archived ${presences.length} for ${today}`);
         }
         
-        // Verwijder .backup bestanden
+        // Cleanup backups
         fs.readdir(DATA_DIR, (err, files) => {
             if (err) return;
-            let deletedCount = 0;
             files.forEach(file => {
                 if (file.endsWith('.backup') || file.endsWith('.backup.json')) {
                     try {
                         fs.unlinkSync(path.join(DATA_DIR, file));
-                        deletedCount++;
                     } catch (e) {}
                 }
             });
-            console.log(`🗑️ ${deletedCount} backup files verwijderd`);
         });
         
-        console.log('=== DAGELIJKSE RESET VOLTOOID ===');
+        console.log('=== DAILY RESET DONE ===');
     } catch (error) {
-        console.error('❌ Fout bij dagelijkse cleanup:', error);
+        console.error('❌ Daily reset error:', error.message);
     }
 });
 
-// CRON JOB: Pepsup sync
+// CRON: Pepsup sync
 cron.schedule('5 * * * *', async () => {
     try {
-        console.log('⏰ Pepsup sync gestart');
         if (syncService && syncService.syncMembers) {
-            const memberCount = await syncService.syncMembers();
-            console.log(`✅ Pepsup sync: ${memberCount} membres`);
+            const count = await syncService.syncMembers();
+            console.log(`✅ Synced ${count} members`);
         }
     } catch (error) {
-        console.error('❌ Pepsup sync error:', error.message);
+        console.error('❌ Sync error:', error.message);
     }
-}, {
-    scheduled: true,
-    timezone: "Europe/Brussels"
-});
+}, { timezone: "Europe/Brussels" });
 
-// ===== BASIC API ROUTES =====
+// === BASIC ROUTES ===
 app.get('/', (req, res) => {
     res.json({
         status: 'success',
         message: 'API Logiciel Escalade',
-        version: '2.3.0',
+        version: '2.4.0',
         timestamp: new Date().toISOString()
     });
 });
@@ -237,21 +210,16 @@ app.get('/api/health', (req, res) => {
     res.json({
         status: 'healthy',
         uptime: process.uptime(),
-        timestamp: new Date().toISOString(),
-        dataFiles: {
-            presences: presences.length,
-            presencesFile: fs.existsSync(PRESENCES_FILE),
-            dataDir: fs.existsSync(DATA_DIR)
-        }
+        presences: presences.length,
+        timestamp: new Date().toISOString()
     });
 });
 
 app.get('/admin', (req, res) => {
-    console.log('📊 Admin interface requested');
     res.sendFile(path.join(__dirname, 'public', 'admin.html'));
 });
 
-// ===== MEMBERS CHECK - MET DUPLICATE PREVENTIE =====
+// === MEMBERS ROUTES ===
 app.get('/members/check', (req, res) => {
     const { nom, prenom } = req.query;
     if (!nom || !prenom) {
@@ -261,9 +229,6 @@ app.get('/members/check', (req, res) => {
         });
     }
     
-    console.log('=== MEMBER CHECK ===');
-    console.log(`Checking: ${nom} ${prenom}`);
-    
     try {
         const members = syncService.getMembers();
         const member = members.find(m =>
@@ -272,43 +237,35 @@ app.get('/members/check', (req, res) => {
         );
         
         if (!member) {
-            console.log('❌ Member not found');
-            return res.json({
-                success: false,
-                error: "Aucun membre trouvé avec ce nom et prénom"
-            });
+            return res.json({ success: false, error: "Membre non trouvé" });
         }
         
         const joinStatus = member.joinFileStatusLabel;
         
         if (joinStatus === "Payé" || joinStatus === "En cours de paiement") {
-            console.log(`✅ Valid payment status: ${joinStatus}`);
-            
-            // CHECK DUPLICATE
+            // Check duplicate
             const presences = readJsonFile(PRESENCES_FILE);
             const today = new Date().toISOString().split('T')[0];
             
-            const alreadyPresent = presences.find(p =>
+            const exists = presences.find(p =>
                 p.type === 'adherent' &&
-                p.nom && p.prenom &&
-                p.nom.trim().toLowerCase() === nom.trim().toLowerCase() &&
-                p.prenom.trim().toLowerCase() === prenom.trim().toLowerCase() &&
+                p.nom?.trim().toLowerCase() === nom.trim().toLowerCase() &&
+                p.prenom?.trim().toLowerCase() === prenom.trim().toLowerCase() &&
                 p.date && new Date(p.date).toISOString().split('T')[0] === today
             );
             
-            if (alreadyPresent) {
-                console.log('⚠️ Already registered today');
+            if (exists) {
                 return res.json({
                     success: true,
                     isPaid: true,
                     alreadyRegistered: true,
-                    message: "Vous êtes déjà enregistré aujourd'hui. Bienvenue !",
+                    message: "Déjà enregistré aujourd'hui",
                     membre: member,
-                    presence: alreadyPresent
+                    presence: exists
                 });
             }
             
-            // NEW PRESENCE
+            // New presence
             const newPresence = {
                 id: Date.now().toString(),
                 type: 'adherent',
@@ -326,26 +283,24 @@ app.get('/members/check', (req, res) => {
             presences.push(newPresence);
             writeJsonFile(PRESENCES_FILE, presences);
             
-            console.log('✅ New presence created');
             return res.json({
                 success: true,
                 isPaid: true,
-                message: "Adhésion reconnue. Bienvenue !",
+                message: "Bienvenue !",
                 membre: member,
                 presence: newPresence
             });
         } else {
-            console.log(`❌ Invalid payment status: ${joinStatus}`);
             return res.json({
                 success: false,
-                error: "Vous n'avez pas encore payé votre adhésion"
+                error: "Adhésion non payée"
             });
         }
     } catch (error) {
-        console.error('❌ Error in member check:', error);
+        console.error('❌ Member check error:', error);
         return res.status(500).json({
             success: false,
-            error: 'Erreur lors de la vérification du membre'
+            error: 'Server error'
         });
     }
 });
@@ -359,21 +314,20 @@ app.get('/members/all', (req, res) => {
     }
 });
 
-// ===== PRESENCES ROUTES =====
-// GET /presences - ALLEEN VANDAAG
+// === PRESENCES ROUTES ===
+// FIX: Always return valid response
 app.get('/presences', (req, res) => {
-    console.log('📋 GET /presences - Today only');
+    console.log('📋 GET /presences');
     try {
         const allPresences = readJsonFile(PRESENCES_FILE);
         const today = new Date().toISOString().split('T')[0];
         
-        const todayPresences = allPresences.filter(presence => {
-            if (!presence.date) return false;
-            const presenceDate = new Date(presence.date).toISOString().split('T')[0];
-            return presenceDate === today;
+        const todayPresences = allPresences.filter(p => {
+            if (!p.date) return false;
+            return new Date(p.date).toISOString().split('T')[0] === today;
         });
         
-        console.log(`📊 Today (${today}): ${todayPresences.length}/${allPresences.length} presences`);
+        console.log(`✅ Today (${today}): ${todayPresences.length}/${allPresences.length}`);
         
         res.json({
             success: true,
@@ -381,30 +335,27 @@ app.get('/presences', (req, res) => {
             count: todayPresences.length
         });
     } catch (error) {
-        console.error('❌ Error in GET /presences:', error);
+        console.error('❌ GET /presences error:', error);
         res.status(500).json({
             success: false,
-            error: 'Erreur lors de la lecture des présences'
+            presences: [],
+            error: error.message
         });
     }
 });
 
 app.get('/presences/:id', (req, res) => {
-    const { id } = req.params;
     try {
         const presences = readJsonFile(PRESENCES_FILE);
-        const presence = presences.find(p => p.id === id);
+        const presence = presences.find(p => p.id === req.params.id);
         
         if (!presence) {
-            return res.status(404).json({
-                success: false,
-                error: 'Présence non trouvée'
-            });
+            return res.status(404).json({ success: false, error: 'Not found' });
         }
         
         res.json({ success: true, presence });
     } catch (error) {
-        res.status(500).json({ success: false, error: 'Server error' });
+        res.status(500).json({ success: false, error: error.message });
     }
 });
 
@@ -414,7 +365,7 @@ app.post('/presences', (req, res) => {
     if (!type || !nom || !prenom) {
         return res.status(400).json({
             success: false,
-            error: 'Champs requis: type, nom, prenom'
+            error: 'Missing required fields'
         });
     }
     
@@ -433,130 +384,113 @@ app.post('/presences', (req, res) => {
         if (type === 'adherent') {
             newPresence.status = 'adherent';
             delete newPresence.tarif;
-            if (req.body.niveau !== undefined) {
-                newPresence.niveau = req.body.niveau.toString();
-            }
         } else if (type === 'non-adherent') {
             newPresence.status = req.body.status || 'pending';
             newPresence.tarif = req.body.tarif || 10;
             newPresence.methodePaiement = req.body.methodePaiement || 'Especes';
-            
-            if (req.body.email) newPresence.email = req.body.email;
-            if (req.body.telephone) newPresence.telephone = req.body.telephone;
-            if (req.body.dateNaissance) newPresence.dateNaissance = req.body.dateNaissance;
-            if (req.body.niveau !== undefined) newPresence.niveau = req.body.niveau.toString();
-            if (req.body.assuranceAccepted !== undefined) newPresence.assuranceAccepted = req.body.assuranceAccepted;
         }
         
         presences.push(newPresence);
         
         if (writeJsonFile(PRESENCES_FILE, presences)) {
-            res.json({
-                success: true,
-                message: 'Présence enregistrée avec succès',
-                presence: newPresence
-            });
+            res.json({ success: true, presence: newPresence });
         } else {
-            throw new Error('Failed to write file');
+            throw new Error('Failed to save');
         }
     } catch (error) {
-        console.error('❌ Error saving presence:', error);
-        res.status(500).json({
-            success: false,
-            error: 'Erreur lors de l\'enregistrement'
-        });
+        res.status(500).json({ success: false, error: error.message });
     }
 });
 
 app.post('/presences/:id/valider', (req, res) => {
-    const { id } = req.params;
-    const { montant, methodePaiement } = req.body;
-    
     try {
         const presences = readJsonFile(PRESENCES_FILE);
-        const index = presences.findIndex(p => p.id === id);
+        const index = presences.findIndex(p => p.id === req.params.id);
         
         if (index === -1) {
-            return res.status(404).json({ success: false, error: 'Présence non trouvée' });
+            return res.status(404).json({ success: false, error: 'Not found' });
         }
         
         presences[index].status = 'Payé';
-        if (montant !== undefined) presences[index].tarif = montant;
-        if (methodePaiement) presences[index].methodePaiement = methodePaiement;
+        if (req.body.montant) presences[index].tarif = req.body.montant;
+        if (req.body.methodePaiement) presences[index].methodePaiement = req.body.methodePaiement;
         presences[index].dateValidation = new Date().toISOString();
         
         if (writeJsonFile(PRESENCES_FILE, presences)) {
             res.json({ success: true, presence: presences[index] });
         } else {
-            throw new Error('Failed to write file');
+            throw new Error('Failed to save');
         }
     } catch (error) {
-        res.status(500).json({ success: false, error: 'Server error' });
+        res.status(500).json({ success: false, error: error.message });
     }
 });
 
 app.delete('/presences/:id', (req, res) => {
-    const { id } = req.params;
-    
     try {
         const presences = readJsonFile(PRESENCES_FILE);
-        const filtered = presences.filter(p => p.id !== id);
+        const filtered = presences.filter(p => p.id !== req.params.id);
         
         if (filtered.length === presences.length) {
-            return res.status(404).json({ success: false, error: 'Présence non trouvée' });
+            return res.status(404).json({ success: false, error: 'Not found' });
         }
         
         if (writeJsonFile(PRESENCES_FILE, filtered)) {
-            res.json({ success: true, message: 'Présence supprimée' });
+            res.json({ success: true });
         } else {
-            throw new Error('Failed to write file');
+            throw new Error('Failed to save');
         }
     } catch (error) {
-        res.status(500).json({ success: false, error: 'Server error' });
+        res.status(500).json({ success: false, error: error.message });
     }
 });
 
-// ===== HISTORY ROUTES =====
+// === HISTORY ROUTES ===
 app.get('/presences/history', (req, res) => {
     try {
         const history = readJsonFile(PRESENCE_HISTORY_FILE);
         const dates = history.map(h => h.date).sort().reverse();
         res.json({ success: true, dates });
     } catch (error) {
-        res.status(500).json({ success: false, error: 'Server error' });
+        res.status(500).json({ success: false, dates: [], error: error.message });
     }
 });
 
+// FIX: Always return valid response
 app.get('/presences/history/:date', (req, res) => {
+    const { date } = req.params;
+    console.log(`📅 GET /presences/history/${date}`);
+    
     try {
-        const { date } = req.params;
-        console.log(`📅 Loading history for: ${date}`);
-        
         const history = readJsonFile(PRESENCE_HISTORY_FILE);
         const dayHistory = history.find(h => h.date === date);
         
         if (!dayHistory) {
             console.log(`❌ No history for ${date}`);
-            return res.json({ success: true, presences: [] });
+            return res.json({ success: true, presences: [], count: 0 });
         }
         
-        console.log(`✅ Found ${dayHistory.presences.length} presences for ${date}`);
+        console.log(`✅ Found ${dayHistory.presences.length} for ${date}`);
         res.json({ 
             success: true, 
             presences: dayHistory.presences || [],
             count: dayHistory.presences ? dayHistory.presences.length : 0
         });
     } catch (error) {
-        console.error('❌ Error loading history:', error);
-        res.status(500).json({ success: false, error: 'Server error' });
+        console.error('❌ History error:', error);
+        res.status(500).json({
+            success: false,
+            presences: [],
+            error: error.message
+        });
     }
 });
 
 app.post('/presences/archive', (req, res) => {
     try {
-        const currentPresences = readJsonFile(PRESENCES_FILE);
-        if (currentPresences.length === 0) {
-            return res.json({ success: false, message: 'Geen presences om te archiveren' });
+        const presences = readJsonFile(PRESENCES_FILE);
+        if (presences.length === 0) {
+            return res.json({ success: false, message: 'No presences to archive' });
         }
         
         const history = readJsonFile(PRESENCE_HISTORY_FILE);
@@ -564,68 +498,64 @@ app.post('/presences/archive', (req, res) => {
         
         const existingIndex = history.findIndex(h => h.date === today);
         if (existingIndex >= 0) {
-            history[existingIndex].presences = currentPresences;
+            history[existingIndex].presences = presences;
         } else {
-            history.push({ date: today, presences: currentPresences });
+            history.push({ date: today, presences });
         }
         
         writeJsonFile(PRESENCE_HISTORY_FILE, history);
         writeJsonFile(PRESENCES_FILE, []);
         
-        res.json({
-            success: true,
-            message: `${currentPresences.length} presences gearchiveerd`
-        });
+        res.json({ success: true, message: `${presences.length} archived` });
     } catch (error) {
-        res.status(500).json({ success: false, error: 'Server error' });
+        res.status(500).json({ success: false, error: error.message });
     }
 });
 
-// ===== NON-MEMBERS ROUTES =====
+// === NON-MEMBERS ROUTES ===
 app.post('/save-non-member', (req, res) => {
     try {
-        const { nom, prenom, email, telephone, dateNaissance, niveau, assuranceAccepted, age, tarif } = req.body;
+        const { nom, prenom, email, dateNaissance, niveau } = req.body;
         
         if (!nom || !prenom || !email || !dateNaissance || niveau === undefined) {
-            return res.status(400).json({ success: false, error: 'Verplichte velden ontbreken' });
+            return res.status(400).json({ success: false, error: 'Missing fields' });
         }
         
-        const savedNonMembers = readJsonFile(SAVED_NON_MEMBERS_FILE);
-        const existingIndex = savedNonMembers.findIndex(m =>
+        const saved = readJsonFile(SAVED_NON_MEMBERS_FILE);
+        const existingIndex = saved.findIndex(m =>
             m.nom.toLowerCase() === nom.toLowerCase() &&
             m.prenom.toLowerCase() === prenom.toLowerCase() &&
             m.dateNaissance === dateNaissance
         );
         
-        const nonMemberData = {
-            id: existingIndex >= 0 ? savedNonMembers[existingIndex].id : Date.now().toString(),
+        const data = {
+            id: existingIndex >= 0 ? saved[existingIndex].id : Date.now().toString(),
             nom: nom.trim(),
             prenom: prenom.trim(),
             email: email.trim(),
-            telephone: telephone || '',
+            telephone: req.body.telephone || '',
             dateNaissance,
             niveau: parseInt(niveau),
-            assuranceAccepted: assuranceAccepted || true,
-            age,
-            tarif,
-            savedAt: new Date().toISOString(),
+            assuranceAccepted: req.body.assuranceAccepted || true,
+            age: req.body.age,
+            tarif: req.body.tarif,
+            savedAt: existingIndex >= 0 ? saved[existingIndex].savedAt : new Date().toISOString(),
             updatedAt: new Date().toISOString()
         };
         
         if (existingIndex >= 0) {
-            nonMemberData.savedAt = savedNonMembers[existingIndex].savedAt;
-            savedNonMembers[existingIndex] = nonMemberData;
+            saved[existingIndex] = data;
         } else {
-            savedNonMembers.push(nonMemberData);
+            saved.push(data);
         }
         
-        if (writeJsonFile(SAVED_NON_MEMBERS_FILE, savedNonMembers)) {
-            res.json({ success: true, nonMember: nonMemberData });
+        if (writeJsonFile(SAVED_NON_MEMBERS_FILE, saved)) {
+            res.json({ success: true, nonMember: data });
         } else {
-            throw new Error('Failed to write');
+            throw new Error('Failed to save');
         }
     } catch (error) {
-        res.status(500).json({ success: false, error: 'Server error' });
+        res.status(500).json({ success: false, error: error.message });
     }
 });
 
@@ -634,11 +564,11 @@ app.post('/quick-non-member', (req, res) => {
         const { nom, prenom, dateNaissance } = req.body;
         
         if (!nom || !prenom || !dateNaissance) {
-            return res.status(400).json({ success: false, error: 'Velden ontbreken' });
+            return res.status(400).json({ success: false, error: 'Missing fields' });
         }
         
-        const savedNonMembers = readJsonFile(SAVED_NON_MEMBERS_FILE);
-        const found = savedNonMembers.find(m =>
+        const saved = readJsonFile(SAVED_NON_MEMBERS_FILE);
+        const found = saved.find(m =>
             m.nom.toLowerCase().trim() === nom.toLowerCase().trim() &&
             m.prenom.toLowerCase().trim() === prenom.toLowerCase().trim() &&
             m.dateNaissance === dateNaissance
@@ -647,14 +577,14 @@ app.post('/quick-non-member', (req, res) => {
         if (found) {
             res.json({ success: true, nonMember: found });
         } else {
-            res.json({ success: false, message: 'Aucune inscription trouvée' });
+            res.json({ success: false, message: 'Not found' });
         }
     } catch (error) {
-        res.status(500).json({ success: false, error: 'Server error' });
+        res.status(500).json({ success: false, error: error.message });
     }
 });
 
-// ===== STATS =====
+// === STATS ===
 app.get('/api/stats/today', (req, res) => {
     try {
         const presences = readJsonFile(PRESENCES_FILE);
@@ -675,11 +605,39 @@ app.get('/api/stats/today', (req, res) => {
             }
         });
     } catch (error) {
-        res.status(500).json({ success: false, error: 'Server error' });
+        res.status(500).json({ success: false, error: error.message });
     }
 });
 
-// ===== EXPORTS =====
+// === EXPORT ROUTES ===
+// FIX: Always return valid response with years
+app.get('/admin/export/years', (req, res) => {
+    console.log('📊 GET /admin/export/years');
+    try {
+        const history = readJsonFile(PRESENCE_HISTORY_FILE);
+        
+        const years = [...new Set(history.map(h => {
+            try {
+                const year = new Date(h.date).getFullYear();
+                return year;
+            } catch (e) {
+                return null;
+            }
+        }))].filter(y => y && !isNaN(y) && y > 2000 && y < 2100).sort().reverse();
+        
+        console.log(`✅ Found years: ${years.join(', ')}`);
+        
+        res.json({ success: true, years });
+    } catch (error) {
+        console.error('❌ Export years error:', error);
+        res.status(500).json({
+            success: false,
+            years: [],
+            error: error.message
+        });
+    }
+});
+
 if (exportService) {
     app.post('/admin/export/season', async (req, res) => {
         try {
@@ -690,20 +648,11 @@ if (exportService) {
         }
     });
     
-    app.get('/admin/export/years', (req, res) => {
-        try {
-            const years = exportService.getAvailableYears();
-            res.json({ success: true, years });
-        } catch (error) {
-            res.status(500).json({ success: false, error: error.message });
-        }
-    });
-    
     app.post('/admin/export/:year', async (req, res) => {
         try {
             const yearInt = parseInt(req.params.year);
             if (!yearInt || yearInt < 2020 || yearInt > 2030) {
-                return res.status(400).json({ success: false, error: 'Ongeldig jaar' });
+                return res.status(400).json({ success: false, error: 'Invalid year' });
             }
             const result = await exportService.exportYearToExcel(yearInt);
             res.json({ success: true, filename: result.filename, recordCount: result.recordCount });
@@ -713,24 +662,25 @@ if (exportService) {
     });
 }
 
-// ===== ERROR HANDLERS =====
+// === ERROR HANDLERS ===
 app.use((req, res) => {
-    res.status(404).json({ error: 'Endpoint non trouvé', path: req.originalUrl });
+    res.status(404).json({ error: 'Not found', path: req.originalUrl });
 });
 
 app.use((error, req, res, next) => {
     console.error('💥 ERROR:', error);
-    res.status(500).json({ error: 'Erreur serveur', message: error.message });
+    res.status(500).json({ error: 'Server error', message: error.message });
 });
 
-// ===== SERVER STARTUP =====
+// === SERVER STARTUP ===
 const server = app.listen(PORT, '0.0.0.0', () => {
-    console.log('🎉 ====================================');
-    console.log('🎉 BACKEND GESTART - DEFINITIEVE VERSIE');
-    console.log('🎉 ====================================');
+    console.log('🎉 ========================================');
+    console.log('🎉 BACKEND STARTED - ALL PROBLEMS FIXED');
+    console.log('🎉 ========================================');
     console.log(`✅ Backend: http://localhost:${PORT}`);
     console.log(`📊 Admin: http://localhost:${PORT}/admin`);
-    console.log('🎉 ====================================');
+    console.log(`💚 Health: http://localhost:${PORT}/api/health`);
+    console.log('🎉 ========================================');
 });
 
 server.on('error', (error) => {

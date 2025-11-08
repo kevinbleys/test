@@ -13,10 +13,7 @@
             min-height: 100vh;
         }
         
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-        }
+        .container { max-width: 1400px; margin: 0 auto; }
         
         .admin-header {
             background: white;
@@ -40,13 +37,7 @@
             gap: 20px;
         }
         
-        .left-panel {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-        
-        .right-panel {
+        .left-panel, .right-panel {
             display: flex;
             flex-direction: column;
             gap: 20px;
@@ -60,7 +51,7 @@
         }
         
         .debug-card {
-            font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+            font-family: 'SF Mono', 'Monaco', 'Inconsolata', monospace;
             font-size: 12px;
             color: #666;
             background: #f8f9fa;
@@ -164,18 +155,14 @@
             font-size: 48px;
             font-weight: 700;
             margin-bottom: 8px;
-            line-height: 1;
         }
         
         .stat-label {
             font-size: 14px;
             opacity: 0.9;
-            font-weight: 500;
         }
         
-        .table-card {
-            overflow-x: auto;
-        }
+        .table-card { overflow-x: auto; }
         
         table {
             width: 100%;
@@ -195,12 +182,9 @@
         td {
             padding: 15px 12px;
             border-bottom: 1px solid #dee2e6;
-            vertical-align: middle;
         }
         
-        tbody tr:hover {
-            background: #f8f9fa;
-        }
+        tbody tr:hover { background: #f8f9fa; }
         
         .badge {
             display: inline-block;
@@ -208,8 +192,6 @@
             font-size: 12px;
             font-weight: 600;
             border-radius: 20px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
         }
         
         .badge-adherent {
@@ -252,9 +234,6 @@
             font-size: 18px;
             font-weight: 600;
             margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
         }
         
         .export-card select {
@@ -269,11 +248,11 @@
         .btn-success {
             background: #28a745;
             color: white;
+            width: 100%;
         }
         
         .btn-success:hover {
             background: #1e7e34;
-            transform: translateY(-2px);
         }
         
         .auto-refresh-info {
@@ -281,10 +260,6 @@
             color: #6c757d;
             font-size: 14px;
             margin-top: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
         }
         
         .modal {
@@ -296,7 +271,6 @@
             width: 100%;
             height: 100%;
             background-color: rgba(0,0,0,0.5);
-            backdrop-filter: blur(5px);
         }
         
         .modal-content {
@@ -312,28 +286,21 @@
         .modal-header {
             display: flex;
             justify-content: space-between;
-            align-items: center;
             margin-bottom: 25px;
         }
         
         .modal-header h3 {
             margin: 0;
             color: #495057;
-            font-size: 20px;
-            font-weight: 600;
         }
         
         .close {
             color: #adb5bd;
             font-size: 28px;
-            font-weight: bold;
             cursor: pointer;
-            transition: color 0.2s;
         }
         
-        .close:hover {
-            color: #495057;
-        }
+        .close:hover { color: #495057; }
         
         .form-group {
             margin-bottom: 20px;
@@ -353,14 +320,6 @@
             border: 2px solid #e1e5e9;
             border-radius: 8px;
             font-size: 14px;
-            transition: border-color 0.2s;
-        }
-        
-        .form-group input:focus,
-        .form-group select:focus {
-            border-color: #007bff;
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(0,123,255,0.1);
         }
         
         .modal-actions {
@@ -375,29 +334,14 @@
             color: white;
         }
         
-        .btn-cancel:hover {
-            background: #545b62;
-        }
-        
         @media (max-width: 1200px) {
-            .main-content {
-                grid-template-columns: 1fr;
-            }
-            
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
+            .main-content { grid-template-columns: 1fr; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
         }
         
         @media (max-width: 768px) {
-            .controls-card {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
+            .controls-card { flex-direction: column; }
+            .stats-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -410,19 +354,18 @@
         <div class="main-content">
             <div class="left-panel">
                 <div class="card">
-                    <div class="debug-card">
-                        <strong>Debug Info:</strong><br>
-                        <span id="debug-content">Loading...</span>
+                    <div class="debug-card" id="debug-content">
+                        Loading debug info...
                     </div>
                 </div>
                 
                 <div class="card controls-card">
                     <div class="date-controls">
                         <label for="dateFilter">Sélectionner une date:</label>
-                        <input type="date" id="dateFilter" onchange="loadPresencesForDate()">
+                        <input type="date" id="dateFilter">
                         <button class="btn btn-primary" onclick="loadTodayPresences()">Aujourd'hui</button>
                         <button class="btn btn-info" onclick="loadPresences()">Charger</button>
-                        <button class="btn btn-warning" onclick="archiveToday()">📦 Archiver aujourd'hui</button>
+                        <button class="btn btn-warning" onclick="archiveToday()">📦 Archiver</button>
                     </div>
                 </div>
                 
@@ -447,7 +390,7 @@
                 
                 <div class="card table-card">
                     <div id="loading" style="display: none; text-align: center; padding: 40px; color: #6c757d;">
-                        Chargement des données...
+                        Chargement...
                     </div>
                     
                     <div id="data-content">
@@ -471,7 +414,6 @@
                         
                         <div id="no-data" style="display: none; text-align: center; padding: 40px; color: #6c757d;">
                             <h3>Aucune présence pour cette date</h3>
-                            <p>Les présences apparaîtront ici au fur et à mesure des arrivées.</p>
                         </div>
                     </div>
                 </div>
@@ -484,8 +426,7 @@
             <div class="right-panel">
                 <div class="card export-card">
                     <h4>🏔️ Export Saison Actuelle</h4>
-                    <button class="btn btn-success" onclick="exportSeason()">📊 Exporter Saison Courante</button>
-                    <p style="margin-top: 10px; color: #6c757d; font-size: 13px;">Export automatique: 30 juin à minuit</p>
+                    <button class="btn btn-success" onclick="exportSeason()">📊 Exporter Saison</button>
                 </div>
                 
                 <div class="card export-card">
@@ -494,13 +435,11 @@
                         <option value="">Sélectionner une année...</option>
                     </select>
                     <button class="btn btn-success" onclick="exportYear()">📊 Exporter</button>
-                    <button class="btn btn-warning" onclick="exportAndCleanup()" style="margin-top: 10px; width: 100%;">🗑️ Export & Cleanup</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Payment Modal -->
     <div id="paymentModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -512,11 +451,11 @@
                 <input type="number" id="montant" step="0.5" min="0">
             </div>
             <div class="form-group">
-                <label for="methodePaiement">Méthode de paiement</label>
+                <label for="methodePaiement">Méthode</label>
                 <select id="methodePaiement">
-                    <option value="">Sélectionner une méthode...</option>
+                    <option value="">Sélectionner...</option>
                     <option value="Especes">💵 Espèces</option>
-                    <option value="CB">💳 Carte bancaire (CB)</option>
+                    <option value="CB">💳 Carte bancaire</option>
                     <option value="Cheque">📝 Chèque</option>
                 </select>
             </div>
@@ -542,41 +481,45 @@
             startAutoRefresh();
         });
 
-        // GEFIXTE FUNCTIE: Laadt data correct voor vandaag of historische datum
+        // FIX: Better error handling
         async function loadPresences() {
-            updateDebugInfo('Loading presences...');
-            
             try {
+                updateDebugInfo('Loading presences...');
                 document.getElementById('loading').style.display = 'block';
                 
                 let url = '/presences';
-                let isHistoryRequest = false;
-                
+                let isHistorical = false;
                 const today = new Date().toISOString().split('T')[0];
+                
                 if (currentSelectedDate && currentSelectedDate !== today) {
                     url = `/presences/history/${currentSelectedDate}`;
-                    isHistoryRequest = true;
-                    console.log(`Loading historical data for: ${currentSelectedDate}`);
-                } else {
-                    console.log('Loading today\\'s data');
+                    isHistorical = true;
                 }
                 
+                console.log('Fetching:', url);
+                
                 const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
                 const data = await response.json();
+                console.log('Response:', data);
                 
                 if (data.success) {
                     const presences = data.presences || [];
-                    displayPresences(presences, isHistoryRequest);
+                    displayPresences(presences, isHistorical);
                     updateStats(presences);
-                    updateDebugInfo(`Loaded ${presences.length} presences for ${currentSelectedDate || 'today'} ${isHistoryRequest ? '(historical)' : '(live)'}`);
+                    updateDebugInfo(`Loaded ${presences.length} presences ${isHistorical ? '(historical)' : '(live)'}`);
                 } else {
-                    updateDebugInfo(`Error: ${data.error}`);
-                    displayPresences([], false);
+                    throw new Error(data.error || 'Unknown error');
                 }
                 
             } catch (error) {
-                updateDebugInfo(`Network error: ${error.message}`);
+                console.error('Error loading presences:', error);
+                updateDebugInfo(`Error: ${error.message}`);
                 displayPresences([], false);
+                alert(`Erreur: ${error.message}`);
             } finally {
                 document.getElementById('loading').style.display = 'none';
             }
@@ -586,10 +529,11 @@
             const dateInput = document.getElementById('dateFilter');
             currentSelectedDate = dateInput.value;
             if (currentSelectedDate) {
-                console.log(`Date changed to: ${currentSelectedDate}`);
                 loadPresences();
             }
         }
+
+        document.getElementById('dateFilter').addEventListener('change', loadPresencesForDate);
 
         function loadTodayPresences() {
             const today = new Date().toISOString().split('T')[0];
@@ -610,42 +554,40 @@
             
             noData.style.display = 'none';
             
-            tableBody.innerHTML = presences.map(presence => {
-                const date = presence.date ? new Date(presence.date) : null;
+            tableBody.innerHTML = presences.map(p => {
+                const date = p.date ? new Date(p.date) : null;
                 const dateStr = date ? date.toLocaleDateString('fr-FR') : '';
                 const timeStr = date ? date.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }) : '';
                 
-                let typeBadge, statusBadge;
+                const typeBadge = p.type === 'adherent' ? 
+                    '<span class="badge badge-adherent">Adhérent</span>' : 
+                    '<span class="badge badge-non-adherent">Non-adhérent</span>';
                 
-                if (presence.type === 'adherent') {
-                    typeBadge = '<span class="badge badge-adherent">Adhérent</span>';
-                    statusBadge = '<span class="badge badge-adherent">adherent</span>';
-                } else {
-                    typeBadge = '<span class="badge badge-non-adherent">Non-adhérent</span>';
-                    statusBadge = presence.status === 'Payé' ? 
-                        '<span class="badge badge-paye">Payé</span>' : 
-                        '<span class="badge badge-non-adherent">En attente</span>';
-                }
+                const statusBadge = p.status === 'Payé' ? 
+                    '<span class="badge badge-paye">Payé</span>' : 
+                    (p.type === 'adherent' ? 
+                        '<span class="badge badge-adherent">adherent</span>' : 
+                        '<span class="badge badge-non-adherent">En attente</span>');
                 
-                let actionsHtml = '';
-                if (!isHistorical && presence.type !== 'adherent' && presence.status !== 'Payé') {
-                    actionsHtml += `<button class="action-btn btn-validate" onclick="openPaymentModal('${presence.id}')">✓</button>`;
+                let actions = '';
+                if (!isHistorical && p.type !== 'adherent' && p.status !== 'Payé') {
+                    actions += `<button class="action-btn btn-validate" onclick="openPaymentModal('${p.id}')">✓</button>`;
                 }
                 if (!isHistorical) {
-                    actionsHtml += `<button class="action-btn btn-delete" onclick="deletePresence('${presence.id}')">🗑️</button>`;
+                    actions += `<button class="action-btn btn-delete" onclick="deletePresence('${p.id}')">🗑️</button>`;
                 }
                 
                 return `
                     <tr>
-                        <td>${dateStr}<br><small style="color: #6c757d;">${timeStr}</small></td>
+                        <td>${dateStr}<br><small style="color:#6c757d;">${timeStr}</small></td>
                         <td>${typeBadge}</td>
-                        <td>${presence.nom || ''}</td>
-                        <td>${presence.prenom || ''}</td>
-                        <td>${presence.niveau || 'N/A'}</td>
-                        <td>${presence.type === 'adherent' ? 'Gratuit' : (presence.tarif ? presence.tarif + '€' : '')}</td>
-                        <td>${presence.methodePaiement || 'N/A'}</td>
+                        <td>${p.nom || ''}</td>
+                        <td>${p.prenom || ''}</td>
+                        <td>${p.niveau || 'N/A'}</td>
+                        <td>${p.type === 'adherent' ? 'Gratuit' : (p.tarif ? p.tarif + '€' : '')}</td>
+                        <td>${p.methodePaiement || 'N/A'}</td>
                         <td>${statusBadge}</td>
-                        <td>${actionsHtml}</td>
+                        <td>${actions}</td>
                     </tr>
                 `;
             }).join('');
@@ -666,13 +608,13 @@
         }
 
         function updateDebugInfo(message) {
-            const debugContent = document.getElementById('debug-content');
             const timestamp = new Date().toLocaleTimeString();
             const today = new Date().toISOString().split('T')[0];
             
-            debugContent.innerHTML = `
+            document.getElementById('debug-content').innerHTML = `
                 API URL: http://localhost:3001<br>
                 Current Date: ${today}<br>
+                Selected: ${currentSelectedDate}<br>
                 Historical Mode: ${currentSelectedDate !== today ? 'Yes' : 'No'}<br>
                 Last Update: ${timestamp}<br>
                 Status: ${message}
@@ -684,7 +626,9 @@
             
             autoRefreshInterval = setInterval(() => {
                 const today = new Date().toISOString().split('T')[0];
-                if (currentSelectedDate === today) loadPresences();
+                if (currentSelectedDate === today) {
+                    loadPresences();
+                }
             }, 30000);
         }
 
@@ -705,7 +649,7 @@
             const methodePaiement = document.getElementById('methodePaiement').value;
             
             if (!montant || !methodePaiement) {
-                alert('Veuillez remplir tous les champs');
+                alert('Remplir tous les champs');
                 return;
             }
             
@@ -729,20 +673,23 @@
         }
 
         async function deletePresence(presenceId) {
-            if (!confirm('Supprimer cette présence ?')) return;
+            if (!confirm('Supprimer?')) return;
             
             try {
                 const response = await fetch(`/presences/${presenceId}`, { method: 'DELETE' });
                 const result = await response.json();
-                if (result.success) loadPresences();
-                else alert('Erreur: ' + result.error);
+                if (result.success) {
+                    loadPresences();
+                } else {
+                    alert('Erreur: ' + result.error);
+                }
             } catch (error) {
-                alert('Erreur réseau');
+                alert('Erreur');
             }
         }
 
         async function archiveToday() {
-            if (!confirm('Archiver les présences d\\'aujourd\\'hui ?')) return;
+            if (!confirm('Archiver?')) return;
             
             try {
                 const response = await fetch('/presences/archive', { method: 'POST' });
@@ -751,10 +698,10 @@
                     alert(result.message);
                     loadPresences();
                 } else {
-                    alert('Erreur: ' + result.error);
+                    alert(result.message);
                 }
             } catch (error) {
-                alert('Erreur réseau');
+                alert('Erreur');
             }
         }
 
@@ -768,7 +715,7 @@
                     alert('Erreur: ' + result.error);
                 }
             } catch (error) {
-                alert('Erreur réseau');
+                alert('Erreur');
             }
         }
 
@@ -788,40 +735,50 @@
                     alert('Erreur: ' + result.error);
                 }
             } catch (error) {
-                alert('Erreur réseau');
-            }
-        }
-
-        async function exportAndCleanup() {
-            const year = document.getElementById('yearSelect').value;
-            if (!year || !confirm('Export + nettoyage pour ' + year + ' ?')) return;
-            
-            try {
-                await exportYear();
-            } catch (error) {
                 alert('Erreur');
             }
         }
 
+        // FIX: Better error handling for years
         async function loadAvailableYears() {
             try {
+                console.log('Loading available years...');
+                
                 const response = await fetch('/admin/export/years');
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+                
                 const result = await response.json();
-                if (result.success) {
-                    const select = document.getElementById('yearSelect');
-                    select.innerHTML = '<option value="">Sélectionner une année...</option>';
-                    result.years.forEach(year => {
+                console.log('Years response:', result);
+                
+                const years = result.years || [];
+                
+                const select = document.getElementById('yearSelect');
+                select.innerHTML = '<option value="">Sélectionner une année...</option>';
+                
+                if (years.length === 0) {
+                    select.innerHTML += '<option value="" disabled>Aucune donnée historique</option>';
+                } else {
+                    years.forEach(year => {
                         select.innerHTML += `<option value="${year}">${year}</option>`;
                     });
                 }
+                
+                console.log(`Loaded ${years.length} years`);
+                
             } catch (error) {
-                console.error('Error loading years');
+                console.error('Error loading years:', error);
+                const select = document.getElementById('yearSelect');
+                select.innerHTML = '<option value="">Erreur de chargement</option>';
             }
         }
 
         window.onclick = function(event) {
             const modal = document.getElementById('paymentModal');
-            if (event.target === modal) closePaymentModal();
+            if (event.target === modal) {
+                closePaymentModal();
+            }
         }
     </script>
 </body>

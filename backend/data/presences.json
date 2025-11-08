@@ -114,5 +114,99 @@
     "prenom": "kevin",
     "date": "2025-11-08T07:22:31.266Z",
     "status": "adherent"
+  },
+  {
+    "id": "1762588514691",
+    "type": "adherent",
+    "nom": "bleys",
+    "prenom": "emma",
+    "date": "2025-11-08T07:55:14.691Z",
+    "status": "adherent",
+    "niveau": "N/A",
+    "tarif": 0,
+    "methodePaiement": "N/A",
+    "membre": {
+      "membreId": 480381,
+      "currentPictureUrl": null,
+      "firstname": "Emma",
+      "lastname": "Bleys",
+      "dateOfBirth": "10/03/2017",
+      "age": 8,
+      "gender": "femme",
+      "address": "7 chemin de la gardele",
+      "additional": null,
+      "postalCode": "65670",
+      "town": "monleon magnoac",
+      "country": "Frankrijk",
+      "phoneNumber": null,
+      "mobilePhoneNumber": "+33643033147",
+      "email": "kevinbleys65@gmail.com",
+      "allergy": null,
+      "personToContact": "kevin bleys",
+      "personToContactPhoneNumber": "+33643033147",
+      "corporateName": null,
+      "office": null,
+      "account": false,
+      "dateLastConnexion": null,
+      "emailValid": true,
+      "notificationActive": true,
+      "joinFileStatusLabel": "En cours de paiement",
+      "joinFileLastPaymentType": null,
+      "joinFileLastPaymentDate": null,
+      "childsLabel": "",
+      "childMembers": [],
+      "parentsLabel": "Géré par 1 contact : kevin bleys",
+      "parentMembers": [
+        {
+          "membreId": 469508,
+          "firstname": "kevin",
+          "lastname": "bleys",
+          "phoneNumber": "+33562409746",
+          "mobilePhoneNumber": "+33643033147",
+          "email": "kevinbleys65@gmail.com"
+        }
+      ],
+      "groups": [],
+      "categories": [
+        {
+          "label": "Adhérent"
+        }
+      ],
+      "roles": [],
+      "medicalCertificateUrl": null,
+      "dateMedicalCertificate": null,
+      "licence": null,
+      "customFields": [
+        {
+          "label": "documents utiles",
+          "value": null
+        },
+        {
+          "label": "Ville de naissance",
+          "value": "tarbes"
+        },
+        {
+          "label": "code postale Ville de naissance",
+          "value": null
+        },
+        {
+          "label": "Pays de naissance",
+          "value": "france"
+        },
+        {
+          "label": "Nationalité",
+          "value": "francais"
+        }
+      ]
+    },
+    "joinFileStatus": "En cours de paiement"
+  },
+  {
+    "id": "1762588514715",
+    "type": "adherent",
+    "nom": "bleys",
+    "prenom": "emma",
+    "date": "2025-11-08T07:55:14.715Z",
+    "status": "adherent"
   }
 ]
