@@ -301,5 +301,99 @@
     "prenom": "isaure",
     "date": "2025-11-08T08:19:04.963Z",
     "status": "adherent"
+  },
+  {
+    "id": "1762590785931",
+    "type": "adherent",
+    "nom": "bleys",
+    "prenom": "joke",
+    "date": "2025-11-08T08:33:05.931Z",
+    "status": "adherent",
+    "niveau": "N/A",
+    "tarif": 0,
+    "methodePaiement": "N/A",
+    "membre": {
+      "membreId": 623877,
+      "currentPictureUrl": null,
+      "firstname": "Joke",
+      "lastname": "Bleys",
+      "dateOfBirth": "31/07/1984",
+      "age": 41,
+      "gender": "femme",
+      "address": "7 chemin de la gardele",
+      "additional": null,
+      "postalCode": "65670",
+      "town": "monleon magnoac",
+      "country": "France",
+      "phoneNumber": "+33562409746",
+      "mobilePhoneNumber": "+33681202378",
+      "email": "bleysjoke@gmail.com",
+      "allergy": null,
+      "personToContact": "kevin bleys",
+      "personToContactPhoneNumber": "+33643033147",
+      "corporateName": null,
+      "office": null,
+      "account": false,
+      "dateLastConnexion": null,
+      "emailValid": true,
+      "notificationActive": true,
+      "joinFileStatusLabel": "En cours de paiement",
+      "joinFileLastPaymentType": null,
+      "joinFileLastPaymentDate": null,
+      "childsLabel": "",
+      "childMembers": [],
+      "parentsLabel": "Géré par 1 contact : kevin bleys",
+      "parentMembers": [
+        {
+          "membreId": 469508,
+          "firstname": "kevin",
+          "lastname": "bleys",
+          "phoneNumber": "+33562409746",
+          "mobilePhoneNumber": "+33643033147",
+          "email": "kevinbleys65@gmail.com"
+        }
+      ],
+      "groups": [],
+      "categories": [
+        {
+          "label": "Adhérent"
+        }
+      ],
+      "roles": [],
+      "medicalCertificateUrl": null,
+      "dateMedicalCertificate": null,
+      "licence": "659899",
+      "customFields": [
+        {
+          "label": "documents utiles",
+          "value": null
+        },
+        {
+          "label": "Ville de naissance",
+          "value": "neerpelt"
+        },
+        {
+          "label": "code postale Ville de naissance",
+          "value": null
+        },
+        {
+          "label": "Pays de naissance",
+          "value": "belgique"
+        },
+        {
+          "label": "Nationalité",
+          "value": "français"
+        }
+      ]
+    },
+    "joinFileStatus": "En cours de paiement"
+  },
+  {
+    "id": "1762590785945",
+    "type": "adherent",
+    "nom": "bleys",
+    "prenom": "joke",
+    "date": "2025-11-08T08:33:05.945Z",
+    "status": "adherent"
   }
 ]

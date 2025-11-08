@@ -7,7 +7,7 @@ const cron = require('node-cron');
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-console.log('🚀 BACKEND - DEFINITIEVE VERSIE MET DUPLICATE FIX');
+console.log('🚀 BACKEND - DEFINITIEVE VERSIE MET RACE CONDITION FIX');
 console.log(`Port: ${PORT}`);
 
 // Data file paths
@@ -17,6 +17,27 @@ const NON_MEMBERS_FILE = path.join(DATA_DIR, 'non-members.json');
 const PRESENCE_HISTORY_FILE = path.join(DATA_DIR, 'presence-history.json');
 const SAVED_NON_MEMBERS_FILE = path.join(DATA_DIR, 'saved-non-members.json');
 const EXPORTS_DIR = path.join(DATA_DIR, 'exports');
+
+// === MUTEX VOOR RACE CONDITION PREVENTIE ===
+const memberCheckLocks = new Map();
+
+const acquireLock = (key) => {
+    return new Promise((resolve) => {
+        const tryAcquire = () => {
+            if (!memberCheckLocks.has(key)) {
+                memberCheckLocks.set(key, true);
+                resolve();
+            } else {
+                setTimeout(tryAcquire, 10);
+            }
+        };
+        tryAcquire();
+    });
+};
+
+const releaseLock = (key) => {
+    memberCheckLocks.delete(key);
+};
 
 // Setup directories
 const setupDataDirectories = () => {
@@ -77,11 +98,11 @@ const writeJsonFile = (filePath, data) => {
             return false;
         }
         
-        if (fs.existsSync(filePath)) {
-            fs.copyFileSync(filePath, filePath + '.backup');
-        }
+        // Atomic write: schrijf naar temp file, dan rename
+        const tempFile = filePath + '.tmp';
+        fs.writeFileSync(tempFile, JSON.stringify(data, null, 2));
+        fs.renameSync(tempFile, filePath);
         
-        fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
         return true;
     } catch (error) {
         console.error(`❌ Write error ${path.basename(filePath)}:`, error.message);
@@ -138,7 +159,7 @@ try {
     console.warn('⚠️ Export service not found');
 }
 
-// CRON: Daily reset + cleanup
+// CRON: Daily reset
 cron.schedule('0 0 * * *', () => {
     try {
         console.log('=== DAILY RESET ===');
@@ -164,7 +185,7 @@ cron.schedule('0 0 * * *', () => {
         fs.readdir(DATA_DIR, (err, files) => {
             if (err) return;
             files.forEach(file => {
-                if (file.endsWith('.backup') || file.endsWith('.backup.json')) {
+                if (file.endsWith('.backup') || file.endsWith('.tmp')) {
                     try {
                         fs.unlinkSync(path.join(DATA_DIR, file));
                     } catch (e) {}
@@ -195,7 +216,7 @@ app.get('/', (req, res) => {
     res.json({
         status: 'success',
         message: 'API Logiciel Escalade',
-        version: '2.5.0',
+        version: '2.6.0',
         timestamp: new Date().toISOString()
     });
 });
@@ -214,8 +235,8 @@ app.get('/admin', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'admin.html'));
 });
 
-// === MEMBERS CHECK - PERFECTE DUPLICATE PREVENTIE ===
-app.get('/members/check', (req, res) => {
+// === MEMBERS CHECK MET MUTEX LOCKING ===
+app.get('/members/check', async (req, res) => {
     const { nom, prenom } = req.query;
     
     if (!nom || !prenom) {
@@ -225,10 +246,19 @@ app.get('/members/check', (req, res) => {
         });
     }
     
+    // Creëer unieke lock key voor deze persoon
+    const lockKey = `${nom.trim().toLowerCase()}_${prenom.trim().toLowerCase()}`;
+    
     console.log('=== MEMBER CHECK ===');
     console.log(`Checking: ${nom} ${prenom}`);
+    console.log(`Lock key: ${lockKey}`);
     
     try {
+        // ACQUIRE LOCK - wacht tot lock beschikbaar is
+        console.log(`🔒 Acquiring lock for ${lockKey}...`);
+        await acquireLock(lockKey);
+        console.log(`✅ Lock acquired for ${lockKey}`);
+        
         const members = syncService.getMembers();
         const member = members.find(m =>
             m.lastname?.trim().toLowerCase() === nom.trim().toLowerCase() &&
@@ -237,6 +267,7 @@ app.get('/members/check', (req, res) => {
         
         if (!member) {
             console.log('❌ Member not found');
+            releaseLock(lockKey);
             return res.json({
                 success: false,
                 error: "Aucun membre trouvé avec ce nom et prénom"
@@ -248,40 +279,38 @@ app.get('/members/check', (req, res) => {
         if (joinStatus === "Payé" || joinStatus === "En cours de paiement") {
             console.log(`✅ Valid payment status: ${joinStatus}`);
             
-            // === PERFECTE DUPLICATE CHECK ===
+            // Lees ACTUELE presences (binnen lock!)
             const presences = readJsonFile(PRESENCES_FILE);
             const today = new Date().toISOString().split('T')[0];
             
-            // Normalize voor comparison
             const nomNormalized = nom.trim().toLowerCase();
             const prenomNormalized = prenom.trim().toLowerCase();
             
-            console.log(`🔍 Checking for duplicates: ${nomNormalized} ${prenomNormalized} on ${today}`);
-            console.log(`   Current presences count: ${presences.length}`);
+            console.log(`🔍 Checking duplicates: ${nomNormalized} ${prenomNormalized} on ${today}`);
+            console.log(`   Current presences: ${presences.length}`);
             
+            // Check duplicate
             const exists = presences.find(p => {
-                // Check if presence exists
                 if (!p.date || p.type !== 'adherent') return false;
                 
-                // Check same day
                 const presenceDate = new Date(p.date).toISOString().split('T')[0];
                 if (presenceDate !== today) return false;
                 
-                // Check same person (case-insensitive)
                 const pNom = (p.nom || '').trim().toLowerCase();
                 const pPrenom = (p.prenom || '').trim().toLowerCase();
                 
                 const isDuplicate = pNom === nomNormalized && pPrenom === prenomNormalized;
                 
                 if (isDuplicate) {
-                    console.log(`   ⚠️ DUPLICATE FOUND: ${p.nom} ${p.prenom} at ${new Date(p.date).toLocaleTimeString()}`);
+                    console.log(`   ⚠️ DUPLICATE: ${p.nom} ${p.prenom} at ${new Date(p.date).toLocaleTimeString()}`);
                 }
                 
                 return isDuplicate;
             });
             
             if (exists) {
-                console.log('⚠️ Already registered today - BLOCKING duplicate');
+                console.log('⚠️ DUPLICATE DETECTED - BLOCKING');
+                releaseLock(lockKey);
                 return res.json({
                     success: true,
                     isPaid: true,
@@ -293,7 +322,7 @@ app.get('/members/check', (req, res) => {
             }
             
             // Create new presence
-            console.log('✅ No duplicate found - creating new presence');
+            console.log('✅ No duplicate - creating new presence');
             const newPresence = {
                 id: Date.now().toString(),
                 type: 'adherent',
@@ -311,8 +340,12 @@ app.get('/members/check', (req, res) => {
             presences.push(newPresence);
             const written = writeJsonFile(PRESENCES_FILE, presences);
             
+            // RELEASE LOCK
+            releaseLock(lockKey);
+            console.log(`🔓 Lock released for ${lockKey}`);
+            
             if (written) {
-                console.log(`✅ NEW PRESENCE SAVED: ${nom} ${prenom} at ${new Date().toLocaleTimeString()}`);
+                console.log(`✅ SAVED: ${nom} ${prenom} at ${new Date().toLocaleTimeString()}`);
             }
             
             return res.json({
@@ -324,6 +357,7 @@ app.get('/members/check', (req, res) => {
             });
         } else {
             console.log(`❌ Invalid payment status: ${joinStatus}`);
+            releaseLock(lockKey);
             return res.json({
                 success: false,
                 error: "Vous n'avez pas encore payé votre adhésion"
@@ -331,6 +365,7 @@ app.get('/members/check', (req, res) => {
         }
     } catch (error) {
         console.error('❌ Member check error:', error);
+        releaseLock(lockKey); // Always release on error
         return res.status(500).json({
             success: false,
             error: 'Server error'
@@ -690,10 +725,11 @@ app.use((error, req, res, next) => {
 // SERVER STARTUP
 const server = app.listen(PORT, '0.0.0.0', () => {
     console.log('🎉 ========================================');
-    console.log('🎉 BACKEND STARTED - DUPLICATE FIX ACTIVE');
+    console.log('🎉 BACKEND - RACE CONDITION FIX ACTIVE');
     console.log('🎉 ========================================');
     console.log(`✅ Backend: http://localhost:${PORT}`);
     console.log(`📊 Admin: http://localhost:${PORT}/admin`);
+    console.log(`🔒 MUTEX locking enabled`);
     console.log('🎉 ========================================');
 });
 
