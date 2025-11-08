@@ -9,74 +9,17 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 console.log('╔════════════════════════════════════════════════════════════╗');
-console.log('║  🚀 CLIMBING CLUB - SERVER v5.3 FINAL COMPLETE           ║');
-console.log('║  + Tentative Tracking FIXED + All Features Working      ║');
+console.log('║  🚀 CLIMBING CLUB - SERVER v6.0 COMPLETE WORKING FIX    ║');
+console.log('║  + Separate Attempts Tracking + All Features Working    ║');
 console.log('╚════════════════════════════════════════════════════════════╝');
 console.log(`Port: ${PORT}\n`);
 
 const DATA_DIR = path.join(__dirname, 'data');
 const PRESENCES_FILE = path.join(DATA_DIR, 'presences.json');
-const NON_MEMBERS_FILE = path.join(DATA_DIR, 'non-members.json');
+const ATTEMPTS_FILE = path.join(DATA_DIR, 'login-attempts.json');
 const PRESENCE_HISTORY_FILE = path.join(DATA_DIR, 'presence-history.json');
 const SAVED_NON_MEMBERS_FILE = path.join(DATA_DIR, 'saved-non-members.json');
 const EXPORTS_DIR = path.join(DATA_DIR, 'exports');
-
-// ====== STARTUP CLEANUP ======
-const cleanupAllDuplicates = () => {
-    try {
-        const presences = fs.existsSync(PRESENCES_FILE) 
-            ? JSON.parse(fs.readFileSync(PRESENCES_FILE, 'utf8')) 
-            : [];
-        
-        if (!Array.isArray(presences)) {
-            fs.writeFileSync(PRESENCES_FILE, JSON.stringify([], null, 2));
-            console.log('✅ Corrupted presences.json fixed');
-            return;
-        }
-        
-        const today = new Date().toISOString().split('T')[0];
-        const signatures = new Map();
-        let duplicateCount = 0;
-        let oldEntriesRemoved = 0;
-        
-        const cleaned = presences.filter(p => {
-            if (p.date && p.type === 'adherent') {
-                const pDate = new Date(p.date).toISOString().split('T')[0];
-                if (pDate !== today) {
-                    oldEntriesRemoved++;
-                    return false;
-                }
-            }
-            
-            if (p.date && p.type === 'adherent') {
-                const nom = (p.nom || '').trim().toLowerCase();
-                const prenom = (p.prenom || '').trim().toLowerCase();
-                const sig = `${nom}_${prenom}`;
-                
-                if (signatures.has(sig)) {
-                    duplicateCount++;
-                    return false;
-                }
-                signatures.set(sig, true);
-            }
-            
-            return true;
-        });
-        
-        if (duplicateCount > 0 || oldEntriesRemoved > 0) {
-            fs.writeFileSync(PRESENCES_FILE, JSON.stringify(cleaned, null, 2));
-            console.log(`✅ STARTUP CLEANUP:`);
-            if (duplicateCount > 0) console.log(`   - Removed ${duplicateCount} duplicates`);
-            if (oldEntriesRemoved > 0) console.log(`   - Removed ${oldEntriesRemoved} old entries`);
-        } else {
-            console.log('✅ No cleanup needed - database clean!');
-        }
-    } catch (error) {
-        console.error('❌ STARTUP ERROR:', error.message);
-    }
-};
-
-cleanupAllDuplicates();
 
 if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
 if (!fs.existsSync(EXPORTS_DIR)) fs.mkdirSync(EXPORTS_DIR, { recursive: true });
@@ -88,7 +31,7 @@ const initDataFile = (filePath) => {
 };
 
 initDataFile(PRESENCES_FILE);
-initDataFile(NON_MEMBERS_FILE);
+initDataFile(ATTEMPTS_FILE);
 initDataFile(PRESENCE_HISTORY_FILE);
 initDataFile(SAVED_NON_MEMBERS_FILE);
 
@@ -98,7 +41,7 @@ const readJsonFile = (filePath) => {
         const data = fs.readFileSync(filePath, 'utf8');
         return JSON.parse(data) || [];
     } catch (error) {
-        console.error(`❌ Read error:`, error.message);
+        console.error(`❌ Read error on ${filePath}:`, error.message);
         return [];
     }
 };
@@ -111,7 +54,7 @@ const writeJsonFile = (filePath, data) => {
         fs.renameSync(tempFile, filePath);
         return true;
     } catch (error) {
-        console.error(`❌ Write error:`, error.message);
+        console.error(`❌ Write error on ${filePath}:`, error.message);
         return false;
     }
 };
@@ -138,14 +81,19 @@ try {
 
 cron.schedule('0 0 * * *', () => {
     const presences = readJsonFile(PRESENCES_FILE);
-    if (presences.length > 0) {
+    const attempts = readJsonFile(ATTEMPTS_FILE);
+    const combined = [...presences, ...attempts];
+    
+    if (combined.length > 0) {
         const history = readJsonFile(PRESENCE_HISTORY_FILE);
         const today = new Date().toISOString().split('T')[0];
         const idx = history.findIndex(h => h.date === today);
-        if (idx >= 0) history[idx].presences = presences;
-        else history.push({ date: today, presences });
+        if (idx >= 0) history[idx].presences = combined;
+        else history.push({ date: today, presences: combined });
         writeJsonFile(PRESENCE_HISTORY_FILE, history);
         writeJsonFile(PRESENCES_FILE, []);
+        writeJsonFile(ATTEMPTS_FILE, []);
+        console.log(`✅ Archived ${combined.length} entries to history`);
     }
 });
 
@@ -155,7 +103,7 @@ cron.schedule('5 * * * *', async () => {
     } catch (error) {}
 }, { timezone: "Europe/Brussels" });
 
-app.get('/', (req, res) => res.json({ status: 'ok', version: '5.3.0' }));
+app.get('/', (req, res) => res.json({ status: 'ok', version: '6.0.0' }));
 app.get('/api/health', (req, res) => res.json({ status: 'healthy' }));
 app.get('/admin', (req, res) => res.sendFile(path.join(__dirname, 'public', 'admin.html')));
 
@@ -172,18 +120,18 @@ app.get('/members/check', (req, res) => {
     
     try {
         const members = syncService.getMembers();
+        const attempts = readJsonFile(ATTEMPTS_FILE);
+        
         const member = members.find(m =>
             m.lastname?.trim().toLowerCase() === nomNorm &&
             m.firstname?.trim().toLowerCase() === prenomNorm
         );
         
-        const presences = readJsonFile(PRESENCES_FILE);
-        
-        // ===== ATTEMPT 1: Member not found =====
+        // ===== CASE 1: Member not found =====
         if (!member) {
-            console.log(`    ❌ NOT A MEMBER - Creating tentative non-adherent entry`);
+            console.log(`    ❌ NOT A MEMBER`);
             
-            const attemptPresence = {
+            const attemptEntry = {
                 id: `${Date.now()}_${crypto.randomBytes(8).toString('hex')}`,
                 requestId: requestId,
                 type: 'tentative-non-adherent',
@@ -196,20 +144,20 @@ app.get('/members/check', (req, res) => {
                 methodePaiement: 'N/A'
             };
             
-            presences.push(attemptPresence);
-            const saved = writeJsonFile(PRESENCES_FILE, presences);
-            console.log(`    📝 Tentative entry saved: ${saved ? 'YES' : 'FAILED'}`);
-            console.log(`    📊 Total entries: ${presences.length}`);
+            attempts.push(attemptEntry);
+            const saved = writeJsonFile(ATTEMPTS_FILE, attempts);
+            console.log(`    💾 TENTATIVE NON-ADHERENT SAVED: ${saved ? 'YES ✅' : 'NO ❌'}`);
+            console.log(`    📊 Total attempts file: ${attempts.length}`);
             
             return res.json({ success: false, error: "Not a member" });
         }
         
-        // ===== ATTEMPT 2: Member found but not paid =====
+        // ===== CASE 2: Member found but not paid =====
         const joinStatus = member.joinFileStatusLabel;
         if (joinStatus !== "Payé" && joinStatus !== "En cours de paiement") {
-            console.log(`    ❌ MEMBER NOT PAID (Status: ${joinStatus}) - Creating tentative non-payé entry`);
+            console.log(`    ❌ MEMBER NOT PAID (Status: ${joinStatus})`);
             
-            const attemptPresence = {
+            const attemptEntry = {
                 id: `${Date.now()}_${crypto.randomBytes(8).toString('hex')}`,
                 requestId: requestId,
                 type: 'tentative-non-payé',
@@ -222,10 +170,10 @@ app.get('/members/check', (req, res) => {
                 methodePaiement: 'N/A'
             };
             
-            presences.push(attemptPresence);
-            const saved = writeJsonFile(PRESENCES_FILE, presences);
-            console.log(`    📝 Tentative entry saved: ${saved ? 'YES' : 'FAILED'}`);
-            console.log(`    📊 Total entries: ${presences.length}`);
+            attempts.push(attemptEntry);
+            const saved = writeJsonFile(ATTEMPTS_FILE, attempts);
+            console.log(`    💾 TENTATIVE NON-PAYÉ SAVED: ${saved ? 'YES ✅' : 'NO ❌'}`);
+            console.log(`    📊 Total attempts file: ${attempts.length}`);
             
             return res.json({ 
                 success: false, 
@@ -233,8 +181,10 @@ app.get('/members/check', (req, res) => {
             });
         }
         
-        // ===== SUCCESS: Valid member =====
-        console.log(`    ✅ MEMBER VERIFIED - Member can register`);
+        // ===== CASE 3: Valid member =====
+        console.log(`    ✅ MEMBER VERIFIED`);
+        
+        const presences = readJsonFile(PRESENCES_FILE);
         
         const exists = presences.find(p => {
             if (!p.date || p.type !== 'adherent') return false;
@@ -245,15 +195,13 @@ app.get('/members/check', (req, res) => {
         });
         
         if (exists) {
-            console.log(`    🛑 DUPLICATE - Member already registered today`);
+            console.log(`    🛑 DUPLICATE - Already registered today`);
             return res.json({
                 success: true, isPaid: true, alreadyRegistered: true,
                 message: "Vous êtes déjà enregistré aujourd'hui",
                 presence: exists
             });
         }
-        
-        console.log(`    ✅ CREATING NEW ADHERENT ENTRY`);
         
         const newPresence = {
             id: `${Date.now()}_${crypto.randomBytes(8).toString('hex')}`,
@@ -269,30 +217,9 @@ app.get('/members/check', (req, res) => {
         };
         
         presences.push(newPresence);
-        
-        const deduped = presences.filter(p => {
-            if (!p.date || p.type !== 'adherent') return true;
-            const pDate = new Date(p.date).toISOString().split('T')[0];
-            if (pDate !== today) return true;
-            
-            const count = presences.filter(p2 => 
-                p2.date && 
-                new Date(p2.date).toISOString().split('T')[0] === today &&
-                (p2.nom || '').trim().toLowerCase() === (p.nom || '').trim().toLowerCase() &&
-                (p2.prenom || '').trim().toLowerCase() === (p.prenom || '').trim().toLowerCase()
-            ).length;
-            
-            return count === 1 || presences.indexOf(p) === presences.findIndex(p2 =>
-                p2.date &&
-                new Date(p2.date).toISOString().split('T')[0] === today &&
-                (p2.nom || '').trim().toLowerCase() === (p.nom || '').trim().toLowerCase() &&
-                (p2.prenom || '').trim().toLowerCase() === (p.prenom || '').trim().toLowerCase()
-            );
-        });
-        
-        const saved = writeJsonFile(PRESENCES_FILE, deduped);
-        console.log(`    ✅ ADHERENT SAVED: ${saved ? 'YES' : 'FAILED'}`);
-        console.log(`    📊 Total entries: ${deduped.length}`);
+        const saved = writeJsonFile(PRESENCES_FILE, presences);
+        console.log(`    💾 ADHERENT SAVED: ${saved ? 'YES ✅' : 'NO ❌'}`);
+        console.log(`    📊 Total presences file: ${presences.length}`);
         
         return res.json({
             success: true, isPaid: true,
@@ -302,7 +229,7 @@ app.get('/members/check', (req, res) => {
         });
         
     } catch (error) {
-        console.error('❌ Error:', error);
+        console.error('❌ Critical error:', error);
         return res.status(500).json({ success: false });
     }
 });
@@ -320,21 +247,21 @@ app.get('/members/all', (req, res) => {
 app.get('/presences', (req, res) => {
     try {
         const presences = readJsonFile(PRESENCES_FILE);
+        const attempts = readJsonFile(ATTEMPTS_FILE);
         const today = new Date().toISOString().split('T')[0];
         
-        console.log(`\n[/presences GET] Total in file: ${presences.length}`);
+        // Combine presences and attempts
+        const allEntries = [...presences, ...attempts];
         
-        const todayOnly = presences.filter(p => {
+        const todayOnly = allEntries.filter(p => {
             if (!p.date) return false;
             const pDate = new Date(p.date).toISOString().split('T')[0];
             return pDate === today;
         });
         
-        console.log(`[/presences GET] Today only: ${todayOnly.length}`);
-        todayOnly.forEach(p => {
-            console.log(`  - ${p.type}: ${p.nom} ${p.prenom}`);
-        });
+        console.log(`\n[/presences] Presences: ${presences.length}, Attempts: ${attempts.length}, Total: ${todayOnly.length}`);
         
+        // Dedup only adherents
         const deduped = [];
         const seen = new Set();
         
@@ -347,8 +274,6 @@ app.get('/presences', (req, res) => {
             deduped.push(p);
         }
         
-        console.log(`[/presences GET] After dedup: ${deduped.length}`);
-        
         res.json({ success: true, presences: deduped, count: deduped.length });
     } catch (error) {
         console.error('Error:', error);
@@ -359,7 +284,9 @@ app.get('/presences', (req, res) => {
 app.get('/presences/:id', (req, res) => {
     try {
         const presences = readJsonFile(PRESENCES_FILE);
-        const presence = presences.find(p => p.id === req.params.id);
+        const attempts = readJsonFile(ATTEMPTS_FILE);
+        const allEntries = [...presences, ...attempts];
+        const presence = allEntries.find(p => p.id === req.params.id);
         res.json({ success: !!presence, presence });
     } catch (error) {
         res.status(500).json({ success: false });
@@ -407,9 +334,15 @@ app.post('/presences/:id/valider', (req, res) => {
 
 app.delete('/presences/:id', (req, res) => {
     try {
-        const presences = readJsonFile(PRESENCES_FILE);
-        const filtered = presences.filter(p => p.id !== req.params.id);
-        writeJsonFile(PRESENCES_FILE, filtered);
+        let presences = readJsonFile(PRESENCES_FILE);
+        let attempts = readJsonFile(ATTEMPTS_FILE);
+        
+        presences = presences.filter(p => p.id !== req.params.id);
+        attempts = attempts.filter(p => p.id !== req.params.id);
+        
+        writeJsonFile(PRESENCES_FILE, presences);
+        writeJsonFile(ATTEMPTS_FILE, attempts);
+        
         res.json({ success: true });
     } catch (error) {
         res.status(500).json({ success: false });
@@ -442,17 +375,21 @@ app.get('/presences/history/:date', (req, res) => {
 app.post('/presences/archive', (req, res) => {
     try {
         const presences = readJsonFile(PRESENCES_FILE);
-        if (!presences.length) return res.json({ success: false });
+        const attempts = readJsonFile(ATTEMPTS_FILE);
+        const combined = [...presences, ...attempts];
+        
+        if (!combined.length) return res.json({ success: false });
         
         const history = readJsonFile(PRESENCE_HISTORY_FILE);
         const today = new Date().toISOString().split('T')[0];
         const idx = history.findIndex(h => h.date === today);
         
-        if (idx >= 0) history[idx].presences = presences;
-        else history.push({ date: today, presences });
+        if (idx >= 0) history[idx].presences = combined;
+        else history.push({ date: today, presences: combined });
         
         writeJsonFile(PRESENCE_HISTORY_FILE, history);
         writeJsonFile(PRESENCES_FILE, []);
+        writeJsonFile(ATTEMPTS_FILE, []);
         res.json({ success: true });
     } catch (error) {
         res.status(500).json({ success: false });
@@ -505,8 +442,9 @@ app.post('/quick-non-member', (req, res) => {
 app.get('/api/stats/today', (req, res) => {
     try {
         const presences = readJsonFile(PRESENCES_FILE);
+        const attempts = readJsonFile(ATTEMPTS_FILE);
         const today = new Date().toISOString().split('T')[0];
-        const valid = presences.filter(p => p.date && new Date(p.date).toISOString().split('T')[0] === today);
+        const valid = [...presences, ...attempts].filter(p => p.date && new Date(p.date).toISOString().split('T')[0] === today);
         
         const totalRevenue = valid.reduce((sum, p) => sum + (p.tarif || 0), 0);
         
@@ -548,8 +486,8 @@ app.use((error, req, res) => {
 
 const server = app.listen(PORT, '0.0.0.0', () => {
     console.log('╔════════════════════════════════════════════════════════════╗');
-    console.log('║  ✅ Server running on http://localhost:' + PORT + '              ║');
-    console.log('║  ✅ TENTATIVE TRACKING FULLY WORKING                   ║');
+    console.log('║  ✅ Server v6.0 running on http://localhost:' + PORT + '        ║');
+    console.log('║  ✅ SEPARATE ATTEMPTS TRACKING = ALWAYS SAVED          ║');
     console.log('╚════════════════════════════════════════════════════════════╝\n');
 });
 
