@@ -615,7 +615,6 @@
         let currentMode = 'today';
         let currentHistoryDate = null;
 
-        // INIT
         document.addEventListener('DOMContentLoaded', () => {
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('dateInput').value = today;
@@ -632,22 +631,22 @@
                     String(now.getMinutes()).padStart(2, '0') + ':' +
                     String(now.getSeconds()).padStart(2, '0');
             }, 1000);
+            
+            document.getElementById('dateInput').addEventListener('change', function() {
+                currentHistoryDate = this.value;
+                currentMode = 'history';
+                loadPresences();
+            });
         });
 
-        // LOAD PRESENCES
         async function loadPresences() {
             try {
                 const dateInput = document.getElementById('dateInput').value;
+                let url = currentMode === 'history' && currentHistoryDate 
+                    ? `${API_URL}/presences/history/${currentHistoryDate}`
+                    : `${API_URL}/presences`;
                 
-                let url;
-                if (currentMode === 'history' && currentHistoryDate) {
-                    url = `${API_URL}/presences/history/${currentHistoryDate}`;
-                    document.getElementById('historicalMode').textContent = 'Yes';
-                } else {
-                    url = `${API_URL}/presences`;
-                    currentMode = 'today';
-                    document.getElementById('historicalMode').textContent = 'No';
-                }
+                document.getElementById('historicalMode').textContent = currentMode === 'history' ? 'Yes' : 'No';
                 
                 const response = await fetch(url);
                 if (!response.ok) throw new Error('Failed to load');
@@ -659,13 +658,11 @@
                 updateStats(presences);
                 document.getElementById('presenceCount').textContent = presences.length;
                 document.getElementById('selectedDate').textContent = dateInput;
-                
             } catch (error) {
-                console.error('Error loading presences:', error);
+                console.error('Error:', error);
             }
         }
 
-        // RENDER TABLE
         function renderPresences(presences) {
             const tbody = document.getElementById('presencesTableBody');
             tbody.innerHTML = '';
@@ -677,76 +674,43 @@
             
             presences.forEach(presence => {
                 const row = document.createElement('tr');
+                let badge = '', typeDisplay = '';
                 
                 if (presence.type === 'product-sale') {
-                    row.innerHTML = `
-                        <td>${formatDate(presence.date)}</td>
-                        <td><span class="badge vente">Vente</span></td>
-                        <td colspan="2">🛍️ ${presence.prenom}</td>
-                        <td>N/A</td>
-                        <td class="price">${(presence.tarif || 0).toFixed(2)}€</td>
-                        <td>${presence.methodePaiement || 'N/A'}</td>
-                        <td><span class="status-text">produit</span></td>
-                        <td><button class="btn-delete" onclick="deletePresence('${presence.id}')">🗑️</button></td>
-                    `;
-                } else if (presence.type === 'tentative-non-adherent') {
-                    row.innerHTML = `
-                        <td>${formatDate(presence.date)}</td>
-                        <td><span class="badge tentative">Tentative</span></td>
-                        <td>${presence.nom || ''}</td>
-                        <td>${presence.prenom || ''}</td>
-                        <td>${presence.niveau || 'N/A'}</td>
-                        <td class="price">-</td>
-                        <td>-</td>
-                        <td><span class="status-text tentative">tentative non-adherent</span></td>
-                        <td><button class="btn-delete" onclick="deletePresence('${presence.id}')">🗑️</button></td>
-                    `;
-                } else if (presence.type === 'tentative-non-payé') {
-                    row.innerHTML = `
-                        <td>${formatDate(presence.date)}</td>
-                        <td><span class="badge tentative">Tentative</span></td>
-                        <td>${presence.nom || ''}</td>
-                        <td>${presence.prenom || ''}</td>
-                        <td>${presence.niveau || 'N/A'}</td>
-                        <td class="price">-</td>
-                        <td>-</td>
-                        <td><span class="status-text tentative">tentative non-payé</span></td>
-                        <td><button class="btn-delete" onclick="deletePresence('${presence.id}')">🗑️</button></td>
-                    `;
+                    badge = '<span class="badge vente">Vente</span>';
+                    typeDisplay = 'vente';
                 } else if (presence.type === 'adherent') {
-                    row.innerHTML = `
-                        <td>${formatDate(presence.date)}</td>
-                        <td><span class="badge adherent">Adhérent</span></td>
-                        <td>${presence.nom || ''}</td>
-                        <td>${presence.prenom || ''}</td>
-                        <td>${presence.niveau || 'N/A'}</td>
-                        <td class="price">${presence.tarif ? (presence.tarif || 0).toFixed(2) + '€' : 'Gratuit'}</td>
-                        <td>${presence.methodePaiement || 'N/A'}</td>
-                        <td><span class="status-text">adhérent</span></td>
-                        <td><button class="btn-delete" onclick="deletePresence('${presence.id}')">🗑️</button></td>
-                    `;
+                    badge = '<span class="badge adherent">Adhérent</span>';
+                    typeDisplay = 'adherent';
                 } else if (presence.type === 'non-adherent') {
-                    row.innerHTML = `
-                        <td>${formatDate(presence.date)}</td>
-                        <td><span class="badge non-adherent">Non-adhérent</span></td>
-                        <td>${presence.nom || ''}</td>
-                        <td>${presence.prenom || ''}</td>
-                        <td>${presence.niveau || 'N/A'}</td>
-                        <td class="price">${presence.tarif ? (presence.tarif || 0).toFixed(2) + '€' : 'Gratuit'}</td>
-                        <td>${presence.methodePaiement || 'N/A'}</td>
-                        <td>
-                            ${presence.status === 'Payé' 
-                                ? '<span class="status-text">payé</span>' 
-                                : `<button class="btn-validate" onclick="showValidationPopup('${presence.id}')">À valider</button>`}
-                        </td>
-                        <td><button class="btn-delete" onclick="deletePresence('${presence.id}')">🗑️</button></td>
-                    `;
+                    badge = '<span class="badge non-adherent">Non-adhérent</span>';
+                    typeDisplay = 'non-adherent';
+                } else {
+                    badge = '<span class="badge tentative">Tentative</span>';
+                    typeDisplay = 'tentative';
                 }
+                
+                const statusDisplay = presence.status === 'Payé' 
+                    ? '<span class="status-text">payé</span>'
+                    : presence.type === 'non-adherent' 
+                        ? `<button class="btn-validate" onclick="showValidationPopup('${presence.id}')">À valider</button>`
+                        : '<span class="status-text tentative">' + (presence.status || 'N/A') + '</span>';
+                
+                row.innerHTML = `
+                    <td>${formatDate(presence.date)}</td>
+                    <td>${badge}</td>
+                    <td>${presence.nom || ''}</td>
+                    <td>${presence.prenom || ''}</td>
+                    <td>${presence.niveau || 'N/A'}</td>
+                    <td class="price">${presence.tarif ? (presence.tarif || 0).toFixed(2) + '€' : '-'}</td>
+                    <td>${presence.methodePaiement || 'N/A'}</td>
+                    <td>${statusDisplay}</td>
+                    <td><button class="btn-delete" onclick="deletePresence('${presence.id}')">🗑️</button></td>
+                `;
                 tbody.appendChild(row);
             });
         }
 
-        // UPDATE STATS
         function updateStats(presences) {
             const total = presences.length;
             const adherents = presences.filter(p => p.type === 'adherent').length;
@@ -759,7 +723,6 @@
             document.getElementById('statRevenue').textContent = revenue.toFixed(2);
         }
 
-        // ADD PRODUCT SALE
         async function addProductSale() {
             const productName = document.getElementById('productName').value.trim();
             const productPrice = parseFloat(document.getElementById('productPrice').value);
@@ -785,32 +748,21 @@
                 });
                 
                 if (!response.ok) throw new Error('Failed');
-                
                 document.getElementById('productName').value = '';
                 document.getElementById('productPrice').value = '';
                 loadPresences();
             } catch (error) {
-                console.error('Error:', error);
-                alert('Erreur lors de l\'ajout');
+                alert('Erreur');
             }
         }
 
-        // VALIDATION POPUP
         function showValidationPopup(presenceId) {
             validationPresenceId = presenceId;
-            
             fetch(`${API_URL}/presences/${presenceId}`)
                 .then(r => r.json())
                 .then(data => {
                     const presence = data.presence;
-                    const montantInput = document.getElementById('validationMontant');
-                    
-                    if (presence.tarif && presence.tarif > 0) {
-                        montantInput.value = presence.tarif.toFixed(2);
-                    } else {
-                        montantInput.value = '10.00';
-                    }
-                    
+                    document.getElementById('validationMontant').value = presence.tarif && presence.tarif > 0 ? presence.tarif.toFixed(2) : '10.00';
                     document.getElementById('validationMethode').value = 'Especes';
                     document.getElementById('validationModal').classList.add('show');
                 })
@@ -819,7 +771,6 @@
 
         function closeValidationModal() {
             document.getElementById('validationModal').classList.remove('show');
-            validationPresenceId = null;
         }
 
         async function submitValidation() {
@@ -835,22 +786,17 @@
                 const response = await fetch(`${API_URL}/presences/${validationPresenceId}/valider`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        montant: montant,
-                        methodePaiement: methode
-                    })
+                    body: JSON.stringify({ montant, methodePaiement: methode })
                 });
                 
                 if (!response.ok) throw new Error('Failed');
                 closeValidationModal();
                 loadPresences();
             } catch (error) {
-                console.error('Error:', error);
-                alert('Erreur lors de la validation');
+                alert('Erreur');
             }
         }
 
-        // DELETE
         async function deletePresence(presenceId) {
             if (!confirm('Êtes-vous sûr?')) return;
             try {
@@ -862,7 +808,6 @@
             }
         }
 
-        // EXPORT TODAY
         async function exportToday() {
             try {
                 const response = await fetch(`${API_URL}/presences`);
@@ -872,7 +817,7 @@
                 const excelData = presences.map(p => ({
                     'Date': formatDate(p.date),
                     'Heure': formatTime(p.date),
-                    'Type': p.type === 'product-sale' ? 'Vente Libre' : (p.type === 'adherent' ? 'Adhérent' : p.type === 'tentative-non-adherent' ? 'Tentative' : p.type === 'tentative-non-payé' ? 'Tentative' : 'Non-adhérent'),
+                    'Type': p.type === 'product-sale' ? 'Vente Libre' : (p.type === 'adherent' ? 'Adhérent' : 'Non-adhérent'),
                     'Nom': p.nom || '',
                     'Prénom': p.prenom,
                     'Niveau': p.niveau || 'N/A',
@@ -884,41 +829,33 @@
                 const ws = XLSX.utils.json_to_sheet(excelData);
                 const wb = XLSX.utils.book_new();
                 XLSX.utils.book_append_sheet(wb, ws, 'Presences');
-                
                 const today = new Date().toISOString().split('T')[0];
                 XLSX.writeFile(wb, `presences_${today}.xlsx`);
             } catch (error) {
-                console.error('Error:', error);
                 alert('Erreur lors de l\'export');
             }
         }
 
-        // LOAD YEARS
         async function loadYears() {
             try {
                 const response = await fetch(`${API_URL}/admin/export/years`);
                 const data = await response.json();
                 const select = document.getElementById('yearSelect');
                 
-                if (!data.years || data.years.length === 0) {
-                    return;
-                }
+                if (!data.years || data.years.length === 0) return;
                 
                 select.innerHTML = '<option value="">Sélectionner une année...</option>';
-                
                 (data.years || []).forEach(year => {
                     const option = document.createElement('option');
                     option.value = year;
                     option.textContent = year;
                     select.appendChild(option);
                 });
-                
             } catch (error) {
-                console.error('Error loading years:', error);
+                console.error('Error:', error);
             }
         }
 
-        // EXPORT YEAR
         async function exportYear() {
             const year = document.getElementById('yearSelect').value;
             if (!year) {
@@ -939,7 +876,6 @@
                 }
                 
                 let allPresences = [];
-                
                 for (const date of yearDates) {
                     const response = await fetch(`${API_URL}/presences/history/${date}`);
                     const data = await response.json();
@@ -954,7 +890,7 @@
                 const excelData = allPresences.map(p => ({
                     'Date': formatDate(p.date),
                     'Heure': formatTime(p.date),
-                    'Type': p.type === 'product-sale' ? 'Vente Libre' : (p.type === 'adherent' ? 'Adhérent' : p.type === 'tentative-non-adherent' ? 'Tentative' : p.type === 'tentative-non-payé' ? 'Tentative' : 'Non-adhérent'),
+                    'Type': p.type === 'product-sale' ? 'Vente Libre' : (p.type === 'adherent' ? 'Adhérent' : 'Non-adhérent'),
                     'Nom': p.nom || '',
                     'Prénom': p.prenom,
                     'Niveau': p.niveau || 'N/A',
@@ -966,15 +902,12 @@
                 const ws = XLSX.utils.json_to_sheet(excelData);
                 const wb = XLSX.utils.book_new();
                 XLSX.utils.book_append_sheet(wb, ws, 'Presences');
-                
                 XLSX.writeFile(wb, `presences_${year}.xlsx`);
             } catch (error) {
-                console.error('Error:', error);
                 alert('Erreur lors de l\'export');
             }
         }
 
-        // SELECT TODAY
         function selectToday() {
             currentMode = 'today';
             const today = new Date().toISOString().split('T')[0];
@@ -982,31 +915,19 @@
             loadPresences();
         }
 
-        // ARCHIVE
         async function archivePresences() {
-            if (!confirm('Êtes-vous sûr de vouloir archiver les présences? Les données d\'aujourd\'hui seront sauvegardées à l\'historique et la liste sera vidée.')) return;
+            if (!confirm('Êtes-vous sûr?')) return;
             try {
                 const response = await fetch(`${API_URL}/presences/archive`, { method: 'POST' });
                 if (!response.ok) throw new Error('Failed');
-                alert('Présences archivées et sauvegardées!');
+                alert('Archivé!');
                 loadPresences();
                 loadYears();
             } catch (error) {
-                console.error('Error:', error);
-                alert('Erreur lors de l\'archivage');
+                alert('Erreur');
             }
         }
 
-        // DATE INPUT CHANGE
-        document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('dateInput').addEventListener('change', function() {
-                currentHistoryDate = this.value;
-                currentMode = 'history';
-                loadPresences();
-            });
-        });
-
-        // HELPERS
         function formatDate(dateString) {
             const date = new Date(dateString);
             return date.toLocaleDateString('fr-FR');
@@ -1017,7 +938,6 @@
             return date.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
         }
 
-        // Close modal on outside click
         window.onclick = function(event) {
             const modal = document.getElementById('validationModal');
             if (event.target === modal) closeValidationModal();
