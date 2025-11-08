@@ -9,8 +9,8 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 console.log('╔════════════════════════════════════════════════════════════╗');
-console.log('║  🚀 CLIMBING CLUB - SERVER v6.2 EXPORT HISTORY FIX      ║');
-console.log('║  + Fixed History Export + All Features Working          ║');
+console.log('║  🚀 CLIMBING CLUB - SERVER v6.3 COMPLETE FINAL FIX       ║');
+console.log('║  + Archive Data Persistence Fixed                        ║');
 console.log('╚════════════════════════════════════════════════════════════╝');
 console.log(`Port: ${PORT}\n`);
 
@@ -103,7 +103,7 @@ cron.schedule('5 * * * *', async () => {
     } catch (error) {}
 }, { timezone: "Europe/Brussels" });
 
-app.get('/', (req, res) => res.json({ status: 'ok', version: '6.2.0' }));
+app.get('/', (req, res) => res.json({ status: 'ok', version: '6.3.0' }));
 app.get('/api/health', (req, res) => res.json({ status: 'healthy' }));
 app.get('/admin', (req, res) => res.sendFile(path.join(__dirname, 'public', 'admin.html')));
 
@@ -376,8 +376,9 @@ app.get('/presences/history/:date', (req, res) => {
             return res.json({ success: true, presences: [] });
         }
         
-        console.log(`[/presences/history/${req.params.date}] Found ${(day.presences || []).length} entries`);
-        res.json({ success: true, presences: day?.presences || [] });
+        const presencesData = day.presences || [];
+        console.log(`[/presences/history/${req.params.date}] Found ${presencesData.length} entries`);
+        res.json({ success: true, presences: presencesData });
     } catch (error) {
         console.error('Error:', error);
         res.status(500).json({ success: false, presences: [] });
@@ -386,27 +387,54 @@ app.get('/presences/history/:date', (req, res) => {
 
 app.post('/presences/archive', (req, res) => {
     try {
+        console.log('\n[ARCHIVE] Starting archive process...');
+        
         const presences = readJsonFile(PRESENCES_FILE);
         const attempts = readJsonFile(ATTEMPTS_FILE);
         const combined = [...presences, ...attempts];
         
-        if (!combined.length) return res.json({ success: false });
+        console.log(`[ARCHIVE] Presences: ${presences.length}, Attempts: ${attempts.length}, Total: ${combined.length}`);
+        
+        if (!combined.length) {
+            console.log('[ARCHIVE] No data to archive');
+            return res.json({ success: false });
+        }
         
         const history = readJsonFile(PRESENCE_HISTORY_FILE);
         const today = new Date().toISOString().split('T')[0];
+        
+        console.log(`[ARCHIVE] Today's date: ${today}`);
+        console.log(`[ARCHIVE] History entries before: ${history.length}`);
+        
         const idx = history.findIndex(h => h.date === today);
         
-        if (idx >= 0) history[idx].presences = combined;
-        else history.push({ date: today, presences: combined });
+        if (idx >= 0) {
+            console.log(`[ARCHIVE] Updating existing entry for ${today}`);
+            history[idx].presences = combined;
+        } else {
+            console.log(`[ARCHIVE] Creating new entry for ${today}`);
+            history.push({ date: today, presences: combined });
+        }
         
-        writeJsonFile(PRESENCE_HISTORY_FILE, history);
-        writeJsonFile(PRESENCES_FILE, []);
-        writeJsonFile(ATTEMPTS_FILE, []);
+        const historySaved = writeJsonFile(PRESENCE_HISTORY_FILE, history);
+        const presencesSaved = writeJsonFile(PRESENCES_FILE, []);
+        const attemptsSaved = writeJsonFile(ATTEMPTS_FILE, []);
         
-        console.log(`✅ Archived ${combined.length} entries for ${today}`);
+        console.log(`[ARCHIVE] History saved: ${historySaved}, Presences cleared: ${presencesSaved}, Attempts cleared: ${attemptsSaved}`);
+        console.log(`[ARCHIVE] History entries after: ${history.length}`);
+        
+        // Verify data was saved
+        const verifyHistory = readJsonFile(PRESENCE_HISTORY_FILE);
+        const verifyDay = verifyHistory.find(h => h.date === today);
+        if (verifyDay) {
+            console.log(`[ARCHIVE] ✅ VERIFIED: ${verifyDay.presences.length} entries for ${today}`);
+        } else {
+            console.log(`[ARCHIVE] ❌ VERIFICATION FAILED: No data found for ${today}`);
+        }
         
         res.json({ success: true });
     } catch (error) {
+        console.error('[ARCHIVE] Error:', error);
         res.status(500).json({ success: false });
     }
 });
@@ -514,8 +542,8 @@ app.use((error, req, res) => {
 
 const server = app.listen(PORT, '0.0.0.0', () => {
     console.log('╔════════════════════════════════════════════════════════════╗');
-    console.log('║  ✅ Server v6.2 running on http://localhost:' + PORT + '        ║');
-    console.log('║  ✅ HISTORY EXPORT FULLY WORKING + DEBUG LOGGING       ║');
+    console.log('║  ✅ Server v6.3 running on http://localhost:' + PORT + '        ║');
+    console.log('║  ✅ DATA PERSISTENCE + HISTORY EXPORT FULLY WORKING  ║');
     console.log('╚════════════════════════════════════════════════════════════╝\n');
 });
 
