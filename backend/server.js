@@ -9,8 +9,8 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 console.log('\n╔════════════════════════════════════════════════════════════╗');
-console.log('║  🚀 CLIMBING CLUB - SERVER v8.0 FINAL PRODUCTION FIX     ║');
-console.log('║  + STRICT DATA VALIDATION + GUARANTEED PERSISTENCE       ║');
+console.log('║  🚀 CLIMBING CLUB - SERVER v8.0 PRODUCTION FINAL         ║');
+console.log('║  + Windows Compatible + Data Persistence Guaranteed     ║');
 console.log('╚════════════════════════════════════════════════════════════╝\n');
 console.log(`Port: ${PORT}\n`);
 
@@ -90,12 +90,15 @@ cron.schedule('0 0 * * *', () => {
         const history = readJsonFile(PRESENCE_HISTORY_FILE);
         const today = new Date().toISOString().split('T')[0];
         const idx = history.findIndex(h => h.date === today);
-        if (idx >= 0) history[idx].presences = combined;
-        else history.push({ date: today, presences: combined });
+        if (idx >= 0) {
+            history[idx].presences = combined;
+        } else {
+            history.push({ date: today, presences: combined });
+        }
         writeJsonFile(PRESENCE_HISTORY_FILE, history);
         writeJsonFile(PRESENCES_FILE, []);
         writeJsonFile(ATTEMPTS_FILE, []);
-        console.log(`✅ Archived ${combined.length} entries to history`);
+        console.log(`✅ Auto-archived ${combined.length} entries`);
     }
 });
 
@@ -115,8 +118,6 @@ app.get('/members/check', (req, res) => {
     
     const nomNorm = nom.trim().toLowerCase();
     const prenomNorm = prenom.trim().toLowerCase();
-    const today = new Date().toISOString().split('T')[0];
-    const requestId = `${Date.now()}_${crypto.randomBytes(4).toString('hex')}`;
     
     try {
         const members = syncService.getMembers();
@@ -130,7 +131,6 @@ app.get('/members/check', (req, res) => {
         if (!member) {
             const attemptEntry = {
                 id: `${Date.now()}_${crypto.randomBytes(8).toString('hex')}`,
-                requestId: requestId,
                 type: 'tentative-non-adherent',
                 nom: nom.trim(),
                 prenom: prenom.trim(),
@@ -140,13 +140,11 @@ app.get('/members/check', (req, res) => {
                 tarif: 0,
                 methodePaiement: 'N/A'
             };
-            
             attempts.push(attemptEntry);
             writeJsonFile(ATTEMPTS_FILE, attempts);
-            
             return res.json({ 
                 success: false, 
-                error: "Vous n'êtes pas membre du club. Inscrivez-vous en tant que non-membre du club"
+                error: "Vous n'êtes pas membre du club"
             });
         }
         
@@ -154,7 +152,6 @@ app.get('/members/check', (req, res) => {
         if (joinStatus !== "Payé" && joinStatus !== "En cours de paiement") {
             const attemptEntry = {
                 id: `${Date.now()}_${crypto.randomBytes(8).toString('hex')}`,
-                requestId: requestId,
                 type: 'tentative-non-payé',
                 nom: nom.trim(),
                 prenom: prenom.trim(),
@@ -164,10 +161,8 @@ app.get('/members/check', (req, res) => {
                 tarif: 0,
                 methodePaiement: 'N/A'
             };
-            
             attempts.push(attemptEntry);
             writeJsonFile(ATTEMPTS_FILE, attempts);
-            
             return res.json({ 
                 success: false, 
                 error: "Vous avez encore à régler votre adhésion"
@@ -175,6 +170,7 @@ app.get('/members/check', (req, res) => {
         }
         
         const presences = readJsonFile(PRESENCES_FILE);
+        const today = new Date().toISOString().split('T')[0];
         
         const exists = presences.find(p => {
             if (!p.date || p.type !== 'adherent') return false;
@@ -194,7 +190,6 @@ app.get('/members/check', (req, res) => {
         
         const newPresence = {
             id: `${Date.now()}_${crypto.randomBytes(8).toString('hex')}`,
-            requestId: requestId,
             type: 'adherent',
             nom: nom.trim(),
             prenom: prenom.trim(),
@@ -237,7 +232,6 @@ app.get('/presences', (req, res) => {
         const today = new Date().toISOString().split('T')[0];
         
         const allEntries = [...presences, ...attempts];
-        
         const todayOnly = allEntries.filter(p => {
             if (!p.date) return false;
             const pDate = new Date(p.date).toISOString().split('T')[0];
@@ -258,7 +252,6 @@ app.get('/presences', (req, res) => {
         
         res.json({ success: true, presences: deduped, count: deduped.length });
     } catch (error) {
-        console.error('Error:', error);
         res.status(500).json({ success: false, presences: [], count: 0 });
     }
 });
@@ -334,7 +327,6 @@ app.delete('/presences/:id', (req, res) => {
 app.get('/presences/history', (req, res) => {
     try {
         const history = readJsonFile(PRESENCE_HISTORY_FILE);
-        
         const dates = history
             .filter(h => h.date && h.date.length === 10 && Array.isArray(h.presences))
             .map(h => h.date)
@@ -343,7 +335,6 @@ app.get('/presences/history', (req, res) => {
         
         res.json({ success: true, dates });
     } catch (error) {
-        console.error('Error:', error);
         res.status(500).json({ success: false, dates: [] });
     }
 });
@@ -360,7 +351,6 @@ app.get('/presences/history/:date', (req, res) => {
         const presences = Array.isArray(day.presences) ? day.presences : [];
         res.json({ success: true, presences });
     } catch (error) {
-        console.error('Error:', error);
         res.status(500).json({ success: false, presences: [] });
     }
 });

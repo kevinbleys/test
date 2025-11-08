@@ -6,24 +6,14 @@
     <title>📊 Administration - Présences du jour</title>
     <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             padding: 20px;
         }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
+        .container { max-width: 1400px; margin: 0 auto; }
         .header {
             background: white;
             border-radius: 12px;
@@ -34,13 +24,7 @@
             align-items: center;
             gap: 15px;
         }
-
-        .header h1 {
-            margin: 0;
-            color: #333;
-            font-size: 24px;
-        }
-
+        .header h1 { margin: 0; color: #333; font-size: 24px; }
         .info-box {
             background: white;
             border-left: 4px solid #667eea;
@@ -53,7 +37,6 @@
             font-family: 'Courier New', monospace;
             line-height: 1.6;
         }
-
         .date-selector {
             background: white;
             border-radius: 12px;
@@ -65,15 +48,12 @@
             align-items: center;
             flex-wrap: wrap;
         }
-
-        .date-selector input[type="date"],
-        .date-selector select {
+        .date-selector input[type="date"], .date-selector select {
             padding: 8px 12px;
             border: 1px solid #ddd;
             border-radius: 6px;
             font-size: 14px;
         }
-
         .date-selector button {
             padding: 8px 20px;
             border: none;
@@ -83,75 +63,30 @@
             font-size: 14px;
             transition: all 0.3s;
         }
-
-        .btn-today {
-            background: #3b82f6;
-            color: white;
-        }
-
-        .btn-today:hover {
-            background: #2563eb;
-        }
-
-        .btn-load {
-            background: #10b981;
-            color: white;
-        }
-
-        .btn-load:hover {
-            background: #059669;
-        }
-
-        .btn-archive {
-            background: #f59e0b;
-            color: white;
-        }
-
-        .btn-archive:hover {
-            background: #d97706;
-        }
-
+        .btn-today { background: #3b82f6; color: white; }
+        .btn-today:hover { background: #2563eb; }
+        .btn-load { background: #10b981; color: white; }
+        .btn-load:hover { background: #059669; }
+        .btn-archive { background: #f59e0b; color: white; }
+        .btn-archive:hover { background: #d97706; }
         .stats {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 15px;
             margin-bottom: 20px;
         }
-
         .stat-card {
             border-radius: 12px;
             padding: 20px;
             color: white;
             font-weight: 600;
         }
-
-        .stat-card.total {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        }
-
-        .stat-card.adherents {
-            background: linear-gradient(135deg, #f472b6 0%, #ec4899 100%);
-        }
-
-        .stat-card.non-adherents {
-            background: linear-gradient(135deg, #22d3ee 0%, #06b6d4 100%);
-        }
-
-        .stat-card.revenue {
-            background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
-        }
-
-        .stat-label {
-            font-size: 13px;
-            opacity: 0.9;
-            margin-bottom: 10px;
-        }
-
-        .stat-value {
-            font-size: 36px;
-            font-weight: 700;
-        }
-
+        .stat-card.total { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .stat-card.adherents { background: linear-gradient(135deg, #f472b6 0%, #ec4899 100%); }
+        .stat-card.non-adherents { background: linear-gradient(135deg, #22d3ee 0%, #06b6d4 100%); }
+        .stat-card.revenue { background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%); }
+        .stat-label { font-size: 13px; opacity: 0.9; margin-bottom: 10px; }
+        .stat-value { font-size: 36px; font-weight: 700; }
         .vente-libre-section {
             background: white;
             border-radius: 12px;
@@ -159,47 +94,31 @@
             margin-bottom: 20px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
-
-        .vente-libre-section h3 {
-            margin: 0 0 15px 0;
-            color: #333;
-            font-size: 16px;
-        }
-
+        .vente-libre-section h3 { margin: 0 0 15px 0; color: #333; font-size: 16px; }
         .vente-form {
             display: grid;
             grid-template-columns: 2fr 1fr 1fr auto;
             gap: 12px;
             align-items: end;
         }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-        }
-
+        .form-group { display: flex; flex-direction: column; }
         .form-group label {
             font-size: 12px;
             color: #666;
             margin-bottom: 5px;
             font-weight: 500;
         }
-
-        .form-group input,
-        .form-group select {
+        .form-group input, .form-group select {
             padding: 10px 12px;
             border: 1px solid #ddd;
             border-radius: 6px;
             font-size: 14px;
         }
-
-        .form-group input:focus,
-        .form-group select:focus {
+        .form-group input:focus, .form-group select:focus {
             outline: none;
             border-color: #667eea;
             box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
-
         .btn-add-product {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
@@ -212,12 +131,10 @@
             height: 42px;
             transition: all 0.3s;
         }
-
         .btn-add-product:hover {
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
         }
-
         .export-section {
             background: white;
             border-radius: 12px;
@@ -225,13 +142,7 @@
             margin-bottom: 20px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
-
-        .export-section h3 {
-            margin: 0 0 15px 0;
-            color: #333;
-            font-size: 16px;
-        }
-
+        .export-section h3 { margin: 0 0 15px 0; color: #333; font-size: 16px; }
         .export-section-info {
             background: #fef3c7;
             border-left: 4px solid #f59e0b;
@@ -242,7 +153,6 @@
             color: #92400e;
             font-weight: 500;
         }
-
         .btn-export {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
@@ -254,18 +164,15 @@
             font-size: 14px;
             transition: all 0.3s;
         }
-
         .btn-export:hover {
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
         }
-
         .export-year-section {
             display: grid;
             grid-template-columns: 1fr auto;
             gap: 10px;
         }
-
         .export-year-section select {
             padding: 10px 12px;
             border: 1px solid #ddd;
@@ -273,12 +180,7 @@
             font-size: 14px;
             width: 100%;
         }
-
-        .export-year-section button {
-            width: 100%;
-            grid-column: 1 / -1;
-        }
-
+        .export-year-section button { width: 100%; grid-column: 1 / -1; }
         .table-section {
             background: white;
             border-radius: 12px;
@@ -286,17 +188,8 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
             overflow-x: auto;
         }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        thead {
-            background: #f9fafb;
-            border-bottom: 2px solid #e5e7eb;
-        }
-
+        table { width: 100%; border-collapse: collapse; }
+        thead { background: #f9fafb; border-bottom: 2px solid #e5e7eb; }
         th {
             padding: 12px;
             text-align: left;
@@ -306,16 +199,8 @@
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
-
-        td {
-            padding: 12px;
-            border-bottom: 1px solid #f0f0f0;
-        }
-
-        tr:hover {
-            background: #f9fafb;
-        }
-
+        td { padding: 12px; border-bottom: 1px solid #f0f0f0; }
+        tr:hover { background: #f9fafb; }
         .badge {
             display: inline-block;
             padding: 6px 12px;
@@ -323,34 +208,11 @@
             font-size: 12px;
             font-weight: 600;
         }
-
-        .badge.adherent {
-            background: #dbeafe;
-            color: #1e40af;
-        }
-
-        .badge.non-adherent {
-            background: #fef3c7;
-            color: #b45309;
-        }
-
-        .badge.vente {
-            background: linear-gradient(135deg, #fef08a 0%, #fbbf24 100%);
-            color: #92400e;
-            font-weight: bold;
-        }
-
-        .badge.tentative {
-            background: #fee2e2;
-            color: #991b1b;
-            font-weight: bold;
-        }
-
-        .price {
-            font-weight: 700;
-            color: #10b981;
-        }
-
+        .badge.adherent { background: #dbeafe; color: #1e40af; }
+        .badge.non-adherent { background: #fef3c7; color: #b45309; }
+        .badge.vente { background: linear-gradient(135deg, #fef08a 0%, #fbbf24 100%); color: #92400e; font-weight: bold; }
+        .badge.tentative { background: #fee2e2; color: #991b1b; font-weight: bold; }
+        .price { font-weight: 700; color: #10b981; }
         .btn-validate {
             background: #3b82f6;
             color: white;
@@ -361,11 +223,7 @@
             font-size: 12px;
             font-weight: 600;
         }
-
-        .btn-validate:hover {
-            background: #2563eb;
-        }
-
+        .btn-validate:hover { background: #2563eb; }
         .btn-delete {
             background: #ef4444;
             color: white;
@@ -375,11 +233,7 @@
             cursor: pointer;
             font-size: 14px;
         }
-
-        .btn-delete:hover {
-            background: #dc2626;
-        }
-
+        .btn-delete:hover { background: #dc2626; }
         .status-text {
             background: #dcfce7;
             color: #166534;
@@ -389,12 +243,7 @@
             font-weight: 600;
             display: inline-block;
         }
-
-        .status-text.tentative {
-            background: #fee2e2;
-            color: #991b1b;
-        }
-
+        .status-text.tentative { background: #fee2e2; color: #991b1b; }
         .modal {
             display: none;
             position: fixed;
@@ -407,11 +256,7 @@
             align-items: center;
             justify-content: center;
         }
-
-        .modal.show {
-            display: flex;
-        }
-
+        .modal.show { display: flex; }
         .modal-content {
             background-color: white;
             padding: 30px;
@@ -420,64 +265,24 @@
             max-width: 400px;
             width: 90%;
         }
-
-        .modal-content h2 {
-            margin: 0 0 20px 0;
-            color: #333;
-        }
-
-        .modal-form {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .modal-form label {
-            font-size: 14px;
-            color: #666;
-            font-weight: 500;
-        }
-
-        .modal-form input,
-        .modal-form select {
+        .modal-content h2 { margin: 0 0 20px 0; color: #333; }
+        .modal-form { display: flex; flex-direction: column; gap: 15px; }
+        .modal-form label { font-size: 14px; color: #666; font-weight: 500; }
+        .modal-form input, .modal-form select {
             padding: 12px;
             border: 2px solid #e0e0e0;
             border-radius: 6px;
             font-size: 14px;
         }
-
-        .modal-form input:focus,
-        .modal-form select:focus {
+        .modal-form input:focus, .modal-form select:focus {
             outline: none;
             border-color: #667eea;
             box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
-
-        .modal-buttons {
-            display: flex;
-            gap: 12px;
-            justify-content: flex-end;
-            margin-top: 20px;
-        }
-
-        .modal-buttons button {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 600;
-        }
-
-        .modal-buttons .btn-cancel {
-            background: #e5e7eb;
-            color: #374151;
-        }
-
-        .modal-buttons .btn-submit {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }
-
+        .modal-buttons { display: flex; gap: 12px; justify-content: flex-end; margin-top: 20px; }
+        .modal-buttons button { padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; }
+        .modal-buttons .btn-cancel { background: #e5e7eb; color: #374151; }
+        .modal-buttons .btn-submit { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
         @media (max-width: 768px) {
             .vente-form { grid-template-columns: 1fr; }
             .stats { grid-template-columns: 1fr; }
@@ -486,10 +291,7 @@
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <h1>📊 Administration - Présences du jour</h1>
-        </div>
-
+        <div class="header"><h1>📊 Administration - Présences du jour</h1></div>
         <div class="info-box">
             API URL: http://localhost:3001<br>
             Current Date: <span id="currentDate"></span><br>
@@ -498,109 +300,53 @@
             Last Update: <span id="lastUpdate">14:22:25</span><br>
             Status: Loaded <span id="presenceCount">0</span> presences (live)
         </div>
-
         <div class="date-selector">
             <input type="date" id="dateInput" />
             <button class="btn-today" onclick="selectToday()">Aujourd'hui</button>
             <button class="btn-load" onclick="loadPresences()">Charger</button>
             <button class="btn-archive" onclick="archivePresences()">📁 Archiver</button>
         </div>
-
         <div class="stats">
-            <div class="stat-card total">
-                <div class="stat-label">Total présences</div>
-                <div class="stat-value" id="statTotal">0</div>
-            </div>
-            <div class="stat-card adherents">
-                <div class="stat-label">Adhérents</div>
-                <div class="stat-value" id="statAdherents">0</div>
-            </div>
-            <div class="stat-card non-adherents">
-                <div class="stat-label">Non-adhérents</div>
-                <div class="stat-value" id="statNonAdherents">0</div>
-            </div>
-            <div class="stat-card revenue">
-                <div class="stat-label">Recettes (€)</div>
-                <div class="stat-value" id="statRevenue">0.00</div>
-            </div>
+            <div class="stat-card total"><div class="stat-label">Total présences</div><div class="stat-value" id="statTotal">0</div></div>
+            <div class="stat-card adherents"><div class="stat-label">Adhérents</div><div class="stat-value" id="statAdherents">0</div></div>
+            <div class="stat-card non-adherents"><div class="stat-label">Non-adhérents</div><div class="stat-value" id="statNonAdherents">0</div></div>
+            <div class="stat-card revenue"><div class="stat-label">Recettes (€)</div><div class="stat-value" id="statRevenue">0.00</div></div>
         </div>
-
         <div class="vente-libre-section">
             <h3>🛍️ Vente Libre</h3>
             <div class="vente-form">
-                <div class="form-group">
-                    <label>Produit</label>
-                    <input type="text" id="productName" placeholder="Ex: T-shirt, Baudrier..." />
-                </div>
-                <div class="form-group">
-                    <label>Prix (€)</label>
-                    <input type="number" id="productPrice" placeholder="0.00" step="0.01" min="0" />
-                </div>
-                <div class="form-group">
-                    <label>Paiement</label>
-                    <select id="productPayment">
-                        <option value="Especes">Espèces</option>
-                        <option value="CB">CB</option>
-                        <option value="Cheque">Chèque</option>
-                    </select>
-                </div>
+                <div class="form-group"><label>Produit</label><input type="text" id="productName" placeholder="Ex: T-shirt, Baudrier..." /></div>
+                <div class="form-group"><label>Prix (€)</label><input type="number" id="productPrice" placeholder="0.00" step="0.01" min="0" /></div>
+                <div class="form-group"><label>Paiement</label><select id="productPayment"><option value="Especes">Espèces</option><option value="CB">CB</option><option value="Cheque">Chèque</option></select></div>
                 <button class="btn-add-product" onclick="addProductSale()">Ajouter</button>
             </div>
         </div>
-
         <div class="export-section">
             <h3>📥 Export Saison Actuelle</h3>
-            <div class="export-section-info">
-                ⚠️ <strong>ATTENTION:</strong> Cet export génère un fichier Excel avec les données d'aujourd'hui. Le bouton "Archiver" plus bas sauvegarde ces données à l'historique AVANT de vider la liste.
-            </div>
+            <div class="export-section-info">⚠️ <strong>ATTENTION:</strong> Cet export génère un fichier Excel avec les données d'aujourd'hui. Le bouton "Archiver" plus bas sauvegarde ces données à l'historique AVANT de vider la liste.</div>
             <button class="btn-export" onclick="exportToday()">📄 Exporter Saison</button>
         </div>
-
         <div class="export-section">
             <h3>📊 Export Excel Historique</h3>
-            <div class="export-section-info">
-                ✅ <strong>SÛREMENT:</strong> Cet export lit les données de l'historique SANS les modifier. Aucune donnée ne sera supprimée.
-            </div>
+            <div class="export-section-info">✅ <strong>SÛREMENT:</strong> Cet export lit les données de l'historique SANS les modifier. Aucune donnée ne sera supprimée.</div>
             <div class="export-year-section">
-                <select id="yearSelect">
-                    <option value="">Sélectionner une année...</option>
-                </select>
+                <select id="yearSelect"><option value="">Sélectionner une année...</option></select>
                 <button class="btn-export" onclick="exportYear()">📊 Exporter</button>
             </div>
         </div>
-
         <div class="table-section">
             <table>
-                <thead>
-                    <tr>
-                        <th>DATE/HEURE</th>
-                        <th>TYPE</th>
-                        <th>NOM</th>
-                        <th>PRÉNOM</th>
-                        <th>NIVEAU</th>
-                        <th>TARIF</th>
-                        <th>PAIEMENT</th>
-                        <th>STATUT</th>
-                        <th>ACTIONS</th>
-                    </tr>
-                </thead>
+                <thead><tr><th>DATE/HEURE</th><th>TYPE</th><th>NOM</th><th>PRÉNOM</th><th>NIVEAU</th><th>TARIF</th><th>PAIEMENT</th><th>STATUT</th><th>ACTIONS</th></tr></thead>
                 <tbody id="presencesTableBody"></tbody>
             </table>
         </div>
     </div>
-
     <div id="validationModal" class="modal">
         <div class="modal-content">
             <h2>💰 Valider le paiement</h2>
             <div class="modal-form">
-                <label>Montant (€)</label>
-                <input type="number" id="validationMontant" placeholder="10.00" step="0.01" min="0" />
-                <label>Méthode de paiement</label>
-                <select id="validationMethode">
-                    <option value="Especes">Espèces</option>
-                    <option value="CB">CB</option>
-                    <option value="Cheque">Chèque</option>
-                </select>
+                <label>Montant (€)</label><input type="number" id="validationMontant" placeholder="10.00" step="0.01" min="0" />
+                <label>Méthode de paiement</label><select id="validationMethode"><option value="Especes">Espèces</option><option value="CB">CB</option><option value="Cheque">Chèque</option></select>
                 <div class="modal-buttons">
                     <button class="btn-cancel" onclick="closeValidationModal()">Annuler</button>
                     <button class="btn-submit" onclick="submitValidation()">Valider</button>
@@ -608,340 +354,233 @@
             </div>
         </div>
     </div>
-
     <script>
-        const API_URL = 'http://localhost:3001';
-        let validationPresenceId = null;
-        let currentMode = 'today';
-        let currentHistoryDate = null;
+const API_URL = 'http://localhost:3001';
+let validationPresenceId = null;
+let currentMode = 'today';
+let currentHistoryDate = null;
 
-        document.addEventListener('DOMContentLoaded', () => {
-            const today = new Date().toISOString().split('T')[0];
-            document.getElementById('dateInput').value = today;
-            document.getElementById('currentDate').textContent = today;
-            document.getElementById('selectedDate').textContent = today;
-            
-            loadPresences();
-            loadYears();
-            
-            setInterval(() => {
-                const now = new Date();
-                document.getElementById('lastUpdate').textContent = 
-                    String(now.getHours()).padStart(2, '0') + ':' +
-                    String(now.getMinutes()).padStart(2, '0') + ':' +
-                    String(now.getSeconds()).padStart(2, '0');
-            }, 1000);
-            
-            document.getElementById('dateInput').addEventListener('change', function() {
-                currentHistoryDate = this.value;
-                currentMode = 'history';
-                loadPresences();
-            });
+document.addEventListener('DOMContentLoaded', () => {
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('dateInput').value = today;
+    document.getElementById('currentDate').textContent = today;
+    document.getElementById('selectedDate').textContent = today;
+    loadPresences();
+    loadYears();
+    setInterval(() => {
+        const now = new Date();
+        document.getElementById('lastUpdate').textContent = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0') + ':' + String(now.getSeconds()).padStart(2, '0');
+    }, 1000);
+    document.getElementById('dateInput').addEventListener('change', function() {
+        currentHistoryDate = this.value;
+        currentMode = 'history';
+        loadPresences();
+    });
+});
+
+async function loadPresences() {
+    try {
+        const dateInput = document.getElementById('dateInput').value;
+        let url = currentMode === 'history' && currentHistoryDate ? `${API_URL}/presences/history/${currentHistoryDate}` : `${API_URL}/presences`;
+        document.getElementById('historicalMode').textContent = currentMode === 'history' ? 'Yes' : 'No';
+        const response = await fetch(url);
+        if (!response.ok) throw new Error('Failed to load');
+        const data = await response.json();
+        const presences = data.presences || [];
+        renderPresences(presences);
+        updateStats(presences);
+        document.getElementById('presenceCount').textContent = presences.length;
+        document.getElementById('selectedDate').textContent = dateInput;
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
+function renderPresences(presences) {
+    const tbody = document.getElementById('presencesTableBody');
+    tbody.innerHTML = '';
+    if (!presences || presences.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;color:#999;">Aucune présence</td></tr>';
+        return;
+    }
+    presences.forEach(presence => {
+        const row = document.createElement('tr');
+        let badge = '', statusDisplay = '';
+        if (presence.type === 'product-sale') badge = '<span class="badge vente">Vente</span>';
+        else if (presence.type === 'adherent') badge = '<span class="badge adherent">Adhérent</span>';
+        else if (presence.type === 'non-adherent') badge = '<span class="badge non-adherent">Non-adhérent</span>';
+        else badge = '<span class="badge tentative">Tentative</span>';
+        
+        statusDisplay = presence.status === 'Payé' ? '<span class="status-text">payé</span>' : presence.type === 'non-adherent' ? `<button class="btn-validate" onclick="showValidationPopup('${presence.id}')">À valider</button>` : '<span class="status-text tentative">' + (presence.status || 'N/A') + '</span>';
+        
+        row.innerHTML = `<td>${formatDate(presence.date)}</td><td>${badge}</td><td>${presence.nom || ''}</td><td>${presence.prenom || ''}</td><td>${presence.niveau || 'N/A'}</td><td class="price">${presence.tarif ? (presence.tarif || 0).toFixed(2) + '€' : '-'}</td><td>${presence.methodePaiement || 'N/A'}</td><td>${statusDisplay}</td><td><button class="btn-delete" onclick="deletePresence('${presence.id}')">🗑️</button></td>`;
+        tbody.appendChild(row);
+    });
+}
+
+function updateStats(presences) {
+    const total = presences.length;
+    const adherents = presences.filter(p => p.type === 'adherent').length;
+    const nonAdherents = presences.filter(p => p.type === 'non-adherent').length;
+    const revenue = presences.reduce((sum, p) => sum + (p.tarif || 0), 0);
+    document.getElementById('statTotal').textContent = total;
+    document.getElementById('statAdherents').textContent = adherents;
+    document.getElementById('statNonAdherents').textContent = nonAdherents;
+    document.getElementById('statRevenue').textContent = revenue.toFixed(2);
+}
+
+async function addProductSale() {
+    const productName = document.getElementById('productName').value.trim();
+    const productPrice = parseFloat(document.getElementById('productPrice').value);
+    const productPayment = document.getElementById('productPayment').value;
+    if (!productName || isNaN(productPrice) || productPrice <= 0) { alert('Veuillez remplir tous les champs'); return; }
+    try {
+        const response = await fetch(`${API_URL}/presences`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ type: 'product-sale', nom: 'Vente', prenom: productName, tarif: productPrice, methodePaiement: productPayment, status: 'Payé' })
         });
+        if (!response.ok) throw new Error('Failed');
+        document.getElementById('productName').value = '';
+        document.getElementById('productPrice').value = '';
+        loadPresences();
+    } catch (error) { alert('Erreur'); }
+}
 
-        async function loadPresences() {
-            try {
-                const dateInput = document.getElementById('dateInput').value;
-                let url = currentMode === 'history' && currentHistoryDate 
-                    ? `${API_URL}/presences/history/${currentHistoryDate}`
-                    : `${API_URL}/presences`;
-                
-                document.getElementById('historicalMode').textContent = currentMode === 'history' ? 'Yes' : 'No';
-                
-                const response = await fetch(url);
-                if (!response.ok) throw new Error('Failed to load');
-                
-                const data = await response.json();
-                const presences = data.presences || [];
-                
-                renderPresences(presences);
-                updateStats(presences);
-                document.getElementById('presenceCount').textContent = presences.length;
-                document.getElementById('selectedDate').textContent = dateInput;
-            } catch (error) {
-                console.error('Error:', error);
-            }
-        }
+function showValidationPopup(presenceId) {
+    validationPresenceId = presenceId;
+    fetch(`${API_URL}/presences/${presenceId}`)
+        .then(r => r.json())
+        .then(data => {
+            const presence = data.presence;
+            document.getElementById('validationMontant').value = presence.tarif && presence.tarif > 0 ? presence.tarif.toFixed(2) : '10.00';
+            document.getElementById('validationMethode').value = 'Especes';
+            document.getElementById('validationModal').classList.add('show');
+        })
+        .catch(err => console.error('Error:', err));
+}
 
-        function renderPresences(presences) {
-            const tbody = document.getElementById('presencesTableBody');
-            tbody.innerHTML = '';
-            
-            if (!presences || presences.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;color:#999;">Aucune présence</td></tr>';
-                return;
-            }
-            
-            presences.forEach(presence => {
-                const row = document.createElement('tr');
-                let badge = '', typeDisplay = '';
-                
-                if (presence.type === 'product-sale') {
-                    badge = '<span class="badge vente">Vente</span>';
-                    typeDisplay = 'vente';
-                } else if (presence.type === 'adherent') {
-                    badge = '<span class="badge adherent">Adhérent</span>';
-                    typeDisplay = 'adherent';
-                } else if (presence.type === 'non-adherent') {
-                    badge = '<span class="badge non-adherent">Non-adhérent</span>';
-                    typeDisplay = 'non-adherent';
-                } else {
-                    badge = '<span class="badge tentative">Tentative</span>';
-                    typeDisplay = 'tentative';
-                }
-                
-                const statusDisplay = presence.status === 'Payé' 
-                    ? '<span class="status-text">payé</span>'
-                    : presence.type === 'non-adherent' 
-                        ? `<button class="btn-validate" onclick="showValidationPopup('${presence.id}')">À valider</button>`
-                        : '<span class="status-text tentative">' + (presence.status || 'N/A') + '</span>';
-                
-                row.innerHTML = `
-                    <td>${formatDate(presence.date)}</td>
-                    <td>${badge}</td>
-                    <td>${presence.nom || ''}</td>
-                    <td>${presence.prenom || ''}</td>
-                    <td>${presence.niveau || 'N/A'}</td>
-                    <td class="price">${presence.tarif ? (presence.tarif || 0).toFixed(2) + '€' : '-'}</td>
-                    <td>${presence.methodePaiement || 'N/A'}</td>
-                    <td>${statusDisplay}</td>
-                    <td><button class="btn-delete" onclick="deletePresence('${presence.id}')">🗑️</button></td>
-                `;
-                tbody.appendChild(row);
-            });
-        }
+function closeValidationModal() {
+    document.getElementById('validationModal').classList.remove('show');
+}
 
-        function updateStats(presences) {
-            const total = presences.length;
-            const adherents = presences.filter(p => p.type === 'adherent').length;
-            const nonAdherents = presences.filter(p => p.type === 'non-adherent').length;
-            const revenue = presences.reduce((sum, p) => sum + (p.tarif || 0), 0);
-            
-            document.getElementById('statTotal').textContent = total;
-            document.getElementById('statAdherents').textContent = adherents;
-            document.getElementById('statNonAdherents').textContent = nonAdherents;
-            document.getElementById('statRevenue').textContent = revenue.toFixed(2);
-        }
+async function submitValidation() {
+    const montant = parseFloat(document.getElementById('validationMontant').value);
+    const methode = document.getElementById('validationMethode').value;
+    if (isNaN(montant) || montant < 0) { alert('Montant invalide'); return; }
+    try {
+        const response = await fetch(`${API_URL}/presences/${validationPresenceId}/valider`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ montant, methodePaiement: methode })
+        });
+        if (!response.ok) throw new Error('Failed');
+        closeValidationModal();
+        loadPresences();
+    } catch (error) { alert('Erreur'); }
+}
 
-        async function addProductSale() {
-            const productName = document.getElementById('productName').value.trim();
-            const productPrice = parseFloat(document.getElementById('productPrice').value);
-            const productPayment = document.getElementById('productPayment').value;
-            
-            if (!productName || isNaN(productPrice) || productPrice <= 0) {
-                alert('Veuillez remplir tous les champs');
-                return;
-            }
-            
-            try {
-                const response = await fetch(`${API_URL}/presences`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        type: 'product-sale',
-                        nom: 'Vente',
-                        prenom: productName,
-                        tarif: productPrice,
-                        methodePaiement: productPayment,
-                        status: 'Payé'
-                    })
-                });
-                
-                if (!response.ok) throw new Error('Failed');
-                document.getElementById('productName').value = '';
-                document.getElementById('productPrice').value = '';
-                loadPresences();
-            } catch (error) {
-                alert('Erreur');
-            }
-        }
+async function deletePresence(presenceId) {
+    if (!confirm('Êtes-vous sûr?')) return;
+    try {
+        const response = await fetch(`${API_URL}/presences/${presenceId}`, { method: 'DELETE' });
+        if (!response.ok) throw new Error('Failed');
+        loadPresences();
+    } catch (error) { console.error('Error:', error); }
+}
 
-        function showValidationPopup(presenceId) {
-            validationPresenceId = presenceId;
-            fetch(`${API_URL}/presences/${presenceId}`)
-                .then(r => r.json())
-                .then(data => {
-                    const presence = data.presence;
-                    document.getElementById('validationMontant').value = presence.tarif && presence.tarif > 0 ? presence.tarif.toFixed(2) : '10.00';
-                    document.getElementById('validationMethode').value = 'Especes';
-                    document.getElementById('validationModal').classList.add('show');
-                })
-                .catch(err => console.error('Error:', err));
-        }
+async function exportToday() {
+    try {
+        const response = await fetch(`${API_URL}/presences`);
+        const data = await response.json();
+        const presences = data.presences || [];
+        const excelData = presences.map(p => ({
+            'Date': formatDate(p.date), 'Heure': formatTime(p.date), 'Type': p.type === 'product-sale' ? 'Vente Libre' : (p.type === 'adherent' ? 'Adhérent' : 'Non-adhérent'),
+            'Nom': p.nom || '', 'Prénom': p.prenom, 'Niveau': p.niveau || 'N/A', 'Tarif': p.tarif || 0, 'Paiement': p.methodePaiement || 'N/A', 'Statut': p.status || p.type
+        }));
+        const ws = XLSX.utils.json_to_sheet(excelData);
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, 'Presences');
+        const today = new Date().toISOString().split('T')[0];
+        XLSX.writeFile(wb, `presences_${today}.xlsx`);
+    } catch (error) { alert('Erreur lors de l\'export'); }
+}
 
-        function closeValidationModal() {
-            document.getElementById('validationModal').classList.remove('show');
-        }
+async function loadYears() {
+    try {
+        const response = await fetch(`${API_URL}/admin/export/years`);
+        const data = await response.json();
+        const select = document.getElementById('yearSelect');
+        if (!data.years || data.years.length === 0) return;
+        select.innerHTML = '<option value="">Sélectionner une année...</option>';
+        (data.years || []).forEach(year => {
+            const option = document.createElement('option');
+            option.value = year;
+            option.textContent = year;
+            select.appendChild(option);
+        });
+    } catch (error) { console.error('Error:', error); }
+}
 
-        async function submitValidation() {
-            const montant = parseFloat(document.getElementById('validationMontant').value);
-            const methode = document.getElementById('validationMethode').value;
-            
-            if (isNaN(montant) || montant < 0) {
-                alert('Montant invalide');
-                return;
-            }
-            
-            try {
-                const response = await fetch(`${API_URL}/presences/${validationPresenceId}/valider`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ montant, methodePaiement: methode })
-                });
-                
-                if (!response.ok) throw new Error('Failed');
-                closeValidationModal();
-                loadPresences();
-            } catch (error) {
-                alert('Erreur');
-            }
+async function exportYear() {
+    const year = document.getElementById('yearSelect').value;
+    if (!year) { alert('Sélectionnez une année'); return; }
+    try {
+        const historyResponse = await fetch(`${API_URL}/presences/history`);
+        const historyData = await historyResponse.json();
+        const allDates = historyData.dates || [];
+        const yearDates = allDates.filter(date => date.startsWith(String(year)));
+        if (yearDates.length === 0) { alert(`Aucune donnée pour l'année ${year}`); return; }
+        let allPresences = [];
+        for (const date of yearDates) {
+            const response = await fetch(`${API_URL}/presences/history/${date}`);
+            const data = await response.json();
+            allPresences = allPresences.concat(data.presences || []);
         }
+        if (allPresences.length === 0) { alert(`Aucunes données à exporter pour l'année ${year}`); return; }
+        const excelData = allPresences.map(p => ({
+            'Date': formatDate(p.date), 'Heure': formatTime(p.date), 'Type': p.type === 'product-sale' ? 'Vente Libre' : (p.type === 'adherent' ? 'Adhérent' : 'Non-adhérent'),
+            'Nom': p.nom || '', 'Prénom': p.prenom, 'Niveau': p.niveau || 'N/A', 'Tarif': p.tarif || 0, 'Paiement': p.methodePaiement || 'N/A', 'Statut': p.status || p.type
+        }));
+        const ws = XLSX.utils.json_to_sheet(excelData);
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, 'Presences');
+        XLSX.writeFile(wb, `presences_${year}.xlsx`);
+    } catch (error) { alert('Erreur lors de l\'export'); }
+}
 
-        async function deletePresence(presenceId) {
-            if (!confirm('Êtes-vous sûr?')) return;
-            try {
-                const response = await fetch(`${API_URL}/presences/${presenceId}`, { method: 'DELETE' });
-                if (!response.ok) throw new Error('Failed');
-                loadPresences();
-            } catch (error) {
-                console.error('Error:', error);
-            }
-        }
+function selectToday() {
+    currentMode = 'today';
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('dateInput').value = today;
+    loadPresences();
+}
 
-        async function exportToday() {
-            try {
-                const response = await fetch(`${API_URL}/presences`);
-                const data = await response.json();
-                const presences = data.presences || [];
-                
-                const excelData = presences.map(p => ({
-                    'Date': formatDate(p.date),
-                    'Heure': formatTime(p.date),
-                    'Type': p.type === 'product-sale' ? 'Vente Libre' : (p.type === 'adherent' ? 'Adhérent' : 'Non-adhérent'),
-                    'Nom': p.nom || '',
-                    'Prénom': p.prenom,
-                    'Niveau': p.niveau || 'N/A',
-                    'Tarif': p.tarif || 0,
-                    'Paiement': p.methodePaiement || 'N/A',
-                    'Statut': p.status || p.type
-                }));
-                
-                const ws = XLSX.utils.json_to_sheet(excelData);
-                const wb = XLSX.utils.book_new();
-                XLSX.utils.book_append_sheet(wb, ws, 'Presences');
-                const today = new Date().toISOString().split('T')[0];
-                XLSX.writeFile(wb, `presences_${today}.xlsx`);
-            } catch (error) {
-                alert('Erreur lors de l\'export');
-            }
-        }
+async function archivePresences() {
+    if (!confirm('Êtes-vous sûr?')) return;
+    try {
+        const response = await fetch(`${API_URL}/presences/archive`, { method: 'POST' });
+        if (!response.ok) throw new Error('Failed');
+        alert('Archivé!');
+        loadPresences();
+        loadYears();
+    } catch (error) { alert('Erreur'); }
+}
 
-        async function loadYears() {
-            try {
-                const response = await fetch(`${API_URL}/admin/export/years`);
-                const data = await response.json();
-                const select = document.getElementById('yearSelect');
-                
-                if (!data.years || data.years.length === 0) return;
-                
-                select.innerHTML = '<option value="">Sélectionner une année...</option>';
-                (data.years || []).forEach(year => {
-                    const option = document.createElement('option');
-                    option.value = year;
-                    option.textContent = year;
-                    select.appendChild(option);
-                });
-            } catch (error) {
-                console.error('Error:', error);
-            }
-        }
+function formatDate(dateString) {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('fr-FR');
+}
 
-        async function exportYear() {
-            const year = document.getElementById('yearSelect').value;
-            if (!year) {
-                alert('Sélectionnez une année');
-                return;
-            }
-            
-            try {
-                const historyResponse = await fetch(`${API_URL}/presences/history`);
-                const historyData = await historyResponse.json();
-                const allDates = historyData.dates || [];
-                
-                const yearDates = allDates.filter(date => date.startsWith(String(year)));
-                
-                if (yearDates.length === 0) {
-                    alert(`Aucune donnée pour l'année ${year}`);
-                    return;
-                }
-                
-                let allPresences = [];
-                for (const date of yearDates) {
-                    const response = await fetch(`${API_URL}/presences/history/${date}`);
-                    const data = await response.json();
-                    allPresences = allPresences.concat(data.presences || []);
-                }
-                
-                if (allPresences.length === 0) {
-                    alert(`Aucunes données à exporter pour l'année ${year}`);
-                    return;
-                }
-                
-                const excelData = allPresences.map(p => ({
-                    'Date': formatDate(p.date),
-                    'Heure': formatTime(p.date),
-                    'Type': p.type === 'product-sale' ? 'Vente Libre' : (p.type === 'adherent' ? 'Adhérent' : 'Non-adhérent'),
-                    'Nom': p.nom || '',
-                    'Prénom': p.prenom,
-                    'Niveau': p.niveau || 'N/A',
-                    'Tarif': p.tarif || 0,
-                    'Paiement': p.methodePaiement || 'N/A',
-                    'Statut': p.status || p.type
-                }));
-                
-                const ws = XLSX.utils.json_to_sheet(excelData);
-                const wb = XLSX.utils.book_new();
-                XLSX.utils.book_append_sheet(wb, ws, 'Presences');
-                XLSX.writeFile(wb, `presences_${year}.xlsx`);
-            } catch (error) {
-                alert('Erreur lors de l\'export');
-            }
-        }
+function formatTime(dateString) {
+    const date = new Date(dateString);
+    return date.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+}
 
-        function selectToday() {
-            currentMode = 'today';
-            const today = new Date().toISOString().split('T')[0];
-            document.getElementById('dateInput').value = today;
-            loadPresences();
-        }
-
-        async function archivePresences() {
-            if (!confirm('Êtes-vous sûr?')) return;
-            try {
-                const response = await fetch(`${API_URL}/presences/archive`, { method: 'POST' });
-                if (!response.ok) throw new Error('Failed');
-                alert('Archivé!');
-                loadPresences();
-                loadYears();
-            } catch (error) {
-                alert('Erreur');
-            }
-        }
-
-        function formatDate(dateString) {
-            const date = new Date(dateString);
-            return date.toLocaleDateString('fr-FR');
-        }
-
-        function formatTime(dateString) {
-            const date = new Date(dateString);
-            return date.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
-        }
-
-        window.onclick = function(event) {
-            const modal = document.getElementById('validationModal');
-            if (event.target === modal) closeValidationModal();
-        }
+window.onclick = function(event) {
+    const modal = document.getElementById('validationModal');
+    if (event.target === modal) closeValidationModal();
+}
     </script>
 </body>
 </html>
