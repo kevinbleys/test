@@ -3,11 +3,12 @@ const cors = require('cors');
 const path = require('path');
 const fs = require('fs');
 const cron = require('node-cron');
+const crypto = require('crypto');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-console.log('🚀 BACKEND - DEFINITIEVE VERSIE MET RACE CONDITION FIX');
+console.log('🚀 BACKEND - ULTIMATE DUPLICATE PREVENTION');
 console.log(`Port: ${PORT}`);
 
 // Data file paths
@@ -18,26 +19,28 @@ const PRESENCE_HISTORY_FILE = path.join(DATA_DIR, 'presence-history.json');
 const SAVED_NON_MEMBERS_FILE = path.join(DATA_DIR, 'saved-non-members.json');
 const EXPORTS_DIR = path.join(DATA_DIR, 'exports');
 
-// === MUTEX VOOR RACE CONDITION PREVENTIE ===
-const memberCheckLocks = new Map();
+// === MULTI-LAYER DUPLICATE PREVENTION ===
+// Layer 1: Request deduplication cache (60 second window)
+const recentRequests = new Map();
 
-const acquireLock = (key) => {
-    return new Promise((resolve) => {
-        const tryAcquire = () => {
-            if (!memberCheckLocks.has(key)) {
-                memberCheckLocks.set(key, true);
-                resolve();
-            } else {
-                setTimeout(tryAcquire, 10);
-            }
-        };
-        tryAcquire();
-    });
+// Layer 2: Synchronous processing queue per person
+const processingQueue = new Map();
+
+// Layer 3: In-memory cache van vandaag's presences
+let presencesCache = null;
+let cacheLastUpdated = 0;
+const CACHE_TTL = 1000; // 1 second
+
+const cleanupOldRequests = () => {
+    const now = Date.now();
+    for (const [key, timestamp] of recentRequests.entries()) {
+        if (now - timestamp > 60000) { // 60 seconds
+            recentRequests.delete(key);
+        }
+    }
 };
 
-const releaseLock = (key) => {
-    memberCheckLocks.delete(key);
-};
+setInterval(cleanupOldRequests, 10000); // Cleanup every 10 seconds
 
 // Setup directories
 const setupDataDirectories = () => {
@@ -76,15 +79,29 @@ initDataFile(NON_MEMBERS_FILE);
 initDataFile(PRESENCE_HISTORY_FILE);
 initDataFile(SAVED_NON_MEMBERS_FILE);
 
-// File operations
-const readJsonFile = (filePath) => {
+// File operations with caching
+const readJsonFile = (filePath, useCache = false) => {
     try {
+        if (useCache && filePath === PRESENCES_FILE) {
+            const now = Date.now();
+            if (presencesCache && (now - cacheLastUpdated) < CACHE_TTL) {
+                return [...presencesCache]; // Return copy
+            }
+        }
+        
         if (!fs.existsSync(filePath)) {
             return [];
         }
         const data = fs.readFileSync(filePath, 'utf8');
         const parsed = JSON.parse(data);
-        return Array.isArray(parsed) ? parsed : [];
+        const result = Array.isArray(parsed) ? parsed : [];
+        
+        if (useCache && filePath === PRESENCES_FILE) {
+            presencesCache = result;
+            cacheLastUpdated = Date.now();
+        }
+        
+        return result;
     } catch (error) {
         console.error(`❌ Read error ${path.basename(filePath)}:`, error.message);
         return [];
@@ -98,10 +115,16 @@ const writeJsonFile = (filePath, data) => {
             return false;
         }
         
-        // Atomic write: schrijf naar temp file, dan rename
+        // Atomic write
         const tempFile = filePath + '.tmp';
         fs.writeFileSync(tempFile, JSON.stringify(data, null, 2));
         fs.renameSync(tempFile, filePath);
+        
+        // Update cache
+        if (filePath === PRESENCES_FILE) {
+            presencesCache = data;
+            cacheLastUpdated = Date.now();
+        }
         
         return true;
     } catch (error) {
@@ -181,7 +204,12 @@ cron.schedule('0 0 * * *', () => {
             console.log(`✅ Archived ${presences.length} for ${today}`);
         }
         
-        // Cleanup backups
+        // Clear caches
+        presencesCache = null;
+        recentRequests.clear();
+        processingQueue.clear();
+        
+        // Cleanup temp files
         fs.readdir(DATA_DIR, (err, files) => {
             if (err) return;
             files.forEach(file => {
@@ -216,7 +244,7 @@ app.get('/', (req, res) => {
     res.json({
         status: 'success',
         message: 'API Logiciel Escalade',
-        version: '2.6.0',
+        version: '2.7.0',
         timestamp: new Date().toISOString()
     });
 });
@@ -227,6 +255,7 @@ app.get('/api/health', (req, res) => {
         status: 'healthy',
         uptime: process.uptime(),
         presences: presences.length,
+        cacheSize: recentRequests.size,
         timestamp: new Date().toISOString()
     });
 });
@@ -235,7 +264,7 @@ app.get('/admin', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'admin.html'));
 });
 
-// === MEMBERS CHECK MET MUTEX LOCKING ===
+// === ULTIMATE MEMBERS CHECK - 3 LAGEN BESCHERMING ===
 app.get('/members/check', async (req, res) => {
     const { nom, prenom } = req.query;
     
@@ -246,28 +275,65 @@ app.get('/members/check', async (req, res) => {
         });
     }
     
-    // Creëer unieke lock key voor deze persoon
-    const lockKey = `${nom.trim().toLowerCase()}_${prenom.trim().toLowerCase()}`;
+    const nomNormalized = nom.trim().toLowerCase();
+    const prenomNormalized = prenom.trim().toLowerCase();
+    const personKey = `${nomNormalized}_${prenomNormalized}`;
+    const today = new Date().toISOString().split('T')[0];
+    
+    // Generate request ID (unique per person per second)
+    const requestId = `${personKey}_${today}_${Date.now()}`;
+    const dedupeKey = `${personKey}_${today}`;
     
     console.log('=== MEMBER CHECK ===');
-    console.log(`Checking: ${nom} ${prenom}`);
-    console.log(`Lock key: ${lockKey}`);
+    console.log(`Person: ${nom} ${prenom}`);
+    console.log(`Request ID: ${requestId}`);
+    
+    // === LAYER 1: REQUEST DEDUPLICATION (within 5 seconds) ===
+    const recentTimestamp = recentRequests.get(dedupeKey);
+    if (recentTimestamp && (Date.now() - recentTimestamp) < 5000) {
+        console.log('🚫 LAYER 1: Duplicate request within 5 seconds - REJECTED');
+        
+        // Return existing presence if available
+        const presences = readJsonFile(PRESENCES_FILE, true);
+        const existing = presences.find(p => 
+            p.type === 'adherent' &&
+            p.nom?.trim().toLowerCase() === nomNormalized &&
+            p.prenom?.trim().toLowerCase() === prenomNormalized &&
+            p.date && new Date(p.date).toISOString().split('T')[0] === today
+        );
+        
+        return res.json({
+            success: true,
+            isPaid: true,
+            alreadyRegistered: true,
+            message: "Vous êtes déjà enregistré aujourd'hui. Bienvenue !",
+            presence: existing
+        });
+    }
+    
+    // Mark this request timestamp
+    recentRequests.set(dedupeKey, Date.now());
+    
+    // === LAYER 2: SYNCHRONOUS QUEUE PER PERSON ===
+    // Wait if this person is currently being processed
+    while (processingQueue.has(personKey)) {
+        console.log('⏳ LAYER 2: Waiting for concurrent request to finish...');
+        await new Promise(resolve => setTimeout(resolve, 50));
+    }
+    
+    // Mark as processing
+    processingQueue.set(personKey, true);
     
     try {
-        // ACQUIRE LOCK - wacht tot lock beschikbaar is
-        console.log(`🔒 Acquiring lock for ${lockKey}...`);
-        await acquireLock(lockKey);
-        console.log(`✅ Lock acquired for ${lockKey}`);
-        
         const members = syncService.getMembers();
         const member = members.find(m =>
-            m.lastname?.trim().toLowerCase() === nom.trim().toLowerCase() &&
-            m.firstname?.trim().toLowerCase() === prenom.trim().toLowerCase()
+            m.lastname?.trim().toLowerCase() === nomNormalized &&
+            m.firstname?.trim().toLowerCase() === prenomNormalized
         );
         
         if (!member) {
             console.log('❌ Member not found');
-            releaseLock(lockKey);
+            processingQueue.delete(personKey);
             return res.json({
                 success: false,
                 error: "Aucun membre trouvé avec ce nom et prénom"
@@ -277,19 +343,14 @@ app.get('/members/check', async (req, res) => {
         const joinStatus = member.joinFileStatusLabel;
         
         if (joinStatus === "Payé" || joinStatus === "En cours de paiement") {
-            console.log(`✅ Valid payment status: ${joinStatus}`);
+            console.log(`✅ Valid payment: ${joinStatus}`);
             
-            // Lees ACTUELE presences (binnen lock!)
-            const presences = readJsonFile(PRESENCES_FILE);
-            const today = new Date().toISOString().split('T')[0];
+            // === LAYER 3: DATABASE CHECK (with cache) ===
+            const presences = readJsonFile(PRESENCES_FILE, true);
             
-            const nomNormalized = nom.trim().toLowerCase();
-            const prenomNormalized = prenom.trim().toLowerCase();
-            
-            console.log(`🔍 Checking duplicates: ${nomNormalized} ${prenomNormalized} on ${today}`);
+            console.log(`🔍 LAYER 3: Checking database`);
             console.log(`   Current presences: ${presences.length}`);
             
-            // Check duplicate
             const exists = presences.find(p => {
                 if (!p.date || p.type !== 'adherent') return false;
                 
@@ -299,18 +360,12 @@ app.get('/members/check', async (req, res) => {
                 const pNom = (p.nom || '').trim().toLowerCase();
                 const pPrenom = (p.prenom || '').trim().toLowerCase();
                 
-                const isDuplicate = pNom === nomNormalized && pPrenom === prenomNormalized;
-                
-                if (isDuplicate) {
-                    console.log(`   ⚠️ DUPLICATE: ${p.nom} ${p.prenom} at ${new Date(p.date).toLocaleTimeString()}`);
-                }
-                
-                return isDuplicate;
+                return pNom === nomNormalized && pPrenom === prenomNormalized;
             });
             
             if (exists) {
-                console.log('⚠️ DUPLICATE DETECTED - BLOCKING');
-                releaseLock(lockKey);
+                console.log('⚠️ LAYER 3: DUPLICATE FOUND IN DATABASE - BLOCKING');
+                processingQueue.delete(personKey);
                 return res.json({
                     success: true,
                     isPaid: true,
@@ -321,10 +376,10 @@ app.get('/members/check', async (req, res) => {
                 });
             }
             
-            // Create new presence
-            console.log('✅ No duplicate - creating new presence');
+            // CREATE NEW PRESENCE
+            console.log('✅ All layers passed - creating new presence');
             const newPresence = {
-                id: Date.now().toString(),
+                id: Date.now().toString() + crypto.randomBytes(4).toString('hex'),
                 type: 'adherent',
                 nom: nom.trim(),
                 prenom: prenom.trim(),
@@ -340,9 +395,8 @@ app.get('/members/check', async (req, res) => {
             presences.push(newPresence);
             const written = writeJsonFile(PRESENCES_FILE, presences);
             
-            // RELEASE LOCK
-            releaseLock(lockKey);
-            console.log(`🔓 Lock released for ${lockKey}`);
+            // Release processing lock
+            processingQueue.delete(personKey);
             
             if (written) {
                 console.log(`✅ SAVED: ${nom} ${prenom} at ${new Date().toLocaleTimeString()}`);
@@ -356,16 +410,17 @@ app.get('/members/check', async (req, res) => {
                 presence: newPresence
             });
         } else {
-            console.log(`❌ Invalid payment status: ${joinStatus}`);
-            releaseLock(lockKey);
+            console.log(`❌ Invalid payment: ${joinStatus}`);
+            processingQueue.delete(personKey);
             return res.json({
                 success: false,
                 error: "Vous n'avez pas encore payé votre adhésion"
             });
         }
     } catch (error) {
-        console.error('❌ Member check error:', error);
-        releaseLock(lockKey); // Always release on error
+        console.error('❌ Error:', error);
+        processingQueue.delete(personKey); // Always release on error
+        recentRequests.delete(dedupeKey); // Clear dedupe on error
         return res.status(500).json({
             success: false,
             error: 'Server error'
@@ -385,7 +440,7 @@ app.get('/members/all', (req, res) => {
 // PRESENCES ROUTES
 app.get('/presences', (req, res) => {
     try {
-        const allPresences = readJsonFile(PRESENCES_FILE);
+        const allPresences = readJsonFile(PRESENCES_FILE, true);
         const today = new Date().toISOString().split('T')[0];
         
         const todayPresences = allPresences.filter(p => {
@@ -436,7 +491,7 @@ app.post('/presences', (req, res) => {
         const presences = readJsonFile(PRESENCES_FILE);
         
         const newPresence = {
-            id: Date.now().toString(),
+            id: Date.now().toString() + crypto.randomBytes(4).toString('hex'),
             type,
             nom: nom.trim(),
             prenom: prenom.trim(),
@@ -643,7 +698,7 @@ app.post('/quick-non-member', (req, res) => {
 // STATS
 app.get('/api/stats/today', (req, res) => {
     try {
-        const presences = readJsonFile(PRESENCES_FILE);
+        const presences = readJsonFile(PRESENCES_FILE, true);
         const today = new Date().toISOString().split('T')[0];
         
         const todayPresences = presences.filter(p => p.date && p.date.startsWith(today));
@@ -724,13 +779,13 @@ app.use((error, req, res, next) => {
 
 // SERVER STARTUP
 const server = app.listen(PORT, '0.0.0.0', () => {
-    console.log('🎉 ========================================');
-    console.log('🎉 BACKEND - RACE CONDITION FIX ACTIVE');
-    console.log('🎉 ========================================');
+    console.log('🎉 ==========================================');
+    console.log('🎉 BACKEND - ULTIMATE DUPLICATE PREVENTION');
+    console.log('🎉 ==========================================');
     console.log(`✅ Backend: http://localhost:${PORT}`);
     console.log(`📊 Admin: http://localhost:${PORT}/admin`);
-    console.log(`🔒 MUTEX locking enabled`);
-    console.log('🎉 ========================================');
+    console.log(`🛡️ 3-Layer protection active`);
+    console.log('🎉 ==========================================');
 });
 
 server.on('error', (error) => {

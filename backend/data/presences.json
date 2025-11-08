@@ -395,5 +395,101 @@
     "prenom": "joke",
     "date": "2025-11-08T08:33:05.945Z",
     "status": "adherent"
+  },
+  {
+    "id": "1762591487017",
+    "type": "adherent",
+    "nom": "bleys",
+    "prenom": "théo",
+    "date": "2025-11-08T08:44:47.017Z",
+    "status": "adherent",
+    "niveau": "N/A",
+    "tarif": 0,
+    "methodePaiement": "N/A",
+    "membre": {
+      "membreId": 508484,
+      "currentPictureUrl": null,
+      "firstname": "Théo",
+      "lastname": "Bleys",
+      "dateOfBirth": "20/10/2019",
+      "age": 6,
+      "gender": "homme",
+      "address": "7 chemin de la gardele",
+      "additional": null,
+      "postalCode": "65670",
+      "town": "monleon magnoac",
+      "country": "France",
+      "phoneNumber": "+33643033147",
+      "mobilePhoneNumber": "+33643033147",
+      "email": "kevinbleys65@gmail.com",
+      "allergy": null,
+      "personToContact": "kevin bleys",
+      "personToContactPhoneNumber": "+33643033147",
+      "corporateName": null,
+      "office": null,
+      "account": false,
+      "dateLastConnexion": null,
+      "emailValid": true,
+      "notificationActive": true,
+      "joinFileStatusLabel": "En cours de paiement",
+      "joinFileLastPaymentType": null,
+      "joinFileLastPaymentDate": null,
+      "childsLabel": "",
+      "childMembers": [],
+      "parentsLabel": "Géré par 1 contact : kevin bleys",
+      "parentMembers": [
+        {
+          "membreId": 469508,
+          "firstname": "kevin",
+          "lastname": "bleys",
+          "phoneNumber": "+33562409746",
+          "mobilePhoneNumber": "+33643033147",
+          "email": "kevinbleys65@gmail.com"
+        }
+      ],
+      "groups": [
+        "baby escalade"
+      ],
+      "categories": [
+        {
+          "label": "Adhérent"
+        }
+      ],
+      "roles": [],
+      "medicalCertificateUrl": null,
+      "dateMedicalCertificate": null,
+      "licence": null,
+      "customFields": [
+        {
+          "label": "documents utiles",
+          "value": null
+        },
+        {
+          "label": "Ville de naissance",
+          "value": "tarbes"
+        },
+        {
+          "label": "code postale Ville de naissance",
+          "value": null
+        },
+        {
+          "label": "Pays de naissance",
+          "value": "france"
+        },
+        {
+          "label": "Nationalité",
+          "value": "français"
+        }
+      ]
+    },
+    "joinFileStatus": "En cours de paiement"
+  },
+  {
+    "id": "1762591487041",
+    "type": "adherent",
+    "nom": "bleys",
+    "prenom": "théo",
+    "date": "2025-11-08T08:44:47.041Z",
+    "status": "adherent"
   }
 ]
