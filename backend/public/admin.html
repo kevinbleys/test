@@ -335,9 +335,10 @@
             font-weight: bold;
         }
 
-        .badge.paid {
-            background: #dcfce7;
-            color: #166534;
+        .badge.tentative {
+            background: #fee2e2;
+            color: #991b1b;
+            font-weight: bold;
         }
 
         .price {
@@ -382,6 +383,11 @@
             font-size: 12px;
             font-weight: 600;
             display: inline-block;
+        }
+
+        .status-text.tentative {
+            background: #fee2e2;
+            color: #991b1b;
         }
 
         .modal {
@@ -668,6 +674,32 @@
                         <td><span class="status-text">produit</span></td>
                         <td><button class="btn-delete" onclick="deletePresence('${presence.id}')">🗑️</button></td>
                     `;
+                } else if (presence.type === 'tentative-non-adherent') {
+                    // TENTATIVE NON-ADHERENT
+                    row.innerHTML = `
+                        <td>${formatDate(presence.date)}</td>
+                        <td><span class="badge tentative">Tentative</span></td>
+                        <td>${presence.nom || ''}</td>
+                        <td>${presence.prenom || ''}</td>
+                        <td>${presence.niveau || 'N/A'}</td>
+                        <td class="price">-</td>
+                        <td>-</td>
+                        <td><span class="status-text tentative">tentative non-adherent</span></td>
+                        <td><button class="btn-delete" onclick="deletePresence('${presence.id}')">🗑️</button></td>
+                    `;
+                } else if (presence.type === 'tentative-non-payé') {
+                    // TENTATIVE NON-PAYÉ
+                    row.innerHTML = `
+                        <td>${formatDate(presence.date)}</td>
+                        <td><span class="badge tentative">Tentative</span></td>
+                        <td>${presence.nom || ''}</td>
+                        <td>${presence.prenom || ''}</td>
+                        <td>${presence.niveau || 'N/A'}</td>
+                        <td class="price">-</td>
+                        <td>-</td>
+                        <td><span class="status-text tentative">tentative non-payé</span></td>
+                        <td><button class="btn-delete" onclick="deletePresence('${presence.id}')">🗑️</button></td>
+                    `;
                 } else if (presence.type === 'adherent') {
                     // ADHERENT (MEMBER)
                     row.innerHTML = `
@@ -693,7 +725,7 @@
                         <td>${presence.methodePaiement || 'N/A'}</td>
                         <td>
                             ${presence.status === 'Payé' 
-                                ? '<span class="status-text">non-adhérent</span>' 
+                                ? '<span class="status-text">payé</span>' 
                                 : `<button class="btn-validate" onclick="showValidationPopup('${presence.id}')">À valider</button>`}
                         </td>
                         <td><button class="btn-delete" onclick="deletePresence('${presence.id}')">🗑️</button></td>
@@ -829,13 +861,13 @@
                 const excelData = presences.map(p => ({
                     'Date': formatDate(p.date),
                     'Heure': formatTime(p.date),
-                    'Type': p.type === 'product-sale' ? 'Vente Libre' : (p.type === 'adherent' ? 'Adhérent' : 'Non-adhérent'),
+                    'Type': p.type === 'product-sale' ? 'Vente Libre' : (p.type === 'adherent' ? 'Adhérent' : p.type === 'tentative-non-adherent' ? 'Tentative' : p.type === 'tentative-non-payé' ? 'Tentative' : 'Non-adhérent'),
                     'Nom': p.nom || '',
                     'Prénom': p.prenom,
                     'Niveau': p.niveau || 'N/A',
                     'Tarif': p.tarif || 0,
                     'Paiement': p.methodePaiement || 'N/A',
-                    'Statut': p.type === 'product-sale' ? 'Produit' : (p.type === 'adherent' ? 'Adhérent' : 'Non-adhérent')
+                    'Statut': p.status || p.type
                 }));
                 
                 const ws = XLSX.utils.json_to_sheet(excelData);
@@ -899,13 +931,13 @@
                 const excelData = allPresences.map(p => ({
                     'Date': formatDate(p.date),
                     'Heure': formatTime(p.date),
-                    'Type': p.type === 'product-sale' ? 'Vente Libre' : (p.type === 'adherent' ? 'Adhérent' : 'Non-adhérent'),
+                    'Type': p.type === 'product-sale' ? 'Vente Libre' : (p.type === 'adherent' ? 'Adhérent' : p.type === 'tentative-non-adherent' ? 'Tentative' : p.type === 'tentative-non-payé' ? 'Tentative' : 'Non-adhérent'),
                     'Nom': p.nom || '',
                     'Prénom': p.prenom,
                     'Niveau': p.niveau || 'N/A',
                     'Tarif': p.tarif || 0,
                     'Paiement': p.methodePaiement || 'N/A',
-                    'Statut': p.type === 'product-sale' ? 'Produit' : (p.type === 'adherent' ? 'Adhérent' : 'Non-adhérent')
+                    'Statut': p.status || p.type
                 }));
                 
                 const ws = XLSX.utils.json_to_sheet(excelData);

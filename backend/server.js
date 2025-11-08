@@ -9,8 +9,8 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 console.log('╔════════════════════════════════════════════════════════════╗');
-console.log('║  🚀 CLIMBING CLUB - SERVER v5.0 FINAL + ALL FIXES        ║');
-console.log('║  Duplicate Prevention + Auto-Fill + Product Sales + History║');
+console.log('║  🚀 CLIMBING CLUB - SERVER v5.1 FINAL                   ║');
+console.log('║  + Login Attempts Tracking + All Features               ║');
 console.log('╚════════════════════════════════════════════════════════════╝');
 console.log(`Port: ${PORT}\n`);
 
@@ -155,7 +155,7 @@ cron.schedule('5 * * * *', async () => {
     } catch (error) {}
 }, { timezone: "Europe/Brussels" });
 
-app.get('/', (req, res) => res.json({ status: 'ok', version: '5.0.0' }));
+app.get('/', (req, res) => res.json({ status: 'ok', version: '5.1.0' }));
 app.get('/api/health', (req, res) => res.json({ status: 'healthy' }));
 app.get('/admin', (req, res) => res.sendFile(path.join(__dirname, 'public', 'admin.html')));
 
@@ -177,17 +177,56 @@ app.get('/members/check', (req, res) => {
             m.firstname?.trim().toLowerCase() === prenomNorm
         );
         
+        // ===== ATTEMPT 1: Member not found =====
         if (!member) {
-            console.log(`    ❌ Member not found`);
+            console.log(`    ❌ Not a member - tentative non-adherent`);
+            
+            const presences = readJsonFile(PRESENCES_FILE);
+            const attemptPresence = {
+                id: `${Date.now()}_${crypto.randomBytes(8).toString('hex')}`,
+                requestId: requestId,
+                type: 'tentative-non-adherent',
+                nom: nom.trim(),
+                prenom: prenom.trim(),
+                date: new Date().toISOString(),
+                status: 'tentative non-adherent',
+                niveau: 'N/A',
+                tarif: 0,
+                methodePaiement: 'N/A'
+            };
+            
+            presences.push(attemptPresence);
+            writeJsonFile(PRESENCES_FILE, presences);
+            
             return res.json({ success: false, error: "Not found" });
         }
         
+        // ===== ATTEMPT 2: Member found but not paid =====
         const joinStatus = member.joinFileStatusLabel;
         if (joinStatus !== "Payé" && joinStatus !== "En cours de paiement") {
-            console.log(`    ❌ Not paid`);
+            console.log(`    ❌ Member found but not paid - tentative non-payé`);
+            
+            const presences = readJsonFile(PRESENCES_FILE);
+            const attemptPresence = {
+                id: `${Date.now()}_${crypto.randomBytes(8).toString('hex')}`,
+                requestId: requestId,
+                type: 'tentative-non-payé',
+                nom: nom.trim(),
+                prenom: prenom.trim(),
+                date: new Date().toISOString(),
+                status: 'tentative non-payé',
+                niveau: 'N/A',
+                tarif: 0,
+                methodePaiement: 'N/A'
+            };
+            
+            presences.push(attemptPresence);
+            writeJsonFile(PRESENCES_FILE, presences);
+            
             return res.json({ success: false, error: "Not paid" });
         }
         
+        // ===== SUCCESS: Valid member =====
         console.log(`    ✅ Member verified`);
         
         const presences = readJsonFile(PRESENCES_FILE);
@@ -496,7 +535,7 @@ app.use((error, req, res) => {
 const server = app.listen(PORT, '0.0.0.0', () => {
     console.log('╔════════════════════════════════════════════════════════════╗');
     console.log('║  ✅ Server running on http://localhost:' + PORT + '              ║');
-    console.log('║  ✅ ALL FIXES APPLIED - Ready to use!                  ║');
+    console.log('║  ✅ LOGIN ATTEMPTS TRACKED - Ready!                    ║');
     console.log('╚════════════════════════════════════════════════════════════╝\n');
 });
 
