@@ -1,10 +1,10 @@
 [
   {
-    "id": "1759384326415",
+    "id": "1762586551209",
     "type": "adherent",
     "nom": "bleys",
     "prenom": "kevin",
-    "date": "2025-10-02T05:52:06.415Z",
+    "date": "2025-11-08T07:22:31.209Z",
     "status": "adherent",
     "niveau": "N/A",
     "tarif": 0,
@@ -31,7 +31,7 @@
       "corporateName": null,
       "office": null,
       "account": true,
-      "dateLastConnexion": "01/09/2025, 21:28",
+      "dateLastConnexion": "02/11/2025, 13:32",
       "emailValid": true,
       "notificationActive": true,
       "joinFileStatusLabel": "En cours de paiement",
@@ -106,23 +106,5 @@
       ]
     },
     "joinFileStatus": "En cours de paiement"
-  },
-  {
-    "id": "1759386004944",
-    "type": "non-adherent",
-    "nom": "bleys",
-    "prenom": "joke",
-    "date": "2025-10-02T06:20:04.944Z",
-    "email": "bleysjoke@gmail.com",
-    "telephone": "0562409746",
-    "dateNaissance": "1983-03-02",
-    "niveau": "2",
-    "assuranceAccepted": true,
-    "tarif": 10,
-    "status": "Payé",
-    "age": 42,
-    "quickRegistration": true,
-    "methodePaiement": "Especes",
-    "dateValidation": "2025-10-02T06:20:16.676Z"
   }
 ]

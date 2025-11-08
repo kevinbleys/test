@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Administration - Présences du jour</title>
     <style>
-        /* EXACTE GITHUB STYLING */
         body {
             margin: 0;
             padding: 20px;
@@ -13,12 +12,12 @@
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
         }
-
+        
         .container {
             max-width: 1400px;
             margin: 0 auto;
         }
-
+        
         .admin-header {
             background: white;
             border-radius: 15px;
@@ -27,39 +26,39 @@
             text-align: center;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         }
-
+        
         .admin-header h1 {
             margin: 0;
             color: #333;
             font-size: 28px;
             font-weight: 600;
         }
-
+        
         .main-content {
             display: grid;
             grid-template-columns: 1fr 350px;
             gap: 20px;
         }
-
+        
         .left-panel {
             display: flex;
             flex-direction: column;
             gap: 20px;
         }
-
+        
         .right-panel {
             display: flex;
             flex-direction: column;
             gap: 20px;
         }
-
+        
         .card {
             background: white;
             border-radius: 15px;
             padding: 25px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         }
-
+        
         .debug-card {
             font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
             font-size: 12px;
@@ -69,7 +68,7 @@
             border-radius: 8px;
             border-left: 4px solid #007bff;
         }
-
+        
         .controls-card {
             display: flex;
             justify-content: space-between;
@@ -77,25 +76,25 @@
             flex-wrap: wrap;
             gap: 15px;
         }
-
+        
         .date-controls {
             display: flex;
             align-items: center;
             gap: 10px;
         }
-
+        
         .date-controls label {
             font-weight: 600;
             color: #555;
         }
-
+        
         .date-controls input[type="date"] {
             padding: 8px 12px;
             border: 2px solid #e1e5e9;
             border-radius: 8px;
             font-size: 14px;
         }
-
+        
         .btn {
             padding: 10px 20px;
             border: none;
@@ -105,41 +104,41 @@
             transition: all 0.2s;
             font-size: 14px;
         }
-
+        
         .btn-primary {
             background: #007bff;
             color: white;
         }
-
+        
         .btn-primary:hover {
             background: #0056b3;
             transform: translateY(-2px);
         }
-
+        
         .btn-info {
             background: #17a2b8;
             color: white;
         }
-
+        
         .btn-info:hover {
             background: #117a8b;
         }
-
+        
         .btn-warning {
             background: #fd7e14;
             color: white;
         }
-
+        
         .btn-warning:hover {
             background: #e8650e;
         }
-
+        
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 20px;
         }
-
+        
         .stat-card {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
@@ -148,41 +147,41 @@
             border-radius: 15px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         }
-
+        
         .stat-card:nth-child(2) {
             background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
         }
-
+        
         .stat-card:nth-child(3) {
             background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
         }
-
+        
         .stat-card:nth-child(4) {
             background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
         }
-
+        
         .stat-number {
             font-size: 48px;
             font-weight: 700;
             margin-bottom: 8px;
             line-height: 1;
         }
-
+        
         .stat-label {
             font-size: 14px;
             opacity: 0.9;
             font-weight: 500;
         }
-
+        
         .table-card {
             overflow-x: auto;
         }
-
+        
         table {
             width: 100%;
             border-collapse: collapse;
         }
-
+        
         th {
             background: #f8f9fa;
             padding: 15px 12px;
@@ -192,17 +191,17 @@
             font-size: 14px;
             border-bottom: 2px solid #dee2e6;
         }
-
+        
         td {
             padding: 15px 12px;
             border-bottom: 1px solid #dee2e6;
             vertical-align: middle;
         }
-
+        
         tbody tr:hover {
             background: #f8f9fa;
         }
-
+        
         .badge {
             display: inline-block;
             padding: 6px 12px;
@@ -212,22 +211,22 @@
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
-
+        
         .badge-adherent {
             background: #28a745;
             color: white;
         }
-
+        
         .badge-non-adherent {
             background: #ffc107;
             color: #212529;
         }
-
+        
         .badge-paye {
             background: #17a2b8;
             color: white;
         }
-
+        
         .action-btn {
             padding: 6px 10px;
             border: none;
@@ -237,17 +236,17 @@
             cursor: pointer;
             margin-right: 5px;
         }
-
+        
         .btn-validate {
             background: #28a745;
             color: white;
         }
-
+        
         .btn-delete {
             background: #dc3545;
             color: white;
         }
-
+        
         .export-card h4 {
             color: #495057;
             font-size: 18px;
@@ -257,7 +256,7 @@
             align-items: center;
             gap: 10px;
         }
-
+        
         .export-card select {
             width: 100%;
             padding: 12px;
@@ -266,17 +265,17 @@
             margin-bottom: 15px;
             font-size: 14px;
         }
-
+        
         .btn-success {
             background: #28a745;
             color: white;
         }
-
+        
         .btn-success:hover {
             background: #1e7e34;
             transform: translateY(-2px);
         }
-
+        
         .auto-refresh-info {
             text-align: center;
             color: #6c757d;
@@ -287,7 +286,7 @@
             justify-content: center;
             gap: 8px;
         }
-
+        
         .modal {
             display: none;
             position: fixed;
@@ -299,7 +298,7 @@
             background-color: rgba(0,0,0,0.5);
             backdrop-filter: blur(5px);
         }
-
+        
         .modal-content {
             background-color: white;
             margin: 5% auto;
@@ -309,21 +308,21 @@
             max-width: 500px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
         }
-
+        
         .modal-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 25px;
         }
-
+        
         .modal-header h3 {
             margin: 0;
             color: #495057;
             font-size: 20px;
             font-weight: 600;
         }
-
+        
         .close {
             color: #adb5bd;
             font-size: 28px;
@@ -331,22 +330,22 @@
             cursor: pointer;
             transition: color 0.2s;
         }
-
+        
         .close:hover {
             color: #495057;
         }
-
+        
         .form-group {
             margin-bottom: 20px;
         }
-
+        
         .form-group label {
             display: block;
             margin-bottom: 8px;
             font-weight: 600;
             color: #495057;
         }
-
+        
         .form-group input,
         .form-group select {
             width: 100%;
@@ -356,46 +355,46 @@
             font-size: 14px;
             transition: border-color 0.2s;
         }
-
+        
         .form-group input:focus,
         .form-group select:focus {
             border-color: #007bff;
             outline: none;
             box-shadow: 0 0 0 3px rgba(0,123,255,0.1);
         }
-
+        
         .modal-actions {
             display: flex;
             justify-content: flex-end;
             gap: 10px;
             margin-top: 25px;
         }
-
+        
         .btn-cancel {
             background: #6c757d;
             color: white;
         }
-
+        
         .btn-cancel:hover {
             background: #545b62;
         }
-
+        
         @media (max-width: 1200px) {
             .main-content {
                 grid-template-columns: 1fr;
             }
-
+            
             .stats-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
         }
-
+        
         @media (max-width: 768px) {
             .controls-card {
                 flex-direction: column;
                 align-items: stretch;
             }
-
+            
             .stats-grid {
                 grid-template-columns: 1fr;
             }
@@ -407,7 +406,7 @@
         <div class="admin-header">
             <h1>📊 Administration - Présences du jour</h1>
         </div>
-
+        
         <div class="main-content">
             <div class="left-panel">
                 <div class="card">
@@ -416,7 +415,7 @@
                         <span id="debug-content">Loading...</span>
                     </div>
                 </div>
-
+                
                 <div class="card controls-card">
                     <div class="date-controls">
                         <label for="dateFilter">Sélectionner une date:</label>
@@ -426,7 +425,7 @@
                         <button class="btn btn-warning" onclick="archiveToday()">📦 Archiver aujourd'hui</button>
                     </div>
                 </div>
-
+                
                 <div class="stats-grid">
                     <div class="stat-card">
                         <div class="stat-number" id="stat-total">0</div>
@@ -445,12 +444,12 @@
                         <div class="stat-label">Recettes (€)</div>
                     </div>
                 </div>
-
+                
                 <div class="card table-card">
                     <div id="loading" style="display: none; text-align: center; padding: 40px; color: #6c757d;">
                         Chargement des données...
                     </div>
-
+                    
                     <div id="data-content">
                         <table>
                             <thead>
@@ -469,26 +468,26 @@
                             <tbody id="presences-table">
                             </tbody>
                         </table>
-
+                        
                         <div id="no-data" style="display: none; text-align: center; padding: 40px; color: #6c757d;">
                             <h3>Aucune présence pour cette date</h3>
                             <p>Les présences apparaîtront ici au fur et à mesure des arrivées.</p>
                         </div>
                     </div>
                 </div>
-
+                
                 <div class="auto-refresh-info">
                     🔄 Actualisation automatique toutes les 30 secondes
                 </div>
             </div>
-
+            
             <div class="right-panel">
                 <div class="card export-card">
                     <h4>🏔️ Export Saison Actuelle</h4>
                     <button class="btn btn-success" onclick="exportSeason()">📊 Exporter Saison Courante</button>
                     <p style="margin-top: 10px; color: #6c757d; font-size: 13px;">Export automatique: 30 juin à minuit</p>
                 </div>
-
+                
                 <div class="card export-card">
                     <h4>📊 Export Excel Historique</h4>
                     <select id="yearSelect">
@@ -537,31 +536,34 @@
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('dateFilter').value = today;
             currentSelectedDate = today;
-
+            
             loadPresences();
             loadAvailableYears();
             startAutoRefresh();
         });
 
-        // ENIGE WIJZIGING: Deze functie gebruikt history endpoints
+        // GEFIXTE FUNCTIE: Laadt data correct voor vandaag of historische datum
         async function loadPresences() {
             updateDebugInfo('Loading presences...');
-
+            
             try {
                 document.getElementById('loading').style.display = 'block';
-
+                
                 let url = '/presences';
                 let isHistoryRequest = false;
-
+                
                 const today = new Date().toISOString().split('T')[0];
                 if (currentSelectedDate && currentSelectedDate !== today) {
                     url = `/presences/history/${currentSelectedDate}`;
                     isHistoryRequest = true;
+                    console.log(`Loading historical data for: ${currentSelectedDate}`);
+                } else {
+                    console.log('Loading today\\'s data');
                 }
-
+                
                 const response = await fetch(url);
                 const data = await response.json();
-
+                
                 if (data.success) {
                     const presences = data.presences || [];
                     displayPresences(presences, isHistoryRequest);
@@ -571,7 +573,7 @@
                     updateDebugInfo(`Error: ${data.error}`);
                     displayPresences([], false);
                 }
-
+                
             } catch (error) {
                 updateDebugInfo(`Network error: ${error.message}`);
                 displayPresences([], false);
@@ -583,7 +585,10 @@
         function loadPresencesForDate() {
             const dateInput = document.getElementById('dateFilter');
             currentSelectedDate = dateInput.value;
-            if (currentSelectedDate) loadPresences();
+            if (currentSelectedDate) {
+                console.log(`Date changed to: ${currentSelectedDate}`);
+                loadPresences();
+            }
         }
 
         function loadTodayPresences() {
@@ -596,22 +601,22 @@
         function displayPresences(presences, isHistorical) {
             const tableBody = document.getElementById('presences-table');
             const noData = document.getElementById('no-data');
-
+            
             if (presences.length === 0) {
                 tableBody.innerHTML = '';
                 noData.style.display = 'block';
                 return;
             }
-
+            
             noData.style.display = 'none';
-
+            
             tableBody.innerHTML = presences.map(presence => {
                 const date = presence.date ? new Date(presence.date) : null;
                 const dateStr = date ? date.toLocaleDateString('fr-FR') : '';
                 const timeStr = date ? date.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }) : '';
-
+                
                 let typeBadge, statusBadge;
-
+                
                 if (presence.type === 'adherent') {
                     typeBadge = '<span class="badge badge-adherent">Adhérent</span>';
                     statusBadge = '<span class="badge badge-adherent">adherent</span>';
@@ -621,7 +626,7 @@
                         '<span class="badge badge-paye">Payé</span>' : 
                         '<span class="badge badge-non-adherent">En attente</span>';
                 }
-
+                
                 let actionsHtml = '';
                 if (!isHistorical && presence.type !== 'adherent' && presence.status !== 'Payé') {
                     actionsHtml += `<button class="action-btn btn-validate" onclick="openPaymentModal('${presence.id}')">✓</button>`;
@@ -629,7 +634,7 @@
                 if (!isHistorical) {
                     actionsHtml += `<button class="action-btn btn-delete" onclick="deletePresence('${presence.id}')">🗑️</button>`;
                 }
-
+                
                 return `
                     <tr>
                         <td>${dateStr}<br><small style="color: #6c757d;">${timeStr}</small></td>
@@ -653,7 +658,7 @@
             const revenue = presences
                 .filter(p => p.tarif && typeof p.tarif === 'number')
                 .reduce((sum, p) => sum + p.tarif, 0);
-
+            
             document.getElementById('stat-total').textContent = total;
             document.getElementById('stat-adherents').textContent = adherents;
             document.getElementById('stat-non-adherents').textContent = nonAdherents;
@@ -664,7 +669,7 @@
             const debugContent = document.getElementById('debug-content');
             const timestamp = new Date().toLocaleTimeString();
             const today = new Date().toISOString().split('T')[0];
-
+            
             debugContent.innerHTML = `
                 API URL: http://localhost:3001<br>
                 Current Date: ${today}<br>
@@ -676,7 +681,7 @@
 
         function startAutoRefresh() {
             if (autoRefreshInterval) clearInterval(autoRefreshInterval);
-
+            
             autoRefreshInterval = setInterval(() => {
                 const today = new Date().toISOString().split('T')[0];
                 if (currentSelectedDate === today) loadPresences();
@@ -695,22 +700,22 @@
 
         async function confirmPayment() {
             if (!currentPresenceId) return;
-
+            
             const montant = document.getElementById('montant').value;
             const methodePaiement = document.getElementById('methodePaiement').value;
-
+            
             if (!montant || !methodePaiement) {
                 alert('Veuillez remplir tous les champs');
                 return;
             }
-
+            
             try {
                 const response = await fetch(`/presences/${currentPresenceId}/valider`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ montant: parseFloat(montant), methodePaiement })
                 });
-
+                
                 const result = await response.json();
                 if (result.success) {
                     closePaymentModal();
@@ -725,7 +730,7 @@
 
         async function deletePresence(presenceId) {
             if (!confirm('Supprimer cette présence ?')) return;
-
+            
             try {
                 const response = await fetch(`/presences/${presenceId}`, { method: 'DELETE' });
                 const result = await response.json();
@@ -737,8 +742,8 @@
         }
 
         async function archiveToday() {
-            if (!confirm('Archiver les présences d\'aujourd\'hui ?')) return;
-
+            if (!confirm('Archiver les présences d\\'aujourd\\'hui ?')) return;
+            
             try {
                 const response = await fetch('/presences/archive', { method: 'POST' });
                 const result = await response.json();
@@ -773,7 +778,7 @@
                 alert('Sélectionnez une année');
                 return;
             }
-
+            
             try {
                 const response = await fetch(`/admin/export/${year}`, { method: 'POST' });
                 const result = await response.json();
@@ -790,11 +795,11 @@
         async function exportAndCleanup() {
             const year = document.getElementById('yearSelect').value;
             if (!year || !confirm('Export + nettoyage pour ' + year + ' ?')) return;
-
+            
             try {
                 await exportYear();
             } catch (error) {
-                alert('Erreur lors de l\'export');
+                alert('Erreur');
             }
         }
 
