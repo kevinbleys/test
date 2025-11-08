@@ -9,10 +9,10 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 console.log('╔════════════════════════════════════════════════════════════╗');
-console.log('║  🚀 BACKEND - ULTIMATE FINAL SOLUTION v4.0                ║');
-console.log('║  ZERO DUPLICATES GUARANTEED                               ║');
+console.log('║  🚀 BACKEND - FINAL COMPLETE SOLUTION v5.0               ║');
+console.log('║  AGGRESSIVE DUPLICATE PREVENTION + FIX                   ║');
 console.log('╚════════════════════════════════════════════════════════════╝');
-console.log(`Port: ${PORT}`);
+console.log(`Port: ${PORT}\n`);
 
 const DATA_DIR = path.join(__dirname, 'data');
 const PRESENCES_FILE = path.join(DATA_DIR, 'presences.json');
@@ -21,7 +21,7 @@ const PRESENCE_HISTORY_FILE = path.join(DATA_DIR, 'presence-history.json');
 const SAVED_NON_MEMBERS_FILE = path.join(DATA_DIR, 'saved-non-members.json');
 const EXPORTS_DIR = path.join(DATA_DIR, 'exports');
 
-// ====== STARTUP CLEANUP - AGGRESSIVE ======
+// ====== AGGRESSIVE STARTUP CLEANUP ======
 const cleanupAllDuplicates = () => {
     try {
         const presences = fs.existsSync(PRESENCES_FILE) 
@@ -30,63 +30,65 @@ const cleanupAllDuplicates = () => {
         
         if (!Array.isArray(presences)) {
             fs.writeFileSync(PRESENCES_FILE, JSON.stringify([], null, 2));
-            console.log('✅ STARTUP: Corrupted presences.json fixed');
+            console.log('✅ Corrupted presences.json fixed');
             return;
         }
         
-        // Create signature for each person+date
+        const today = new Date().toISOString().split('T')[0];
         const signatures = new Map();
         let duplicateCount = 0;
+        let oldEntriesRemoved = 0;
         
         const cleaned = presences.filter(p => {
-            // Keep non-adherents and entries without dates
-            if (!p.date || p.type !== 'adherent') {
-                return true;
+            // Remove entries from previous days (only keep today for presences)
+            if (p.date && p.type === 'adherent') {
+                const pDate = new Date(p.date).toISOString().split('T')[0];
+                if (pDate !== today) {
+                    oldEntriesRemoved++;
+                    return false;
+                }
             }
             
-            // Create signature: nom_prenom_date
-            const nom = (p.nom || '').trim().toLowerCase();
-            const prenom = (p.prenom || '').trim().toLowerCase();
-            const date = new Date(p.date).toISOString().split('T')[0];
-            const sig = `${nom}_${prenom}_${date}`;
-            
-            // If we've seen this signature, it's a duplicate
-            if (signatures.has(sig)) {
-                duplicateCount++;
-                console.log(`  ❌ DUPLICATE REMOVED: ${p.nom} ${p.prenom} (${date})`);
-                return false;
+            // Check duplicates for today's entries
+            if (p.date && p.type === 'adherent') {
+                const nom = (p.nom || '').trim().toLowerCase();
+                const prenom = (p.prenom || '').trim().toLowerCase();
+                const sig = `${nom}_${prenom}`;
+                
+                if (signatures.has(sig)) {
+                    duplicateCount++;
+                    console.log(`  ❌ DUPLICATE REMOVED: ${p.nom} ${p.prenom}`);
+                    return false;
+                }
+                signatures.set(sig, true);
             }
             
-            signatures.set(sig, true);
             return true;
         });
         
-        if (duplicateCount > 0) {
+        if (duplicateCount > 0 || oldEntriesRemoved > 0) {
             fs.writeFileSync(PRESENCES_FILE, JSON.stringify(cleaned, null, 2));
-            console.log(`\n✅ STARTUP CLEANUP: Removed ${duplicateCount} duplicates`);
+            console.log(`✅ STARTUP CLEANUP:`);
+            if (duplicateCount > 0) console.log(`   - Removed ${duplicateCount} duplicates`);
+            if (oldEntriesRemoved > 0) console.log(`   - Removed ${oldEntriesRemoved} old entries`);
         } else {
-            console.log('✅ STARTUP: No duplicates found - clean!');
+            console.log('✅ No cleanup needed - database clean!');
         }
     } catch (error) {
-        console.error('❌ STARTUP CLEANUP ERROR:', error.message);
+        console.error('❌ STARTUP ERROR:', error.message);
     }
 };
 
-// Run cleanup IMMEDIATELY on startup
 cleanupAllDuplicates();
 
 // Setup directories
-if (!fs.existsSync(DATA_DIR)) {
-    fs.mkdirSync(DATA_DIR, { recursive: true });
-}
-if (!fs.existsSync(EXPORTS_DIR)) {
-    fs.mkdirSync(EXPORTS_DIR, { recursive: true });
-}
+if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
+if (!fs.existsSync(EXPORTS_DIR)) fs.mkdirSync(EXPORTS_DIR, { recursive: true });
 
 // Initialize data files
-const initDataFile = (filePath, defaultData = []) => {
+const initDataFile = (filePath) => {
     if (!fs.existsSync(filePath)) {
-        fs.writeFileSync(filePath, JSON.stringify(defaultData, null, 2));
+        fs.writeFileSync(filePath, JSON.stringify([], null, 2));
     }
 };
 
@@ -95,13 +97,12 @@ initDataFile(NON_MEMBERS_FILE);
 initDataFile(PRESENCE_HISTORY_FILE);
 initDataFile(SAVED_NON_MEMBERS_FILE);
 
-// File operations - ATOMIC & SAFE
+// File operations
 const readJsonFile = (filePath) => {
     try {
         if (!fs.existsSync(filePath)) return [];
         const data = fs.readFileSync(filePath, 'utf8');
-        const parsed = JSON.parse(data);
-        return Array.isArray(parsed) ? parsed : [];
+        return JSON.parse(data) || [];
     } catch (error) {
         console.error(`❌ Read error:`, error.message);
         return [];
@@ -147,61 +148,49 @@ try {
 let exportService = null;
 try {
     exportService = require('./export-service');
-    console.log('✅ Export service loaded');
 } catch (error) {
     exportService = null;
 }
 
 // CRON: Daily reset
 cron.schedule('0 0 * * *', () => {
-    try {
-        console.log('\n=== DAILY RESET ===');
-        const presences = readJsonFile(PRESENCES_FILE);
-        if (presences.length > 0) {
-            const history = readJsonFile(PRESENCE_HISTORY_FILE);
-            const today = new Date().toISOString().split('T')[0];
-            const idx = history.findIndex(h => h.date === today);
-            
-            if (idx >= 0) history[idx].presences = presences;
-            else history.push({ date: today, presences });
-            
-            writeJsonFile(PRESENCE_HISTORY_FILE, history);
-            writeJsonFile(PRESENCES_FILE, []);
-        }
-        console.log('=== DAILY RESET DONE ===\n');
-    } catch (error) {
-        console.error('❌ Daily reset error:', error.message);
+    const presences = readJsonFile(PRESENCES_FILE);
+    if (presences.length > 0) {
+        const history = readJsonFile(PRESENCE_HISTORY_FILE);
+        const today = new Date().toISOString().split('T')[0];
+        const idx = history.findIndex(h => h.date === today);
+        if (idx >= 0) history[idx].presences = presences;
+        else history.push({ date: today, presences });
+        writeJsonFile(PRESENCE_HISTORY_FILE, history);
+        writeJsonFile(PRESENCES_FILE, []);
     }
 });
 
-// CRON: Pepsup sync
+// CRON: Sync
 cron.schedule('5 * * * *', async () => {
     try {
         if (syncService?.syncMembers) await syncService.syncMembers();
-    } catch (error) {
-        console.error('❌ Sync error:', error.message);
-    }
+    } catch (error) {}
 }, { timezone: "Europe/Brussels" });
 
 // Routes
-app.get('/', (req, res) => res.json({ status: 'ok', version: '4.0.0' }));
-app.get('/api/health', (req, res) => res.json({ status: 'healthy', presences: readJsonFile(PRESENCES_FILE).length }));
+app.get('/', (req, res) => res.json({ status: 'ok', version: '5.0.0' }));
+app.get('/api/health', (req, res) => res.json({ status: 'healthy' }));
 app.get('/admin', (req, res) => res.sendFile(path.join(__dirname, 'public', 'admin.html')));
 
 // ====== BULLETPROOF MEMBERS CHECK ======
 app.get('/members/check', (req, res) => {
     const { nom, prenom } = req.query;
-    if (!nom || !prenom) return res.status(400).json({ success: false, error: "Missing params" });
+    if (!nom || !prenom) return res.status(400).json({ success: false });
     
     const nomNorm = nom.trim().toLowerCase();
     const prenomNorm = prenom.trim().toLowerCase();
     const today = new Date().toISOString().split('T')[0];
-    const requestId = `${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    const requestId = `${Date.now()}_${crypto.randomBytes(4).toString('hex')}`;
     
-    console.log(`\n>>> REQUEST [${requestId}]: ${nom} ${prenom} on ${today}`);
+    console.log(`\n>>> REQUEST [${requestId}]: ${nom} ${prenom}`);
     
     try {
-        // 1. Get member
         const members = syncService.getMembers();
         const member = members.find(m =>
             m.lastname?.trim().toLowerCase() === nomNorm &&
@@ -215,16 +204,16 @@ app.get('/members/check', (req, res) => {
         
         const joinStatus = member.joinFileStatusLabel;
         if (joinStatus !== "Payé" && joinStatus !== "En cours de paiement") {
-            console.log(`    ❌ Payment invalid: ${joinStatus}`);
+            console.log(`    ❌ Not paid`);
             return res.json({ success: false, error: "Not paid" });
         }
         
-        console.log(`    ✅ Member verified - Status: ${joinStatus}`);
+        console.log(`    ✅ Member verified`);
         
-        // 2. Check database NOW (at time of request)
         const presences = readJsonFile(PRESENCES_FILE);
         console.log(`    📋 Database has ${presences.length} entries`);
         
+        // AGGRESSIVE DUPLICATE CHECK
         const exists = presences.find(p => {
             if (!p.date || p.type !== 'adherent') return false;
             const pDate = new Date(p.date).toISOString().split('T')[0];
@@ -234,7 +223,7 @@ app.get('/members/check', (req, res) => {
         });
         
         if (exists) {
-            console.log(`    🛑 DUPLICATE BLOCKED: Already in database`);
+            console.log(`    🛑 DUPLICATE BLOCKED`);
             return res.json({
                 success: true, isPaid: true, alreadyRegistered: true,
                 message: "Vous êtes déjà enregistré aujourd'hui",
@@ -242,9 +231,8 @@ app.get('/members/check', (req, res) => {
             });
         }
         
-        console.log(`    ✅ No duplicate found - Creating new entry`);
+        console.log(`    ✅ Creating new entry`);
         
-        // 3. CREATE & SAVE
         const newPresence = {
             id: `${Date.now()}_${crypto.randomBytes(8).toString('hex')}`,
             requestId: requestId,
@@ -260,67 +248,84 @@ app.get('/members/check', (req, res) => {
         
         presences.push(newPresence);
         
-        // CRITICAL: Verify no duplicate was added while we were processing
-        const finalCheck = presences.filter(p => {
-            if (!p.date || p.type !== 'adherent') return false;
+        // FINAL DEDUPLICATION BEFORE SAVE
+        const deduped = presences.filter(p => {
+            if (!p.date || p.type !== 'adherent') return true;
             const pDate = new Date(p.date).toISOString().split('T')[0];
-            if (pDate !== today) return false;
-            return (p.nom || '').trim().toLowerCase() === nomNorm && 
-                   (p.prenom || '').trim().toLowerCase() === prenomNorm;
+            if (pDate !== today) return true;
+            
+            // Count how many times this person appears TODAY
+            const count = presences.filter(p2 => 
+                p2.date && 
+                new Date(p2.date).toISOString().split('T')[0] === today &&
+                (p2.nom || '').trim().toLowerCase() === (p.nom || '').trim().toLowerCase() &&
+                (p2.prenom || '').trim().toLowerCase() === (p.prenom || '').trim().toLowerCase()
+            ).length;
+            
+            // Only keep first occurrence
+            return count === 1 || presences.indexOf(p) === presences.findIndex(p2 =>
+                p2.date &&
+                new Date(p2.date).toISOString().split('T')[0] === today &&
+                (p2.nom || '').trim().toLowerCase() === (p.nom || '').trim().toLowerCase() &&
+                (p2.prenom || '').trim().toLowerCase() === (p.prenom || '').trim().toLowerCase()
+            );
         });
         
-        console.log(`    📊 Final check: ${finalCheck.length} entries for this person today`);
-        
-        if (finalCheck.length > 1) {
-            console.log(`    ⚠️ DUPLICATE DETECTED! Cleaning...`);
-            // Remove all duplicates, keep only the first
-            const seen = new Set();
-            const deduped = presences.filter(p => {
-                if (!p.date || p.type !== 'adherent') return true;
-                const pDate = new Date(p.date).toISOString().split('T')[0];
-                if (pDate !== today) return true;
-                const sig = `${(p.nom || '').trim().toLowerCase()}_${(p.prenom || '').trim().toLowerCase()}`;
-                if (seen.has(sig)) return false;
-                seen.add(sig);
-                return true;
-            });
-            presences.length = 0;
-            presences.push(...deduped);
-        }
-        
-        writeJsonFile(PRESENCES_FILE, presences);
-        console.log(`    ✅ SAVED: ${nom} ${prenom} (ID: ${newPresence.id})`);
-        console.log(`    ✅ Database now has ${presences.length} entries\n`);
+        writeJsonFile(PRESENCES_FILE, deduped);
+        console.log(`    ✅ SAVED: ${nom} ${prenom}`);
         
         return res.json({
             success: true, isPaid: true,
-            message: "Adhésion reconnue. Bienvenue !",
+            message: "Bienvenue!",
             membre: member,
             presence: newPresence
         });
         
     } catch (error) {
         console.error('❌ Error:', error);
-        return res.status(500).json({ success: false, error: 'Server error' });
+        return res.status(500).json({ success: false });
     }
 });
 
 app.get('/members/all', (req, res) => {
     try {
         const members = syncService.getMembers();
-        res.json({ success: true, members, count: members.length });
+        res.json({ success: true, members });
     } catch (error) {
         res.status(500).json({ success: false });
     }
 });
 
-// PRESENCES
+// PRESENCES - ONLY TODAY
 app.get('/presences', (req, res) => {
     try {
         const presences = readJsonFile(PRESENCES_FILE);
         const today = new Date().toISOString().split('T')[0];
-        const todayOnly = presences.filter(p => p.date && new Date(p.date).toISOString().split('T')[0] === today);
-        res.json({ success: true, presences: todayOnly, count: todayOnly.length });
+        
+        // FILTER: Only return TODAY's entries
+        const todayOnly = presences.filter(p => {
+            if (!p.date) return false;
+            const pDate = new Date(p.date).toISOString().split('T')[0];
+            return pDate === today;
+        });
+        
+        // DEDUP: Remove any remaining duplicates
+        const deduped = [];
+        const seen = new Set();
+        
+        for (const p of todayOnly) {
+            if (p.type === 'adherent') {
+                const sig = `${(p.nom || '').trim().toLowerCase()}_${(p.prenom || '').trim().toLowerCase()}`;
+                if (seen.has(sig)) {
+                    console.log(`[PRESENCES API] Filtered duplicate: ${p.nom} ${p.prenom}`);
+                    continue;
+                }
+                seen.add(sig);
+            }
+            deduped.push(p);
+        }
+        
+        res.json({ success: true, presences: deduped, count: deduped.length });
     } catch (error) {
         res.status(500).json({ success: false, presences: [] });
     }
@@ -471,7 +476,7 @@ app.get('/api/stats/today', (req, res) => {
     try {
         const presences = readJsonFile(PRESENCES_FILE);
         const today = new Date().toISOString().split('T')[0];
-        const valid = presences.filter(p => p.date && new Date(p.date).toISOString().split('T')[0] === today && p.type !== 'failed-login');
+        const valid = presences.filter(p => p.date && new Date(p.date).toISOString().split('T')[0] === today);
         
         res.json({
             success: true,
@@ -493,8 +498,7 @@ app.get('/admin/export/years', (req, res) => {
         const history = readJsonFile(PRESENCE_HISTORY_FILE);
         const years = [...new Set(history.map(h => {
             try { return new Date(h.date).getFullYear(); } catch (e) { return null; }
-        }))].filter(y => y && !isNaN(y) && y > 2000).sort().reverse();
-        
+        }))].filter(y => y && y > 2000).sort().reverse();
         res.json({ success: true, years });
     } catch (error) {
         res.status(500).json({ success: false, years: [] });
@@ -513,9 +517,7 @@ if (exportService) {
     
     app.post('/admin/export/:year', async (req, res) => {
         try {
-            const yearInt = parseInt(req.params.year);
-            if (!yearInt) return res.status(400).json({ success: false });
-            const result = await exportService.exportYearToExcel(yearInt);
+            const result = await exportService.exportYearToExcel(parseInt(req.params.year));
             res.json({ success: true, filename: result.filename });
         } catch (error) {
             res.status(500).json({ success: false });
@@ -523,18 +525,16 @@ if (exportService) {
     });
 }
 
-// ERROR HANDLERS
 app.use((req, res) => res.status(404).json({ error: 'Not found' }));
 app.use((error, req, res) => {
     console.error('💥 ERROR:', error);
     res.status(500).json({ error: 'Server error' });
 });
 
-// SERVER STARTUP
 const server = app.listen(PORT, '0.0.0.0', () => {
-    console.log('\n╔════════════════════════════════════════════════════════════╗');
+    console.log('╔════════════════════════════════════════════════════════════╗');
     console.log('║  ✅ Server running on http://localhost:' + PORT + '              ║');
-    console.log('║  🔒 BULLETPROOF DUPLICATE PREVENTION ACTIVE              ║');
+    console.log('║  🔒 FINAL DUPLICATE PREVENTION ACTIVE                    ║');
     console.log('╚════════════════════════════════════════════════════════════╝\n');
 });
 

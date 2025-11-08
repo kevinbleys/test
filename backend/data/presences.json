@@ -868,13 +868,6 @@
     }
   },
   {
-    "id": "1762603441237_0e1aef7611ecda20",
-    "type": "adherent",
-    "nom": "bleys",
-    "prenom": "kevin",
-    "date": "2025-11-08T12:04:01.237Z"
-  },
-  {
     "id": "1762603544856_9c6c3c05761403ed",
     "requestId": "1762603544845_1olizu3f2",
     "type": "adherent",
@@ -887,10 +880,37 @@
     "methodePaiement": "N/A"
   },
   {
-    "id": "1762603544875_aa9e17c6347eab3f",
+    "id": "1762604458797_3b111bac8723af92",
+    "requestId": "1762604458786_8a175538",
     "type": "adherent",
-    "nom": "pozeg",
-    "prenom": "jug",
-    "date": "2025-11-08T12:05:44.875Z"
+    "nom": "brunet",
+    "prenom": "denis",
+    "date": "2025-11-08T12:20:58.797Z",
+    "status": "adherent",
+    "niveau": "N/A",
+    "tarif": 0,
+    "methodePaiement": "N/A"
+  },
+  {
+    "id": "1762604458826_25b3f2690980a1ea",
+    "type": "adherent",
+    "nom": "brunet",
+    "prenom": "denis",
+    "date": "2025-11-08T12:20:58.826Z"
+  },
+  {
+    "id": "1762604517080_a59eac6fe4ed139b",
+    "type": "non-adherent",
+    "nom": "truong",
+    "prenom": "thomas",
+    "date": "2025-11-08T12:21:57.080Z",
+    "email": "club.arbizon@gmail.com",
+    "telephone": "0782917804",
+    "dateNaissance": "2005-03-02",
+    "tarif": 10,
+    "niveau": "1",
+    "assuranceAccepted": true,
+    "status": "Payé",
+    "methodePaiement": "CB"
   }
 ]
