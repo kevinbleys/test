@@ -331,49 +331,53 @@
     "date": "2025-11-09",
     "presences": [
       {
-        "id": "1762676474398_e6ca333bf4ffbe5d",
-        "type": "product-sale",
-        "nom": "Vente",
-        "prenom": "baudrier",
-        "date": "2025-11-09T08:21:14.398Z",
-        "tarif": 50,
-        "methodePaiement": "Especes",
-        "status": "Payé"
-      },
-      {
-        "id": "1762676482909_48aa4f68a805731d",
+        "id": "1762676908420_b8cd07bf886b71fa",
         "type": "adherent",
         "nom": "bleys",
         "prenom": "kevin",
-        "date": "2025-11-09T08:21:22.909Z",
+        "date": "2025-11-09T08:28:28.420Z",
         "status": "adherent",
         "niveau": "N/A",
         "tarif": 0,
         "methodePaiement": "N/A"
       },
       {
-        "id": "1762676482920_fff9027de1a7638c",
+        "id": "1762676908446_8043924431fd3f13",
         "type": "adherent",
         "nom": "bleys",
         "prenom": "kevin",
-        "date": "2025-11-09T08:21:22.920Z",
+        "date": "2025-11-09T08:28:28.446Z",
         "tarif": 0
       },
       {
-        "id": "1762676498705_bce4a9dca1c5bc0d",
-        "type": "non-adherent",
-        "nom": "test",
-        "prenom": "test",
-        "date": "2025-11-09T08:21:38.705Z",
-        "tarif": 8,
-        "email": "test@test.com",
-        "telephone": "",
-        "dateNaissance": "2016-10-20",
-        "niveau": 1,
-        "status": "Payé",
-        "age": 9,
-        "quickRegistration": true,
-        "methodePaiement": "CB"
+        "id": "1762676915261_eae7e71462a7c811",
+        "type": "adherent",
+        "nom": "bleys",
+        "prenom": "joke",
+        "date": "2025-11-09T08:28:35.261Z",
+        "status": "adherent",
+        "niveau": "N/A",
+        "tarif": 0,
+        "methodePaiement": "N/A"
+      },
+      {
+        "id": "1762676915271_3d46d0b4599b003e",
+        "type": "adherent",
+        "nom": "bleys",
+        "prenom": "joke",
+        "date": "2025-11-09T08:28:35.271Z",
+        "tarif": 0
+      },
+      {
+        "id": "1762676925527_204482bef527cddf",
+        "type": "tentative-non-adherent",
+        "nom": "elise roussel",
+        "prenom": "rous",
+        "date": "2025-11-09T08:28:45.527Z",
+        "status": "tentative non-adherent",
+        "niveau": "N/A",
+        "tarif": 0,
+        "methodePaiement": "N/A"
       }
     ]
   }
