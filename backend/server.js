@@ -9,8 +9,8 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 console.log('\n╔════════════════════════════════════════════════════════════╗');
-console.log('║  🚀 CLIMBING CLUB - SERVER v13.0 FINAL                  ║');
-console.log('║  + Boot Cleanup + Smart Seasons + Auto-Export           ║');
+console.log('║  🚀 CLIMBING CLUB - SERVER v14.0 FINAL                  ║');
+console.log('║  + Boot Cleanup + Data-Driven Seasons + Auto-Export     ║');
 console.log('╚════════════════════════════════════════════════════════════╝\n');
 
 const DATA_DIR = path.join(__dirname, 'data');
@@ -18,7 +18,6 @@ const PRESENCES_FILE = path.join(DATA_DIR, 'presences.json');
 const ATTEMPTS_FILE = path.join(DATA_DIR, 'login-attempts.json');
 const PRESENCE_HISTORY_FILE = path.join(DATA_DIR, 'presence-history.json');
 const SAVED_NON_MEMBERS_FILE = path.join(DATA_DIR, 'saved-non-members.json');
-const SEASONS_FILE = path.join(DATA_DIR, 'seasons.json');
 
 if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
 
@@ -59,7 +58,6 @@ initDataFile(PRESENCES_FILE);
 initDataFile(ATTEMPTS_FILE);
 initDataFile(PRESENCE_HISTORY_FILE);
 initDataFile(SAVED_NON_MEMBERS_FILE);
-initDataFile(SEASONS_FILE);
 
 const readJsonFile = (filePath) => {
     try {
@@ -90,7 +88,50 @@ const writeJsonFile = (filePath, data) => {
     }
 };
 
-// 🔧 SMART SEASONS MANAGEMENT
+// 🔧 GET AVAILABLE SEASONS FROM ACTUAL DATA (not hardcoded!)
+function getAvailableSeasons() {
+    try {
+        const history = readJsonFile(PRESENCE_HISTORY_FILE);
+        
+        // Extract unique years from presence-history.json
+        const yearsSet = new Set();
+        history.forEach(h => {
+            if (h.date && h.date.length >= 4 && Array.isArray(h.presences) && h.presences.length > 0) {
+                const year = parseInt(h.date.substring(0, 4));
+                if (year > 2000 && year < 2100) {
+                    yearsSet.add(year);
+                }
+            }
+        });
+        
+        const years = Array.from(yearsSet).sort((a, b) => b - a);
+        
+        // Convert years to seasons (1 sept - 31 aug)
+        const seasons = [];
+        years.forEach(year => {
+            // Season starts in September of previous year
+            // So year 2024 in data = season 2023-2024 (Sept 2023 - Aug 2024)
+            // And year 2025 in data = season 2024-2025 or 2025-2026 depending on month
+            
+            // Actually, let's map correctly:
+            // If data contains 2024 AND 2025, that's season 2024-2025
+            // If data contains 2025 AND 2026, that's season 2025-2026
+            
+            const nextYear = year + 1;
+            if (years.includes(nextYear)) {
+                // This is a complete season spanning two years
+                seasons.push({ startYear: year, endYear: nextYear });
+            }
+        });
+        
+        return seasons.sort((a, b) => b.startYear - a.startYear);
+    } catch (error) {
+        console.error('❌ Get seasons error:', error);
+        return [];
+    }
+}
+
+// 🔧 Get current season
 function getCurrentSeason() {
     const now = new Date();
     const month = now.getMonth();
@@ -102,42 +143,6 @@ function getCurrentSeason() {
         return { startYear: year - 1, endYear: year };
     }
 }
-
-function initializeSeasons() {
-    try {
-        let seasons = readJsonFile(SEASONS_FILE);
-        const current = getCurrentSeason();
-        
-        if (seasons.length === 0) {
-            // First time: add past 2 and current season
-            seasons = [
-                { startYear: current.startYear - 2, endYear: current.endYear - 2 },
-                { startYear: current.startYear - 1, endYear: current.endYear - 1 },
-                { startYear: current.startYear, endYear: current.endYear }
-            ];
-            writeJsonFile(SEASONS_FILE, seasons);
-            console.log('✅ Initialized seasons');
-            return seasons;
-        }
-        
-        // Check if we need to add next season (automatic on Sept 1)
-        const lastSeason = seasons[seasons.length - 1];
-        if (lastSeason.endYear < current.endYear) {
-            const nextSeason = { startYear: current.startYear, endYear: current.endYear };
-            seasons.push(nextSeason);
-            writeJsonFile(SEASONS_FILE, seasons);
-            console.log(`✅ Added new season: ${nextSeason.startYear}-${nextSeason.endYear}`);
-        }
-        
-        return seasons;
-    } catch (error) {
-        console.error('❌ Season init error:', error);
-        return [];
-    }
-}
-
-// Initialize seasons on startup
-initializeSeasons();
 
 app.use(cors({
     origin: ['http://localhost:3000', 'http://localhost:3001', 'http://localhost:3002',
@@ -159,7 +164,7 @@ try {
     syncService = { getMembers: () => [], syncMembers: async () => 0 };
 }
 
-app.get('/', (req, res) => res.json({ status: 'ok', version: '13.0.0' }));
+app.get('/', (req, res) => res.json({ status: 'ok', version: '14.0.0' }));
 app.get('/api/health', (req, res) => res.json({ status: 'healthy' }));
 app.get('/admin', (req, res) => res.sendFile(path.join(__dirname, 'public', 'admin.html')));
 
@@ -528,31 +533,11 @@ app.get('/api/stats/today', (req, res) => {
     }
 });
 
-app.get('/admin/export/years', (req, res) => {
-    try {
-        const history = readJsonFile(PRESENCE_HISTORY_FILE);
-        
-        const yearsSet = new Set();
-        history.forEach(h => {
-            if (h.date && h.date.length >= 4 && Array.isArray(h.presences) && h.presences.length > 0) {
-                const year = parseInt(h.date.substring(0, 4));
-                if (year > 2000 && year < 2100) {
-                    yearsSet.add(year);
-                }
-            }
-        });
-        
-        const years = Array.from(yearsSet).sort((a, b) => b - a);
-        res.json({ success: true, years });
-    } catch (error) {
-        console.error('Error:', error);
-        res.status(500).json({ success: false, years: [] });
-    }
-});
-
+// 🆕 GET SEASONS THAT ACTUALLY HAVE DATA
 app.get('/admin/seasons', (req, res) => {
     try {
-        const seasons = initializeSeasons();
+        const seasons = getAvailableSeasons();
+        console.log(`[API] Returning ${seasons.length} available seasons:`, seasons);
         res.json({ success: true, seasons });
     } catch (error) {
         console.error('Error:', error);
@@ -568,8 +553,8 @@ app.use((error, req, res, next) => {
 
 const server = app.listen(PORT, '0.0.0.0', () => {
     console.log('╔════════════════════════════════════════════════════════════╗');
-    console.log('║  ✅ Server v13.0 FINAL running on http://localhost:' + PORT + '  ║');
-    console.log('║  ✅ BOOT CLEANUP + SMART SEASONS + AUTO-EXPORT         ║');
+    console.log('║  ✅ Server v14.0 FINAL running on http://localhost:' + PORT + '  ║');
+    console.log('║  ✅ DATA-DRIVEN SEASONS + BOOT CLEANUP + AUTO-EXPORT   ║');
     console.log('╚════════════════════════════════════════════════════════════╝\n');
 });
 
@@ -618,7 +603,7 @@ cron.schedule('59 23 31 8 *', async () => {
 cron.schedule('1 0 1 9 *', async () => {
     console.log('[CRON] Checking for new season on September 1...');
     try {
-        const seasons = initializeSeasons();
+        const seasons = getAvailableSeasons();
         console.log(`[CRON] ✅ Seasons checked. Total: ${seasons.length}`);
     } catch (error) {
         console.error('[CRON] ❌ Season check error:', error);
