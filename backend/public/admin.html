@@ -355,13 +355,13 @@ let validationPresenceId = null;
 let currentMode = 'today';
 let currentHistoryDate = null;
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     const today = new Date().toISOString().split('T')[0];
     document.getElementById('dateInput').value = today;
     document.getElementById('currentDate').textContent = today;
     document.getElementById('selectedDate').textContent = today;
     loadPresences();
-    loadSeasons();
+    await loadSeasons();
     setInterval(() => {
         const now = new Date();
         document.getElementById('lastUpdate').textContent = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0') + ':' + String(now.getSeconds()).padStart(2, '0');
@@ -482,32 +482,36 @@ async function deletePresence(presenceId) {
     } catch (error) { console.error('Error:', error); }
 }
 
-// Generate seasons: 24-25, 25-26, etc.
-function generateSeasons() {
-    const now = new Date();
-    const currentYear = now.getFullYear();
-    const seasons = [];
-    for (let i = currentYear - 2; i <= currentYear + 2; i++) {
-        seasons.push({ label: `Saison ${i}-${i+1}`, startYear: i, endYear: i+1 });
-    }
-    return seasons;
-}
-
+// 🆕 SMART SEASONS LOADING FROM SERVER
 async function loadSeasons() {
     try {
+        const response = await fetch(`${API_URL}/admin/seasons`);
+        const data = await response.json();
+        
+        if (!data.seasons || data.seasons.length === 0) {
+            console.log('No seasons available');
+            return;
+        }
+        
         const select = document.getElementById('seasonSelect');
-        const seasons = generateSeasons();
         select.innerHTML = '<option value="">Sélectionner une saison...</option>';
+        
+        // Sort by startYear descending (newest first)
+        const seasons = data.seasons.sort((a, b) => b.startYear - a.startYear);
+        
         seasons.forEach(season => {
             const option = document.createElement('option');
             option.value = JSON.stringify({ startYear: season.startYear, endYear: season.endYear });
-            option.textContent = season.label;
+            option.textContent = `Saison ${season.startYear}-${season.endYear}`;
             select.appendChild(option);
         });
-    } catch (error) { console.error('Error:', error); }
+        
+        console.log(`✅ Loaded ${seasons.length} seasons from server`);
+    } catch (error) { 
+        console.error('Error loading seasons:', error); 
+    }
 }
 
-// Export for season (1 sept - 31 aug)
 async function exportSeason() {
     const seasonJson = document.getElementById('seasonSelect').value;
     if (!seasonJson) { alert('Sélectionnez une saison'); return; }
@@ -594,7 +598,7 @@ async function archivePresences() {
         if (!response.ok) throw new Error('Failed');
         alert('Archivé!');
         loadPresences();
-        loadSeasons();
+        await loadSeasons();
     } catch (error) { alert('Erreur'); }
 }
 

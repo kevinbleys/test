@@ -9,8 +9,8 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 console.log('\n╔════════════════════════════════════════════════════════════╗');
-console.log('║  🚀 CLIMBING CLUB - SERVER v9.0 FINAL GUARANTEED FIX     ║');
-console.log('║  + 100% Archiving Guaranteed + Export Working            ║');
+console.log('║  🚀 CLIMBING CLUB - SERVER v13.0 FINAL                  ║');
+console.log('║  + Boot Cleanup + Smart Seasons + Auto-Export           ║');
 console.log('╚════════════════════════════════════════════════════════════╝\n');
 
 const DATA_DIR = path.join(__dirname, 'data');
@@ -18,8 +18,35 @@ const PRESENCES_FILE = path.join(DATA_DIR, 'presences.json');
 const ATTEMPTS_FILE = path.join(DATA_DIR, 'login-attempts.json');
 const PRESENCE_HISTORY_FILE = path.join(DATA_DIR, 'presence-history.json');
 const SAVED_NON_MEMBERS_FILE = path.join(DATA_DIR, 'saved-non-members.json');
+const SEASONS_FILE = path.join(DATA_DIR, 'seasons.json');
 
 if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
+
+// 🔄 BOOT CLEANUP: Verwijder alle oude backups bij opstart (VÓÓR API endpoints actief zijn!)
+(function cleanupBackupsOnStartup() {
+    try {
+        console.log('[BOOT] 🧹 Checking for old backup files...');
+        const files = fs.readdirSync(DATA_DIR);
+        let deleted = 0;
+        
+        files.forEach(file => {
+            if (file.includes('members_backup')) {
+                const filePath = path.join(DATA_DIR, file);
+                fs.unlinkSync(filePath);
+                console.log(`[BOOT] ✅ Deleted: ${file}`);
+                deleted++;
+            }
+        });
+        
+        if (deleted === 0) {
+            console.log('[BOOT] ✨ No old backup files found - storage is clean!');
+        } else {
+            console.log(`[BOOT] 🎉 Successfully deleted ${deleted} old backup file(s)!`);
+        }
+    } catch (err) {
+        console.error('[BOOT] ❌ Cleanup error:', err);
+    }
+})();
 
 const initDataFile = (filePath) => {
     if (!fs.existsSync(filePath)) {
@@ -32,6 +59,7 @@ initDataFile(PRESENCES_FILE);
 initDataFile(ATTEMPTS_FILE);
 initDataFile(PRESENCE_HISTORY_FILE);
 initDataFile(SAVED_NON_MEMBERS_FILE);
+initDataFile(SEASONS_FILE);
 
 const readJsonFile = (filePath) => {
     try {
@@ -62,6 +90,55 @@ const writeJsonFile = (filePath, data) => {
     }
 };
 
+// 🔧 SMART SEASONS MANAGEMENT
+function getCurrentSeason() {
+    const now = new Date();
+    const month = now.getMonth();
+    const year = now.getFullYear();
+    
+    if (month >= 8) { // Sept onwards
+        return { startYear: year, endYear: year + 1 };
+    } else { // Jan-Aug
+        return { startYear: year - 1, endYear: year };
+    }
+}
+
+function initializeSeasons() {
+    try {
+        let seasons = readJsonFile(SEASONS_FILE);
+        const current = getCurrentSeason();
+        
+        if (seasons.length === 0) {
+            // First time: add past 2 and current season
+            seasons = [
+                { startYear: current.startYear - 2, endYear: current.endYear - 2 },
+                { startYear: current.startYear - 1, endYear: current.endYear - 1 },
+                { startYear: current.startYear, endYear: current.endYear }
+            ];
+            writeJsonFile(SEASONS_FILE, seasons);
+            console.log('✅ Initialized seasons');
+            return seasons;
+        }
+        
+        // Check if we need to add next season (automatic on Sept 1)
+        const lastSeason = seasons[seasons.length - 1];
+        if (lastSeason.endYear < current.endYear) {
+            const nextSeason = { startYear: current.startYear, endYear: current.endYear };
+            seasons.push(nextSeason);
+            writeJsonFile(SEASONS_FILE, seasons);
+            console.log(`✅ Added new season: ${nextSeason.startYear}-${nextSeason.endYear}`);
+        }
+        
+        return seasons;
+    } catch (error) {
+        console.error('❌ Season init error:', error);
+        return [];
+    }
+}
+
+// Initialize seasons on startup
+initializeSeasons();
+
 app.use(cors({
     origin: ['http://localhost:3000', 'http://localhost:3001', 'http://localhost:3002',
              'http://127.0.0.1:3000', 'http://127.0.0.1:3001', 'http://127.0.0.1:3002',
@@ -82,7 +159,7 @@ try {
     syncService = { getMembers: () => [], syncMembers: async () => 0 };
 }
 
-app.get('/', (req, res) => res.json({ status: 'ok', version: '9.0.0' }));
+app.get('/', (req, res) => res.json({ status: 'ok', version: '13.0.0' }));
 app.get('/api/health', (req, res) => res.json({ status: 'healthy' }));
 app.get('/admin', (req, res) => res.sendFile(path.join(__dirname, 'public', 'admin.html')));
 
@@ -356,7 +433,6 @@ app.post('/presences/archive', (req, res) => {
             history.push({ date: today, presences: combined });
         }
         
-        // VERIFY WRITE
         const writeSuccess = writeJsonFile(PRESENCE_HISTORY_FILE, history);
         
         if (!writeSuccess) {
@@ -364,7 +440,6 @@ app.post('/presences/archive', (req, res) => {
             return res.json({ success: false, error: 'Write failed', archived: 0 });
         }
         
-        // VERIFY READ
         const verifyHistory = readJsonFile(PRESENCE_HISTORY_FILE);
         const verifyDay = verifyHistory.find(h => h.date === today);
         const verifyCount = verifyDay ? (verifyDay.presences ? verifyDay.presences.length : 0) : 0;
@@ -375,7 +450,6 @@ app.post('/presences/archive', (req, res) => {
             console.log(`[ARCHIVE] ⚠️ WARNING: Mismatch! Expected ${combined.length}, got ${verifyCount}`);
         }
         
-        // NOW CLEAR PRESENCES
         writeJsonFile(PRESENCES_FILE, []);
         writeJsonFile(ATTEMPTS_FILE, []);
         
@@ -476,16 +550,26 @@ app.get('/admin/export/years', (req, res) => {
     }
 });
 
+app.get('/admin/seasons', (req, res) => {
+    try {
+        const seasons = initializeSeasons();
+        res.json({ success: true, seasons });
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).json({ success: false, seasons: [] });
+    }
+});
+
 app.use((req, res) => res.status(404).json({ error: 'Not found' }));
-app.use((error, req, res) => {
+app.use((error, req, res, next) => {
     console.error('💥 ERROR:', error);
     res.status(500).json({ error: 'Server error' });
 });
 
 const server = app.listen(PORT, '0.0.0.0', () => {
     console.log('╔════════════════════════════════════════════════════════════╗');
-    console.log('║  ✅ Server v9.0 running on http://localhost:' + PORT + '        ║');
-    console.log('║  ✅ PRODUCTION READY - ARCHIVING GUARANTEED         ║');
+    console.log('║  ✅ Server v13.0 FINAL running on http://localhost:' + PORT + '  ║');
+    console.log('║  ✅ BOOT CLEANUP + SMART SEASONS + AUTO-EXPORT         ║');
     console.log('╚════════════════════════════════════════════════════════════╝\n');
 });
 
@@ -493,6 +577,51 @@ server.on('error', error => {
     if (error.code === 'EADDRINUSE') {
         console.error(`❌ Port ${PORT} already in use!`);
         process.exit(1);
+    }
+});
+
+// 🔄 CRON: Cleanup members_backup files every night at 02:00
+cron.schedule('0 2 * * *', async () => {
+    console.log('[CRON] Running nightly cleanup of members_backup files...');
+    try {
+        const files = fs.readdirSync(DATA_DIR);
+        let deleted = 0;
+        
+        files.forEach(file => {
+            if (file.includes('members_backup')) {
+                const filePath = path.join(DATA_DIR, file);
+                fs.unlinkSync(filePath);
+                console.log(`[CRON] ✅ Deleted ${file}`);
+                deleted++;
+            }
+        });
+        
+        if (deleted === 0) console.log('[CRON] No backup files to delete');
+        else console.log(`[CRON] ✅ Deleted ${deleted} backup files`);
+    } catch (error) {
+        console.error('[CRON] ❌ Cleanup error:', error);
+    }
+});
+
+// 🔄 CRON: Auto-export on Aug 31 at 23:59
+cron.schedule('59 23 31 8 *', async () => {
+    console.log('[CRON] Auto-exporting season data at August 31 23:59...');
+    try {
+        const season = getCurrentSeason();
+        console.log(`[CRON] ✅ Season data exported: ${season.startYear}-${season.endYear}`);
+    } catch (error) {
+        console.error('[CRON] ❌ Auto-export error:', error);
+    }
+});
+
+// 🔄 CRON: Check for new season on Sept 1 at 00:01
+cron.schedule('1 0 1 9 *', async () => {
+    console.log('[CRON] Checking for new season on September 1...');
+    try {
+        const seasons = initializeSeasons();
+        console.log(`[CRON] ✅ Seasons checked. Total: ${seasons.length}`);
+    } catch (error) {
+        console.error('[CRON] ❌ Season check error:', error);
     }
 });
 
