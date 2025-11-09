@@ -331,49 +331,40 @@
     "date": "2025-11-09",
     "presences": [
       {
-        "id": "1762676908420_b8cd07bf886b71fa",
+        "id": "1762684360918_a047ab0f88ba132c",
         "type": "adherent",
         "nom": "bleys",
         "prenom": "kevin",
-        "date": "2025-11-09T08:28:28.420Z",
+        "date": "2025-11-09T10:32:40.918Z",
         "status": "adherent",
         "niveau": "N/A",
         "tarif": 0,
         "methodePaiement": "N/A"
       },
       {
-        "id": "1762676908446_8043924431fd3f13",
+        "id": "1762684360930_72c142766b438ce4",
         "type": "adherent",
         "nom": "bleys",
         "prenom": "kevin",
-        "date": "2025-11-09T08:28:28.446Z",
+        "date": "2025-11-09T10:32:40.930Z",
         "tarif": 0
       },
       {
-        "id": "1762676915261_eae7e71462a7c811",
-        "type": "adherent",
-        "nom": "bleys",
-        "prenom": "joke",
-        "date": "2025-11-09T08:28:35.261Z",
-        "status": "adherent",
-        "niveau": "N/A",
-        "tarif": 0,
-        "methodePaiement": "N/A"
+        "id": "1762684372266_8c00f9eb176b2a48",
+        "type": "product-sale",
+        "nom": "Vente",
+        "prenom": "pof",
+        "date": "2025-11-09T10:32:52.266Z",
+        "tarif": 10,
+        "methodePaiement": "Especes",
+        "status": "Payé"
       },
       {
-        "id": "1762676915271_3d46d0b4599b003e",
-        "type": "adherent",
-        "nom": "bleys",
-        "prenom": "joke",
-        "date": "2025-11-09T08:28:35.271Z",
-        "tarif": 0
-      },
-      {
-        "id": "1762676925527_204482bef527cddf",
+        "id": "1762684351673_430b42706f0f6e8a",
         "type": "tentative-non-adherent",
         "nom": "elise roussel",
         "prenom": "rous",
-        "date": "2025-11-09T08:28:45.527Z",
+        "date": "2025-11-09T10:32:31.673Z",
         "status": "tentative non-adherent",
         "niveau": "N/A",
         "tarif": 0,

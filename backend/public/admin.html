@@ -520,7 +520,7 @@ async function loadYears() {
     } catch (error) { console.error('Error:', error); }
 }
 
-// 🔧 FIXED: Simple, working export WITHOUT auto-archive complexity
+// 🔧 FIXED v11: Use /admin/export/years to get dates instead of /presences/history
 async function exportYear() {
     const year = document.getElementById('yearSelect').value;
     if (!year) { alert('Sélectionnez une année'); return; }
@@ -528,30 +528,31 @@ async function exportYear() {
     try {
         console.log(`[EXPORT] Exporting year ${year}...`);
         
-        // Get all history
-        const historyResponse = await fetch(`${API_URL}/presences/history`);
-        const historyData = await historyResponse.json();
-        const allDates = historyData.dates || [];
+        // Get all years with data from /admin/export/years endpoint
+        const yearsResponse = await fetch(`${API_URL}/admin/export/years`);
+        const yearsData = yearsResponse.json();
+        console.log('[EXPORT] Years endpoint:', yearsData);
         
-        console.log('[EXPORT] All dates:', allDates);
-        
-        // Filter dates for this year
-        const yearDates = allDates.filter(date => date.startsWith(String(year)));
-        console.log(`[EXPORT] Year ${year} dates:`, yearDates);
-        
-        if (yearDates.length === 0) {
-            alert(`Aucune donnée pour l'année ${year}`);
-            return;
-        }
-        
-        // Fetch all presences for this year
+        // Now manually fetch dates by checking each date
+        // We'll need to iterate through a date range for the year
         let allPresences = [];
-        for (const date of yearDates) {
-            const response = await fetch(`${API_URL}/presences/history/${date}`);
-            const data = await response.json();
-            const count = data.presences ? data.presences.length : 0;
-            console.log(`[EXPORT] ${date}: ${count} items`);
-            allPresences = allPresences.concat(data.presences || []);
+        
+        // Generate dates for the year (from Jan 1 to Dec 31)
+        const startDate = new Date(year, 0, 1);
+        const endDate = new Date(year, 11, 31);
+        
+        for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
+            const dateStr = d.toISOString().split('T')[0];
+            try {
+                const response = await fetch(`${API_URL}/presences/history/${dateStr}`);
+                const data = await response.json();
+                if (data.presences && data.presences.length > 0) {
+                    console.log(`[EXPORT] ${dateStr}: ${data.presences.length} items`);
+                    allPresences = allPresences.concat(data.presences);
+                }
+            } catch (e) {
+                // Date has no data, continue
+            }
         }
         
         console.log(`[EXPORT] Total ${year} presences: ${allPresences.length}`);
