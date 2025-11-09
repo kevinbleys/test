@@ -331,30 +331,40 @@
     "date": "2025-11-09",
     "presences": [
       {
-        "id": "1762672660890_175e20f70548c464",
+        "id": "1762676474398_e6ca333bf4ffbe5d",
+        "type": "product-sale",
+        "nom": "Vente",
+        "prenom": "baudrier",
+        "date": "2025-11-09T08:21:14.398Z",
+        "tarif": 50,
+        "methodePaiement": "Especes",
+        "status": "Payé"
+      },
+      {
+        "id": "1762676482909_48aa4f68a805731d",
         "type": "adherent",
         "nom": "bleys",
         "prenom": "kevin",
-        "date": "2025-11-09T07:17:40.891Z",
+        "date": "2025-11-09T08:21:22.909Z",
         "status": "adherent",
         "niveau": "N/A",
         "tarif": 0,
         "methodePaiement": "N/A"
       },
       {
-        "id": "1762672660910_b4607cb8734a0efd",
+        "id": "1762676482920_fff9027de1a7638c",
         "type": "adherent",
         "nom": "bleys",
         "prenom": "kevin",
-        "date": "2025-11-09T07:17:40.910Z",
+        "date": "2025-11-09T08:21:22.920Z",
         "tarif": 0
       },
       {
-        "id": "1762672729412_cfaa22cdd557a35b",
+        "id": "1762676498705_bce4a9dca1c5bc0d",
         "type": "non-adherent",
         "nom": "test",
         "prenom": "test",
-        "date": "2025-11-09T07:18:49.412Z",
+        "date": "2025-11-09T08:21:38.705Z",
         "tarif": 8,
         "email": "test@test.com",
         "telephone": "",
@@ -363,39 +373,7 @@
         "status": "Payé",
         "age": 9,
         "quickRegistration": true,
-        "methodePaiement": "Especes"
-      },
-      {
-        "id": "1762672747186_885e0367f13d1dd9",
-        "type": "product-sale",
-        "nom": "Vente",
-        "prenom": "tshirt",
-        "date": "2025-11-09T07:19:07.186Z",
-        "tarif": 20,
-        "methodePaiement": "CB",
-        "status": "Payé"
-      },
-      {
-        "id": "1762672702460_6456ec729a7a70d0",
-        "type": "tentative-non-payé",
-        "nom": "roussel",
-        "prenom": "elise",
-        "date": "2025-11-09T07:18:22.460Z",
-        "status": "tentative non-payé",
-        "niveau": "N/A",
-        "tarif": 0,
-        "methodePaiement": "N/A"
-      },
-      {
-        "id": "1762672713113_3220286d5f03588d",
-        "type": "tentative-non-adherent",
-        "nom": "elise",
-        "prenom": "roussel",
-        "date": "2025-11-09T07:18:33.113Z",
-        "status": "tentative non-adherent",
-        "niveau": "N/A",
-        "tarif": 0,
-        "methodePaiement": "N/A"
+        "methodePaiement": "CB"
       }
     ]
   }

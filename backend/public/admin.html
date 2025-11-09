@@ -331,7 +331,7 @@
             <div class="export-section-info">✅ <strong>SÛREMENT:</strong> Cet export lit les données de l'historique SANS les modifier. Aucune donnée ne sera supprimée.</div>
             <div class="export-year-section">
                 <select id="yearSelect"><option value="">Sélectionner une année...</option></select>
-                <button class="btn-export" onclick="exportYearWithAutoArchive()">📊 Exporter</button>
+                <button class="btn-export" onclick="exportYear()">📊 Exporter</button>
             </div>
         </div>
         <div class="table-section">
@@ -520,45 +520,48 @@ async function loadYears() {
     } catch (error) { console.error('Error:', error); }
 }
 
-// NEW: AUTO-ARCHIVE BEFORE EXPORT
-async function exportYearWithAutoArchive() {
+// 🔧 FIXED: Simple, working export WITHOUT auto-archive complexity
+async function exportYear() {
     const year = document.getElementById('yearSelect').value;
     if (!year) { alert('Sélectionnez une année'); return; }
     
     try {
-        // STEP 1: Auto-archive today's data first
-        console.log('[EXPORT] Auto-archiving today data...');
-        await fetch(`${API_URL}/presences/archive`, { method: 'POST' });
-        
-        // STEP 2: Reload years after archiving
-        console.log('[EXPORT] Reloading years...');
-        await loadYears();
-        
-        // STEP 3: Now do the export
         console.log(`[EXPORT] Exporting year ${year}...`);
+        
+        // Get all history
         const historyResponse = await fetch(`${API_URL}/presences/history`);
         const historyData = await historyResponse.json();
         const allDates = historyData.dates || [];
         
+        console.log('[EXPORT] All dates:', allDates);
+        
+        // Filter dates for this year
         const yearDates = allDates.filter(date => date.startsWith(String(year)));
+        console.log(`[EXPORT] Year ${year} dates:`, yearDates);
         
         if (yearDates.length === 0) {
             alert(`Aucune donnée pour l'année ${year}`);
             return;
         }
         
+        // Fetch all presences for this year
         let allPresences = [];
         for (const date of yearDates) {
             const response = await fetch(`${API_URL}/presences/history/${date}`);
             const data = await response.json();
+            const count = data.presences ? data.presences.length : 0;
+            console.log(`[EXPORT] ${date}: ${count} items`);
             allPresences = allPresences.concat(data.presences || []);
         }
+        
+        console.log(`[EXPORT] Total ${year} presences: ${allPresences.length}`);
         
         if (allPresences.length === 0) {
             alert(`Aucunes données à exporter pour l'année ${year}`);
             return;
         }
         
+        // Generate Excel
         const excelData = allPresences.map(p => ({
             'Date': formatDate(p.date), 'Heure': formatTime(p.date), 'Type': p.type === 'product-sale' ? 'Vente Libre' : (p.type === 'adherent' ? 'Adhérent' : 'Non-adhérent'),
             'Nom': p.nom || '', 'Prénom': p.prenom, 'Niveau': p.niveau || 'N/A', 'Tarif': p.tarif || 0, 'Paiement': p.methodePaiement || 'N/A', 'Statut': p.status || p.type
@@ -569,8 +572,7 @@ async function exportYearWithAutoArchive() {
         XLSX.utils.book_append_sheet(wb, ws, 'Presences');
         XLSX.writeFile(wb, `presences_${year}.xlsx`);
         
-        // Reload presences after
-        await loadPresences();
+        console.log(`[EXPORT] Success! Downloaded presences_${year}.xlsx`);
     } catch (error) {
         console.error('[EXPORT] Error:', error);
         alert('Erreur lors de l\'export');
