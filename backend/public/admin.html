@@ -168,19 +168,19 @@
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
         }
-        .export-year-section {
+        .export-season-section {
             display: grid;
             grid-template-columns: 1fr auto;
             gap: 10px;
         }
-        .export-year-section select {
+        .export-season-section select {
             padding: 10px 12px;
             border: 1px solid #ddd;
             border-radius: 6px;
             font-size: 14px;
             width: 100%;
         }
-        .export-year-section button { width: 100%; grid-column: 1 / -1; }
+        .export-season-section button { width: 100%; grid-column: 1 / -1; }
         .table-section {
             background: white;
             border-radius: 12px;
@@ -322,16 +322,11 @@
             </div>
         </div>
         <div class="export-section">
-            <h3>📥 Export Saison Actuelle</h3>
-            <div class="export-section-info">⚠️ <strong>ATTENTION:</strong> Cet export génère un fichier Excel avec les données d'aujourd'hui. Le bouton "Archiver" plus bas sauvegarde ces données à l'historique AVANT de vider la liste.</div>
-            <button class="btn-export" onclick="exportToday()">📄 Exporter Saison</button>
-        </div>
-        <div class="export-section">
-            <h3>📊 Export Excel Historique</h3>
-            <div class="export-section-info">✅ <strong>SÛREMENT:</strong> Cet export lit les données de l'historique SANS les modifier. Aucune donnée ne sera supprimée.</div>
-            <div class="export-year-section">
-                <select id="yearSelect"><option value="">Sélectionner une année...</option></select>
-                <button class="btn-export" onclick="exportYear()">📊 Exporter</button>
+            <h3>📊 Export Saison</h3>
+            <div class="export-section-info">✅ Exporte toutes les données du club pour la saison sélectionnée (1 sept - 31 août)</div>
+            <div class="export-season-section">
+                <select id="seasonSelect"><option value="">Sélectionner une saison...</option></select>
+                <button class="btn-export" onclick="exportSeason()">📊 Exporter Saison</button>
             </div>
         </div>
         <div class="table-section">
@@ -366,7 +361,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('currentDate').textContent = today;
     document.getElementById('selectedDate').textContent = today;
     loadPresences();
-    loadYears();
+    loadSeasons();
     setInterval(() => {
         const now = new Date();
         document.getElementById('lastUpdate').textContent = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0') + ':' + String(now.getSeconds()).padStart(2, '0');
@@ -487,78 +482,83 @@ async function deletePresence(presenceId) {
     } catch (error) { console.error('Error:', error); }
 }
 
-async function exportToday() {
-    try {
-        const response = await fetch(`${API_URL}/presences`);
-        const data = await response.json();
-        const presences = data.presences || [];
-        const excelData = presences.map(p => ({
-            'Date': formatDate(p.date), 'Heure': formatTime(p.date), 'Type': p.type === 'product-sale' ? 'Vente Libre' : (p.type === 'adherent' ? 'Adhérent' : 'Non-adhérent'),
-            'Nom': p.nom || '', 'Prénom': p.prenom, 'Niveau': p.niveau || 'N/A', 'Tarif': p.tarif || 0, 'Paiement': p.methodePaiement || 'N/A', 'Statut': p.status || p.type
-        }));
-        const ws = XLSX.utils.json_to_sheet(excelData);
-        const wb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, 'Presences');
-        const today = new Date().toISOString().split('T')[0];
-        XLSX.writeFile(wb, `presences_${today}.xlsx`);
-    } catch (error) { alert('Erreur lors de l\'export'); }
+// Generate seasons: 24-25, 25-26, etc.
+function generateSeasons() {
+    const now = new Date();
+    const currentYear = now.getFullYear();
+    const seasons = [];
+    for (let i = currentYear - 2; i <= currentYear + 2; i++) {
+        seasons.push({ label: `Saison ${i}-${i+1}`, startYear: i, endYear: i+1 });
+    }
+    return seasons;
 }
 
-async function loadYears() {
+async function loadSeasons() {
     try {
-        const response = await fetch(`${API_URL}/admin/export/years`);
-        const data = await response.json();
-        const select = document.getElementById('yearSelect');
-        if (!data.years || data.years.length === 0) return;
-        select.innerHTML = '<option value="">Sélectionner une année...</option>';
-        (data.years || []).forEach(year => {
+        const select = document.getElementById('seasonSelect');
+        const seasons = generateSeasons();
+        select.innerHTML = '<option value="">Sélectionner une saison...</option>';
+        seasons.forEach(season => {
             const option = document.createElement('option');
-            option.value = year;
-            option.textContent = year;
+            option.value = JSON.stringify({ startYear: season.startYear, endYear: season.endYear });
+            option.textContent = season.label;
             select.appendChild(option);
         });
     } catch (error) { console.error('Error:', error); }
 }
 
-// 🔧 FIXED v11: Use /admin/export/years to get dates instead of /presences/history
-async function exportYear() {
-    const year = document.getElementById('yearSelect').value;
-    if (!year) { alert('Sélectionnez une année'); return; }
+// Export for season (1 sept - 31 aug)
+async function exportSeason() {
+    const seasonJson = document.getElementById('seasonSelect').value;
+    if (!seasonJson) { alert('Sélectionnez une saison'); return; }
     
     try {
-        console.log(`[EXPORT] Exporting year ${year}...`);
+        const season = JSON.parse(seasonJson);
+        const startYear = season.startYear;
+        const endYear = season.endYear;
         
-        // Get all years with data from /admin/export/years endpoint
-        const yearsResponse = await fetch(`${API_URL}/admin/export/years`);
-        const yearsData = yearsResponse.json();
-        console.log('[EXPORT] Years endpoint:', yearsData);
+        console.log(`[EXPORT SEASON] Exporting season ${startYear}-${endYear}...`);
         
-        // Now manually fetch dates by checking each date
-        // We'll need to iterate through a date range for the year
         let allPresences = [];
         
-        // Generate dates for the year (from Jan 1 to Dec 31)
-        const startDate = new Date(year, 0, 1);
-        const endDate = new Date(year, 11, 31);
-        
-        for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
-            const dateStr = d.toISOString().split('T')[0];
-            try {
-                const response = await fetch(`${API_URL}/presences/history/${dateStr}`);
-                const data = await response.json();
-                if (data.presences && data.presences.length > 0) {
-                    console.log(`[EXPORT] ${dateStr}: ${data.presences.length} items`);
-                    allPresences = allPresences.concat(data.presences);
-                }
-            } catch (e) {
-                // Date has no data, continue
+        // Sept - Dec of start year
+        for (let month = 9; month <= 12; month++) {
+            const startDate = new Date(startYear, month - 1, 1);
+            const endDate = new Date(startYear, month, 0);
+            
+            for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
+                const dateStr = d.toISOString().split('T')[0];
+                try {
+                    const response = await fetch(`${API_URL}/presences/history/${dateStr}`);
+                    const data = await response.json();
+                    if (data.presences && data.presences.length > 0) {
+                        allPresences = allPresences.concat(data.presences);
+                    }
+                } catch (e) { }
             }
         }
         
-        console.log(`[EXPORT] Total ${year} presences: ${allPresences.length}`);
+        // Jan - Aug of end year
+        for (let month = 1; month <= 8; month++) {
+            const startDate = new Date(endYear, month - 1, 1);
+            const endDate = new Date(endYear, month, 0);
+            
+            for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
+                const dateStr = d.toISOString().split('T')[0];
+                try {
+                    const response = await fetch(`${API_URL}/presences/history/${dateStr}`);
+                    const data = await response.json();
+                    if (data.presences && data.presences.length > 0) {
+                        allPresences = allPresences.concat(data.presences);
+                    }
+                } catch (e) { }
+            }
+        }
+        
+        console.log(`[EXPORT SEASON] Total presences: ${allPresences.length}`);
         
         if (allPresences.length === 0) {
-            alert(`Aucunes données à exporter pour l'année ${year}`);
+            alert(`Aucunes données à exporter pour la saison ${startYear}-${endYear}`);
             return;
         }
         
@@ -571,11 +571,11 @@ async function exportYear() {
         const ws = XLSX.utils.json_to_sheet(excelData);
         const wb = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(wb, ws, 'Presences');
-        XLSX.writeFile(wb, `presences_${year}.xlsx`);
+        XLSX.writeFile(wb, `presences_saison_${startYear}-${endYear}.xlsx`);
         
-        console.log(`[EXPORT] Success! Downloaded presences_${year}.xlsx`);
+        console.log(`[EXPORT SEASON] Success! Downloaded presences_saison_${startYear}-${endYear}.xlsx`);
     } catch (error) {
-        console.error('[EXPORT] Error:', error);
+        console.error('[EXPORT SEASON] Error:', error);
         alert('Erreur lors de l\'export');
     }
 }
@@ -594,7 +594,7 @@ async function archivePresences() {
         if (!response.ok) throw new Error('Failed');
         alert('Archivé!');
         loadPresences();
-        loadYears();
+        loadSeasons();
     } catch (error) { alert('Erreur'); }
 }
 
