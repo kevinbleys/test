@@ -323,7 +323,7 @@
         </div>
         <div class="export-section">
             <h3>📊 Export Saison</h3>
-            <div class="export-section-info">✅ Exporte toutes les données du club pour la saison sélectionnée (1 sept - 31 août). Les saisons affichées sont uniquement celles avec des données.</div>
+            <div class="export-section-info">✅ Exporte toutes les données du club pour la saison sélectionnée (1 sept - 31 août). Les saisons affichées incluent les saisons complétées + la saison actuelle.</div>
             <div class="export-season-section">
                 <select id="seasonSelect"><option value="">Sélectionner une saison...</option></select>
                 <button class="btn-export" onclick="exportSeason()">📊 Exporter Saison</button>
@@ -482,14 +482,14 @@ async function deletePresence(presenceId) {
     } catch (error) { console.error('Error:', error); }
 }
 
-// 🆕 LOAD ONLY SEASONS WITH ACTUAL DATA
+// 🆕 LOAD SEASONS: Past completed + CURRENT season (always)
 async function loadSeasons() {
     try {
         const response = await fetch(`${API_URL}/admin/seasons`);
         const data = await response.json();
         
         if (!data.seasons || data.seasons.length === 0) {
-            console.log('No seasons with data available');
+            console.log('No seasons available');
             return;
         }
         
@@ -506,7 +506,7 @@ async function loadSeasons() {
             select.appendChild(option);
         });
         
-        console.log(`✅ Loaded ${seasons.length} seasons with data:`, seasons);
+        console.log(`✅ Loaded ${seasons.length} seasons (completed + current):`, seasons);
     } catch (error) { 
         console.error('Error loading seasons:', error); 
     }

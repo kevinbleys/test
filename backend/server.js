@@ -9,8 +9,8 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 console.log('\n╔════════════════════════════════════════════════════════════╗');
-console.log('║  🚀 CLIMBING CLUB - SERVER v14.0 FINAL                  ║');
-console.log('║  + Boot Cleanup + Data-Driven Seasons + Auto-Export     ║');
+console.log('║  🚀 CLIMBING CLUB - SERVER v15.0 FINAL                  ║');
+console.log('║  + Boot Cleanup + Smart Seasons + Current Season        ║');
 console.log('╚════════════════════════════════════════════════════════════╝\n');
 
 const DATA_DIR = path.join(__dirname, 'data');
@@ -88,7 +88,21 @@ const writeJsonFile = (filePath, data) => {
     }
 };
 
-// 🔧 GET AVAILABLE SEASONS FROM ACTUAL DATA (not hardcoded!)
+// 🔧 GET CURRENT SEASON (always available)
+function getCurrentSeason() {
+    const now = new Date();
+    const month = now.getMonth();
+    const year = now.getFullYear();
+    
+    // Nov 9, 2025 = September 2025 is passed, so current season = 2025-2026
+    if (month >= 8) { // Sept onwards
+        return { startYear: year, endYear: year + 1 };
+    } else { // Jan-Aug
+        return { startYear: year - 1, endYear: year };
+    }
+}
+
+// 🔧 GET AVAILABLE SEASONS: Completed seasons (from data) + Current season
 function getAvailableSeasons() {
     try {
         const history = readJsonFile(PRESENCE_HISTORY_FILE);
@@ -103,44 +117,40 @@ function getAvailableSeasons() {
                 }
             }
         });
-        
+
         const years = Array.from(yearsSet).sort((a, b) => b - a);
         
-        // Convert years to seasons (1 sept - 31 aug)
-        const seasons = [];
+        // Convert years to COMPLETED seasons (years that span two calendar years)
+        const completedSeasons = [];
         years.forEach(year => {
-            // Season starts in September of previous year
-            // So year 2024 in data = season 2023-2024 (Sept 2023 - Aug 2024)
-            // And year 2025 in data = season 2024-2025 or 2025-2026 depending on month
-            
-            // Actually, let's map correctly:
-            // If data contains 2024 AND 2025, that's season 2024-2025
-            // If data contains 2025 AND 2026, that's season 2025-2026
-            
             const nextYear = year + 1;
+            // Only add if data exists for both years (complete season: Sept-Aug)
             if (years.includes(nextYear)) {
-                // This is a complete season spanning two years
-                seasons.push({ startYear: year, endYear: nextYear });
+                completedSeasons.push({ startYear: year, endYear: nextYear });
             }
         });
+
+        // ALWAYS add current season (even if no data yet for endYear)
+        const currentSeason = getCurrentSeason();
         
-        return seasons.sort((a, b) => b.startYear - a.startYear);
+        // Check if current season is already in completed seasons
+        const currentInList = completedSeasons.some(s => 
+            s.startYear === currentSeason.startYear && s.endYear === currentSeason.endYear
+        );
+        
+        // If not, add it!
+        if (!currentInList) {
+            completedSeasons.push(currentSeason);
+        }
+        
+        // Sort by startYear descending (newest first)
+        const finalSeasons = completedSeasons.sort((a, b) => b.startYear - a.startYear);
+        
+        console.log('[SEASONS] Available seasons:', finalSeasons);
+        return finalSeasons;
     } catch (error) {
         console.error('❌ Get seasons error:', error);
         return [];
-    }
-}
-
-// 🔧 Get current season
-function getCurrentSeason() {
-    const now = new Date();
-    const month = now.getMonth();
-    const year = now.getFullYear();
-    
-    if (month >= 8) { // Sept onwards
-        return { startYear: year, endYear: year + 1 };
-    } else { // Jan-Aug
-        return { startYear: year - 1, endYear: year };
     }
 }
 
@@ -164,7 +174,7 @@ try {
     syncService = { getMembers: () => [], syncMembers: async () => 0 };
 }
 
-app.get('/', (req, res) => res.json({ status: 'ok', version: '14.0.0' }));
+app.get('/', (req, res) => res.json({ status: 'ok', version: '15.0.0' }));
 app.get('/api/health', (req, res) => res.json({ status: 'healthy' }));
 app.get('/admin', (req, res) => res.sendFile(path.join(__dirname, 'public', 'admin.html')));
 
@@ -533,11 +543,32 @@ app.get('/api/stats/today', (req, res) => {
     }
 });
 
-// 🆕 GET SEASONS THAT ACTUALLY HAVE DATA
+app.get('/admin/export/years', (req, res) => {
+    try {
+        const history = readJsonFile(PRESENCE_HISTORY_FILE);
+        
+        const yearsSet = new Set();
+        history.forEach(h => {
+            if (h.date && h.date.length >= 4 && Array.isArray(h.presences) && h.presences.length > 0) {
+                const year = parseInt(h.date.substring(0, 4));
+                if (year > 2000 && year < 2100) {
+                    yearsSet.add(year);
+                }
+            }
+        });
+        
+        const years = Array.from(yearsSet).sort((a, b) => b - a);
+        res.json({ success: true, years });
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).json({ success: false, years: [] });
+    }
+});
+
+// 🆕 GET SEASONS: Completed seasons (from data) + Current season (always)
 app.get('/admin/seasons', (req, res) => {
     try {
         const seasons = getAvailableSeasons();
-        console.log(`[API] Returning ${seasons.length} available seasons:`, seasons);
         res.json({ success: true, seasons });
     } catch (error) {
         console.error('Error:', error);
@@ -553,8 +584,8 @@ app.use((error, req, res, next) => {
 
 const server = app.listen(PORT, '0.0.0.0', () => {
     console.log('╔════════════════════════════════════════════════════════════╗');
-    console.log('║  ✅ Server v14.0 FINAL running on http://localhost:' + PORT + '  ║');
-    console.log('║  ✅ DATA-DRIVEN SEASONS + BOOT CLEANUP + AUTO-EXPORT   ║');
+    console.log('║  ✅ Server v15.0 FINAL running on http://localhost:' + PORT + '  ║');
+    console.log('║  ✅ SMART SEASONS (Past + Current) + BOOT CLEANUP       ║');
     console.log('╚════════════════════════════════════════════════════════════╝\n');
 });
 
