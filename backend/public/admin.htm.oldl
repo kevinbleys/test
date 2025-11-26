@@ -297,7 +297,7 @@
             Current Date: <span id="currentDate"></span><br>
             Selected: <span id="selectedDate"></span><br>
             Historical Mode: <span id="historicalMode">No</span><br>
-            Last Update: <span id="lastUpdate">--:--:--</span><br>
+            Last Update: <span id="lastUpdate">14:22:25</span><br>
             Status: Loaded <span id="presenceCount">0</span> presences (live)
         </div>
         <div class="date-selector">
@@ -367,60 +367,27 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.getElementById('lastUpdate').textContent = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0') + ':' + String(now.getSeconds()).padStart(2, '0');
     }, 1000);
     document.getElementById('dateInput').addEventListener('change', function() {
-        const dateValue = this.value;
-        const today = new Date().toISOString().split('T')[0];
-        
-        console.log(`[DATE CHANGE] Selected: ${dateValue}, Today: ${today}`);
-        
-        if (dateValue === today) {
-            console.log('[DATE CHANGE] → Today mode');
-            currentMode = 'today';
-            currentHistoryDate = null;
-        } else {
-            console.log('[DATE CHANGE] → History mode');
-            currentMode = 'history';
-            currentHistoryDate = dateValue;
-        }
-        
+        currentHistoryDate = this.value;
+        currentMode = 'history';
         loadPresences();
     });
 });
 
 async function loadPresences() {
     try {
-        console.log(`[LOAD] Mode: ${currentMode}, Date: ${currentHistoryDate || 'today'}`);
-        
-        let url;
-        if (currentMode === 'history' && currentHistoryDate) {
-            url = `${API_URL}/presences/history/${currentHistoryDate}`;
-            document.getElementById('historicalMode').textContent = 'Yes';
-            console.log(`[LOAD] Fetching history: ${url}`);
-        } else {
-            url = `${API_URL}/presences`;
-            document.getElementById('historicalMode').textContent = 'No';
-            console.log(`[LOAD] Fetching today: ${url}`);
-        }
-        
+        const dateInput = document.getElementById('dateInput').value;
+        let url = currentMode === 'history' && currentHistoryDate ? `${API_URL}/presences/history/${currentHistoryDate}` : `${API_URL}/presences`;
+        document.getElementById('historicalMode').textContent = currentMode === 'history' ? 'Yes' : 'No';
         const response = await fetch(url);
-        if (!response.ok) {
-            console.error('[LOAD] Response not OK:', response.status);
-            throw new Error('Failed to load');
-        }
-        
+        if (!response.ok) throw new Error('Failed to load');
         const data = await response.json();
-        console.log(`[LOAD] Received data:`, data);
-        
         const presences = data.presences || [];
-        console.log(`[LOAD] Presences count: ${presences.length}`);
-        
         renderPresences(presences);
         updateStats(presences);
         document.getElementById('presenceCount').textContent = presences.length;
-        document.getElementById('selectedDate').textContent = document.getElementById('dateInput').value;
+        document.getElementById('selectedDate').textContent = dateInput;
     } catch (error) {
-        console.error('[LOAD] Error:', error);
-        renderPresences([]);
-        updateStats([]);
+        console.error('Error:', error);
     }
 }
 
@@ -515,6 +482,7 @@ async function deletePresence(presenceId) {
     } catch (error) { console.error('Error:', error); }
 }
 
+// 🆕 LOAD SEASONS: Past completed + CURRENT season (always)
 async function loadSeasons() {
     try {
         const response = await fetch(`${API_URL}/admin/seasons`);
@@ -528,6 +496,7 @@ async function loadSeasons() {
         const select = document.getElementById('seasonSelect');
         select.innerHTML = '<option value="">Sélectionner une saison...</option>';
         
+        // Sort by startYear descending (newest first)
         const seasons = data.seasons.sort((a, b) => b.startYear - a.startYear);
         
         seasons.forEach(season => {
@@ -556,6 +525,7 @@ async function exportSeason() {
         
         let allPresences = [];
         
+        // Sept - Dec of start year
         for (let month = 9; month <= 12; month++) {
             const startDate = new Date(startYear, month - 1, 1);
             const endDate = new Date(startYear, month, 0);
@@ -572,6 +542,7 @@ async function exportSeason() {
             }
         }
         
+        // Jan - Aug of end year
         for (let month = 1; month <= 8; month++) {
             const startDate = new Date(endYear, month - 1, 1);
             const endDate = new Date(endYear, month, 0);
@@ -595,6 +566,7 @@ async function exportSeason() {
             return;
         }
         
+        // Generate Excel
         const excelData = allPresences.map(p => ({
             'Date': formatDate(p.date), 'Heure': formatTime(p.date), 'Type': p.type === 'product-sale' ? 'Vente Libre' : (p.type === 'adherent' ? 'Adhérent' : 'Non-adhérent'),
             'Nom': p.nom || '', 'Prénom': p.prenom, 'Niveau': p.niveau || 'N/A', 'Tarif': p.tarif || 0, 'Paiement': p.methodePaiement || 'N/A', 'Statut': p.status || p.type
@@ -614,10 +586,8 @@ async function exportSeason() {
 
 function selectToday() {
     currentMode = 'today';
-    currentHistoryDate = null;
     const today = new Date().toISOString().split('T')[0];
     document.getElementById('dateInput').value = today;
-    console.log('[SELECT TODAY] Reset to today mode');
     loadPresences();
 }
 

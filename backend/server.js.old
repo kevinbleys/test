@@ -9,8 +9,8 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 console.log('\n╔════════════════════════════════════════════════════════════╗');
-console.log('║  🚀 CLIMBING CLUB - SERVER v15.2 FINAL                  ║');
-console.log('║  + History Fix + Hourly Sync + Smart Seasons            ║');
+console.log('║  🚀 CLIMBING CLUB - SERVER v15.1 FINAL                  ║');
+console.log('║  + Hourly PepSup Sync + Boot Cleanup + Smart Seasons    ║');
 console.log('╚════════════════════════════════════════════════════════════╝\n');
 
 const DATA_DIR = path.join(__dirname, 'data');
@@ -21,7 +21,7 @@ const SAVED_NON_MEMBERS_FILE = path.join(DATA_DIR, 'saved-non-members.json');
 
 if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
 
-// 🔄 BOOT CLEANUP: Verwijder alle oude backups bij opstart
+// 🔄 BOOT CLEANUP: Verwijder alle oude backups bij opstart (VÓÓR API endpoints actief zijn!)
 (function cleanupBackupsOnStartup() {
     try {
         console.log('[BOOT] 🧹 Checking for old backup files...');
@@ -88,18 +88,20 @@ const writeJsonFile = (filePath, data) => {
     }
 };
 
+// 🔧 GET CURRENT SEASON (always available)
 function getCurrentSeason() {
     const now = new Date();
     const month = now.getMonth();
     const year = now.getFullYear();
     
-    if (month >= 8) {
+    if (month >= 8) { // Sept onwards
         return { startYear: year, endYear: year + 1 };
-    } else {
+    } else { // Jan-Aug
         return { startYear: year - 1, endYear: year };
     }
 }
 
+// 🔧 GET AVAILABLE SEASONS: Completed seasons (from data) + Current season
 function getAvailableSeasons() {
     try {
         const history = readJsonFile(PRESENCE_HISTORY_FILE);
@@ -165,7 +167,7 @@ try {
     syncService = { getMembers: () => [], syncMembers: async () => 0 };
 }
 
-app.get('/', (req, res) => res.json({ status: 'ok', version: '15.2.0' }));
+app.get('/', (req, res) => res.json({ status: 'ok', version: '15.1.0' }));
 app.get('/api/health', (req, res) => res.json({ status: 'healthy' }));
 app.get('/admin', (req, res) => res.sendFile(path.join(__dirname, 'public', 'admin.html')));
 
@@ -394,18 +396,13 @@ app.get('/presences/history/:date', (req, res) => {
         const history = readJsonFile(PRESENCE_HISTORY_FILE);
         const day = history.find(h => h.date === req.params.date);
         
-        console.log(`[HISTORY] Requested date: ${req.params.date}`);
-        console.log(`[HISTORY] Found entry:`, day ? `Yes (${day.presences.length} presences)` : 'No');
-        
         if (!day) {
             return res.json({ success: true, presences: [] });
         }
         
         const presences = Array.isArray(day.presences) ? day.presences : [];
-        console.log(`[HISTORY] Returning ${presences.length} presences for ${req.params.date}`);
         res.json({ success: true, presences });
     } catch (error) {
-        console.error('[HISTORY] Error:', error);
         res.status(500).json({ success: false, presences: [] });
     }
 });
@@ -579,10 +576,11 @@ app.use((error, req, res, next) => {
 
 const server = app.listen(PORT, '0.0.0.0', () => {
     console.log('╔════════════════════════════════════════════════════════════╗');
-    console.log('║  ✅ Server v15.2 FINAL running on http://localhost:' + PORT + '  ║');
-    console.log('║  ✅ HISTORY FIX + HOURLY SYNC + SMART SEASONS          ║');
+    console.log('║  ✅ Server v15.1 FINAL running on http://localhost:' + PORT + '  ║');
+    console.log('║  ✅ HOURLY PEPSUP SYNC + SMART SEASONS + BOOT CLEANUP  ║');
     console.log('╚════════════════════════════════════════════════════════════╝\n');
     
+    // Initial sync on startup
     if (syncService && syncService.syncMembers) {
         console.log('[STARTUP] Running initial PepSup sync...');
         syncService.syncMembers()
@@ -598,6 +596,7 @@ server.on('error', error => {
     }
 });
 
+// 🔄 CRON: Hourly PepSup sync (every hour at :00)
 cron.schedule('0 * * * *', async () => {
     console.log('[CRON] Running hourly PepSup member sync...');
     try {
@@ -612,6 +611,7 @@ cron.schedule('0 * * * *', async () => {
     }
 });
 
+// 🔄 CRON: Cleanup members_backup files every night at 02:00
 cron.schedule('0 2 * * *', async () => {
     console.log('[CRON] Running nightly cleanup of members_backup files...');
     try {
@@ -634,6 +634,7 @@ cron.schedule('0 2 * * *', async () => {
     }
 });
 
+// 🔄 CRON: Auto-export on Aug 31 at 23:59
 cron.schedule('59 23 31 8 *', async () => {
     console.log('[CRON] Auto-exporting season data at August 31 23:59...');
     try {
@@ -644,6 +645,7 @@ cron.schedule('59 23 31 8 *', async () => {
     }
 });
 
+// 🔄 CRON: Check for new season on Sept 1 at 00:01
 cron.schedule('1 0 1 9 *', async () => {
     console.log('[CRON] Checking for new season on September 1...');
     try {
