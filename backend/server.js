@@ -9,8 +9,8 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 console.log('\n╔════════════════════════════════════════════════════════════╗');
-console.log('║  🚀 CLIMBING CLUB - SERVER v15.2 FINAL                  ║');
-console.log('║  + History Fix + Hourly Sync + Smart Seasons            ║');
+console.log('║  🚀 CLIMBING CLUB - SERVER v15.3 FINAL                  ║');
+console.log('║  + Duplicate Fix + History Cleanup + Smart Seasons      ║');
 console.log('╚════════════════════════════════════════════════════════════╝\n');
 
 const DATA_DIR = path.join(__dirname, 'data');
@@ -21,27 +21,85 @@ const SAVED_NON_MEMBERS_FILE = path.join(DATA_DIR, 'saved-non-members.json');
 
 if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
 
-// 🔄 BOOT CLEANUP: Verwijder alle oude backups bij opstart
-(function cleanupBackupsOnStartup() {
+// 🔄 BOOT CLEANUP: Backups + History Duplicates
+(function bootCleanup() {
     try {
-        console.log('[BOOT] 🧹 Checking for old backup files...');
+        console.log('[BOOT] 🧹 Running boot cleanup...\n');
+        
+        // 1. Clean old backup files
+        console.log('[BOOT] Step 1: Checking for backup files...');
         const files = fs.readdirSync(DATA_DIR);
-        let deleted = 0;
+        let deletedBackups = 0;
         
         files.forEach(file => {
             if (file.includes('members_backup')) {
                 const filePath = path.join(DATA_DIR, file);
                 fs.unlinkSync(filePath);
-                console.log(`[BOOT] ✅ Deleted: ${file}`);
-                deleted++;
+                console.log(`[BOOT] ✅ Deleted backup: ${file}`);
+                deletedBackups++;
             }
         });
         
-        if (deleted === 0) {
-            console.log('[BOOT] ✨ No old backup files found - storage is clean!');
+        if (deletedBackups === 0) {
+            console.log('[BOOT] ✨ No backup files found\n');
         } else {
-            console.log(`[BOOT] 🎉 Successfully deleted ${deleted} old backup file(s)!`);
+            console.log(`[BOOT] 🎉 Deleted ${deletedBackups} backup file(s)\n`);
         }
+        
+        // 2. Clean history duplicates
+        console.log('[BOOT] Step 2: Checking presence-history for duplicates...');
+        if (fs.existsSync(PRESENCE_HISTORY_FILE)) {
+            const historyData = fs.readFileSync(PRESENCE_HISTORY_FILE, 'utf8');
+            const history = JSON.parse(historyData);
+            
+            let totalBefore = 0;
+            let totalAfter = 0;
+            let datesFixed = 0;
+            
+            const cleanedHistory = history.map(dayEntry => {
+                if (!dayEntry.presences || !Array.isArray(dayEntry.presences)) {
+                    return dayEntry;
+                }
+                
+                const before = dayEntry.presences.length;
+                totalBefore += before;
+                
+                // Remove duplicates based on unique identifier
+                const seen = new Map();
+                const cleaned = [];
+                
+                dayEntry.presences.forEach(p => {
+                    // Create unique key: nom + prenom + date timestamp
+                    const key = `${(p.nom || '').trim().toLowerCase()}_${(p.prenom || '').trim().toLowerCase()}_${new Date(p.date).getTime()}`;
+                    
+                    if (!seen.has(key)) {
+                        seen.set(key, true);
+                        cleaned.push(p);
+                    }
+                });
+                
+                const after = cleaned.length;
+                totalAfter += after;
+                
+                if (before !== after) {
+                    console.log(`[BOOT] 🧹 ${dayEntry.date}: ${before} → ${after} (removed ${before - after} duplicates)`);
+                    datesFixed++;
+                }
+                
+                return { ...dayEntry, presences: cleaned };
+            });
+            
+            if (datesFixed > 0) {
+                fs.writeFileSync(PRESENCE_HISTORY_FILE, JSON.stringify(cleanedHistory, null, 2));
+                console.log(`[BOOT] ✅ Cleaned ${datesFixed} dates: ${totalBefore} → ${totalAfter} presences (removed ${totalBefore - totalAfter} duplicates)\n`);
+            } else {
+                console.log('[BOOT] ✨ No duplicates found in history\n');
+            }
+        } else {
+            console.log('[BOOT] ℹ️  No presence-history.json found\n');
+        }
+        
+        console.log('[BOOT] ✅ Boot cleanup complete!\n');
     } catch (err) {
         console.error('[BOOT] ❌ Cleanup error:', err);
     }
@@ -165,7 +223,7 @@ try {
     syncService = { getMembers: () => [], syncMembers: async () => 0 };
 }
 
-app.get('/', (req, res) => res.json({ status: 'ok', version: '15.2.0' }));
+app.get('/', (req, res) => res.json({ status: 'ok', version: '15.3.0' }));
 app.get('/api/health', (req, res) => res.json({ status: 'healthy' }));
 app.get('/admin', (req, res) => res.sendFile(path.join(__dirname, 'public', 'admin.html')));
 
@@ -579,8 +637,8 @@ app.use((error, req, res, next) => {
 
 const server = app.listen(PORT, '0.0.0.0', () => {
     console.log('╔════════════════════════════════════════════════════════════╗');
-    console.log('║  ✅ Server v15.2 FINAL running on http://localhost:' + PORT + '  ║');
-    console.log('║  ✅ HISTORY FIX + HOURLY SYNC + SMART SEASONS          ║');
+    console.log('║  ✅ Server v15.3 FINAL running on http://localhost:' + PORT + '  ║');
+    console.log('║  ✅ DUPLICATE FIX + HISTORY CLEANUP + SMART SEASONS     ║');
     console.log('╚════════════════════════════════════════════════════════════╝\n');
     
     if (syncService && syncService.syncMembers) {
