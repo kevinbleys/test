@@ -481,40 +481,7 @@ app.post('/presences/archive', (req, res) => {
         console.log(`[ARCHIVE] Total items to archive: ${combined.length}`);
         console.log(`[ARCHIVE] Presences: ${presences.length}, Attempts: ${attempts.length}`);
         
-        // 🔄 DEDUPLICATE BEFORE ARCHIVING (PREVENTS FUTURE DUPLICATES)
-        // Remove double-registrations (same person within 1 second)
-        const sorted = combined.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
-        const deduplicated = [];
-        let duplicatesSkipped = 0;
-        
-        for (let i = 0; i < sorted.length; i++) {
-            const current = sorted[i];
-            const currentTime = new Date(current.date).getTime();
-            const currentName = `${(current.nom || '').trim().toLowerCase()}_${(current.prenom || '').trim().toLowerCase()}`;
-            
-            // Check if already added in previous iteration with <1 second difference
-            const alreadyAdded = deduplicated.some(p => {
-                const pTime = new Date(p.date).getTime();
-                const pName = `${(p.nom || '').trim().toLowerCase()}_${(p.prenom || '').trim().toLowerCase()}`;
-                return pName === currentName && Math.abs(pTime - currentTime) < 1000;
-            });
-            
-            if (alreadyAdded) {
-                console.log(`[ARCHIVE] ⚠️ Skipped duplicate: ${current.nom} ${current.prenom} at ${new Date(current.date).toISOString()}`);
-                duplicatesSkipped++;
-                continue;
-            }
-            
-            deduplicated.push(current);
-        }
-        
-        if (duplicatesSkipped > 0) {
-            console.log(`[ARCHIVE] ✅ Prevented ${duplicatesSkipped} duplicate(s) from being archived`);
-        }
-        
-        console.log(`[ARCHIVE] Final count after deduplication: ${deduplicated.length}`);
-        
-        if (deduplicated.length === 0) {
+        if (combined.length === 0) {
             console.log('[ARCHIVE] ❌ No data to archive');
             return res.json({ success: false, error: 'No data to archive', archived: 0 });
         }
@@ -529,11 +496,10 @@ app.post('/presences/archive', (req, res) => {
         
         if (idx >= 0) {
             console.log(`[ARCHIVE] Found existing entry for ${today}, updating...`);
-            history[idx].presences = deduplicated;
-        if (idx >= 0) {
-            console.log(`[ARCHIVE] Found existing entry for ${today},
-updating...`);
-            history[idx].presences = deduplicated;
+            history[idx].presences = combined;
+        } else {
+            console.log(`[ARCHIVE] Creating new entry for ${today}...`);
+            history.push({ date: today, presences: combined });
         }
         
         const writeSuccess = writeJsonFile(PRESENCE_HISTORY_FILE, history);
@@ -549,8 +515,8 @@ updating...`);
         
         console.log(`[ARCHIVE] Verification - Data saved for ${today}: ${verifyCount} items`);
         
-        if (verifyCount !== deduplicated.length) {
-            console.log(`[ARCHIVE] ⚠️ WARNING: Mismatch! Expected ${deduplicated.length}, got ${verifyCount}`);
+        if (verifyCount !== combined.length) {
+            console.log(`[ARCHIVE] ⚠️ WARNING: Mismatch! Expected ${combined.length}, got ${verifyCount}`);
         }
         
         writeJsonFile(PRESENCES_FILE, []);
@@ -559,12 +525,7 @@ updating...`);
         console.log(`[ARCHIVE] ✅ Archive complete! Cleared presences.json and login-attempts.json`);
         console.log('╚════════════════════════════════════════════════════════════╝\n');
         
-        res.json({ 
-            success: true, 
-            archived: deduplicated.length, 
-            verification: verifyCount,
-            duplicatesSkipped: duplicatesSkipped
-       });
+        res.json({ success: true, archived: combined.length, verification: verifyCount });
     } catch (error) {
         console.error('[ARCHIVE] ❌ Error:', error);
         res.status(500).json({ success: false, error: error.message });
