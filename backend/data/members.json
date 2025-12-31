@@ -372,7 +372,7 @@
     "dateLastConnexion": "31/08/2025, 09:50",
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "En cours de paiement",
+    "joinFileStatusLabel": "Payé",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -997,15 +997,15 @@
     "mobilePhoneNumber": "+33781712998",
     "email": "bridamien65@gmail.com",
     "allergy": null,
-    "personToContact": null,
-    "personToContactPhoneNumber": null,
+    "personToContact": "Briand Damien",
+    "personToContactPhoneNumber": "+33641241211",
     "corporateName": null,
     "office": null,
     "account": false,
     "dateLastConnexion": null,
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": null,
+    "joinFileStatusLabel": "En cours de paiement",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -1026,7 +1026,7 @@
     ],
     "categories": [
       {
-        "label": "Ancien adhérent"
+        "label": "Adhérent"
       }
     ],
     "roles": [],
@@ -1154,7 +1154,7 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "28/11/2025, 12:29",
+    "dateLastConnexion": "17/12/2025, 16:59",
     "emailValid": true,
     "notificationActive": true,
     "joinFileStatusLabel": null,
@@ -1509,7 +1509,7 @@
     "firstname": "ezio",
     "lastname": "andeol foucher",
     "dateOfBirth": "21/12/2008",
-    "age": 16,
+    "age": 17,
     "gender": "homme",
     "address": "caroline.foucher@gmail.com",
     "additional": null,
@@ -2294,7 +2294,7 @@
     "firstname": "MAËL",
     "lastname": "AUTHENAC",
     "dateOfBirth": "21/12/2017",
-    "age": 7,
+    "age": 8,
     "gender": "homme",
     "address": "38 BIS ROUTE DU TOUS",
     "additional": null,
@@ -2840,10 +2840,10 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "27/11/2025, 08:59",
+    "dateLastConnexion": "04/12/2025, 16:47",
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "À payer",
+    "joinFileStatusLabel": "Payé",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -3629,7 +3629,7 @@
     "firstname": "Loic",
     "lastname": "BEARN",
     "dateOfBirth": "11/12/1990",
-    "age": 34,
+    "age": 35,
     "gender": "homme",
     "address": "206 chemin de tilhac",
     "additional": null,
@@ -4982,7 +4982,7 @@
     "dateLastConnexion": null,
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "En cours de paiement",
+    "joinFileStatusLabel": "Payé",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -5056,7 +5056,7 @@
     "dateLastConnexion": null,
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "En cours de paiement",
+    "joinFileStatusLabel": "Payé",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -5130,7 +5130,7 @@
     "dateLastConnexion": null,
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "En cours de paiement",
+    "joinFileStatusLabel": "Payé",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -5206,7 +5206,7 @@
     "dateLastConnexion": "02/11/2025, 13:32",
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "En cours de paiement",
+    "joinFileStatusLabel": "Payé",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "Gestionnaire de 3 contacts : Emma Bleys, Théo Bleys, Joke Bleys",
@@ -5283,7 +5283,7 @@
     "firstname": "Elise",
     "lastname": "Blondin",
     "dateOfBirth": "08/12/1986",
-    "age": 38,
+    "age": 39,
     "gender": "femme",
     "address": "9 rue de la fontaine",
     "additional": "Appt 7",
@@ -5936,7 +5936,7 @@
     "firstname": "Nans",
     "lastname": "Bonnardel",
     "dateOfBirth": "01/12/1996",
-    "age": 28,
+    "age": 29,
     "gender": "homme",
     "address": "2 chemin de la lande",
     "additional": null,
@@ -7060,7 +7060,7 @@
     "firstname": "Damien",
     "lastname": "Briand",
     "dateOfBirth": "12/12/1991",
-    "age": 33,
+    "age": 34,
     "gender": "homme",
     "address": "7 rue du moulin",
     "additional": null,
@@ -7079,7 +7079,7 @@
     "dateLastConnexion": null,
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": null,
+    "joinFileStatusLabel": "Payé",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -7098,7 +7098,7 @@
     "groups": [],
     "categories": [
       {
-        "label": "Ancien adhérent"
+        "label": "Adhérent"
       }
     ],
     "roles": [],
@@ -8473,7 +8473,7 @@
     "firstname": "Carlos",
     "lastname": "CARAMES",
     "dateOfBirth": "06/12/1985",
-    "age": 39,
+    "age": 40,
     "gender": "homme",
     "address": "4 chemin de Saoussas",
     "additional": null,
@@ -8835,7 +8835,7 @@
     "dateLastConnexion": "02/11/2025, 17:55",
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "En cours de paiement",
+    "joinFileStatusLabel": "Payé",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "Gestionnaire de 1 contact : nino carniato",
@@ -9243,7 +9243,7 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "02/09/2024, 14:33",
+    "dateLastConnexion": "01/12/2025, 19:34",
     "emailValid": true,
     "notificationActive": true,
     "joinFileStatusLabel": null,
@@ -9635,7 +9635,7 @@
     "firstname": "Aurore",
     "lastname": "Caubet",
     "dateOfBirth": "02/12/1974",
-    "age": 50,
+    "age": 51,
     "gender": "femme",
     "address": "120 chemin  de bastinous",
     "additional": null,
@@ -10075,6 +10075,71 @@
     ]
   },
   {
+    "membreId": 1200775,
+    "currentPictureUrl": "https://cdn.pepsup.com/resources/images/MEMBERS/000/120/077/1200775/IMAGE/1200775_s.png?1765126102405",
+    "firstname": "Hervé",
+    "lastname": "Cercley",
+    "dateOfBirth": "26/05/1990",
+    "age": 35,
+    "gender": "homme",
+    "address": "68 quartier Carrère",
+    "additional": "Chez MIGLIETTI Michel et Odette",
+    "postalCode": "65240",
+    "town": "Aulon",
+    "country": "France",
+    "phoneNumber": null,
+    "mobilePhoneNumber": "+33647374832",
+    "email": "herve.cercley@gmail.com",
+    "allergy": null,
+    "personToContact": "Gilles Cercley",
+    "personToContactPhoneNumber": "+33620214151",
+    "corporateName": null,
+    "office": null,
+    "account": true,
+    "dateLastConnexion": "10/12/2025, 20:19",
+    "emailValid": true,
+    "notificationActive": true,
+    "joinFileStatusLabel": "Payé",
+    "joinFileLastPaymentType": null,
+    "joinFileLastPaymentDate": null,
+    "childsLabel": "",
+    "childMembers": [],
+    "parentsLabel": "",
+    "parentMembers": [],
+    "groups": [],
+    "categories": [
+      {
+        "label": "Adhérent"
+      }
+    ],
+    "roles": [],
+    "medicalCertificateUrl": null,
+    "dateMedicalCertificate": null,
+    "licence": null,
+    "customFields": [
+      {
+        "label": "documents utiles",
+        "value": null
+      },
+      {
+        "label": "Ville de naissance",
+        "value": "Dijon"
+      },
+      {
+        "label": "code postale Ville de naissance",
+        "value": "21000"
+      },
+      {
+        "label": "Pays de naissance",
+        "value": "France"
+      },
+      {
+        "label": "Nationalité",
+        "value": "Française"
+      }
+    ]
+  },
+  {
     "membreId": 523049,
     "currentPictureUrl": null,
     "firstname": "Edith",
@@ -10219,6 +10284,71 @@
       {
         "label": "Nationalité",
         "value": "francaise"
+      }
+    ]
+  },
+  {
+    "membreId": 1200862,
+    "currentPictureUrl": null,
+    "firstname": "Pauline",
+    "lastname": "Charles",
+    "dateOfBirth": "26/07/2001",
+    "age": 24,
+    "gender": "femme",
+    "address": "18 rue des fougères",
+    "additional": "Bâtiment A, résidence La tour",
+    "postalCode": "65170",
+    "town": "St-Lary-Soulan",
+    "country": "France",
+    "phoneNumber": null,
+    "mobilePhoneNumber": "+33767936078",
+    "email": "paulinebouhiercharles@gmail.com",
+    "allergy": null,
+    "personToContact": "Père, Alexandre CHARLES",
+    "personToContactPhoneNumber": "+33688709340",
+    "corporateName": null,
+    "office": null,
+    "account": true,
+    "dateLastConnexion": "18/12/2025, 15:46",
+    "emailValid": true,
+    "notificationActive": true,
+    "joinFileStatusLabel": "Payé",
+    "joinFileLastPaymentType": null,
+    "joinFileLastPaymentDate": null,
+    "childsLabel": "",
+    "childMembers": [],
+    "parentsLabel": "",
+    "parentMembers": [],
+    "groups": [],
+    "categories": [
+      {
+        "label": "Adhérent"
+      }
+    ],
+    "roles": [],
+    "medicalCertificateUrl": null,
+    "dateMedicalCertificate": null,
+    "licence": null,
+    "customFields": [
+      {
+        "label": "documents utiles",
+        "value": "https://www.pepsup.com/resources/documents/MEMBERS/000/120/086/1200862/MEMBRE_CLUB_CUSTOM_FIELD/6634614.jpg?1766071535684"
+      },
+      {
+        "label": "Ville de naissance",
+        "value": "Curitiba"
+      },
+      {
+        "label": "code postale Ville de naissance",
+        "value": "99"
+      },
+      {
+        "label": "Pays de naissance",
+        "value": "Brésil"
+      },
+      {
+        "label": "Nationalité",
+        "value": "Française"
       }
     ]
   },
@@ -10661,10 +10791,10 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "28/11/2025, 12:39",
+    "dateLastConnexion": "02/12/2025, 21:36",
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "À payer",
+    "joinFileStatusLabel": "Payé",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -11221,7 +11351,7 @@
     "firstname": "ISAURE",
     "lastname": "CLARENS",
     "dateOfBirth": "16/12/1985",
-    "age": 39,
+    "age": 40,
     "gender": "femme",
     "address": "rue de Strasbourg",
     "additional": null,
@@ -11237,7 +11367,7 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "02/10/2025, 12:26",
+    "dateLastConnexion": "02/12/2025, 14:07",
     "emailValid": true,
     "notificationActive": true,
     "joinFileStatusLabel": "En cours de paiement",
@@ -12230,7 +12360,7 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "17/11/2025, 19:00",
+    "dateLastConnexion": "09/12/2025, 20:08",
     "emailValid": true,
     "notificationActive": true,
     "joinFileStatusLabel": "En cours de paiement",
@@ -12462,7 +12592,7 @@
     "dateLastConnexion": "07/08/2025, 14:10",
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "En cours de paiement",
+    "joinFileStatusLabel": "Payé",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -12973,7 +13103,7 @@
     "firstname": "THIBAUT",
     "lastname": "de MUYSER",
     "dateOfBirth": "18/12/2014",
-    "age": 10,
+    "age": 11,
     "gender": "homme",
     "address": "6 IMPASSE CAOUSSADET",
     "additional": null,
@@ -13246,6 +13376,71 @@
     ]
   },
   {
+    "membreId": 1200164,
+    "currentPictureUrl": null,
+    "firstname": "Léa",
+    "lastname": "DELAGE",
+    "dateOfBirth": "19/09/1997",
+    "age": 28,
+    "gender": "femme",
+    "address": "20 chemin de saint lary, résidence l'esplanade",
+    "additional": null,
+    "postalCode": "65170",
+    "town": "Vielle-Aure",
+    "country": "France",
+    "phoneNumber": null,
+    "mobilePhoneNumber": "+33683105215",
+    "email": "lea.delage.rabouin@gmail.com",
+    "allergy": null,
+    "personToContact": null,
+    "personToContactPhoneNumber": null,
+    "corporateName": null,
+    "office": null,
+    "account": true,
+    "dateLastConnexion": "10/12/2025, 18:31",
+    "emailValid": true,
+    "notificationActive": true,
+    "joinFileStatusLabel": "Payé",
+    "joinFileLastPaymentType": null,
+    "joinFileLastPaymentDate": null,
+    "childsLabel": "",
+    "childMembers": [],
+    "parentsLabel": "",
+    "parentMembers": [],
+    "groups": [],
+    "categories": [
+      {
+        "label": "Adhérent"
+      }
+    ],
+    "roles": [],
+    "medicalCertificateUrl": null,
+    "dateMedicalCertificate": null,
+    "licence": null,
+    "customFields": [
+      {
+        "label": "documents utiles",
+        "value": null
+      },
+      {
+        "label": "Ville de naissance",
+        "value": "Blois"
+      },
+      {
+        "label": "code postale Ville de naissance",
+        "value": "41000"
+      },
+      {
+        "label": "Pays de naissance",
+        "value": "France"
+      },
+      {
+        "label": "Nationalité",
+        "value": "Française"
+      }
+    ]
+  },
+  {
     "membreId": 521413,
     "currentPictureUrl": null,
     "firstname": "Roman",
@@ -13332,10 +13527,10 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "28/11/2025, 07:17",
+    "dateLastConnexion": "03/12/2025, 09:03",
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": null,
+    "joinFileStatusLabel": "Payé",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -13345,7 +13540,7 @@
     "groups": [],
     "categories": [
       {
-        "label": "Nouveau contact (adhésion)"
+        "label": "Adhérent"
       }
     ],
     "roles": [],
@@ -14603,7 +14798,7 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "04/08/2025, 09:50",
+    "dateLastConnexion": "04/12/2025, 09:57",
     "emailValid": true,
     "notificationActive": true,
     "joinFileStatusLabel": null,
@@ -15661,7 +15856,7 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "30/11/2025, 09:51",
+    "dateLastConnexion": "30/12/2025, 18:17",
     "emailValid": true,
     "notificationActive": true,
     "joinFileStatusLabel": null,
@@ -16173,7 +16368,7 @@
     "dateLastConnexion": "07/10/2025, 12:00",
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "En cours de paiement",
+    "joinFileStatusLabel": "Payé",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -17344,6 +17539,71 @@
     ]
   },
   {
+    "membreId": 1199438,
+    "currentPictureUrl": null,
+    "firstname": "pierre",
+    "lastname": "fortier",
+    "dateOfBirth": "03/06/1992",
+    "age": 33,
+    "gender": "homme",
+    "address": "hameau de soubissan",
+    "additional": "5 bié de palu",
+    "postalCode": "65170",
+    "town": "guchan",
+    "country": "france",
+    "phoneNumber": null,
+    "mobilePhoneNumber": "+33643662679",
+    "email": "pierrefortier@hotmail.fr",
+    "allergy": null,
+    "personToContact": "nanard",
+    "personToContactPhoneNumber": "+33677068295",
+    "corporateName": null,
+    "office": null,
+    "account": true,
+    "dateLastConnexion": "05/12/2025, 19:18",
+    "emailValid": true,
+    "notificationActive": true,
+    "joinFileStatusLabel": "Payé",
+    "joinFileLastPaymentType": null,
+    "joinFileLastPaymentDate": null,
+    "childsLabel": "",
+    "childMembers": [],
+    "parentsLabel": "",
+    "parentMembers": [],
+    "groups": [],
+    "categories": [
+      {
+        "label": "Adhérent"
+      }
+    ],
+    "roles": [],
+    "medicalCertificateUrl": null,
+    "dateMedicalCertificate": null,
+    "licence": null,
+    "customFields": [
+      {
+        "label": "documents utiles",
+        "value": null
+      },
+      {
+        "label": "Ville de naissance",
+        "value": "Lannemezan"
+      },
+      {
+        "label": "code postale Ville de naissance",
+        "value": "65300"
+      },
+      {
+        "label": "Pays de naissance",
+        "value": "France"
+      },
+      {
+        "label": "Nationalité",
+        "value": "Français"
+      }
+    ]
+  },
+  {
     "membreId": 888747,
     "currentPictureUrl": null,
     "firstname": "Estelle",
@@ -17495,7 +17755,7 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "24/11/2025, 13:48",
+    "dateLastConnexion": "04/12/2025, 16:56",
     "emailValid": true,
     "notificationActive": true,
     "joinFileStatusLabel": null,
@@ -18006,7 +18266,7 @@
     "firstname": "Emy",
     "lastname": "Gaillabaud -Angellier",
     "dateOfBirth": "28/12/2017",
-    "age": 7,
+    "age": 8,
     "gender": "femme",
     "address": "Chemin des Aubépines Les Granges de Trescazes b",
     "additional": null,
@@ -18213,7 +18473,7 @@
     "firstname": "Julien",
     "lastname": "Gallot",
     "dateOfBirth": "17/12/1986",
-    "age": 38,
+    "age": 39,
     "gender": "homme",
     "address": "36 rue Vincent Mir",
     "additional": "Appartement 29",
@@ -18429,7 +18689,7 @@
     "firstname": "Inès",
     "lastname": "Garnier",
     "dateOfBirth": "20/12/2015",
-    "age": 9,
+    "age": 10,
     "gender": "femme",
     "address": "2 rue du montaut",
     "additional": null,
@@ -18875,7 +19135,7 @@
     "firstname": "Ludovic",
     "lastname": "Gays chaume",
     "dateOfBirth": "05/12/2015",
-    "age": 9,
+    "age": 10,
     "gender": "homme",
     "address": "Hameau saint tritous",
     "additional": null,
@@ -19830,7 +20090,7 @@
     "firstname": "Martha",
     "lastname": "Giron",
     "dateOfBirth": "14/12/1995",
-    "age": 29,
+    "age": 30,
     "gender": "femme",
     "address": "247 rue Carnot",
     "additional": null,
@@ -20027,7 +20287,7 @@
     "firstname": "William",
     "lastname": "Golvin",
     "dateOfBirth": "03/12/1989",
-    "age": 35,
+    "age": 36,
     "gender": "homme",
     "address": "5 rue du Bédat",
     "additional": null,
@@ -20308,7 +20568,7 @@
     "firstname": "maxime",
     "lastname": "gourdain steux",
     "dateOfBirth": "20/12/2018",
-    "age": 6,
+    "age": 7,
     "gender": "homme",
     "address": "26 route d'Espagne",
     "additional": null,
@@ -20855,7 +21115,7 @@
     "firstname": "Ivy",
     "lastname": "Guillaumet",
     "dateOfBirth": "17/12/1997",
-    "age": 27,
+    "age": 28,
     "gender": "femme",
     "address": "2 place de la fontaine",
     "additional": null,
@@ -20997,7 +21257,7 @@
     "firstname": "Naomi",
     "lastname": "Hache",
     "dateOfBirth": "26/12/2000",
-    "age": 24,
+    "age": 25,
     "gender": "femme",
     "address": "19 rue du Bourg. Appt 20",
     "additional": null,
@@ -21071,7 +21331,7 @@
     "firstname": "Romain",
     "lastname": "Hauraix",
     "dateOfBirth": "08/12/1986",
-    "age": 38,
+    "age": 39,
     "gender": "homme",
     "address": "Chemin Grange De Lias",
     "additional": null,
@@ -21500,7 +21760,7 @@
     "firstname": "LOU",
     "lastname": "HERGAULT",
     "dateOfBirth": "07/12/2013",
-    "age": 11,
+    "age": 12,
     "gender": "femme",
     "address": "179 RUE BAYSOLE",
     "additional": null,
@@ -22539,7 +22799,7 @@
     "firstname": "Amelie",
     "lastname": "Jones",
     "dateOfBirth": "16/12/2017",
-    "age": 7,
+    "age": 8,
     "gender": "femme",
     "address": "Chalet Miloby",
     "additional": "Cap de Thuou",
@@ -22993,7 +23253,7 @@
     "dateLastConnexion": null,
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "En cours de paiement",
+    "joinFileStatusLabel": "Payé",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -23353,7 +23613,7 @@
     "dateLastConnexion": "29/08/2025, 13:27",
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "En cours de paiement",
+    "joinFileStatusLabel": "Payé",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -23557,7 +23817,7 @@
     "dateLastConnexion": null,
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "En cours de paiement",
+    "joinFileStatusLabel": "Payé",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -23686,7 +23946,7 @@
     "firstname": "Amélia",
     "lastname": "Lagarde",
     "dateOfBirth": "30/12/2018",
-    "age": 6,
+    "age": 7,
     "gender": "femme",
     "address": "1 rue de l’église",
     "additional": null,
@@ -23705,7 +23965,7 @@
     "dateLastConnexion": null,
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "En cours de paiement",
+    "joinFileStatusLabel": "Payé",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -25282,7 +25542,7 @@
     "firstname": "Lily",
     "lastname": "Lebret",
     "dateOfBirth": "17/12/2009",
-    "age": 15,
+    "age": 16,
     "gender": "femme",
     "address": "10 rue du Lustou",
     "additional": null,
@@ -25834,7 +26094,7 @@
     "firstname": "SOPHIE",
     "lastname": "LEGEAY",
     "dateOfBirth": "05/12/1995",
-    "age": 29,
+    "age": 30,
     "gender": "femme",
     "address": "20 route d'Arreau",
     "additional": null,
@@ -26052,7 +26312,7 @@
     "firstname": "Nicolas",
     "lastname": "Lemaire",
     "dateOfBirth": "22/12/1974",
-    "age": 50,
+    "age": 51,
     "gender": "homme",
     "address": "Les Mésanges, 1 impasse Couménie",
     "additional": "Centre de Montagne La Soulane",
@@ -27169,7 +27429,7 @@
     "firstname": "Clémence",
     "lastname": "LOPEZ",
     "dateOfBirth": "02/12/1996",
-    "age": 28,
+    "age": 29,
     "gender": "femme",
     "address": "29 chemin du Cazalet",
     "additional": null,
@@ -27389,10 +27649,10 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "21/10/2025, 18:53",
+    "dateLastConnexion": "11/12/2025, 19:08",
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "À payer",
+    "joinFileStatusLabel": "Payé",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -28231,10 +28491,10 @@
     "dateOfBirth": "26/09/1994",
     "age": 31,
     "gender": "homme",
-    "address": "65 rue peyrourier",
+    "address": "8 rue saint Roch",
     "additional": null,
-    "postalCode": "38710",
-    "town": "Cornillon-en-Trièves",
+    "postalCode": "65370",
+    "town": "Loures Barousse",
     "country": "France",
     "phoneNumber": null,
     "mobilePhoneNumber": "+33611361600",
@@ -28245,10 +28505,10 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "09/04/2025, 13:05",
+    "dateLastConnexion": "16/12/2025, 14:26",
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": null,
+    "joinFileStatusLabel": "Payé",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -28258,7 +28518,7 @@
     "groups": [],
     "categories": [
       {
-        "label": "Ancien adhérent"
+        "label": "Adhérent"
       }
     ],
     "roles": [],
@@ -28268,7 +28528,7 @@
     "customFields": [
       {
         "label": "documents utiles",
-        "value": "https://www.pepsup.com/resources/documents/MEMBERS/000/090/472/904722/MEMBRE_CLUB_CUSTOM_FIELD/5108305.jpg?1732549890000"
+        "value": "https://www.pepsup.com/resources/documents/MEMBERS/000/090/472/904722/MEMBRE_CLUB_CUSTOM_FIELD/5108305.jpg?1764670192242"
       },
       {
         "label": "Ville de naissance",
@@ -28276,7 +28536,7 @@
       },
       {
         "label": "code postale Ville de naissance",
-        "value": null
+        "value": "13000"
       },
       {
         "label": "Pays de naissance",
@@ -28957,7 +29217,7 @@
     "firstname": "Arthur",
     "lastname": "Marion",
     "dateOfBirth": "21/12/1991",
-    "age": 33,
+    "age": 34,
     "gender": "homme",
     "address": "3 cami de berdeste",
     "additional": null,
@@ -29598,7 +29858,7 @@
     "firstname": "leon",
     "lastname": "martin breton",
     "dateOfBirth": "16/12/2016",
-    "age": 8,
+    "age": 9,
     "gender": "homme",
     "address": "13 RUE DU  MONT",
     "additional": null,
@@ -29806,6 +30066,80 @@
     ]
   },
   {
+    "membreId": 1207298,
+    "currentPictureUrl": null,
+    "firstname": "Leonardo",
+    "lastname": "Martinoli",
+    "dateOfBirth": "31/05/1992",
+    "age": 33,
+    "gender": "homme",
+    "address": "425 route d’escalere",
+    "additional": null,
+    "postalCode": "65410",
+    "town": "Beyrede-jumet camous",
+    "country": "Francia",
+    "phoneNumber": "+33651362016",
+    "mobilePhoneNumber": "+33651362016",
+    "email": "leonardo.martinoli@gmail.com",
+    "allergy": null,
+    "personToContact": null,
+    "personToContactPhoneNumber": "+33651362016",
+    "corporateName": null,
+    "office": null,
+    "account": false,
+    "dateLastConnexion": null,
+    "emailValid": true,
+    "notificationActive": true,
+    "joinFileStatusLabel": null,
+    "joinFileLastPaymentType": null,
+    "joinFileLastPaymentDate": null,
+    "childsLabel": "",
+    "childMembers": [],
+    "parentsLabel": "Géré par 1 contact : Leonardo Nicolas Martinoli",
+    "parentMembers": [
+      {
+        "membreId": 762791,
+        "firstname": "Leonardo Nicolas",
+        "lastname": "Martinoli",
+        "phoneNumber": null,
+        "mobilePhoneNumber": "+33651362016",
+        "email": "leonardo.martinoli@gmail.com"
+      }
+    ],
+    "groups": [],
+    "categories": [
+      {
+        "label": "Nouveau contact (adhésion)"
+      }
+    ],
+    "roles": [],
+    "medicalCertificateUrl": null,
+    "dateMedicalCertificate": null,
+    "licence": null,
+    "customFields": [
+      {
+        "label": "documents utiles",
+        "value": null
+      },
+      {
+        "label": "Ville de naissance",
+        "value": "Buenos Aires"
+      },
+      {
+        "label": "code postale Ville de naissance",
+        "value": "3340"
+      },
+      {
+        "label": "Pays de naissance",
+        "value": "Argentina"
+      },
+      {
+        "label": "Nationalité",
+        "value": "Argentina"
+      }
+    ]
+  },
+  {
     "membreId": 762791,
     "currentPictureUrl": "https://cdn.pepsup.com/resources/images/MEMBERS/000/076/279/762791/IMAGE/762791_s.png?1702311980324",
     "firstname": "Leonardo Nicolas",
@@ -29827,14 +30161,23 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "14/10/2025, 18:40",
+    "dateLastConnexion": "29/12/2025, 21:44",
     "emailValid": true,
     "notificationActive": true,
     "joinFileStatusLabel": "À payer",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
-    "childsLabel": "",
-    "childMembers": [],
+    "childsLabel": "Gestionnaire de 1 contact : Leonardo Martinoli",
+    "childMembers": [
+      {
+        "membreId": 1207298,
+        "firstname": "Leonardo",
+        "lastname": "Martinoli",
+        "phoneNumber": "+33651362016",
+        "mobilePhoneNumber": "+33651362016",
+        "email": "leonardo.martinoli@gmail.com"
+      }
+    ],
     "parentsLabel": "",
     "parentMembers": [],
     "groups": [],
@@ -29876,7 +30219,7 @@
     "firstname": "Pablo",
     "lastname": "Mas Molto",
     "dateOfBirth": "09/12/1989",
-    "age": 35,
+    "age": 36,
     "gender": "homme",
     "address": "11, Rue Grande Rue",
     "additional": "App 4",
@@ -30565,7 +30908,7 @@
     "firstname": "Eva",
     "lastname": "Mensan",
     "dateOfBirth": "28/12/1990",
-    "age": 34,
+    "age": 35,
     "gender": "femme",
     "address": "14 route de l'Arbizon",
     "additional": "Le nid joyeux",
@@ -31489,7 +31832,7 @@
     "firstname": "Noà",
     "lastname": "Morales",
     "dateOfBirth": "31/12/2003",
-    "age": 21,
+    "age": 22,
     "gender": "homme",
     "address": "21 T Chemin Eliar Laue",
     "additional": null,
@@ -32186,7 +32529,7 @@
     "firstname": "Patrice",
     "lastname": "MUR",
     "dateOfBirth": "12/12/1968",
-    "age": 56,
+    "age": 57,
     "gender": "homme",
     "address": "705 Route de Couplau 65410 Beyrède-Jumet-Camous",
     "additional": null,
@@ -32868,7 +33211,7 @@
     "firstname": "Thomas",
     "lastname": "Neubert",
     "dateOfBirth": "07/12/1967",
-    "age": 57,
+    "age": 58,
     "gender": "homme",
     "address": "960 voie romaine",
     "additional": null,
@@ -32884,7 +33227,7 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "07/09/2025, 21:31",
+    "dateLastConnexion": "14/12/2025, 19:28",
     "emailValid": true,
     "notificationActive": true,
     "joinFileStatusLabel": "Payé",
@@ -33815,7 +34158,7 @@
     "firstname": "Ana Yolanda",
     "lastname": "NOVILLO OLMEDO",
     "dateOfBirth": "16/12/1978",
-    "age": 46,
+    "age": 47,
     "gender": "femme",
     "address": "1 Route de Beyrède",
     "additional": "Appartement 1",
@@ -34801,7 +35144,7 @@
     "firstname": "franck",
     "lastname": "perret",
     "dateOfBirth": "18/12/1964",
-    "age": 60,
+    "age": 61,
     "gender": "homme",
     "address": "2 resid desman",
     "additional": "place des agaous",
@@ -35024,7 +35367,7 @@
     "dateLastConnexion": "25/08/2025, 12:16",
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "En cours de paiement",
+    "joinFileStatusLabel": "Payé",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -35236,7 +35579,7 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "06/01/2025, 17:16",
+    "dateLastConnexion": "24/12/2025, 15:05",
     "emailValid": true,
     "notificationActive": true,
     "joinFileStatusLabel": null,
@@ -36235,7 +36578,7 @@
     "firstname": "Jeremy",
     "lastname": "Porte",
     "dateOfBirth": "25/12/1992",
-    "age": 32,
+    "age": 33,
     "gender": "homme",
     "address": "125 chemin de bayelle",
     "additional": null,
@@ -37136,6 +37479,71 @@
     ]
   },
   {
+    "membreId": 1199441,
+    "currentPictureUrl": null,
+    "firstname": "Lise",
+    "lastname": "Quichaud",
+    "dateOfBirth": "22/08/1998",
+    "age": 27,
+    "gender": "femme",
+    "address": "1 bié de pascaou",
+    "additional": "Hameau de Saubissan",
+    "postalCode": "65170",
+    "town": "GUCHAN",
+    "country": "FR",
+    "phoneNumber": null,
+    "mobilePhoneNumber": "+33764798978",
+    "email": "lise.quichaud@gmail.com",
+    "allergy": null,
+    "personToContact": "Théo Leffray",
+    "personToContactPhoneNumber": "+33642041298",
+    "corporateName": null,
+    "office": null,
+    "account": true,
+    "dateLastConnexion": "04/12/2025, 11:39",
+    "emailValid": true,
+    "notificationActive": true,
+    "joinFileStatusLabel": "Payé",
+    "joinFileLastPaymentType": null,
+    "joinFileLastPaymentDate": null,
+    "childsLabel": "",
+    "childMembers": [],
+    "parentsLabel": "",
+    "parentMembers": [],
+    "groups": [],
+    "categories": [
+      {
+        "label": "Adhérent"
+      }
+    ],
+    "roles": [],
+    "medicalCertificateUrl": null,
+    "dateMedicalCertificate": null,
+    "licence": null,
+    "customFields": [
+      {
+        "label": "documents utiles",
+        "value": null
+      },
+      {
+        "label": "Ville de naissance",
+        "value": "Paris"
+      },
+      {
+        "label": "code postale Ville de naissance",
+        "value": "75014"
+      },
+      {
+        "label": "Pays de naissance",
+        "value": "France"
+      },
+      {
+        "label": "Nationalité",
+        "value": "Française"
+      }
+    ]
+  },
+  {
     "membreId": 888268,
     "currentPictureUrl": null,
     "firstname": "Claire",
@@ -37215,7 +37623,7 @@
     "firstname": "Boris",
     "lastname": "RAIMONDO",
     "dateOfBirth": "03/12/1997",
-    "age": 27,
+    "age": 28,
     "gender": "homme",
     "address": "400 Route de la Barthe",
     "additional": null,
@@ -37357,7 +37765,7 @@
     "firstname": "laurent",
     "lastname": "raoult",
     "dateOfBirth": "05/12/1978",
-    "age": 46,
+    "age": 47,
     "gender": "homme",
     "address": "24 Route du Tous",
     "additional": null,
@@ -37376,7 +37784,7 @@
     "dateLastConnexion": "27/08/2025, 13:31",
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "En cours de paiement",
+    "joinFileStatusLabel": "Payé",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -39583,7 +39991,7 @@
     "dateLastConnexion": "17/10/2025, 21:42",
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "En cours de paiement",
+    "joinFileStatusLabel": "Payé",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -40605,7 +41013,7 @@
     "dateLastConnexion": "03/11/2025, 09:59",
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "En cours de paiement",
+    "joinFileStatusLabel": "Payé",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -40662,15 +41070,15 @@
     "mobilePhoneNumber": "+33642644800",
     "email": "marie.sahuc@gmail.com",
     "allergy": null,
-    "personToContact": null,
+    "personToContact": "Cyrille DOUCE",
     "personToContactPhoneNumber": "+33643669225",
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "11/11/2025, 18:08",
+    "dateLastConnexion": "02/12/2025, 14:52",
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": null,
+    "joinFileStatusLabel": "À payer",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -40680,7 +41088,7 @@
     "groups": [],
     "categories": [
       {
-        "label": "Nouveau contact (adhésion)"
+        "label": "Adhérent"
       }
     ],
     "roles": [],
@@ -41227,7 +41635,7 @@
     "firstname": "Elya",
     "lastname": "SANS",
     "dateOfBirth": "10/12/2017",
-    "age": 7,
+    "age": 8,
     "gender": "femme",
     "address": "21 cami du sarradet",
     "additional": null,
@@ -41375,7 +41783,7 @@
     "firstname": "elya",
     "lastname": "sans",
     "dateOfBirth": "10/12/2017",
-    "age": 7,
+    "age": 8,
     "gender": "femme",
     "address": "21 cami du sarradet",
     "additional": null,
@@ -41514,7 +41922,7 @@
     "firstname": "Enzo",
     "lastname": "Santos-Buquet",
     "dateOfBirth": "30/12/2013",
-    "age": 11,
+    "age": 12,
     "gender": "homme",
     "address": "Résidence du Centre, n°15, 15 rue Alsace Lorraine",
     "additional": null,
@@ -41994,8 +42402,8 @@
     "dateOfBirth": "11/05/1991",
     "age": 34,
     "gender": "homme",
-    "address": "Lieu dit Meyabat",
-    "additional": null,
+    "address": "1 bié de Meyabat",
+    "additional": "Chalet après service technique",
     "postalCode": "65170",
     "town": "Aragnouet",
     "country": "France",
@@ -42004,14 +42412,14 @@
     "email": "xalbat64200@gmail.com",
     "allergy": null,
     "personToContact": null,
-    "personToContactPhoneNumber": null,
+    "personToContactPhoneNumber": "+33628018747",
     "corporateName": null,
     "office": null,
-    "account": false,
+    "account": true,
     "dateLastConnexion": null,
-    "emailValid": true,
+    "emailValid": false,
     "notificationActive": true,
-    "joinFileStatusLabel": null,
+    "joinFileStatusLabel": "À payer",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -42030,7 +42438,7 @@
     "groups": [],
     "categories": [
       {
-        "label": "Ancien adhérent"
+        "label": "Adhérent"
       }
     ],
     "roles": [],
@@ -42048,7 +42456,7 @@
       },
       {
         "label": "code postale Ville de naissance",
-        "value": null
+        "value": "64100"
       },
       {
         "label": "Pays de naissance",
@@ -43026,7 +43434,7 @@
     "dateLastConnexion": null,
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "À payer",
+    "joinFileStatusLabel": "En cours de paiement",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -43155,7 +43563,7 @@
     "firstname": "sebastien",
     "lastname": "soulans",
     "dateOfBirth": "23/12/1984",
-    "age": 40,
+    "age": 41,
     "gender": "homme",
     "address": "VILLAGE",
     "additional": null,
@@ -43171,10 +43579,10 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "19/11/2025, 16:41",
+    "dateLastConnexion": "30/12/2025, 09:41",
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "À payer",
+    "joinFileStatusLabel": "En cours de paiement",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "Gestionnaire de 2 contacts : Flavie soulans, clément soulans",
@@ -43648,7 +44056,7 @@
     "firstname": "Toma",
     "lastname": "Stephan",
     "dateOfBirth": "28/12/2014",
-    "age": 10,
+    "age": 11,
     "gender": "homme",
     "address": "30 chemin du Haut mour",
     "additional": null,
@@ -44023,7 +44431,7 @@
     "additional": null,
     "postalCode": "65590",
     "town": "BORDERES LOURON ILHAN",
-    "country": null,
+    "country": "France",
     "phoneNumber": null,
     "mobilePhoneNumber": "+33787597775",
     "email": "oriane.taburet@orange.fr",
@@ -44033,10 +44441,10 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "08/12/2022, 16:27",
+    "dateLastConnexion": "11/12/2025, 21:42",
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": null,
+    "joinFileStatusLabel": "Payé",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -44046,7 +44454,7 @@
     "groups": [],
     "categories": [
       {
-        "label": "Ancien adhérent"
+        "label": "Adhérent"
       },
       {
         "label": "Bénévole"
@@ -44070,7 +44478,7 @@
       },
       {
         "label": "code postale Ville de naissance",
-        "value": null
+        "value": "46000"
       },
       {
         "label": "Pays de naissance",
@@ -44088,7 +44496,7 @@
     "firstname": "Nino",
     "lastname": "Tadjeddine",
     "dateOfBirth": "01/12/2010",
-    "age": 14,
+    "age": 15,
     "gender": "homme",
     "address": "Village Jumet",
     "additional": "Dessus du village",
@@ -44462,7 +44870,7 @@
     "firstname": "Paul",
     "lastname": "TAURIN",
     "dateOfBirth": "29/12/2016",
-    "age": 8,
+    "age": 9,
     "gender": "homme",
     "address": "11 rue des 3 fontaines",
     "additional": null,
@@ -44536,7 +44944,7 @@
     "firstname": "Jacques",
     "lastname": "TELLIER",
     "dateOfBirth": "02/12/1962",
-    "age": 62,
+    "age": 63,
     "gender": "homme",
     "address": "1690 rue Voie Romaine",
     "additional": null,
@@ -44682,7 +45090,7 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "28/11/2025, 19:21",
+    "dateLastConnexion": "05/12/2025, 17:17",
     "emailValid": true,
     "notificationActive": true,
     "joinFileStatusLabel": "Payé",
@@ -44805,7 +45213,7 @@
     "firstname": "Jean-Guillaume",
     "lastname": "Thiebault",
     "dateOfBirth": "18/12/1980",
-    "age": 44,
+    "age": 45,
     "gender": "homme",
     "address": "2 impasse de l'église",
     "additional": null,
@@ -45166,7 +45574,7 @@
     "firstname": "Soizic",
     "lastname": "Toucheboeuf",
     "dateOfBirth": "14/12/1995",
-    "age": 29,
+    "age": 30,
     "gender": "femme",
     "address": "10 chemin de Peyrelade",
     "additional": null,
@@ -46865,10 +47273,10 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "27/11/2025, 08:29",
+    "dateLastConnexion": "15/12/2025, 17:57",
     "emailValid": true,
     "notificationActive": false,
-    "joinFileStatusLabel": "À payer",
+    "joinFileStatusLabel": "Payé",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -46979,7 +47387,7 @@
     "firstname": "ANTOINE",
     "lastname": "VEINTIMILLA",
     "dateOfBirth": "23/12/2015",
-    "age": 9,
+    "age": 10,
     "gender": "homme",
     "address": "730 RUE DES THERMES",
     "additional": null,
@@ -47053,7 +47461,7 @@
     "firstname": "Antoine",
     "lastname": "Veintimilla",
     "dateOfBirth": "23/12/2015",
-    "age": 9,
+    "age": 10,
     "gender": "homme",
     "address": "730 rue des thermes",
     "additional": null,
@@ -47129,7 +47537,7 @@
     "dateOfBirth": "09/08/1988",
     "age": 37,
     "gender": "femme",
-    "address": "Centre village camous",
+    "address": "94 rue des grandes ,Camous",
     "additional": "0",
     "postalCode": "65410",
     "town": "Beyrede Jumet CAMOUS",
@@ -47138,12 +47546,12 @@
     "mobilePhoneNumber": "+33612834860",
     "email": "vanessa.vella04@gmail.com",
     "allergy": null,
-    "personToContact": null,
-    "personToContactPhoneNumber": null,
+    "personToContact": "gahat guillaume",
+    "personToContactPhoneNumber": "+33681980806",
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "03/02/2025, 20:48",
+    "dateLastConnexion": "26/12/2025, 21:23",
     "emailValid": true,
     "notificationActive": true,
     "joinFileStatusLabel": null,
@@ -47174,7 +47582,7 @@
       },
       {
         "label": "code postale Ville de naissance",
-        "value": null
+        "value": "13000"
       },
       {
         "label": "Pays de naissance",
@@ -47710,6 +48118,71 @@
     ]
   },
   {
+    "membreId": 1205557,
+    "currentPictureUrl": null,
+    "firstname": "Téo",
+    "lastname": "Verstraete",
+    "dateOfBirth": "28/12/1998",
+    "age": 27,
+    "gender": "homme",
+    "address": "2 Chemin de Carboues",
+    "additional": null,
+    "postalCode": "65240",
+    "town": "Jezeau",
+    "country": "France",
+    "phoneNumber": null,
+    "mobilePhoneNumber": "+33678206670",
+    "email": "teo.verstraete@gmail.com",
+    "allergy": null,
+    "personToContact": "Rey Sylvie",
+    "personToContactPhoneNumber": "+33679252411",
+    "corporateName": null,
+    "office": null,
+    "account": true,
+    "dateLastConnexion": "30/12/2025, 16:35",
+    "emailValid": true,
+    "notificationActive": true,
+    "joinFileStatusLabel": null,
+    "joinFileLastPaymentType": null,
+    "joinFileLastPaymentDate": null,
+    "childsLabel": "",
+    "childMembers": [],
+    "parentsLabel": "",
+    "parentMembers": [],
+    "groups": [],
+    "categories": [
+      {
+        "label": "Nouveau contact (adhésion)"
+      }
+    ],
+    "roles": [],
+    "medicalCertificateUrl": null,
+    "dateMedicalCertificate": null,
+    "licence": null,
+    "customFields": [
+      {
+        "label": "documents utiles",
+        "value": null
+      },
+      {
+        "label": "Ville de naissance",
+        "value": "Tarbes"
+      },
+      {
+        "label": "code postale Ville de naissance",
+        "value": "65000"
+      },
+      {
+        "label": "Pays de naissance",
+        "value": "France"
+      },
+      {
+        "label": "Nationalité",
+        "value": "Français"
+      }
+    ]
+  },
+  {
     "membreId": 845857,
     "currentPictureUrl": null,
     "firstname": "Frederique",
@@ -47885,7 +48358,7 @@
     "dateLastConnexion": null,
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "En cours de paiement",
+    "joinFileStatusLabel": "Payé",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -48614,7 +49087,7 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "22/11/2025, 18:40",
+    "dateLastConnexion": "30/12/2025, 11:33",
     "emailValid": true,
     "notificationActive": true,
     "joinFileStatusLabel": "En cours de paiement",

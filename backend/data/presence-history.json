@@ -1080,5 +1080,48 @@
         "methodePaiement": "N/A"
       }
     ]
+  },
+  {
+    "date": "2025-12-31",
+    "presences": [
+      {
+        "id": "1764512257538_40587ec98026c081",
+        "type": "adherent",
+        "nom": "Bleys",
+        "prenom": "Kevin",
+        "date": "2025-11-30T14:17:37.538Z",
+        "status": "adherent",
+        "niveau": "N/A",
+        "tarif": 0,
+        "methodePaiement": "N/A"
+      },
+      {
+        "id": "1764512257590_b32ac7e35663aafe",
+        "type": "adherent",
+        "nom": "Bleys",
+        "prenom": "Kevin",
+        "date": "2025-11-30T14:17:37.590Z",
+        "tarif": 0
+      },
+      {
+        "id": "1767178410236_10811ad812bc10df",
+        "type": "adherent",
+        "nom": "Bleys",
+        "prenom": "Kevin",
+        "date": "2025-12-31T10:53:30.236Z",
+        "status": "adherent",
+        "niveau": "N/A",
+        "tarif": 0,
+        "methodePaiement": "N/A"
+      },
+      {
+        "id": "1767178410286_553e7e92ba364c23",
+        "type": "adherent",
+        "nom": "Bleys",
+        "prenom": "Kevin",
+        "date": "2025-12-31T10:53:30.286Z",
+        "tarif": 0
+      }
+    ]
   }
 ]
