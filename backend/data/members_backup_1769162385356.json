@@ -647,7 +647,7 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "04/01/2026, 10:41",
+    "dateLastConnexion": "30/07/2025, 09:07",
     "emailValid": true,
     "notificationActive": true,
     "joinFileStatusLabel": "Payé",
@@ -1899,10 +1899,10 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "02/01/2026, 13:58",
+    "dateLastConnexion": "01/01/2026, 19:33",
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "En cours de paiement",
+    "joinFileStatusLabel": null,
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -1912,7 +1912,7 @@
     "groups": [],
     "categories": [
       {
-        "label": "Adhérent"
+        "label": "Nouveau contact (adhésion)"
       }
     ],
     "roles": [],
@@ -1967,7 +1967,7 @@
     "dateLastConnexion": "18/11/2025, 13:22",
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "Payé",
+    "joinFileStatusLabel": "En cours de paiement",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -2378,7 +2378,7 @@
     "dateLastConnexion": null,
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "Payé",
+    "joinFileStatusLabel": "En cours de paiement",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -2454,7 +2454,7 @@
     "dateLastConnexion": null,
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "Payé",
+    "joinFileStatusLabel": "En cours de paiement",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -3759,7 +3759,7 @@
     "firstname": "Thomas",
     "lastname": "Beau",
     "dateOfBirth": "13/01/1993",
-    "age": 33,
+    "age": 32,
     "gender": "homme",
     "address": "1 passage de Bertrand",
     "additional": null,
@@ -3778,7 +3778,7 @@
     "dateLastConnexion": "22/09/2025, 15:35",
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "Payé",
+    "joinFileStatusLabel": "En cours de paiement",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -4038,7 +4038,7 @@
     "dateLastConnexion": null,
     "emailValid": false,
     "notificationActive": true,
-    "joinFileStatusLabel": null,
+    "joinFileStatusLabel": "À payer",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -4048,7 +4048,7 @@
     "groups": [],
     "categories": [
       {
-        "label": "Contact extérieur"
+        "label": "Adhérent"
       }
     ],
     "roles": [],
@@ -4319,7 +4319,7 @@
     "dateLastConnexion": null,
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "Payé",
+    "joinFileStatusLabel": "En cours de paiement",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -4686,7 +4686,7 @@
     "dateLastConnexion": null,
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "Payé",
+    "joinFileStatusLabel": "En cours de paiement",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -4810,71 +4810,6 @@
     ]
   },
   {
-    "membreId": 1207538,
-    "currentPictureUrl": "https://cdn.pepsup.com/resources/images/MEMBERS/000/120/753/1207538/IMAGE/1207538_s.png?1767367203104",
-    "firstname": "Ewen",
-    "lastname": "Biguereau",
-    "dateOfBirth": "12/03/2022",
-    "age": 3,
-    "gender": "homme",
-    "address": "1 impasse des Artigaoux",
-    "additional": null,
-    "postalCode": "65240",
-    "town": "Guchen",
-    "country": "France",
-    "phoneNumber": null,
-    "mobilePhoneNumber": "+33637207451",
-    "email": "caroline.boissiere@hotmail.fr",
-    "allergy": null,
-    "personToContact": "Boissiere Caroline",
-    "personToContactPhoneNumber": "+33637207451",
-    "corporateName": null,
-    "office": null,
-    "account": true,
-    "dateLastConnexion": "02/01/2026, 20:59",
-    "emailValid": true,
-    "notificationActive": true,
-    "joinFileStatusLabel": "Payé",
-    "joinFileLastPaymentType": null,
-    "joinFileLastPaymentDate": null,
-    "childsLabel": "",
-    "childMembers": [],
-    "parentsLabel": "",
-    "parentMembers": [],
-    "groups": [],
-    "categories": [
-      {
-        "label": "Adhérent"
-      }
-    ],
-    "roles": [],
-    "medicalCertificateUrl": null,
-    "dateMedicalCertificate": null,
-    "licence": null,
-    "customFields": [
-      {
-        "label": "documents utiles",
-        "value": null
-      },
-      {
-        "label": "Ville de naissance",
-        "value": "Pau"
-      },
-      {
-        "label": "code postale Ville de naissance",
-        "value": "64000"
-      },
-      {
-        "label": "Pays de naissance",
-        "value": "France"
-      },
-      {
-        "label": "Nationalité",
-        "value": "Française"
-      }
-    ]
-  },
-  {
     "membreId": 1170017,
     "currentPictureUrl": null,
     "firstname": "Mélissa",
@@ -4956,10 +4891,10 @@
     "dateOfBirth": "28/09/1994",
     "age": 31,
     "gender": "homme",
-    "address": "5 rue det cap det bie",
+    "address": "Loudenvielle",
     "additional": null,
-    "postalCode": "65590",
-    "town": "Borderes louron",
+    "postalCode": "65510",
+    "town": "Loudenvielle",
     "country": "France",
     "phoneNumber": null,
     "mobilePhoneNumber": "+33662763433",
@@ -4970,10 +4905,10 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "13/01/2026, 08:13",
-    "emailValid": true,
+    "dateLastConnexion": null,
+    "emailValid": false,
     "notificationActive": true,
-    "joinFileStatusLabel": "Payé",
+    "joinFileStatusLabel": null,
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -4983,7 +4918,7 @@
     "groups": [],
     "categories": [
       {
-        "label": "Adhérent"
+        "label": "Ancien adhérent"
       }
     ],
     "roles": [],
@@ -5001,7 +4936,7 @@
       },
       {
         "label": "code postale Ville de naissance",
-        "value": "31000"
+        "value": null
       },
       {
         "label": "Pays de naissance",
@@ -5333,7 +5268,7 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "03/01/2026, 09:51",
+    "dateLastConnexion": "02/11/2025, 13:32",
     "emailValid": true,
     "notificationActive": true,
     "joinFileStatusLabel": "Payé",
@@ -7870,7 +7805,7 @@
     "account": false,
     "dateLastConnexion": null,
     "emailValid": true,
-    "notificationActive": false,
+    "notificationActive": true,
     "joinFileStatusLabel": null,
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
@@ -9487,7 +9422,7 @@
     "firstname": "Tristan",
     "lastname": "Castéran",
     "dateOfBirth": "09/01/2010",
-    "age": 16,
+    "age": 15,
     "gender": "homme",
     "address": "Hameau de Ys",
     "additional": null,
@@ -9940,7 +9875,7 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "03/01/2026, 09:59",
+    "dateLastConnexion": "05/11/2025, 09:03",
     "emailValid": true,
     "notificationActive": true,
     "joinFileStatusLabel": "Payé",
@@ -10226,7 +10161,7 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "19/01/2026, 18:09",
+    "dateLastConnexion": "10/12/2025, 20:19",
     "emailValid": true,
     "notificationActive": true,
     "joinFileStatusLabel": "Payé",
@@ -10245,7 +10180,7 @@
     "roles": [],
     "medicalCertificateUrl": null,
     "dateMedicalCertificate": null,
-    "licence": "1 145 426",
+    "licence": null,
     "customFields": [
       {
         "label": "documents utiles",
@@ -10488,7 +10423,7 @@
     "firstname": "Alexandre",
     "lastname": "Charousset",
     "dateOfBirth": "10/01/1993",
-    "age": 33,
+    "age": 32,
     "gender": "homme",
     "address": "239 route des escoumes",
     "additional": null,
@@ -12335,7 +12270,7 @@
     "firstname": "Grégory",
     "lastname": "Cremades",
     "dateOfBirth": "06/01/1985",
-    "age": 41,
+    "age": 40,
     "gender": "homme",
     "address": "2 impasse de la mairie",
     "additional": null,
@@ -12474,7 +12409,7 @@
     "firstname": "gregory",
     "lastname": "cremades",
     "dateOfBirth": "06/01/1985",
-    "age": 41,
+    "age": 40,
     "gender": "homme",
     "address": "2 impasse de la mairie",
     "additional": null,
@@ -12490,7 +12425,7 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "03/01/2026, 13:28",
+    "dateLastConnexion": "09/12/2025, 20:08",
     "emailValid": true,
     "notificationActive": true,
     "joinFileStatusLabel": "En cours de paiement",
@@ -12703,7 +12638,7 @@
     "firstname": "Sandra",
     "lastname": "Cuny",
     "dateOfBirth": "08/01/1992",
-    "age": 34,
+    "age": 33,
     "gender": "femme",
     "address": "400 route de beyrede",
     "additional": "Apt 11",
@@ -12847,7 +12782,7 @@
     "firstname": "Kewan",
     "lastname": "Daujam Marechal",
     "dateOfBirth": "06/01/2008",
-    "age": 18,
+    "age": 17,
     "gender": "homme",
     "address": "7 place du 29 juin 1944",
     "additional": null,
@@ -12937,7 +12872,7 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "06/01/2026, 17:41",
+    "dateLastConnexion": "03/09/2025, 14:34",
     "emailValid": true,
     "notificationActive": true,
     "joinFileStatusLabel": "Payé",
@@ -14434,8 +14369,8 @@
     "account": true,
     "dateLastConnexion": "29/07/2025, 20:53",
     "emailValid": true,
-    "notificationActive": false,
-    "joinFileStatusLabel": null,
+    "notificationActive": true,
+    "joinFileStatusLabel": "À payer",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -14445,7 +14380,7 @@
     "groups": [],
     "categories": [
       {
-        "label": "Contact extérieur"
+        "label": "Adhérent"
       }
     ],
     "roles": [],
@@ -14783,7 +14718,7 @@
     "dateLastConnexion": null,
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "Payé",
+    "joinFileStatusLabel": "En cours de paiement",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -15124,7 +15059,7 @@
     "firstname": "Charlie",
     "lastname": "Duffour",
     "dateOfBirth": "09/01/2013",
-    "age": 13,
+    "age": 12,
     "gender": "homme",
     "address": "11 rue de l'école",
     "additional": null,
@@ -15553,7 +15488,7 @@
     "firstname": "josiane laure leonce",
     "lastname": "duplan dassain",
     "dateOfBirth": "18/01/1954",
-    "age": 72,
+    "age": 71,
     "gender": "femme",
     "address": "21 chemin de bizous",
     "additional": null,
@@ -15692,80 +15627,6 @@
       {
         "label": "Nationalité",
         "value": "Française"
-      }
-    ]
-  },
-  {
-    "membreId": 1215679,
-    "currentPictureUrl": null,
-    "firstname": "Mahé",
-    "lastname": "Duprat",
-    "dateOfBirth": "10/05/2021",
-    "age": 4,
-    "gender": "homme",
-    "address": "47 rue de la mairie",
-    "additional": null,
-    "postalCode": "65240",
-    "town": "Vielle louron",
-    "country": "France",
-    "phoneNumber": "+33603686884",
-    "mobilePhoneNumber": "+33603686884",
-    "email": "l.verheecke13@gmail.com",
-    "allergy": null,
-    "personToContact": "Laura Verheecke",
-    "personToContactPhoneNumber": "+33603686884",
-    "corporateName": null,
-    "office": null,
-    "account": false,
-    "dateLastConnexion": null,
-    "emailValid": true,
-    "notificationActive": true,
-    "joinFileStatusLabel": null,
-    "joinFileLastPaymentType": null,
-    "joinFileLastPaymentDate": null,
-    "childsLabel": "",
-    "childMembers": [],
-    "parentsLabel": "Géré par 1 contact : Laura Verheecke",
-    "parentMembers": [
-      {
-        "membreId": 1215678,
-        "firstname": "Laura",
-        "lastname": "Verheecke",
-        "phoneNumber": null,
-        "mobilePhoneNumber": null,
-        "email": "l.verheecke13@gmail.com"
-      }
-    ],
-    "groups": [],
-    "categories": [
-      {
-        "label": "Nouveau contact (adhésion)"
-      }
-    ],
-    "roles": [],
-    "medicalCertificateUrl": null,
-    "dateMedicalCertificate": null,
-    "licence": null,
-    "customFields": [
-      {
-        "label": "documents utiles",
-        "value": null
-      },
-      {
-        "label": "Ville de naissance",
-        "value": "Vitrolles"
-      },
-      {
-        "label": "code postale Ville de naissance",
-        "value": "13127"
-      },
-      {
-        "label": "Pays de naissance",
-        "value": "France"
-      },
-      {
-        "label": "Nationalité",
-        "value": "France"
       }
     ]
   },
@@ -15995,10 +15856,10 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "21/01/2026, 16:29",
+    "dateLastConnexion": "11/11/2025, 18:18",
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "Payé",
+    "joinFileStatusLabel": "En cours de paiement",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -16039,219 +15900,6 @@
     ]
   },
   {
-    "membreId": 1209923,
-    "currentPictureUrl": null,
-    "firstname": "Cyril",
-    "lastname": "Elisabeth",
-    "dateOfBirth": null,
-    "age": null,
-    "gender": null,
-    "address": null,
-    "additional": null,
-    "postalCode": null,
-    "town": null,
-    "country": null,
-    "phoneNumber": null,
-    "mobilePhoneNumber": null,
-    "email": "raswil.delikia@live.fr",
-    "allergy": null,
-    "personToContact": null,
-    "personToContactPhoneNumber": null,
-    "corporateName": null,
-    "office": null,
-    "account": true,
-    "dateLastConnexion": null,
-    "emailValid": false,
-    "notificationActive": true,
-    "joinFileStatusLabel": null,
-    "joinFileLastPaymentType": null,
-    "joinFileLastPaymentDate": null,
-    "childsLabel": "",
-    "childMembers": [],
-    "parentsLabel": "",
-    "parentMembers": [],
-    "groups": [],
-    "categories": [
-      {
-        "label": "Nouveau contact (adhésion)"
-      }
-    ],
-    "roles": [],
-    "medicalCertificateUrl": null,
-    "dateMedicalCertificate": null,
-    "licence": null,
-    "customFields": [
-      {
-        "label": "documents utiles",
-        "value": null
-      },
-      {
-        "label": "Ville de naissance",
-        "value": null
-      },
-      {
-        "label": "code postale Ville de naissance",
-        "value": null
-      },
-      {
-        "label": "Pays de naissance",
-        "value": null
-      },
-      {
-        "label": "Nationalité",
-        "value": null
-      }
-    ]
-  },
-  {
-    "membreId": 1209671,
-    "currentPictureUrl": null,
-    "firstname": "camille",
-    "lastname": "enfedaque",
-    "dateOfBirth": null,
-    "age": null,
-    "gender": null,
-    "address": null,
-    "additional": null,
-    "postalCode": null,
-    "town": null,
-    "country": null,
-    "phoneNumber": null,
-    "mobilePhoneNumber": null,
-    "email": "camille.enfedaque@hotmail.fr",
-    "allergy": null,
-    "personToContact": null,
-    "personToContactPhoneNumber": null,
-    "corporateName": null,
-    "office": null,
-    "account": true,
-    "dateLastConnexion": "08/01/2026, 15:54",
-    "emailValid": true,
-    "notificationActive": true,
-    "joinFileStatusLabel": null,
-    "joinFileLastPaymentType": null,
-    "joinFileLastPaymentDate": null,
-    "childsLabel": "Gestionnaire de 1 contact : naya enfedaque",
-    "childMembers": [
-      {
-        "membreId": 1209673,
-        "firstname": "naya",
-        "lastname": "enfedaque",
-        "phoneNumber": null,
-        "mobilePhoneNumber": "+33785731668",
-        "email": "camille.enfedaque@hotmail.fr"
-      }
-    ],
-    "parentsLabel": "",
-    "parentMembers": [],
-    "groups": [],
-    "categories": [
-      {
-        "label": "Nouveau contact (adhésion)"
-      }
-    ],
-    "roles": [],
-    "medicalCertificateUrl": null,
-    "dateMedicalCertificate": null,
-    "licence": null,
-    "customFields": [
-      {
-        "label": "documents utiles",
-        "value": null
-      },
-      {
-        "label": "Ville de naissance",
-        "value": null
-      },
-      {
-        "label": "code postale Ville de naissance",
-        "value": null
-      },
-      {
-        "label": "Pays de naissance",
-        "value": null
-      },
-      {
-        "label": "Nationalité",
-        "value": null
-      }
-    ]
-  },
-  {
-    "membreId": 1209673,
-    "currentPictureUrl": null,
-    "firstname": "naya",
-    "lastname": "enfedaque",
-    "dateOfBirth": "14/10/2018",
-    "age": 7,
-    "gender": "femme",
-    "address": "20 rue des masseys",
-    "additional": null,
-    "postalCode": "65330",
-    "town": "GALAN",
-    "country": "France",
-    "phoneNumber": null,
-    "mobilePhoneNumber": "+33785731668",
-    "email": "camille.enfedaque@hotmail.fr",
-    "allergy": null,
-    "personToContact": "enfedaque camille",
-    "personToContactPhoneNumber": "+33785731668",
-    "corporateName": null,
-    "office": null,
-    "account": false,
-    "dateLastConnexion": null,
-    "emailValid": true,
-    "notificationActive": true,
-    "joinFileStatusLabel": null,
-    "joinFileLastPaymentType": null,
-    "joinFileLastPaymentDate": null,
-    "childsLabel": "",
-    "childMembers": [],
-    "parentsLabel": "Géré par 1 contact : camille enfedaque",
-    "parentMembers": [
-      {
-        "membreId": 1209671,
-        "firstname": "camille",
-        "lastname": "enfedaque",
-        "phoneNumber": null,
-        "mobilePhoneNumber": null,
-        "email": "camille.enfedaque@hotmail.fr"
-      }
-    ],
-    "groups": [],
-    "categories": [
-      {
-        "label": "Nouveau contact (adhésion)"
-      }
-    ],
-    "roles": [],
-    "medicalCertificateUrl": null,
-    "dateMedicalCertificate": null,
-    "licence": null,
-    "customFields": [
-      {
-        "label": "documents utiles",
-        "value": null
-      },
-      {
-        "label": "Ville de naissance",
-        "value": "tarbes"
-      },
-      {
-        "label": "code postale Ville de naissance",
-        "value": "65000"
-      },
-      {
-        "label": "Pays de naissance",
-        "value": "france"
-      },
-      {
-        "label": "Nationalité",
-        "value": "française"
-      }
-    ]
-  },
-  {
     "membreId": 452231,
     "currentPictureUrl": null,
     "firstname": "beyrede",
@@ -16273,7 +15921,7 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "22/01/2026, 18:42",
+    "dateLastConnexion": "30/12/2025, 18:17",
     "emailValid": true,
     "notificationActive": true,
     "joinFileStatusLabel": null,
@@ -18172,7 +17820,7 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "07/01/2026, 11:15",
+    "dateLastConnexion": "04/12/2025, 16:56",
     "emailValid": true,
     "notificationActive": true,
     "joinFileStatusLabel": null,
@@ -19180,7 +18828,7 @@
     "firstname": "Jacques",
     "lastname": "Garnier",
     "dateOfBirth": "04/01/1992",
-    "age": 34,
+    "age": 33,
     "gender": "homme",
     "address": "78 route Hechettes",
     "additional": null,
@@ -19387,71 +19035,6 @@
       {
         "label": "Nationalité",
         "value": null
-      }
-    ]
-  },
-  {
-    "membreId": 1215512,
-    "currentPictureUrl": null,
-    "firstname": "clément",
-    "lastname": "garnier",
-    "dateOfBirth": "26/02/1988",
-    "age": 37,
-    "gender": "homme",
-    "address": "5 route de bagnères",
-    "additional": null,
-    "postalCode": "65130",
-    "town": "laborde",
-    "country": "france",
-    "phoneNumber": null,
-    "mobilePhoneNumber": "+33769848642",
-    "email": "garnierclement8@gmail.com",
-    "allergy": null,
-    "personToContact": null,
-    "personToContactPhoneNumber": null,
-    "corporateName": null,
-    "office": null,
-    "account": true,
-    "dateLastConnexion": null,
-    "emailValid": false,
-    "notificationActive": true,
-    "joinFileStatusLabel": null,
-    "joinFileLastPaymentType": null,
-    "joinFileLastPaymentDate": null,
-    "childsLabel": "",
-    "childMembers": [],
-    "parentsLabel": "",
-    "parentMembers": [],
-    "groups": [],
-    "categories": [
-      {
-        "label": "Nouveau contact (adhésion)"
-      }
-    ],
-    "roles": [],
-    "medicalCertificateUrl": null,
-    "dateMedicalCertificate": null,
-    "licence": null,
-    "customFields": [
-      {
-        "label": "documents utiles",
-        "value": null
-      },
-      {
-        "label": "Ville de naissance",
-        "value": "les lilas"
-      },
-      {
-        "label": "code postale Ville de naissance",
-        "value": "93260"
-      },
-      {
-        "label": "Pays de naissance",
-        "value": "france"
-      },
-      {
-        "label": "Nationalité",
-        "value": "fraçaise"
       }
     ]
   },
@@ -19916,7 +19499,7 @@
     "firstname": "Jonathan",
     "lastname": "Gerard",
     "dateOfBirth": "07/01/1990",
-    "age": 36,
+    "age": 35,
     "gender": "homme",
     "address": "2 place de l’église",
     "additional": null,
@@ -20567,71 +20150,6 @@
     ]
   },
   {
-    "membreId": 1214051,
-    "currentPictureUrl": null,
-    "firstname": "Morgane",
-    "lastname": "Giraud",
-    "dateOfBirth": "24/07/2002",
-    "age": 23,
-    "gender": "femme",
-    "address": "1 rue de la caoussade",
-    "additional": null,
-    "postalCode": "65240",
-    "town": "Adervielle Pouchergues",
-    "country": "France",
-    "phoneNumber": null,
-    "mobilePhoneNumber": "+33632362550",
-    "email": "jeux.morgane247@gmail.com",
-    "allergy": null,
-    "personToContact": "Tania Schmidt",
-    "personToContactPhoneNumber": "+33632652624",
-    "corporateName": null,
-    "office": null,
-    "account": true,
-    "dateLastConnexion": "13/01/2026, 09:47",
-    "emailValid": true,
-    "notificationActive": true,
-    "joinFileStatusLabel": "En cours de paiement",
-    "joinFileLastPaymentType": null,
-    "joinFileLastPaymentDate": null,
-    "childsLabel": "",
-    "childMembers": [],
-    "parentsLabel": "",
-    "parentMembers": [],
-    "groups": [],
-    "categories": [
-      {
-        "label": "Adhérent"
-      }
-    ],
-    "roles": [],
-    "medicalCertificateUrl": null,
-    "dateMedicalCertificate": null,
-    "licence": "1099457",
-    "customFields": [
-      {
-        "label": "documents utiles",
-        "value": null
-      },
-      {
-        "label": "Ville de naissance",
-        "value": "Brest"
-      },
-      {
-        "label": "code postale Ville de naissance",
-        "value": "29200"
-      },
-      {
-        "label": "Pays de naissance",
-        "value": "France"
-      },
-      {
-        "label": "Nationalité",
-        "value": "Française"
-      }
-    ]
-  },
-  {
     "membreId": 481688,
     "currentPictureUrl": null,
     "firstname": "Martha",
@@ -20901,24 +20419,24 @@
     "dateOfBirth": "20/08/1983",
     "age": 42,
     "gender": "homme",
-    "address": "Route du Col de Beyrede",
-    "additional": "Residence Puyo",
-    "postalCode": "65410",
-    "town": "Beyrede Jumet",
+    "address": "2 Rue de Sainte Luce",
+    "additional": null,
+    "postalCode": "65240",
+    "town": "Cadeac",
     "country": "France",
     "phoneNumber": null,
     "mobilePhoneNumber": "+33645178464",
     "email": "alvimago@hotmail.com",
     "allergy": null,
-    "personToContact": "Leonardo Martinoli",
-    "personToContactPhoneNumber": "+33651362016",
+    "personToContact": null,
+    "personToContactPhoneNumber": null,
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "12/01/2026, 18:38",
+    "dateLastConnexion": "17/05/2025, 13:29",
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "À payer",
+    "joinFileStatusLabel": null,
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -20928,7 +20446,7 @@
     "groups": [],
     "categories": [
       {
-        "label": "Adhérent"
+        "label": "Ancien adhérent"
       }
     ],
     "roles": [],
@@ -20946,7 +20464,7 @@
       },
       {
         "label": "code postale Ville de naissance",
-        "value": "0"
+        "value": null
       },
       {
         "label": "Pays de naissance",
@@ -21254,7 +20772,7 @@
     "firstname": "Xavier",
     "lastname": "GUERRAS",
     "dateOfBirth": "22/01/1973",
-    "age": 53,
+    "age": 52,
     "gender": "homme",
     "address": "1 route de BOURISP",
     "additional": null,
@@ -21727,7 +21245,7 @@
     "firstname": "Lola",
     "lastname": "Guinard",
     "dateOfBirth": "04/01/1994",
-    "age": 32,
+    "age": 31,
     "gender": "femme",
     "address": "12 rue de la valette",
     "additional": null,
@@ -23726,7 +23244,7 @@
     "dateLastConnexion": null,
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "Payé",
+    "joinFileStatusLabel": "En cours de paiement",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -24788,71 +24306,6 @@
     ]
   },
   {
-    "membreId": 1225694,
-    "currentPictureUrl": "https://cdn.pepsup.com/resources/images/MEMBERS/000/122/569/1225694/IMAGE/1225694_s.png?1769104698065",
-    "firstname": "Maxime",
-    "lastname": "Lamoureux",
-    "dateOfBirth": "22/03/1990",
-    "age": 35,
-    "gender": "homme",
-    "address": "316 Rue des Embardières",
-    "additional": null,
-    "postalCode": "85440",
-    "town": "Talmont-Saint-Hilaire",
-    "country": "France",
-    "phoneNumber": "+33767137392",
-    "mobilePhoneNumber": "+33767137392",
-    "email": "maxlam22@gmail.com",
-    "allergy": null,
-    "personToContact": null,
-    "personToContactPhoneNumber": null,
-    "corporateName": null,
-    "office": null,
-    "account": true,
-    "dateLastConnexion": "23/01/2026, 07:14",
-    "emailValid": true,
-    "notificationActive": true,
-    "joinFileStatusLabel": null,
-    "joinFileLastPaymentType": null,
-    "joinFileLastPaymentDate": null,
-    "childsLabel": "",
-    "childMembers": [],
-    "parentsLabel": "",
-    "parentMembers": [],
-    "groups": [],
-    "categories": [
-      {
-        "label": "Nouveau contact (adhésion)"
-      }
-    ],
-    "roles": [],
-    "medicalCertificateUrl": null,
-    "dateMedicalCertificate": null,
-    "licence": null,
-    "customFields": [
-      {
-        "label": "documents utiles",
-        "value": null
-      },
-      {
-        "label": "Ville de naissance",
-        "value": "Les sables d'olonne"
-      },
-      {
-        "label": "code postale Ville de naissance",
-        "value": "85100"
-      },
-      {
-        "label": "Pays de naissance",
-        "value": "France"
-      },
-      {
-        "label": "Nationalité",
-        "value": "Français"
-      }
-    ]
-  },
-  {
     "membreId": 508469,
     "currentPictureUrl": null,
     "firstname": "Boris",
@@ -25556,71 +25009,6 @@
     ]
   },
   {
-    "membreId": 1210512,
-    "currentPictureUrl": null,
-    "firstname": "Coline",
-    "lastname": "Lavarenne",
-    "dateOfBirth": null,
-    "age": null,
-    "gender": null,
-    "address": null,
-    "additional": null,
-    "postalCode": null,
-    "town": null,
-    "country": null,
-    "phoneNumber": null,
-    "mobilePhoneNumber": null,
-    "email": "coline.lavarenne@yahoo.fr",
-    "allergy": null,
-    "personToContact": null,
-    "personToContactPhoneNumber": null,
-    "corporateName": null,
-    "office": null,
-    "account": true,
-    "dateLastConnexion": null,
-    "emailValid": false,
-    "notificationActive": true,
-    "joinFileStatusLabel": null,
-    "joinFileLastPaymentType": null,
-    "joinFileLastPaymentDate": null,
-    "childsLabel": "",
-    "childMembers": [],
-    "parentsLabel": "",
-    "parentMembers": [],
-    "groups": [],
-    "categories": [
-      {
-        "label": "Nouveau contact (adhésion)"
-      }
-    ],
-    "roles": [],
-    "medicalCertificateUrl": null,
-    "dateMedicalCertificate": null,
-    "licence": null,
-    "customFields": [
-      {
-        "label": "documents utiles",
-        "value": null
-      },
-      {
-        "label": "Ville de naissance",
-        "value": null
-      },
-      {
-        "label": "code postale Ville de naissance",
-        "value": null
-      },
-      {
-        "label": "Pays de naissance",
-        "value": null
-      },
-      {
-        "label": "Nationalité",
-        "value": null
-      }
-    ]
-  },
-  {
     "membreId": 506537,
     "currentPictureUrl": null,
     "firstname": "Flora",
@@ -25644,7 +25032,7 @@
     "account": false,
     "dateLastConnexion": null,
     "emailValid": true,
-    "notificationActive": false,
+    "notificationActive": true,
     "joinFileStatusLabel": null,
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
@@ -26370,7 +25758,7 @@
     "firstname": "Timothée",
     "lastname": "Lebuhotel",
     "dateOfBirth": "08/01/1995",
-    "age": 31,
+    "age": 30,
     "gender": "homme",
     "address": "34 route de l'Arbizon",
     "additional": null,
@@ -26722,10 +26110,10 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "07/01/2026, 17:36",
+    "dateLastConnexion": "28/08/2025, 13:29",
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "Payé",
+    "joinFileStatusLabel": "En cours de paiement",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -29472,7 +28860,7 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "05/01/2026, 13:09",
+    "dateLastConnexion": "31/12/2025, 14:46",
     "emailValid": true,
     "notificationActive": true,
     "joinFileStatusLabel": "Payé",
@@ -29836,7 +29224,7 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "07/01/2026, 15:45",
+    "dateLastConnexion": "14/11/2025, 21:54",
     "emailValid": true,
     "notificationActive": true,
     "joinFileStatusLabel": null,
@@ -30480,7 +29868,7 @@
     "dateLastConnexion": null,
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "Payé",
+    "joinFileStatusLabel": "En cours de paiement",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -30767,7 +30155,7 @@
     "dateLastConnexion": null,
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "En cours de paiement",
+    "joinFileStatusLabel": null,
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -30786,7 +30174,7 @@
     "groups": [],
     "categories": [
       {
-        "label": "Adhérent"
+        "label": "Nouveau contact (adhésion)"
       }
     ],
     "roles": [],
@@ -30838,10 +30226,10 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "21/01/2026, 18:22",
+    "dateLastConnexion": "29/12/2025, 21:44",
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": null,
+    "joinFileStatusLabel": "À payer",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "Gestionnaire de 1 contact : Leonardo Martinoli",
@@ -30860,10 +30248,7 @@
     "groups": [],
     "categories": [
       {
-        "label": "Ancien adhérent"
-      },
-      {
-        "label": "Parent"
+        "label": "Adhérent"
       }
     ],
     "roles": [],
@@ -31029,7 +30414,7 @@
     "firstname": "Emilie",
     "lastname": "Masuda",
     "dateOfBirth": "23/01/1975",
-    "age": 51,
+    "age": 50,
     "gender": "femme",
     "address": "19 rue du Bourg",
     "additional": null,
@@ -32236,7 +31621,7 @@
   },
   {
     "membreId": 796819,
-    "currentPictureUrl": "https://cdn.pepsup.com/resources/images/MEMBERS/000/079/681/796819/IMAGE/796819_s.png?1767941332138",
+    "currentPictureUrl": "https://cdn.pepsup.com/resources/images/MEMBERS/000/079/681/796819/IMAGE/796819_s.png?1708206557005",
     "firstname": "Eric",
     "lastname": "Mir",
     "dateOfBirth": "18/03/1980",
@@ -32256,10 +31641,10 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "21/01/2026, 17:14",
+    "dateLastConnexion": "05/02/2025, 18:48",
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "Payé",
+    "joinFileStatusLabel": null,
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -32269,7 +31654,7 @@
     "groups": [],
     "categories": [
       {
-        "label": "Adhérent"
+        "label": "Ancien adhérent"
       }
     ],
     "roles": [],
@@ -32287,7 +31672,7 @@
       },
       {
         "label": "code postale Ville de naissance",
-        "value": "65000"
+        "value": null
       },
       {
         "label": "Pays de naissance",
@@ -32447,7 +31832,7 @@
     "firstname": "Hélène",
     "lastname": "Mombertrand",
     "dateOfBirth": "07/01/1982",
-    "age": 44,
+    "age": 43,
     "gender": "femme",
     "address": "34 cami deth espi",
     "additional": null,
@@ -32577,7 +31962,7 @@
     "firstname": "Clément",
     "lastname": "morel",
     "dateOfBirth": "14/01/1994",
-    "age": 32,
+    "age": 31,
     "gender": "homme",
     "address": "4 chemin de Vielle-Aure",
     "additional": null,
@@ -32727,7 +32112,7 @@
     "firstname": "Tao",
     "lastname": "Morinière",
     "dateOfBirth": "16/01/2017",
-    "age": 9,
+    "age": 8,
     "gender": "homme",
     "address": "3 rue Arribaut",
     "additional": null,
@@ -33429,71 +32814,6 @@
       {
         "label": "Pays de naissance",
         "value": "France"
-      },
-      {
-        "label": "Nationalité",
-        "value": "Française"
-      }
-    ]
-  },
-  {
-    "membreId": 1209875,
-    "currentPictureUrl": null,
-    "firstname": "Laurie",
-    "lastname": "Nauel",
-    "dateOfBirth": "18/11/1992",
-    "age": 33,
-    "gender": "femme",
-    "address": "5 rue Det cap Det bié",
-    "additional": null,
-    "postalCode": "65590",
-    "town": "Bordères-louron",
-    "country": "France",
-    "phoneNumber": null,
-    "mobilePhoneNumber": "+33667461163",
-    "email": "laurie.nauel@gmail.com",
-    "allergy": null,
-    "personToContact": null,
-    "personToContactPhoneNumber": null,
-    "corporateName": null,
-    "office": null,
-    "account": true,
-    "dateLastConnexion": "12/01/2026, 13:13",
-    "emailValid": true,
-    "notificationActive": true,
-    "joinFileStatusLabel": "Payé",
-    "joinFileLastPaymentType": null,
-    "joinFileLastPaymentDate": null,
-    "childsLabel": "",
-    "childMembers": [],
-    "parentsLabel": "",
-    "parentMembers": [],
-    "groups": [],
-    "categories": [
-      {
-        "label": "Adhérent"
-      }
-    ],
-    "roles": [],
-    "medicalCertificateUrl": null,
-    "dateMedicalCertificate": null,
-    "licence": null,
-    "customFields": [
-      {
-        "label": "documents utiles",
-        "value": null
-      },
-      {
-        "label": "Ville de naissance",
-        "value": "Nouméa"
-      },
-      {
-        "label": "code postale Ville de naissance",
-        "value": "988"
-      },
-      {
-        "label": "Pays de naissance",
-        "value": "Nouvelle caledonie"
       },
       {
         "label": "Nationalité",
@@ -34976,71 +34296,6 @@
       {
         "label": "Nationalité",
         "value": null
-      }
-    ]
-  },
-  {
-    "membreId": 1223274,
-    "currentPictureUrl": null,
-    "firstname": "Léo",
-    "lastname": "Orensanz",
-    "dateOfBirth": "04/09/1997",
-    "age": 28,
-    "gender": "homme",
-    "address": "1 Impasse du Rioumajou",
-    "additional": null,
-    "postalCode": "65410",
-    "town": "Sarrancolin",
-    "country": "France",
-    "phoneNumber": null,
-    "mobilePhoneNumber": "+33695954334",
-    "email": "leo.orensanz@live.fr",
-    "allergy": null,
-    "personToContact": null,
-    "personToContactPhoneNumber": null,
-    "corporateName": null,
-    "office": null,
-    "account": true,
-    "dateLastConnexion": "22/01/2026, 18:24",
-    "emailValid": true,
-    "notificationActive": true,
-    "joinFileStatusLabel": "En cours de paiement",
-    "joinFileLastPaymentType": null,
-    "joinFileLastPaymentDate": null,
-    "childsLabel": "",
-    "childMembers": [],
-    "parentsLabel": "",
-    "parentMembers": [],
-    "groups": [],
-    "categories": [
-      {
-        "label": "Adhérent"
-      }
-    ],
-    "roles": [],
-    "medicalCertificateUrl": null,
-    "dateMedicalCertificate": null,
-    "licence": "273382",
-    "customFields": [
-      {
-        "label": "documents utiles",
-        "value": null
-      },
-      {
-        "label": "Ville de naissance",
-        "value": "Oloron Ste Marie"
-      },
-      {
-        "label": "code postale Ville de naissance",
-        "value": "64400"
-      },
-      {
-        "label": "Pays de naissance",
-        "value": "France"
-      },
-      {
-        "label": "Nationalité",
-        "value": "Française"
       }
     ]
   },
@@ -39530,7 +38785,7 @@
     "dateLastConnexion": "23/09/2025, 18:28",
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "Payé",
+    "joinFileStatusLabel": "En cours de paiement",
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -40448,7 +39703,7 @@
     "firstname": "Rémi",
     "lastname": "Rocher",
     "dateOfBirth": "04/01/1995",
-    "age": 31,
+    "age": 30,
     "gender": "homme",
     "address": "Armenteule",
     "additional": null,
@@ -40939,7 +40194,7 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "06/01/2026, 18:13",
+    "dateLastConnexion": "01/09/2025, 09:19",
     "emailValid": true,
     "notificationActive": true,
     "joinFileStatusLabel": "Payé",
@@ -41233,7 +40488,7 @@
     "firstname": "axel",
     "lastname": "roux",
     "dateOfBirth": "07/01/2016",
-    "age": 10,
+    "age": 9,
     "gender": "homme",
     "address": "Le village",
     "additional": null,
@@ -41444,7 +40699,7 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "03/01/2026, 11:49",
+    "dateLastConnexion": "24/09/2025, 17:48",
     "emailValid": true,
     "notificationActive": true,
     "joinFileStatusLabel": "Payé",
@@ -43120,7 +42375,7 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "21/01/2026, 20:23",
+    "dateLastConnexion": "20/11/2025, 19:53",
     "emailValid": true,
     "notificationActive": true,
     "joinFileStatusLabel": "Payé",
@@ -43793,7 +43048,7 @@
     "account": false,
     "dateLastConnexion": null,
     "emailValid": true,
-    "notificationActive": false,
+    "notificationActive": true,
     "joinFileStatusLabel": null,
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
@@ -44678,10 +43933,10 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "13/01/2026, 09:39",
+    "dateLastConnexion": "21/10/2025, 14:18",
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "Payé",
+    "joinFileStatusLabel": null,
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -44691,7 +43946,7 @@
     "groups": [],
     "categories": [
       {
-        "label": "Adhérent"
+        "label": "Ancien adhérent"
       }
     ],
     "roles": [],
@@ -45949,7 +45204,7 @@
     "firstname": "Myrtille",
     "lastname": "THIEBAULT",
     "dateOfBirth": "11/01/2017",
-    "age": 9,
+    "age": 8,
     "gender": "femme",
     "address": "2 Impasse De L'église",
     "additional": null,
@@ -46097,7 +45352,7 @@
     "firstname": "Myrtille",
     "lastname": "Thiébault",
     "dateOfBirth": "11/01/2017",
-    "age": 9,
+    "age": 8,
     "gender": "femme",
     "address": "2 impasse de l'église",
     "additional": null,
@@ -46605,7 +45860,7 @@
     "firstname": "Stan",
     "lastname": "Toussaint Verdier",
     "dateOfBirth": "22/01/2016",
-    "age": 10,
+    "age": 9,
     "gender": "homme",
     "address": "98 chemin de las bordes",
     "additional": null,
@@ -47031,7 +46286,7 @@
     "firstname": "Youen",
     "lastname": "TRUONG",
     "dateOfBirth": "20/01/2007",
-    "age": 19,
+    "age": 18,
     "gender": "homme",
     "address": "19 route d'espechere",
     "additional": null,
@@ -47269,7 +46524,7 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "03/01/2026, 10:44",
+    "dateLastConnexion": "01/01/2026, 14:27",
     "emailValid": true,
     "notificationActive": true,
     "joinFileStatusLabel": "Payé",
@@ -47715,7 +46970,7 @@
     "firstname": "Juliette",
     "lastname": "Valdenaire",
     "dateOfBirth": "16/01/2004",
-    "age": 22,
+    "age": 21,
     "gender": "femme",
     "address": "400 route de la barthe",
     "additional": null,
@@ -48361,10 +47616,10 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "22/01/2026, 12:23",
+    "dateLastConnexion": "26/12/2025, 21:23",
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "À payer",
+    "joinFileStatusLabel": null,
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -48374,7 +47629,7 @@
     "groups": [],
     "categories": [
       {
-        "label": "Adhérent"
+        "label": "Ancien adhérent"
       }
     ],
     "roles": [],
@@ -48928,80 +48183,6 @@
     ]
   },
   {
-    "membreId": 1215678,
-    "currentPictureUrl": null,
-    "firstname": "Laura",
-    "lastname": "Verheecke",
-    "dateOfBirth": null,
-    "age": null,
-    "gender": null,
-    "address": null,
-    "additional": null,
-    "postalCode": null,
-    "town": null,
-    "country": null,
-    "phoneNumber": null,
-    "mobilePhoneNumber": null,
-    "email": "l.verheecke13@gmail.com",
-    "allergy": null,
-    "personToContact": null,
-    "personToContactPhoneNumber": null,
-    "corporateName": null,
-    "office": null,
-    "account": true,
-    "dateLastConnexion": "15/01/2026, 14:29",
-    "emailValid": true,
-    "notificationActive": true,
-    "joinFileStatusLabel": null,
-    "joinFileLastPaymentType": null,
-    "joinFileLastPaymentDate": null,
-    "childsLabel": "Gestionnaire de 1 contact : Mahé Duprat",
-    "childMembers": [
-      {
-        "membreId": 1215679,
-        "firstname": "Mahé",
-        "lastname": "Duprat",
-        "phoneNumber": "+33603686884",
-        "mobilePhoneNumber": "+33603686884",
-        "email": "l.verheecke13@gmail.com"
-      }
-    ],
-    "parentsLabel": "",
-    "parentMembers": [],
-    "groups": [],
-    "categories": [
-      {
-        "label": "Nouveau contact (adhésion)"
-      }
-    ],
-    "roles": [],
-    "medicalCertificateUrl": null,
-    "dateMedicalCertificate": null,
-    "licence": null,
-    "customFields": [
-      {
-        "label": "documents utiles",
-        "value": null
-      },
-      {
-        "label": "Ville de naissance",
-        "value": null
-      },
-      {
-        "label": "code postale Ville de naissance",
-        "value": null
-      },
-      {
-        "label": "Pays de naissance",
-        "value": null
-      },
-      {
-        "label": "Nationalité",
-        "value": null
-      }
-    ]
-  },
-  {
     "membreId": 1205557,
     "currentPictureUrl": null,
     "firstname": "Téo",
@@ -49026,7 +48207,7 @@
     "dateLastConnexion": "30/12/2025, 16:35",
     "emailValid": true,
     "notificationActive": true,
-    "joinFileStatusLabel": "À payer",
+    "joinFileStatusLabel": null,
     "joinFileLastPaymentType": null,
     "joinFileLastPaymentDate": null,
     "childsLabel": "",
@@ -49036,7 +48217,7 @@
     "groups": [],
     "categories": [
       {
-        "label": "Adhérent"
+        "label": "Nouveau contact (adhésion)"
       }
     ],
     "roles": [],
@@ -49297,7 +48478,7 @@
     "firstname": "Luc",
     "lastname": "Vidailhet",
     "dateOfBirth": "06/01/2006",
-    "age": 20,
+    "age": 19,
     "gender": "homme",
     "address": "45 Impasse Coume De Mitau",
     "additional": null,
@@ -49971,7 +49152,7 @@
     "corporateName": null,
     "office": null,
     "account": true,
-    "dateLastConnexion": "22/01/2026, 22:17",
+    "dateLastConnexion": "30/12/2025, 11:33",
     "emailValid": true,
     "notificationActive": true,
     "joinFileStatusLabel": "En cours de paiement",
@@ -50159,7 +49340,7 @@
     "firstname": "Emilie",
     "lastname": "Wivincova",
     "dateOfBirth": "14/01/1982",
-    "age": 44,
+    "age": 43,
     "gender": "femme",
     "address": "2 passage du mont tarric",
     "additional": "rue ste Luce",
