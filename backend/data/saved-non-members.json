@@ -34,5 +34,16 @@
     "niveau": 1,
     "savedAt": "2025-11-08T13:41:40.706Z",
     "updatedAt": "2025-11-08T16:50:25.939Z"
+  },
+  {
+    "id": "1769172388144",
+    "nom": "test",
+    "prenom": "test",
+    "email": "test@test.com",
+    "telephone": "",
+    "dateNaissance": "2005-03-02",
+    "niveau": 2,
+    "savedAt": "2026-01-23T12:46:28.144Z",
+    "updatedAt": "2026-01-23T12:46:28.144Z"
   }
 ]

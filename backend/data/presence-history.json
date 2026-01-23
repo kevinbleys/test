@@ -1123,5 +1123,65 @@
         "tarif": 0
       }
     ]
+  },
+  {
+    "date": "2026-01-23",
+    "presences": [
+      {
+        "id": "1769172319947_cb112bfc7a43accf",
+        "type": "adherent",
+        "nom": "Bleys",
+        "prenom": "Kevin",
+        "date": "2026-01-23T12:45:19.947Z",
+        "status": "adhérent",
+        "niveau": "N/A",
+        "tarif": 0,
+        "methodePaiement": "N/A"
+      },
+      {
+        "id": "1769175905825_bacae083536060c7",
+        "type": "non-adherent",
+        "nom": "test",
+        "prenom": "test",
+        "date": "2026-01-23T13:45:05.825Z",
+        "tarif": 10,
+        "methodePaiement": "especes",
+        "status": "Payé",
+        "niveau": 2
+      },
+      {
+        "id": "1769175950685_9a65fc7045149c48",
+        "type": "adherent",
+        "nom": "Bleys",
+        "prenom": "Théo",
+        "date": "2026-01-23T13:45:50.685Z",
+        "status": "adhérent",
+        "niveau": "N/A",
+        "tarif": 0,
+        "methodePaiement": "N/A"
+      },
+      {
+        "id": "1769176088476_70073b33647d181b",
+        "type": "tentative-non-payé",
+        "nom": "Vella",
+        "prenom": "Vanessa",
+        "date": "2026-01-23T13:48:08.476Z",
+        "status": "tentative non-payé",
+        "niveau": "N/A",
+        "tarif": 0,
+        "methodePaiement": "N/A"
+      },
+      {
+        "id": "1769176113463_72ee60bb17a1ea90",
+        "type": "tentative-non-adherent",
+        "nom": "Joske",
+        "prenom": "Vermeulen",
+        "date": "2026-01-23T13:48:33.463Z",
+        "status": "tentative non-adhérent",
+        "niveau": "N/A",
+        "tarif": 0,
+        "methodePaiement": "N/A"
+      }
+    ]
   }
 ]
