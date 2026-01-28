@@ -1,46 +1,5 @@
 [
   {
-    "date": "2026-01-25",
-    "presences": [
-      {
-        "id": "1769328295415_83ed623df323831d",
-        "type": "adherent",
-        "nom": "bleys",
-        "prenom": "kevin",
-        "date": "2026-01-25T08:04:55.415Z",
-        "status": "adhérent",
-        "niveau": "N/A",
-        "tarif": 0,
-        "methodePaiement": "N/A"
-      },
-      {
-        "id": "1769328295438_94eb6f3869472826",
-        "type": "adherent",
-        "nom": "bleys",
-        "prenom": "kevin",
-        "date": "2026-01-25T08:04:55.438Z",
-        "tarif": 0,
-        "status": "adhérent"
-      },
-      {
-        "id": "1769328341544_5664760a831b29e5",
-        "type": "non-adherent",
-        "nom": "test",
-        "prenom": "test",
-        "date": "2026-01-25T08:05:41.544Z",
-        "tarif": 10,
-        "email": "test@test.com",
-        "telephone": "",
-        "dateNaissance": "2005-03-02",
-        "niveau": 2,
-        "status": "Payé",
-        "age": 20,
-        "quickRegistration": true,
-        "methodePaiement": "Especes"
-      }
-    ]
-  },
-  {
     "date": "2026-01-23",
     "presences": [
       {
@@ -104,37 +63,12 @@
     "date": "2025-12-31",
     "presences": [
       {
-        "id": "1767178410236_10811ad812bc10df",
-        "type": "adherent",
-        "nom": "Bleys",
-        "prenom": "Kevin",
-        "date": "2025-12-31T10:53:30.236Z",
-        "status": "adhérent",
-        "niveau": "N/A",
-        "tarif": 0,
-        "methodePaiement": "N/A"
-      },
-      {
-        "id": "1767178410286_553e7e92ba364c23",
-        "type": "adherent",
-        "nom": "Bleys",
-        "prenom": "Kevin",
-        "date": "2025-12-31T10:53:30.286Z",
-        "tarif": 0,
-        "status": "adhérent"
-      }
-    ]
-  },
-  {
-    "date": "2025-11-30",
-    "presences": [
-      {
         "id": "1764512257538_40587ec98026c081",
         "type": "adherent",
         "nom": "Bleys",
         "prenom": "Kevin",
         "date": "2025-11-30T14:17:37.538Z",
-        "status": "adhérent",
+        "status": "adherent",
         "niveau": "N/A",
         "tarif": 0,
         "methodePaiement": "N/A"
@@ -145,8 +79,26 @@
         "nom": "Bleys",
         "prenom": "Kevin",
         "date": "2025-11-30T14:17:37.590Z",
+        "tarif": 0
+      },
+      {
+        "id": "1767178410236_10811ad812bc10df",
+        "type": "adherent",
+        "nom": "Bleys",
+        "prenom": "Kevin",
+        "date": "2025-12-31T10:53:30.236Z",
+        "status": "adherent",
+        "niveau": "N/A",
         "tarif": 0,
-        "status": "adhérent"
+        "methodePaiement": "N/A"
+      },
+      {
+        "id": "1767178410286_553e7e92ba364c23",
+        "type": "adherent",
+        "nom": "Bleys",
+        "prenom": "Kevin",
+        "date": "2025-12-31T10:53:30.286Z",
+        "tarif": 0
       }
     ]
   },
@@ -159,7 +111,7 @@
         "nom": "bleys",
         "prenom": "kevin",
         "date": "2025-11-26T12:13:56.079Z",
-        "status": "adhérent",
+        "status": "adherent",
         "niveau": "N/A",
         "tarif": 0,
         "methodePaiement": "N/A"
@@ -170,469 +122,23 @@
     "date": "2025-11-24",
     "presences": [
       {
-        "id": "1763975448275_e3089583321a33cf",
+        "id": "1763546104695_6472b32e3ec07e6b",
         "type": "adherent",
-        "nom": "caubet",
-        "prenom": "aurore",
-        "date": "2025-11-24T09:10:48.276Z",
-        "status": "adhérent",
+        "nom": "bleys",
+        "prenom": "kevin",
+        "date": "2025-11-19T09:55:04.696Z",
+        "status": "adherent",
         "niveau": "N/A",
         "tarif": 0,
         "methodePaiement": "N/A"
       },
-      {
-        "id": "1763975474119_4915edccf0f08b17",
-        "type": "adherent",
-        "nom": "verdier",
-        "prenom": "jean-michel",
-        "date": "2025-11-24T09:11:14.119Z",
-        "status": "adhérent",
-        "niveau": "N/A",
-        "tarif": 0,
-        "methodePaiement": "N/A"
-      },
-      {
-        "id": "1763975766394_994514256bf44aba",
-        "type": "adherent",
-        "nom": "Caubet",
-        "prenom": "Aurore",
-        "date": "2025-11-24T09:16:06.539Z",
-        "tarif": 0,
-        "status": "adhérent"
-      },
-      {
-        "id": "1763975792246_2a359a91ba1f2259",
-        "type": "adherent",
-        "nom": "Verdier",
-        "prenom": "Jean-Michel",
-        "date": "2025-11-24T09:16:32.247Z",
-        "tarif": 0,
-        "status": "adhérent"
-      }
-    ]
-  },
-  {
-    "date": "2025-11-23",
-    "presences": [
-      {
-        "id": "1763887056336_ecd1ddc1146f99c6",
-        "type": "adherent",
-        "nom": "Marion",
-        "prenom": "Arthur",
-        "date": "2025-11-23T08:37:36.351Z",
-        "status": "adhérent",
-        "niveau": "N/A",
-        "tarif": 0,
-        "methodePaiement": "N/A"
-      },
-      {
-        "id": "1763887075928_8fb586110d2fa590",
-        "type": "adherent",
-        "nom": "Debeaulieu",
-        "prenom": "Josselin",
-        "date": "2025-11-23T08:37:55.929Z",
-        "status": "adhérent",
-        "niveau": "N/A",
-        "tarif": 0,
-        "methodePaiement": "N/A"
-      },
-      {
-        "id": "1763887107068_d801c6f6e8ba574d",
-        "type": "adherent",
-        "nom": "Aisa",
-        "prenom": "Charlotte",
-        "date": "2025-11-23T08:38:27.068Z",
-        "status": "adhérent",
-        "niveau": "N/A",
-        "tarif": 0,
-        "methodePaiement": "N/A"
-      },
-      {
-        "id": "1763887999879_d7d745e9389a53d6",
-        "type": "non-adherent",
-        "nom": "Lindenmann",
-        "prenom": "Nicolas",
-        "date": "2025-11-23T08:53:19.879Z",
-        "tarif": 10,
-        "email": "nicopyrenees@hotmail.fr",
-        "telephone": "",
-        "dateNaissance": "1985-04-11",
-        "niveau": 2,
-        "assuranceAccepted": true,
-        "status": "Payé",
-        "age": 40,
-        "quickRegistration": true,
-        "methodePaiement": "Especes"
-      },
-      {
-        "id": "1763888580106_76d74a4add274965",
-        "type": "adherent",
-        "nom": "Hauraix",
-        "prenom": "Romain",
-        "date": "2025-11-23T09:03:00.106Z",
-        "status": "adhérent",
-        "niveau": "N/A",
-        "tarif": 0,
-        "methodePaiement": "N/A"
-      },
-      {
-        "id": "1763892595461_6fb09408c9918eaf",
-        "type": "adherent",
-        "nom": "Loup hadamard",
-        "prenom": "Mateo",
-        "date": "2025-11-23T10:09:55.463Z",
-        "status": "adhérent",
-        "niveau": "N/A",
-        "tarif": 0,
-        "methodePaiement": "N/A"
-      },
-      {
-        "id": "1763892611821_18566d159ab3f544",
-        "type": "adherent",
-        "nom": "Loup hadamard",
-        "prenom": "Amaya",
-        "date": "2025-11-23T10:10:11.821Z",
-        "status": "adhérent",
-        "niveau": "N/A",
-        "tarif": 0,
-        "methodePaiement": "N/A"
-      },
-      {
-        "id": "1763902968905_a6a4e16a3cdeda95",
-        "type": "adherent",
-        "nom": "Masuda",
-        "prenom": "Emilie",
-        "date": "2025-11-23T13:02:48.915Z",
-        "status": "adhérent",
-        "niveau": "N/A",
-        "tarif": 0,
-        "methodePaiement": "N/A"
-      },
-      {
-        "id": "1763903113053_2ca39db13d260d7e",
-        "type": "non-adherent",
-        "nom": "Dupouey",
-        "prenom": "Gilles",
-        "date": "2025-11-23T13:05:13.053Z",
-        "tarif": 10,
-        "email": "gilles.dupouey@free.fr",
-        "telephone": "0625775138",
-        "dateNaissance": "1969-06-19",
-        "niveau": "1",
-        "assuranceAccepted": true,
-        "status": "Payé",
-        "methodePaiement": "CB"
-      },
-      {
-        "id": "1763903547371_f056925c2752a758",
-        "type": "adherent",
-        "nom": "Bonnard",
-        "prenom": "Gilles",
-        "date": "2025-11-23T13:12:27.371Z",
-        "status": "adhérent",
-        "niveau": "N/A",
-        "tarif": 0,
-        "methodePaiement": "N/A"
-      },
-      {
-        "id": "1763903628585_85c0db200c1a394b",
-        "type": "non-adherent",
-        "nom": "Savaria",
-        "prenom": "Antoine",
-        "date": "2025-11-23T13:13:48.586Z",
-        "tarif": 10,
-        "email": "a.savaria@hotmail.fr",
-        "telephone": "0619752934",
-        "dateNaissance": "1986-06-20",
-        "niveau": 2,
-        "assuranceAccepted": true,
-        "status": "Payé",
-        "age": 39,
-        "quickRegistration": true,
-        "methodePaiement": "Especes"
-      },
-      {
-        "id": "1763904072560_071616797baddf04",
-        "type": "adherent",
-        "nom": "Carniato",
-        "prenom": "Christophe",
-        "date": "2025-11-23T13:21:12.565Z",
-        "status": "adhérent",
-        "niveau": "N/A",
-        "tarif": 0,
-        "methodePaiement": "N/A"
-      },
-      {
-        "id": "1763904080145_e809dd40e6d46612",
-        "type": "adherent",
-        "nom": "Carniato",
-        "prenom": "Nino",
-        "date": "2025-11-23T13:21:20.145Z",
-        "status": "adhérent",
-        "niveau": "N/A",
-        "tarif": 0,
-        "methodePaiement": "N/A"
-      },
-      {
-        "id": "1763904090666_c780c93368fbd2d1",
-        "type": "adherent",
-        "nom": "Bernon",
-        "prenom": "Mila",
-        "date": "2025-11-23T13:21:30.666Z",
-        "status": "adhérent",
-        "niveau": "N/A",
-        "tarif": 0,
-        "methodePaiement": "N/A"
-      },
-      {
-        "id": "1763905738357_d0ba558141aa7c1c",
-        "type": "adherent",
-        "nom": "Pozeg",
-        "prenom": "Jug",
-        "date": "2025-11-23T13:48:58.364Z",
-        "status": "adhérent",
-        "niveau": "N/A",
-        "tarif": 0,
-        "methodePaiement": "N/A"
-      },
-      {
-        "id": "1763905762231_842adf59135c2c6c",
-        "type": "adherent",
-        "nom": "Jean-François",
-        "prenom": "Jean-François",
-        "date": "2025-11-23T13:49:22.232Z",
-        "status": "adhérent",
-        "niveau": "N/A",
-        "tarif": 0,
-        "methodePaiement": "N/A"
-      },
-      {
-        "id": "1763905922722_e1470cc27fbcbc80",
-        "type": "non-adherent",
-        "nom": "Moniot",
-        "prenom": "Valentin",
-        "date": "2025-11-23T13:52:02.722Z",
-        "tarif": 10,
-        "email": "valentin.moniot@gmail.com",
-        "telephone": "",
-        "dateNaissance": "1992-03-20",
-        "niveau": 2,
-        "assuranceAccepted": true,
-        "status": "Payé",
-        "age": 33,
-        "quickRegistration": true,
-        "methodePaiement": "CB"
-      },
-      {
-        "id": "1763906173826_de637f592eafd327",
-        "type": "adherent",
-        "nom": "Guilhempere",
-        "prenom": "Leo",
-        "date": "2025-11-23T13:56:13.827Z",
-        "status": "adhérent",
-        "niveau": "N/A",
-        "tarif": 0,
-        "methodePaiement": "N/A"
-      },
-      {
-        "id": "1763906338366_4188e4ad5e9bc20c",
-        "type": "adherent",
-        "nom": "Charousset",
-        "prenom": "Alexandre",
-        "date": "2025-11-23T13:58:58.366Z",
-        "status": "adhérent",
-        "niveau": "N/A",
-        "tarif": 0,
-        "methodePaiement": "N/A"
-      },
-      {
-        "id": "1763907365368_80540fa9a2712166",
-        "type": "adherent",
-        "nom": "Chinchon",
-        "prenom": "Laurence",
-        "date": "2025-11-23T14:16:05.380Z",
-        "status": "adhérent",
-        "niveau": "N/A",
-        "tarif": 0,
-        "methodePaiement": "N/A"
-      },
-      {
-        "id": "1763907640808_2b1a347f97348576",
-        "type": "adherent",
-        "nom": "Perrin",
-        "prenom": "Charles",
-        "date": "2025-11-23T14:20:40.823Z",
-        "status": "adhérent",
-        "niveau": "N/A",
-        "tarif": 0,
-        "methodePaiement": "N/A"
-      },
-      {
-        "id": "1763907856566_1c3cc0078a29e580",
-        "type": "non-adherent",
-        "nom": "Perrin-Romero",
-        "prenom": "Lou",
-        "date": "2025-11-23T14:24:16.567Z",
-        "tarif": 8,
-        "email": "horizon-sud@orange.fr",
-        "telephone": "0620960119",
-        "dateNaissance": "2015-10-27",
-        "niveau": "0",
-        "assuranceAccepted": true,
-        "status": "Payé",
-        "methodePaiement": "CB"
-      },
-      {
-        "id": "1763908725564_eb9d0c791d28c435",
-        "type": "adherent",
-        "nom": "Loisel",
-        "prenom": "Virginie",
-        "date": "2025-11-23T14:38:45.574Z",
-        "status": "adhérent",
-        "niveau": "N/A",
-        "tarif": 0,
-        "methodePaiement": "N/A"
-      },
-      {
-        "id": "1763908735869_920673b4a721db40",
-        "type": "adherent",
-        "nom": "Renard",
-        "prenom": "Martin",
-        "date": "2025-11-23T14:38:55.869Z",
-        "status": "adhérent",
-        "niveau": "N/A",
-        "tarif": 0,
-        "methodePaiement": "N/A"
-      },
-      {
-        "id": "1763908747234_88f2524ff0ba6b0b",
-        "type": "adherent",
-        "nom": "Renard",
-        "prenom": "Gaël",
-        "date": "2025-11-23T14:39:07.234Z",
-        "status": "adhérent",
-        "niveau": "N/A",
-        "tarif": 0,
-        "methodePaiement": "N/A"
-      },
-      {
-        "id": "1763910562142_dbf57ec75aad94bc",
-        "type": "adherent",
-        "nom": "Renard",
-        "prenom": "Gaël",
-        "date": "2025-11-23T15:09:22.147Z",
-        "tarif": 0,
-        "status": "adhérent"
-      }
-    ]
-  },
-  {
-    "date": "2025-11-22",
-    "presences": [
-      {
-        "id": "1763806046672_2de362b7313a721b",
-        "type": "adherent",
-        "nom": "Raoult",
-        "prenom": "Laurent",
-        "date": "2025-11-22T10:07:26.673Z",
-        "status": "adhérent",
-        "niveau": "N/A",
-        "tarif": 0,
-        "methodePaiement": "N/A"
-      },
-      {
-        "id": "1763806158808_bddd5857e66835aa",
-        "type": "adherent",
-        "nom": "Pellarrey",
-        "prenom": "Pascal",
-        "date": "2025-11-22T10:09:18.808Z",
-        "status": "adhérent",
-        "niveau": "N/A",
-        "tarif": 0,
-        "methodePaiement": "N/A"
-      },
-      {
-        "id": "1763806615155_989b129f53ee81e6",
-        "type": "non-adherent",
-        "nom": "Morel",
-        "prenom": "Clement",
-        "date": "2025-11-22T10:16:55.163Z",
-        "tarif": 10,
-        "email": "c17@gmail.com",
-        "telephone": "0665617731",
-        "dateNaissance": "1994-01-14",
-        "niveau": "2",
-        "assuranceAccepted": true,
-        "status": "Payé",
-        "methodePaiement": "Especes"
-      },
-      {
-        "id": "1763806986830_7b291742d1401209",
-        "type": "tentative-non-adherent",
-        "nom": "Brouca",
-        "prenom": "Mathieu",
-        "date": "2025-11-22T10:23:06.831Z",
-        "status": "tentative non-adherent",
-        "niveau": "N/A",
-        "tarif": 0,
-        "methodePaiement": "N/A"
-      },
-      {
-        "id": "1763807003788_db65c52ef6b5d2e8",
-        "type": "adherent",
-        "nom": "Brouca-cabarrecq",
-        "prenom": "Mathieu",
-        "date": "2025-11-22T10:23:23.789Z",
-        "status": "adhérent",
-        "niveau": "N/A",
-        "tarif": 0,
-        "methodePaiement": "N/A"
-      },
-      {
-        "id": "1763807196565_f29868b38dce4625",
-        "type": "adherent",
-        "nom": "Bernon",
-        "prenom": "Mila",
-        "date": "2025-11-22T10:26:36.565Z",
-        "status": "adhérent",
-        "niveau": "N/A",
-        "tarif": 0,
-        "methodePaiement": "N/A"
-      },
-      {
-        "id": "1763823569909_29c8796f7521cf89",
-        "type": "adherent",
-        "nom": "Chinchon",
-        "prenom": "Laurence",
-        "date": "2025-11-22T14:59:29.910Z",
-        "status": "adhérent",
-        "niveau": "N/A",
-        "tarif": 0,
-        "methodePaiement": "N/A"
-      },
-      {
-        "id": "1763823590597_8c9872a9648a2655",
-        "type": "adherent",
-        "nom": "Jean-François",
-        "prenom": "Jean-François",
-        "date": "2025-11-22T14:59:50.597Z",
-        "status": "adhérent",
-        "niveau": "N/A",
-        "tarif": 0,
-        "methodePaiement": "N/A"
-      }
-    ]
-  },
-  {
-    "date": "2025-11-20",
-    "presences": [
       {
         "id": "1763643168372_5a8e32ca7bfc15f9",
         "type": "adherent",
         "nom": "Jean-François",
         "prenom": "Jean-François",
         "date": "2025-11-20T12:52:48.377Z",
-        "status": "adhérent",
+        "status": "adherent",
         "niveau": "N/A",
         "tarif": 0,
         "methodePaiement": "N/A"
@@ -643,7 +149,7 @@
         "nom": "Mensan",
         "prenom": "Eva",
         "date": "2025-11-20T12:53:07.970Z",
-        "status": "adhérent",
+        "status": "adherent",
         "niveau": "N/A",
         "tarif": 0,
         "methodePaiement": "N/A"
@@ -654,7 +160,7 @@
         "nom": "Chinchon",
         "prenom": "Laurence",
         "date": "2025-11-20T15:15:41.938Z",
-        "status": "adhérent",
+        "status": "adherent",
         "niveau": "N/A",
         "tarif": 0,
         "methodePaiement": "N/A"
@@ -665,7 +171,7 @@
         "nom": "Feret",
         "prenom": "Marie",
         "date": "2025-11-20T16:05:11.590Z",
-        "status": "adhérent",
+        "status": "adherent",
         "niveau": "N/A",
         "tarif": 0,
         "methodePaiement": "N/A"
@@ -676,7 +182,7 @@
         "nom": "Carniato",
         "prenom": "Nino",
         "date": "2025-11-20T16:09:26.437Z",
-        "status": "adhérent",
+        "status": "adherent",
         "niveau": "N/A",
         "tarif": 0,
         "methodePaiement": "N/A"
@@ -687,7 +193,7 @@
         "nom": "Carniato",
         "prenom": "Christophe",
         "date": "2025-11-20T16:09:36.518Z",
-        "status": "adhérent",
+        "status": "adherent",
         "niveau": "N/A",
         "tarif": 0,
         "methodePaiement": "N/A"
@@ -749,7 +255,7 @@
         "nom": "Brunet",
         "prenom": "Denis",
         "date": "2025-11-20T17:08:07.234Z",
-        "status": "adhérent",
+        "status": "adherent",
         "niveau": "N/A",
         "tarif": 0,
         "methodePaiement": "N/A"
@@ -771,7 +277,7 @@
         "nom": "Capdepuy",
         "prenom": "Benjamin",
         "date": "2025-11-20T17:10:43.326Z",
-        "status": "adhérent",
+        "status": "adherent",
         "niveau": "N/A",
         "tarif": 0,
         "methodePaiement": "N/A"
@@ -836,7 +342,7 @@
         "nom": "Leclerc",
         "prenom": "Perine",
         "date": "2025-11-20T17:29:51.985Z",
-        "status": "adhérent",
+        "status": "adherent",
         "niveau": "N/A",
         "tarif": 0,
         "methodePaiement": "N/A"
@@ -864,7 +370,7 @@
         "nom": "Piorkowski",
         "prenom": "Yvanne",
         "date": "2025-11-20T17:30:58.284Z",
-        "status": "adhérent",
+        "status": "adherent",
         "niveau": "N/A",
         "tarif": 0,
         "methodePaiement": "N/A"
@@ -875,7 +381,7 @@
         "nom": "Sanchez Valiente",
         "prenom": "Ruth",
         "date": "2025-11-20T17:31:28.857Z",
-        "status": "adhérent",
+        "status": "adherent",
         "niveau": "N/A",
         "tarif": 0,
         "methodePaiement": "N/A"
@@ -903,7 +409,7 @@
         "nom": "Renard",
         "prenom": "Martin",
         "date": "2025-11-20T17:35:40.033Z",
-        "status": "adhérent",
+        "status": "adherent",
         "niveau": "N/A",
         "tarif": 0,
         "methodePaiement": "N/A"
@@ -914,7 +420,7 @@
         "nom": "Renard",
         "prenom": "Gaël",
         "date": "2025-11-20T17:36:13.128Z",
-        "status": "adhérent",
+        "status": "adherent",
         "niveau": "N/A",
         "tarif": 0,
         "methodePaiement": "N/A"
@@ -936,7 +442,7 @@
         "nom": "Renard",
         "prenom": "Baptiste",
         "date": "2025-11-20T17:37:24.491Z",
-        "status": "adhérent",
+        "status": "adherent",
         "niveau": "N/A",
         "tarif": 0,
         "methodePaiement": "N/A"
@@ -947,7 +453,7 @@
         "nom": "Trey",
         "prenom": "Julie",
         "date": "2025-11-20T17:46:05.952Z",
-        "status": "adhérent",
+        "status": "adherent",
         "niveau": "N/A",
         "tarif": 0,
         "methodePaiement": "N/A"
@@ -958,7 +464,7 @@
         "nom": "Leclerc",
         "prenom": "Nicolas",
         "date": "2025-11-20T17:50:06.581Z",
-        "status": "adhérent",
+        "status": "adherent",
         "niveau": "N/A",
         "tarif": 0,
         "methodePaiement": "N/A"
@@ -969,7 +475,7 @@
         "nom": "Pozeg",
         "prenom": "Jug",
         "date": "2025-11-20T17:55:27.012Z",
-        "status": "adhérent",
+        "status": "adherent",
         "niveau": "N/A",
         "tarif": 0,
         "methodePaiement": "N/A"
@@ -980,7 +486,7 @@
         "nom": "Levrard",
         "prenom": "Frédéric",
         "date": "2025-11-20T18:01:15.252Z",
-        "status": "adhérent",
+        "status": "adherent",
         "niveau": "N/A",
         "tarif": 0,
         "methodePaiement": "N/A"
@@ -991,26 +497,449 @@
         "nom": "Pelagatti",
         "prenom": "Yoann",
         "date": "2025-11-20T18:35:29.418Z",
-        "status": "adhérent",
+        "status": "adherent",
         "niveau": "N/A",
         "tarif": 0,
         "methodePaiement": "N/A"
-      }
-    ]
-  },
-  {
-    "date": "2025-11-19",
-    "presences": [
+      },
       {
-        "id": "1763546104695_6472b32e3ec07e6b",
+        "id": "1763806046672_2de362b7313a721b",
         "type": "adherent",
-        "nom": "bleys",
-        "prenom": "kevin",
-        "date": "2025-11-19T09:55:04.696Z",
-        "status": "adhérent",
+        "nom": "Raoult",
+        "prenom": "Laurent",
+        "date": "2025-11-22T10:07:26.673Z",
+        "status": "adherent",
         "niveau": "N/A",
         "tarif": 0,
         "methodePaiement": "N/A"
+      },
+      {
+        "id": "1763806158808_bddd5857e66835aa",
+        "type": "adherent",
+        "nom": "Pellarrey",
+        "prenom": "Pascal",
+        "date": "2025-11-22T10:09:18.808Z",
+        "status": "adherent",
+        "niveau": "N/A",
+        "tarif": 0,
+        "methodePaiement": "N/A"
+      },
+      {
+        "id": "1763806615155_989b129f53ee81e6",
+        "type": "non-adherent",
+        "nom": "Morel",
+        "prenom": "Clement",
+        "date": "2025-11-22T10:16:55.163Z",
+        "tarif": 10,
+        "email": "c17@gmail.com",
+        "telephone": "0665617731",
+        "dateNaissance": "1994-01-14",
+        "niveau": "2",
+        "assuranceAccepted": true,
+        "status": "Payé",
+        "methodePaiement": "Especes"
+      },
+      {
+        "id": "1763806986830_7b291742d1401209",
+        "type": "tentative-non-adherent",
+        "nom": "Brouca",
+        "prenom": "Mathieu",
+        "date": "2025-11-22T10:23:06.831Z",
+        "status": "tentative non-adherent",
+        "niveau": "N/A",
+        "tarif": 0,
+        "methodePaiement": "N/A"
+      },
+      {
+        "id": "1763807003788_db65c52ef6b5d2e8",
+        "type": "adherent",
+        "nom": "Brouca-cabarrecq",
+        "prenom": "Mathieu",
+        "date": "2025-11-22T10:23:23.789Z",
+        "status": "adherent",
+        "niveau": "N/A",
+        "tarif": 0,
+        "methodePaiement": "N/A"
+      },
+      {
+        "id": "1763807196565_f29868b38dce4625",
+        "type": "adherent",
+        "nom": "Bernon",
+        "prenom": "Mila",
+        "date": "2025-11-22T10:26:36.565Z",
+        "status": "adherent",
+        "niveau": "N/A",
+        "tarif": 0,
+        "methodePaiement": "N/A"
+      },
+      {
+        "id": "1763823569909_29c8796f7521cf89",
+        "type": "adherent",
+        "nom": "Chinchon",
+        "prenom": "Laurence",
+        "date": "2025-11-22T14:59:29.910Z",
+        "status": "adherent",
+        "niveau": "N/A",
+        "tarif": 0,
+        "methodePaiement": "N/A"
+      },
+      {
+        "id": "1763823590597_8c9872a9648a2655",
+        "type": "adherent",
+        "nom": "Jean-François",
+        "prenom": "Jean-François",
+        "date": "2025-11-22T14:59:50.597Z",
+        "status": "adherent",
+        "niveau": "N/A",
+        "tarif": 0,
+        "methodePaiement": "N/A"
+      },
+      {
+        "id": "1763887056336_ecd1ddc1146f99c6",
+        "type": "adherent",
+        "nom": "Marion",
+        "prenom": "Arthur",
+        "date": "2025-11-23T08:37:36.351Z",
+        "status": "adherent",
+        "niveau": "N/A",
+        "tarif": 0,
+        "methodePaiement": "N/A"
+      },
+      {
+        "id": "1763887075928_8fb586110d2fa590",
+        "type": "adherent",
+        "nom": "Debeaulieu",
+        "prenom": "Josselin",
+        "date": "2025-11-23T08:37:55.929Z",
+        "status": "adherent",
+        "niveau": "N/A",
+        "tarif": 0,
+        "methodePaiement": "N/A"
+      },
+      {
+        "id": "1763887107068_d801c6f6e8ba574d",
+        "type": "adherent",
+        "nom": "Aisa",
+        "prenom": "Charlotte",
+        "date": "2025-11-23T08:38:27.068Z",
+        "status": "adherent",
+        "niveau": "N/A",
+        "tarif": 0,
+        "methodePaiement": "N/A"
+      },
+      {
+        "id": "1763887999879_d7d745e9389a53d6",
+        "type": "non-adherent",
+        "nom": "Lindenmann",
+        "prenom": "Nicolas",
+        "date": "2025-11-23T08:53:19.879Z",
+        "tarif": 10,
+        "email": "nicopyrenees@hotmail.fr",
+        "telephone": "",
+        "dateNaissance": "1985-04-11",
+        "niveau": 2,
+        "assuranceAccepted": true,
+        "status": "Payé",
+        "age": 40,
+        "quickRegistration": true,
+        "methodePaiement": "Especes"
+      },
+      {
+        "id": "1763888580106_76d74a4add274965",
+        "type": "adherent",
+        "nom": "Hauraix",
+        "prenom": "Romain",
+        "date": "2025-11-23T09:03:00.106Z",
+        "status": "adherent",
+        "niveau": "N/A",
+        "tarif": 0,
+        "methodePaiement": "N/A"
+      },
+      {
+        "id": "1763892595461_6fb09408c9918eaf",
+        "type": "adherent",
+        "nom": "Loup hadamard",
+        "prenom": "Mateo",
+        "date": "2025-11-23T10:09:55.463Z",
+        "status": "adherent",
+        "niveau": "N/A",
+        "tarif": 0,
+        "methodePaiement": "N/A"
+      },
+      {
+        "id": "1763892611821_18566d159ab3f544",
+        "type": "adherent",
+        "nom": "Loup hadamard",
+        "prenom": "Amaya",
+        "date": "2025-11-23T10:10:11.821Z",
+        "status": "adherent",
+        "niveau": "N/A",
+        "tarif": 0,
+        "methodePaiement": "N/A"
+      },
+      {
+        "id": "1763902968905_a6a4e16a3cdeda95",
+        "type": "adherent",
+        "nom": "Masuda",
+        "prenom": "Emilie",
+        "date": "2025-11-23T13:02:48.915Z",
+        "status": "adherent",
+        "niveau": "N/A",
+        "tarif": 0,
+        "methodePaiement": "N/A"
+      },
+      {
+        "id": "1763903113053_2ca39db13d260d7e",
+        "type": "non-adherent",
+        "nom": "Dupouey",
+        "prenom": "Gilles",
+        "date": "2025-11-23T13:05:13.053Z",
+        "tarif": 10,
+        "email": "gilles.dupouey@free.fr",
+        "telephone": "0625775138",
+        "dateNaissance": "1969-06-19",
+        "niveau": "1",
+        "assuranceAccepted": true,
+        "status": "Payé",
+        "methodePaiement": "CB"
+      },
+      {
+        "id": "1763903547371_f056925c2752a758",
+        "type": "adherent",
+        "nom": "Bonnard",
+        "prenom": "Gilles",
+        "date": "2025-11-23T13:12:27.371Z",
+        "status": "adherent",
+        "niveau": "N/A",
+        "tarif": 0,
+        "methodePaiement": "N/A"
+      },
+      {
+        "id": "1763903628585_85c0db200c1a394b",
+        "type": "non-adherent",
+        "nom": "Savaria",
+        "prenom": "Antoine",
+        "date": "2025-11-23T13:13:48.586Z",
+        "tarif": 10,
+        "email": "a.savaria@hotmail.fr",
+        "telephone": "0619752934",
+        "dateNaissance": "1986-06-20",
+        "niveau": 2,
+        "assuranceAccepted": true,
+        "status": "Payé",
+        "age": 39,
+        "quickRegistration": true,
+        "methodePaiement": "Especes"
+      },
+      {
+        "id": "1763904072560_071616797baddf04",
+        "type": "adherent",
+        "nom": "Carniato",
+        "prenom": "Christophe",
+        "date": "2025-11-23T13:21:12.565Z",
+        "status": "adherent",
+        "niveau": "N/A",
+        "tarif": 0,
+        "methodePaiement": "N/A"
+      },
+      {
+        "id": "1763904080145_e809dd40e6d46612",
+        "type": "adherent",
+        "nom": "Carniato",
+        "prenom": "Nino",
+        "date": "2025-11-23T13:21:20.145Z",
+        "status": "adherent",
+        "niveau": "N/A",
+        "tarif": 0,
+        "methodePaiement": "N/A"
+      },
+      {
+        "id": "1763904090666_c780c93368fbd2d1",
+        "type": "adherent",
+        "nom": "Bernon",
+        "prenom": "Mila",
+        "date": "2025-11-23T13:21:30.666Z",
+        "status": "adherent",
+        "niveau": "N/A",
+        "tarif": 0,
+        "methodePaiement": "N/A"
+      },
+      {
+        "id": "1763905738357_d0ba558141aa7c1c",
+        "type": "adherent",
+        "nom": "Pozeg",
+        "prenom": "Jug",
+        "date": "2025-11-23T13:48:58.364Z",
+        "status": "adherent",
+        "niveau": "N/A",
+        "tarif": 0,
+        "methodePaiement": "N/A"
+      },
+      {
+        "id": "1763905762231_842adf59135c2c6c",
+        "type": "adherent",
+        "nom": "Jean-François",
+        "prenom": "Jean-François",
+        "date": "2025-11-23T13:49:22.232Z",
+        "status": "adherent",
+        "niveau": "N/A",
+        "tarif": 0,
+        "methodePaiement": "N/A"
+      },
+      {
+        "id": "1763905922722_e1470cc27fbcbc80",
+        "type": "non-adherent",
+        "nom": "Moniot",
+        "prenom": "Valentin",
+        "date": "2025-11-23T13:52:02.722Z",
+        "tarif": 10,
+        "email": "valentin.moniot@gmail.com",
+        "telephone": "",
+        "dateNaissance": "1992-03-20",
+        "niveau": 2,
+        "assuranceAccepted": true,
+        "status": "Payé",
+        "age": 33,
+        "quickRegistration": true,
+        "methodePaiement": "CB"
+      },
+      {
+        "id": "1763906173826_de637f592eafd327",
+        "type": "adherent",
+        "nom": "Guilhempere",
+        "prenom": "Leo",
+        "date": "2025-11-23T13:56:13.827Z",
+        "status": "adherent",
+        "niveau": "N/A",
+        "tarif": 0,
+        "methodePaiement": "N/A"
+      },
+      {
+        "id": "1763906338366_4188e4ad5e9bc20c",
+        "type": "adherent",
+        "nom": "Charousset",
+        "prenom": "Alexandre",
+        "date": "2025-11-23T13:58:58.366Z",
+        "status": "adherent",
+        "niveau": "N/A",
+        "tarif": 0,
+        "methodePaiement": "N/A"
+      },
+      {
+        "id": "1763907365368_80540fa9a2712166",
+        "type": "adherent",
+        "nom": "Chinchon",
+        "prenom": "Laurence",
+        "date": "2025-11-23T14:16:05.380Z",
+        "status": "adherent",
+        "niveau": "N/A",
+        "tarif": 0,
+        "methodePaiement": "N/A"
+      },
+      {
+        "id": "1763907640808_2b1a347f97348576",
+        "type": "adherent",
+        "nom": "Perrin",
+        "prenom": "Charles",
+        "date": "2025-11-23T14:20:40.823Z",
+        "status": "adherent",
+        "niveau": "N/A",
+        "tarif": 0,
+        "methodePaiement": "N/A"
+      },
+      {
+        "id": "1763907856566_1c3cc0078a29e580",
+        "type": "non-adherent",
+        "nom": "Perrin-Romero",
+        "prenom": "Lou",
+        "date": "2025-11-23T14:24:16.567Z",
+        "tarif": 8,
+        "email": "horizon-sud@orange.fr",
+        "telephone": "0620960119",
+        "dateNaissance": "2015-10-27",
+        "niveau": "0",
+        "assuranceAccepted": true,
+        "status": "Payé",
+        "methodePaiement": "CB"
+      },
+      {
+        "id": "1763908725564_eb9d0c791d28c435",
+        "type": "adherent",
+        "nom": "Loisel",
+        "prenom": "Virginie",
+        "date": "2025-11-23T14:38:45.574Z",
+        "status": "adherent",
+        "niveau": "N/A",
+        "tarif": 0,
+        "methodePaiement": "N/A"
+      },
+      {
+        "id": "1763908735869_920673b4a721db40",
+        "type": "adherent",
+        "nom": "Renard",
+        "prenom": "Martin",
+        "date": "2025-11-23T14:38:55.869Z",
+        "status": "adherent",
+        "niveau": "N/A",
+        "tarif": 0,
+        "methodePaiement": "N/A"
+      },
+      {
+        "id": "1763908747234_88f2524ff0ba6b0b",
+        "type": "adherent",
+        "nom": "Renard",
+        "prenom": "Gaël",
+        "date": "2025-11-23T14:39:07.234Z",
+        "status": "adherent",
+        "niveau": "N/A",
+        "tarif": 0,
+        "methodePaiement": "N/A"
+      },
+      {
+        "id": "1763910562142_dbf57ec75aad94bc",
+        "type": "adherent",
+        "nom": "Renard",
+        "prenom": "Gaël",
+        "date": "2025-11-23T15:09:22.147Z",
+        "tarif": 0
+      },
+      {
+        "id": "1763975448275_e3089583321a33cf",
+        "type": "adherent",
+        "nom": "caubet",
+        "prenom": "aurore",
+        "date": "2025-11-24T09:10:48.276Z",
+        "status": "adherent",
+        "niveau": "N/A",
+        "tarif": 0,
+        "methodePaiement": "N/A"
+      },
+      {
+        "id": "1763975474119_4915edccf0f08b17",
+        "type": "adherent",
+        "nom": "verdier",
+        "prenom": "jean-michel",
+        "date": "2025-11-24T09:11:14.119Z",
+        "status": "adherent",
+        "niveau": "N/A",
+        "tarif": 0,
+        "methodePaiement": "N/A"
+      },
+      {
+        "id": "1763975766394_994514256bf44aba",
+        "type": "adherent",
+        "nom": "Caubet",
+        "prenom": "Aurore",
+        "date": "2025-11-24T09:16:06.539Z",
+        "tarif": 0
+      },
+      {
+        "id": "1763975792246_2a359a91ba1f2259",
+        "type": "adherent",
+        "nom": "Verdier",
+        "prenom": "Jean-Michel",
+        "date": "2025-11-24T09:16:32.247Z",
+        "tarif": 0
       }
     ]
   },
@@ -1023,7 +952,7 @@
         "nom": "Dupont",
         "prenom": "Jean",
         "date": "2025-11-05T14:30:00.000Z",
-        "status": "adhérent",
+        "status": "adherent",
         "niveau": "N/A",
         "tarif": 0,
         "methodePaiement": "N/A"
@@ -1077,7 +1006,7 @@
         "nom": "Lemaire",
         "prenom": "Jean-Claude",
         "date": "2025-09-26T09:00:00.000Z",
-        "status": "adhérent",
+        "status": "adherent",
         "niveau": "N/A",
         "tarif": 0,
         "methodePaiement": "N/A"
@@ -1109,7 +1038,7 @@
         "nom": "Bertrand",
         "prenom": "Sylvie",
         "date": "2025-08-30T10:15:00.000Z",
-        "status": "adhérent",
+        "status": "adherent",
         "niveau": "N/A",
         "tarif": 0,
         "methodePaiement": "N/A"
@@ -1157,7 +1086,7 @@
         "nom": "Mercier",
         "prenom": "Francoise",
         "date": "2025-07-15T09:30:00.000Z",
-        "status": "adhérent",
+        "status": "adherent",
         "niveau": "N/A",
         "tarif": 0,
         "methodePaiement": "N/A"
@@ -1173,7 +1102,7 @@
         "nom": "Garnier",
         "prenom": "David",
         "date": "2025-01-10T11:00:00.000Z",
-        "status": "adhérent",
+        "status": "adherent",
         "niveau": "N/A",
         "tarif": 0,
         "methodePaiement": "N/A"
@@ -1216,7 +1145,7 @@
         "nom": "Fontaine",
         "prenom": "Marc",
         "date": "2024-03-15T10:30:00.000Z",
-        "status": "adhérent",
+        "status": "adherent",
         "niveau": "N/A",
         "tarif": 0,
         "methodePaiement": "N/A"
@@ -1248,10 +1177,50 @@
         "nom": "Lefevre",
         "prenom": "Alain",
         "date": "2023-01-15T09:00:00.000Z",
-        "status": "adhérent",
+        "status": "adherent",
         "niveau": "N/A",
         "tarif": 0,
         "methodePaiement": "N/A"
+      }
+    ]
+  },
+  {
+    "date": "2026-01-25",
+    "presences": [
+      {
+        "id": "1769328295415_83ed623df323831d",
+        "type": "adherent",
+        "nom": "bleys",
+        "prenom": "kevin",
+        "date": "2026-01-25T08:04:55.415Z",
+        "status": "adherent",
+        "niveau": "N/A",
+        "tarif": 0,
+        "methodePaiement": "N/A"
+      },
+      {
+        "id": "1769328295438_94eb6f3869472826",
+        "type": "adherent",
+        "nom": "bleys",
+        "prenom": "kevin",
+        "date": "2026-01-25T08:04:55.438Z",
+        "tarif": 0
+      },
+      {
+        "id": "1769328341544_5664760a831b29e5",
+        "type": "non-adherent",
+        "nom": "test",
+        "prenom": "test",
+        "date": "2026-01-25T08:05:41.544Z",
+        "tarif": 10,
+        "email": "test@test.com",
+        "telephone": "",
+        "dateNaissance": "2005-03-02",
+        "niveau": 2,
+        "status": "Payé",
+        "age": 20,
+        "quickRegistration": true,
+        "methodePaiement": "Especes"
       }
     ]
   }

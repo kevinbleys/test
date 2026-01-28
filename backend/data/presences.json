@@ -1,1 +1,13 @@
-[]
+[
+  {
+    "id": "1769329747790_322d10fe4a846bc2",
+    "type": "product-sale",
+    "nom": "",
+    "prenom": "",
+    "produit": "bodard",
+    "date": "2026-01-25T08:29:07.790Z",
+    "tarif": 65,
+    "methodePaiement": "Especes",
+    "status": "Payé"
+  }
+]
