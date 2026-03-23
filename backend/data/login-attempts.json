@@ -1,1 +1,82 @@
-[]
+[
+  {
+    "id": "1770220382030_61c0c435d4f4af3a",
+    "type": "tentative-non-adherent",
+    "nom": "joske",
+    "prenom": "vermeulen",
+    "date": "2026-02-04T15:53:02.030Z",
+    "status": "tentative non-adherent",
+    "niveau": "N/A",
+    "tarif": 0,
+    "methodePaiement": "N/A"
+  },
+  {
+    "id": "1770220677550_ba14f1ae255a2cd3",
+    "type": "tentative-non-payé",
+    "nom": "sahuc",
+    "prenom": "marie",
+    "date": "2026-02-04T15:57:57.550Z",
+    "status": "tentative non-payé",
+    "niveau": "N/A",
+    "tarif": 0,
+    "methodePaiement": "N/A"
+  },
+  {
+    "id": "1770220907056_e0dfa21dbc21f86d",
+    "type": "tentative-pas-acces",
+    "nom": "perrin",
+    "prenom": "charles",
+    "date": "2026-02-04T16:01:47.056Z",
+    "status": "refusé: SAISON_4MOIS_EXPIRED",
+    "niveau": "N/A",
+    "tarif": 0,
+    "methodePaiement": "N/A",
+    "reason": "Votre adhésion 'saison 4 mois' a expiré le 16/01/2026"
+  },
+  {
+    "id": "1770220956147_67f701413541e873",
+    "type": "tentative-pas-acces",
+    "nom": "ladet",
+    "prenom": "fabien",
+    "date": "2026-02-04T16:02:36.147Z",
+    "status": "refusé: NO_ACCESS",
+    "niveau": "N/A",
+    "tarif": 0,
+    "methodePaiement": "N/A",
+    "reason": "Votre adhésion ne donne pas accès à la salle (pas de 'créneaux libres' ou 'cours')"
+  },
+  {
+    "id": "1773244308560_47ff882b55980ad5",
+    "type": "tentative-non-adherent",
+    "nom": "joske",
+    "prenom": "vermeulen",
+    "date": "2026-03-11T15:51:48.560Z",
+    "status": "tentative non-adherent",
+    "niveau": "N/A",
+    "tarif": 0,
+    "methodePaiement": "N/A"
+  },
+  {
+    "id": "1773244327954_f0bf8969a2e35b29",
+    "type": "tentative-non-adherent",
+    "nom": "verstraete",
+    "prenom": "téo",
+    "date": "2026-03-11T15:52:07.954Z",
+    "status": "tentative non-adherent",
+    "niveau": "N/A",
+    "tarif": 0,
+    "methodePaiement": "N/A"
+  },
+  {
+    "id": "1773244354042_17f9fa941f696ad6",
+    "type": "tentative-pas-acces",
+    "nom": "perrin",
+    "prenom": "charles",
+    "date": "2026-03-11T15:52:34.042Z",
+    "status": "refusé: SAISON_4MOIS_EXPIRED",
+    "niveau": "N/A",
+    "tarif": 0,
+    "methodePaiement": "N/A",
+    "reason": "Votre adhésion 'saison 4 mois' a expiré le 16/01/2026"
+  }
+]

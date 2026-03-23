@@ -1,125 +1,156 @@
 const axios = require('axios');
 const fs = require('fs');
-const path = require('path');
+require('dotenv').config();
 
-const API_URL = 'https://api.pepsup.com/api/v1/contacts';
-const API_HEADERS = {
-  'X-API-KEY': '0IOiLeibD6sF6sJtr17oB8VUKBG6NZ2U',
-  'X-API-SECRET': 'odakfDvfUMOKpJAe92u76fqCWHtPvPlo',
-  'Accept': 'application/json'
-};
-const DATA_FILE = path.join(__dirname, 'data', 'members.json');
-const LOG_FILE = path.join(__dirname, 'data', 'sync.log');
+const API_KEY = process.env.PEPSUP_API_KEY || '0IOiLeibD6sF6sJtr17oB8VUKBG6NZ2U';
+const API_SECRET = process.env.PEPSUP_API_SECRET || 'odakfDvfUMOKpJAe92u76fqCWHtPvPlo';
+const API_BASE_URL = 'https://api.pepsup.com/api/v1/dossiers-adhesions';
+const MEMBERS_FILE = './data/members.json';
 
-// Logging functie
-const logMessage = (message) => {
-  const timestamp = new Date().toISOString();
-  const logEntry = `[${timestamp}] ${message}\n`;
-  
-  // Console output
-  console.log(logEntry.trim());
-  
-  // Write to log file
-  try {
-    // Zorg dat data directory bestaat
-    const dataDir = path.dirname(LOG_FILE);
-    if (!fs.existsSync(dataDir)) {
-      fs.mkdirSync(dataDir, { recursive: true });
-    }
-    fs.appendFileSync(LOG_FILE, logEntry);
-  } catch (error) {
-    console.error('Fout bij schrijven naar log:', error);
+let membersCache = [];
+
+console.log('╔═══════════════════════════════════════════════════════════════╗');
+console.log('║ 🔄 PEPSUP SYNC MET PAGINATIE (page parameter)                ║');
+console.log('╚═══════════════════════════════════════════════════════════════╝\n');
+
+function extractNames(fullName) {
+  if (!fullName || typeof fullName !== 'string') {
+    return { firstname: '', lastname: '' };
   }
-};
+  const parts = fullName.trim().split(/\s+/);
+  if (parts.length === 0) return { firstname: '', lastname: '' };
+  if (parts.length === 1) return { firstname: parts[0], lastname: '' };
+  return {
+    firstname: parts[0],
+    lastname: parts.slice(1).join(' ')
+  };
+}
+
+async function fetchAllMembers() {
+  const allMembers = [];
+  let page = 0;
+  let hasMore = true;
+
+  console.log('📥 Ophalen leden met paginatie...\n');
+
+  while (hasMore) {
+    try {
+      console.log(`   Pagina ${page}...`);
+      
+      const response = await axios.get(API_BASE_URL, {
+        headers: { 
+          'X-API-KEY': API_KEY,
+          'X-API-SECRET': API_SECRET
+        },
+        params: { page: page },
+        timeout: 10000
+      });
+
+      const members = response.data;
+      
+      if (!Array.isArray(members) || members.length === 0) {
+        console.log(`   ✅ Geen leden meer op pagina ${page}`);
+        hasMore = false;
+        break;
+      }
+
+      console.log(`   ✅ ${members.length} leden ontvangen`);
+      allMembers.push(...members);
+
+      if (members.length < 25) {
+        console.log(`   🎯 Laatste pagina bereikt (${members.length} < 25)`);
+        hasMore = false;
+      } else {
+        page++;
+      }
+
+    } catch (error) {
+      console.error(`   ❌ ERROR op pagina ${page}:`, error.message);
+      if (error.response) {
+        console.error(`   Status: ${error.response.status}`);
+        console.error(`   Data:`, error.response.data);
+      }
+      hasMore = false;
+    }
+  }
+
+  console.log(`\n✅ Totaal ${allMembers.length} leden opgehaald van ${page + 1} pagina's\n`);
+  return allMembers;
+}
 
 async function syncMembers() {
   try {
-    logMessage('=== Synchronisation PEPsup démarrée ===');
-    
-    // Test internet verbinding
-    try {
-      const testResponse = await axios.get('https://google.com', { timeout: 5000 });
-      logMessage('Internet verbinding OK');
-    } catch (error) {
-      throw new Error('Geen internet verbinding beschikbaar');
+    const rawMembers = await fetchAllMembers();
+
+    if (rawMembers.length === 0) {
+      console.error('⚠️  WAARSCHUWING: Geen leden opgehaald!');
+      console.error('   Check je API credentials in .env file');
+      return 0;
     }
-    
-    const response = await axios.get(API_URL, { 
-      headers: API_HEADERS,
-      timeout: 30000 // 30 seconden timeout
+
+    const members = rawMembers.map(member => {
+      const { firstname, lastname } = extractNames(member.joinRequestMember || '');
+      return {
+        ...member,
+        firstname,
+        lastname
+      };
     });
-    
-    if (!Array.isArray(response.data)) {
-      throw new Error(`Réponse API inattendue: ${typeof response.data}`);
-    }
-    
-    const dir = path.dirname(DATA_FILE);
-    if (!fs.existsSync(dir)) {
-      fs.mkdirSync(dir, { recursive: true });
-      logMessage(`Data directory aangemaakt: ${dir}`);
-    }
-    
-    // Backup van oude data
-    if (fs.existsSync(DATA_FILE)) {
-      const backupFile = DATA_FILE.replace('.json', `_backup_${Date.now()}.json`);
-      fs.copyFileSync(DATA_FILE, backupFile);
-      logMessage(`Backup gemaakt: ${backupFile}`);
-    }
-    
-    // Nieuwe data schrijven
-    fs.writeFileSync(DATA_FILE, JSON.stringify(response.data, null, 2));
-    
-    logMessage(`Synchronisation réussie: ${response.data.length} membres synchronisés`);
-    logMessage('=== Synchronisation PEPsup terminée ===');
-    
-    return response.data.length;
-  } catch (error) {
-    let errorMessage = 'Erreur de synchronisation inconnue';
-    
-    if (error.response) {
-      errorMessage = `Erreur API ${error.response.status}: ${error.response.data?.message || JSON.stringify(error.response.data)}`;
-    } else if (error.request) {
-      errorMessage = "Pas de réponse du serveur PEPsup - Vérifiez votre connexion";
-    } else {
-      errorMessage = `Erreur de synchronisation: ${error.message}`;
-    }
-    
-    logMessage(`ERREUR: ${errorMessage}`);
-    throw new Error(errorMessage);
-  }
-}
 
-// Functie voor command line uitvoering
-async function runSync() {
-  try {
-    logMessage('Script gestart vanuit command line');
-    const count = await syncMembers();
-    logMessage(`Script voltooid: ${count} leden gesynchroniseerd`);
-    process.exit(0);
-  } catch (error) {
-    logMessage(`FOUT: ${error.message}`);
-    process.exit(1);
-  }
-}
+    if (fs.existsSync(MEMBERS_FILE)) {
+      const backup = `./data/members_backup_${Date.now()}.json`;
+      fs.copyFileSync(MEMBERS_FILE, backup);
+      console.log(`💾 Backup: ${backup}`);
+    }
 
-// Check of dit script direct uitgevoerd wordt
-if (require.main === module) {
-  runSync();
-}
+    fs.writeFileSync(MEMBERS_FILE, JSON.stringify(members, null, 2));
+    console.log(`💾 Opgeslagen: ${MEMBERS_FILE}`);
 
-module.exports = {
-  syncMembers,
-  getMembers: function () {
-    try {
-      if (!fs.existsSync(DATA_FILE)) {
-        logMessage('Geen members.json bestand gevonden');
-        return [];
+    const dist = {};
+    members.forEach(m => {
+      if (m.lastname) {
+        const l = m.lastname[0].toUpperCase();
+        dist[l] = (dist[l] || 0) + 1;
       }
-      const data = JSON.parse(fs.readFileSync(DATA_FILE, 'utf8'));
-      return data;
+    });
+
+    console.log('\n📊 ACHTERNAAM DISTRIBUTIE:');
+    Object.keys(dist).sort().forEach(l => {
+      console.log(`   ${l}: ${dist[l]} leden`);
+    });
+    console.log(`   Totaal letters: ${Object.keys(dist).length}\n`);
+
+    console.log('╔═══════════════════════════════════════════════════════════════╗');
+    console.log(`║ ✅ SYNC GESLAAGD: ${members.length} leden                          `);
+    console.log('╚═══════════════════════════════════════════════════════════════╝\n');
+
+    membersCache = members;
+    return members.length;
+
+  } catch (error) {
+    console.error('❌ SYNC FAILED:', error.message);
+    return 0;
+  }
+}
+
+function getMembers() {
+  if (membersCache.length === 0 && fs.existsSync(MEMBERS_FILE)) {
+    try {
+      const data = fs.readFileSync(MEMBERS_FILE, 'utf8');
+      membersCache = JSON.parse(data);
+      console.log(`[SYNC] Loaded ${membersCache.length} members from cache`);
     } catch (error) {
-      logMessage(`Fout bij lezen van members: ${error.message}`);
-      return [];
+      console.error('[SYNC] Error loading members:', error.message);
+      membersCache = [];
     }
   }
-};
+  return membersCache;
+}
+
+if (require.main === module) {
+  syncMembers()
+    .then(() => process.exit(0))
+    .catch(() => process.exit(1));
+}
+
+module.exports = { syncMembers, getMembers };

@@ -1,0 +1,1139 @@
+{
+  "timestamp": "2026-02-04T08:30:40.595Z",
+  "memberCount": 25,
+  "headers": {
+    "cache-control": "no-cache, no-store, max-age=0, must-revalidate",
+    "content-type": "application/json",
+    "date": "Wed, 04 Feb 2026 08:30:39 GMT",
+    "expires": "0",
+    "pragma": "no-cache",
+    "strict-transport-security": "max-age=31536000 ; includeSubDomains",
+    "x-content-type-options": "nosniff",
+    "x-frame-options": "DENY",
+    "x-rate-limit-remaining": "9",
+    "x-xss-protection": "0",
+    "transfer-encoding": "chunked"
+  },
+  "firstMember": {
+    "jfId": 606129,
+    "jrId": 656333,
+    "dateCreation": "29/09/2025, 18:11",
+    "dateUpdate": "30/09/2025, 17:56",
+    "joinFileId": "DA001048",
+    "joinFileMemo": null,
+    "promoCode": null,
+    "promoCodeDiscount": null,
+    "joinFileMemoWithoutHtml": null,
+    "ownerId": 474859,
+    "owner": "Fabien Galibert",
+    "joinRequestMember": "Fabien Galibert",
+    "joinRequestStatus": "VALIDATED",
+    "joinFileStatus": "PROCESSED",
+    "joinRequestDateStartJoin": "01/09/2025",
+    "joinRequestDateEndJoin": "01/09/2026",
+    "joinRequestProducts": [
+      {
+        "displayProductPrice": "Adhésion a l'association (28.00€)"
+      },
+      {
+        "displayProductPrice": "Adhesion aure verticale partenaire SNE (13.00€)"
+      },
+      {
+        "displayProductPrice": "Licence FFME adulte base (89.00€)"
+      },
+      {
+        "displayProductPrice": "Creneaux libres adultes (160.00€)"
+      }
+    ],
+    "statusLabel": "Payé",
+    "cartId": 1003994,
+    "cartTotalAmount": 290,
+    "cartUnpaidAmount": 0,
+    "nbRequestsToProcess": 0,
+    "nbRequestsValidated": 1,
+    "isAllJoinRequestRejected": false,
+    "stripeSubscription": null,
+    "remainingPayment": null,
+    "nbPayment": null,
+    "allJoinRequestRejected": false
+  },
+  "lastMember": {
+    "jfId": 657342,
+    "jrId": 708368,
+    "dateCreation": "14/01/2026, 16:07",
+    "dateUpdate": "14/01/2026, 16:11",
+    "joinFileId": "DA001122",
+    "joinFileMemo": null,
+    "promoCode": null,
+    "promoCodeDiscount": null,
+    "joinFileMemoWithoutHtml": null,
+    "ownerId": 1215512,
+    "owner": "clément garnier",
+    "joinRequestMember": "clément garnier",
+    "joinRequestStatus": "TO_PROCESS",
+    "joinFileStatus": "CREATING",
+    "joinRequestDateStartJoin": "01/09/2025",
+    "joinRequestDateEndJoin": "01/09/2026",
+    "joinRequestProducts": [
+      {
+        "displayProductPrice": "Adhésion a l'association (28.00€)"
+      },
+      {
+        "displayProductPrice": "Licence FFME adulte base (89.00€)"
+      },
+      {
+        "displayProductPrice": "Creneaux libres adultes (160.00€)"
+      }
+    ],
+    "statusLabel": "En cours de création",
+    "cartId": null,
+    "cartTotalAmount": null,
+    "cartUnpaidAmount": null,
+    "nbRequestsToProcess": 1,
+    "nbRequestsValidated": 0,
+    "isAllJoinRequestRejected": false,
+    "stripeSubscription": null,
+    "remainingPayment": null,
+    "nbPayment": null,
+    "allJoinRequestRejected": false
+  },
+  "achternaamDistributie": {
+    "G": 3,
+    "C": 3,
+    "P": 3,
+    "F": 1,
+    "B": 6,
+    "L": 3,
+    "V": 2,
+    "O": 1,
+    "M": 1,
+    "E": 1,
+    "D": 1
+  },
+  "fullData": [
+    {
+      "jfId": 606129,
+      "jrId": 656333,
+      "dateCreation": "29/09/2025, 18:11",
+      "dateUpdate": "30/09/2025, 17:56",
+      "joinFileId": "DA001048",
+      "joinFileMemo": null,
+      "promoCode": null,
+      "promoCodeDiscount": null,
+      "joinFileMemoWithoutHtml": null,
+      "ownerId": 474859,
+      "owner": "Fabien Galibert",
+      "joinRequestMember": "Fabien Galibert",
+      "joinRequestStatus": "VALIDATED",
+      "joinFileStatus": "PROCESSED",
+      "joinRequestDateStartJoin": "01/09/2025",
+      "joinRequestDateEndJoin": "01/09/2026",
+      "joinRequestProducts": [
+        {
+          "displayProductPrice": "Adhésion a l'association (28.00€)"
+        },
+        {
+          "displayProductPrice": "Adhesion aure verticale partenaire SNE (13.00€)"
+        },
+        {
+          "displayProductPrice": "Licence FFME adulte base (89.00€)"
+        },
+        {
+          "displayProductPrice": "Creneaux libres adultes (160.00€)"
+        }
+      ],
+      "statusLabel": "Payé",
+      "cartId": 1003994,
+      "cartTotalAmount": 290,
+      "cartUnpaidAmount": 0,
+      "nbRequestsToProcess": 0,
+      "nbRequestsValidated": 1,
+      "isAllJoinRequestRejected": false,
+      "stripeSubscription": null,
+      "remainingPayment": null,
+      "nbPayment": null,
+      "allJoinRequestRejected": false
+    },
+    {
+      "jfId": 532421,
+      "jrId": 581394,
+      "dateCreation": "08/07/2025, 10:49",
+      "dateUpdate": "08/07/2025, 18:12",
+      "joinFileId": "DA000895",
+      "joinFileMemo": null,
+      "promoCode": null,
+      "promoCodeDiscount": null,
+      "joinFileMemoWithoutHtml": null,
+      "ownerId": 481848,
+      "owner": "ISAURE CLARENS",
+      "joinRequestMember": "ISAURE CLARENS",
+      "joinRequestStatus": "VALIDATED",
+      "joinFileStatus": "PAYING",
+      "joinRequestDateStartJoin": "01/09/2025",
+      "joinRequestDateEndJoin": "01/09/2026",
+      "joinRequestProducts": [
+        {
+          "displayProductPrice": "Adhésion a l'association (28.00€)"
+        },
+        {
+          "displayProductPrice": "Adhesion aure verticale partenaire SNE (13.00€)"
+        },
+        {
+          "displayProductPrice": "Licence FFME adulte base (89.00€)"
+        },
+        {
+          "displayProductPrice": "Cours escalade adultes confirmé 18h30-20h30 mercredi (290.00€)"
+        }
+      ],
+      "statusLabel": "En cours de paiement",
+      "cartId": 919700,
+      "cartTotalAmount": 420,
+      "cartUnpaidAmount": 210,
+      "nbRequestsToProcess": 0,
+      "nbRequestsValidated": 1,
+      "isAllJoinRequestRejected": false,
+      "stripeSubscription": "sub_1SDjmcCsDakO7YeggVpugqxm",
+      "remainingPayment": 5,
+      "nbPayment": 10,
+      "allJoinRequestRejected": false
+    },
+    {
+      "jfId": 431172,
+      "jrId": 579890,
+      "dateCreation": "07/07/2025, 09:46",
+      "dateUpdate": "20/07/2025, 08:39",
+      "joinFileId": "DA000760",
+      "joinFileMemo": null,
+      "promoCode": null,
+      "promoCodeDiscount": null,
+      "joinFileMemoWithoutHtml": null,
+      "ownerId": 491346,
+      "owner": "gregory cremades",
+      "joinRequestMember": "gregory cremades",
+      "joinRequestStatus": "VALIDATED",
+      "joinFileStatus": "PROCESSED",
+      "joinRequestDateStartJoin": "01/09/2025",
+      "joinRequestDateEndJoin": "01/09/2026",
+      "joinRequestProducts": [
+        {
+          "displayProductPrice": "Adhésion a l'association (28.00€)"
+        },
+        {
+          "displayProductPrice": "Adhesion aure verticale partenaire SNE (13.00€)"
+        },
+        {
+          "displayProductPrice": "Licence FFME adulte base (89.00€)"
+        },
+        {
+          "displayProductPrice": "Cours escalade adultes confirmé 18h30-20h30 mercredi (290.00€)"
+        },
+        {
+          "displayProductPrice": "Réduction habitant beyrede ou DE (-160.00€)"
+        },
+        {
+          "displayProductPrice": "Réduction membre du bureau licence ffme (-89.00€)"
+        }
+      ],
+      "statusLabel": "Payé",
+      "cartId": 926507,
+      "cartTotalAmount": 171,
+      "cartUnpaidAmount": 0,
+      "nbRequestsToProcess": 0,
+      "nbRequestsValidated": 1,
+      "isAllJoinRequestRejected": false,
+      "stripeSubscription": null,
+      "remainingPayment": null,
+      "nbPayment": null,
+      "allJoinRequestRejected": false
+    },
+    {
+      "jfId": 585971,
+      "jrId": 636090,
+      "dateCreation": "11/09/2025, 18:33",
+      "dateUpdate": "13/09/2025, 15:25",
+      "joinFileId": "DA001021",
+      "joinFileMemo": null,
+      "promoCode": null,
+      "promoCodeDiscount": null,
+      "joinFileMemoWithoutHtml": null,
+      "ownerId": 913015,
+      "owner": "Yvanne Piorkowski",
+      "joinRequestMember": "Yvanne Piorkowski",
+      "joinRequestStatus": "VALIDATED",
+      "joinFileStatus": "PROCESSED",
+      "joinRequestDateStartJoin": "01/09/2025",
+      "joinRequestDateEndJoin": "01/09/2026",
+      "joinRequestProducts": [
+        {
+          "displayProductPrice": "Adhésion a l'association (28.00€)"
+        },
+        {
+          "displayProductPrice": "Licence FFME adulte base (89.00€)"
+        },
+        {
+          "displayProductPrice": "Creneaux libres adultes (160.00€)"
+        }
+      ],
+      "statusLabel": "Payé",
+      "cartId": 980471,
+      "cartTotalAmount": 277,
+      "cartUnpaidAmount": 0,
+      "nbRequestsToProcess": 0,
+      "nbRequestsValidated": 1,
+      "isAllJoinRequestRejected": false,
+      "stripeSubscription": null,
+      "remainingPayment": null,
+      "nbPayment": null,
+      "allJoinRequestRejected": false
+    },
+    {
+      "jfId": 598560,
+      "jrId": 648813,
+      "dateCreation": "21/09/2025, 15:32",
+      "dateUpdate": "27/09/2025, 12:45",
+      "joinFileId": "DA001030",
+      "joinFileMemo": null,
+      "promoCode": null,
+      "promoCodeDiscount": null,
+      "joinFileMemoWithoutHtml": null,
+      "ownerId": 783566,
+      "owner": "Vincent FERNANDEZ",
+      "joinRequestMember": "Vincent FERNANDEZ",
+      "joinRequestStatus": "VALIDATED",
+      "joinFileStatus": "PROCESSED",
+      "joinRequestDateStartJoin": "01/09/2025",
+      "joinRequestDateEndJoin": "01/09/2026",
+      "joinRequestProducts": [
+        {
+          "displayProductPrice": "Adhésion a l'association (28.00€)"
+        },
+        {
+          "displayProductPrice": "Licence FFME adulte base (89.00€)"
+        },
+        {
+          "displayProductPrice": "Creneaux libres adultes (160.00€)"
+        }
+      ],
+      "statusLabel": "Payé",
+      "cartId": 1000624,
+      "cartTotalAmount": 277,
+      "cartUnpaidAmount": 0,
+      "nbRequestsToProcess": 0,
+      "nbRequestsValidated": 1,
+      "isAllJoinRequestRejected": false,
+      "stripeSubscription": null,
+      "remainingPayment": null,
+      "nbPayment": null,
+      "allJoinRequestRejected": false
+    },
+    {
+      "jfId": 600853,
+      "jrId": 651085,
+      "dateCreation": "23/09/2025, 17:06",
+      "dateUpdate": "25/11/2025, 17:05",
+      "joinFileId": "DA001036",
+      "joinFileMemo": null,
+      "promoCode": null,
+      "promoCodeDiscount": null,
+      "joinFileMemoWithoutHtml": null,
+      "ownerId": 485608,
+      "owner": "PIRES Carine",
+      "joinRequestMember": "PIRES Carine",
+      "joinRequestStatus": "VALIDATED",
+      "joinFileStatus": "PROCESSED",
+      "joinRequestDateStartJoin": "01/09/2025",
+      "joinRequestDateEndJoin": "01/09/2026",
+      "joinRequestProducts": [
+        {
+          "displayProductPrice": "Adhésion a l'association (28.00€)"
+        },
+        {
+          "displayProductPrice": "Licence FFME adulte base (89.00€)"
+        },
+        {
+          "displayProductPrice": "Creneaux libres saison 4 mois (80.00€)"
+        }
+      ],
+      "statusLabel": "Payé",
+      "cartId": 995764,
+      "cartTotalAmount": 197,
+      "cartUnpaidAmount": 0,
+      "nbRequestsToProcess": 0,
+      "nbRequestsValidated": 1,
+      "isAllJoinRequestRejected": false,
+      "stripeSubscription": null,
+      "remainingPayment": null,
+      "nbPayment": null,
+      "allJoinRequestRejected": false
+    },
+    {
+      "jfId": 602969,
+      "jrId": 653182,
+      "dateCreation": "25/09/2025, 12:53",
+      "dateUpdate": "27/09/2025, 08:59",
+      "joinFileId": "DA001038",
+      "joinFileMemo": null,
+      "promoCode": null,
+      "promoCodeDiscount": null,
+      "joinFileMemoWithoutHtml": null,
+      "ownerId": 486030,
+      "owner": "Mathieu BROUCA-CABARRECQ",
+      "joinRequestMember": "Lou BROUCA-CABARRECQ",
+      "joinRequestStatus": "VALIDATED",
+      "joinFileStatus": "PROCESSED",
+      "joinRequestDateStartJoin": "01/09/2025",
+      "joinRequestDateEndJoin": "01/09/2026",
+      "joinRequestProducts": [
+        {
+          "displayProductPrice": "Adhésion a l'association (28.00€)"
+        },
+        {
+          "displayProductPrice": "Licence FFME jeune base (76.50€)"
+        },
+        {
+          "displayProductPrice": "Cours escalade U16-U20 18h30-20h30 vendredi (290.00€)"
+        }
+      ],
+      "statusLabel": "Payé",
+      "cartId": 1000303,
+      "cartTotalAmount": 739.5,
+      "cartUnpaidAmount": 0,
+      "nbRequestsToProcess": 0,
+      "nbRequestsValidated": 3,
+      "isAllJoinRequestRejected": false,
+      "stripeSubscription": null,
+      "remainingPayment": null,
+      "nbPayment": null,
+      "allJoinRequestRejected": false
+    },
+    {
+      "jfId": 602969,
+      "jrId": 653188,
+      "dateCreation": "25/09/2025, 12:59",
+      "dateUpdate": "26/09/2025, 18:43",
+      "joinFileId": "DA001038",
+      "joinFileMemo": null,
+      "promoCode": null,
+      "promoCodeDiscount": null,
+      "joinFileMemoWithoutHtml": null,
+      "ownerId": 486030,
+      "owner": "Mathieu BROUCA-CABARRECQ",
+      "joinRequestMember": "Mathieu BROUCA-CABARRECQ",
+      "joinRequestStatus": "VALIDATED",
+      "joinFileStatus": "PROCESSED",
+      "joinRequestDateStartJoin": "01/09/2025",
+      "joinRequestDateEndJoin": "01/09/2026",
+      "joinRequestProducts": [
+        {
+          "displayProductPrice": "Licence FFME famille base (55.50€)"
+        },
+        {
+          "displayProductPrice": "Creneaux libres adultes (160.00€)"
+        }
+      ],
+      "statusLabel": "Payé",
+      "cartId": 1000303,
+      "cartTotalAmount": 739.5,
+      "cartUnpaidAmount": 0,
+      "nbRequestsToProcess": 0,
+      "nbRequestsValidated": 3,
+      "isAllJoinRequestRejected": false,
+      "stripeSubscription": null,
+      "remainingPayment": null,
+      "nbPayment": null,
+      "allJoinRequestRejected": false
+    },
+    {
+      "jfId": 602969,
+      "jrId": 653192,
+      "dateCreation": "25/09/2025, 13:04",
+      "dateUpdate": "26/09/2025, 18:43",
+      "joinFileId": "DA001038",
+      "joinFileMemo": null,
+      "promoCode": null,
+      "promoCodeDiscount": null,
+      "joinFileMemoWithoutHtml": null,
+      "ownerId": 486030,
+      "owner": "Mathieu BROUCA-CABARRECQ",
+      "joinRequestMember": "Martin Brouca-Cabarrecq",
+      "joinRequestStatus": "VALIDATED",
+      "joinFileStatus": "PROCESSED",
+      "joinRequestDateStartJoin": "01/09/2025",
+      "joinRequestDateEndJoin": "01/09/2026",
+      "joinRequestProducts": [
+        {
+          "displayProductPrice": "Licence FFME jeune base (76.50€)"
+        },
+        {
+          "displayProductPrice": "Creneaux libres 7 à 15 ans 2 structures beyrede et entre terre et ciel (69.00€)"
+        },
+        {
+          "displayProductPrice": "Réduction famille (a partir de la 3ieme inscription) (-16.00€)"
+        }
+      ],
+      "statusLabel": "Payé",
+      "cartId": 1000303,
+      "cartTotalAmount": 739.5,
+      "cartUnpaidAmount": 0,
+      "nbRequestsToProcess": 0,
+      "nbRequestsValidated": 3,
+      "isAllJoinRequestRejected": false,
+      "stripeSubscription": null,
+      "remainingPayment": null,
+      "nbPayment": null,
+      "allJoinRequestRejected": false
+    },
+    {
+      "jfId": 530933,
+      "jrId": 579827,
+      "dateCreation": "07/07/2025, 09:11",
+      "dateUpdate": "26/07/2025, 07:46",
+      "joinFileId": "DA000881",
+      "joinFileMemo": null,
+      "promoCode": null,
+      "promoCodeDiscount": null,
+      "joinFileMemoWithoutHtml": null,
+      "ownerId": 474787,
+      "owner": "Sylvain Lebret",
+      "joinRequestMember": "Lily Lebret",
+      "joinRequestStatus": "VALIDATED",
+      "joinFileStatus": "PROCESSED",
+      "joinRequestDateStartJoin": "01/09/2025",
+      "joinRequestDateEndJoin": "01/09/2026",
+      "joinRequestProducts": [
+        {
+          "displayProductPrice": "Adhésion a l'association (28.00€)"
+        },
+        {
+          "displayProductPrice": "Licence FFME jeune base (76.50€)"
+        },
+        {
+          "displayProductPrice": "Cours escalade U16-U20 18h30-20h30 vendredi (290.00€)"
+        }
+      ],
+      "statusLabel": "Payé",
+      "cartId": 929466,
+      "cartTotalAmount": 394.5,
+      "cartUnpaidAmount": 0,
+      "nbRequestsToProcess": 0,
+      "nbRequestsValidated": 1,
+      "isAllJoinRequestRejected": false,
+      "stripeSubscription": null,
+      "remainingPayment": null,
+      "nbPayment": null,
+      "allJoinRequestRejected": false
+    },
+    {
+      "jfId": 582785,
+      "jrId": 632980,
+      "dateCreation": "10/09/2025, 11:39",
+      "dateUpdate": "10/09/2025, 11:45",
+      "joinFileId": "DA001010",
+      "joinFileMemo": null,
+      "promoCode": null,
+      "promoCodeDiscount": null,
+      "joinFileMemoWithoutHtml": null,
+      "ownerId": 1151717,
+      "owner": "Clarisse Baqué",
+      "joinRequestMember": "Caleb Le Pichon",
+      "joinRequestStatus": "VALIDATED",
+      "joinFileStatus": "PROCESSED",
+      "joinRequestDateStartJoin": "01/09/2025",
+      "joinRequestDateEndJoin": "01/09/2026",
+      "joinRequestProducts": [
+        {
+          "displayProductPrice": "Adhésion a l'association (28.00€)"
+        },
+        {
+          "displayProductPrice": "Licence FFME jeune base (76.50€)"
+        },
+        {
+          "displayProductPrice": "Cours escalade 6-8ans confirmé 10h30-12h mercredi (245.00€)"
+        }
+      ],
+      "statusLabel": "Payé",
+      "cartId": 974525,
+      "cartTotalAmount": 671,
+      "cartUnpaidAmount": 0,
+      "nbRequestsToProcess": 0,
+      "nbRequestsValidated": 2,
+      "isAllJoinRequestRejected": false,
+      "stripeSubscription": null,
+      "remainingPayment": null,
+      "nbPayment": null,
+      "allJoinRequestRejected": false
+    },
+    {
+      "jfId": 582785,
+      "jrId": 632985,
+      "dateCreation": "10/09/2025, 11:41",
+      "dateUpdate": "10/09/2025, 11:45",
+      "joinFileId": "DA001010",
+      "joinFileMemo": null,
+      "promoCode": null,
+      "promoCodeDiscount": null,
+      "joinFileMemoWithoutHtml": null,
+      "ownerId": 1151717,
+      "owner": "Clarisse Baqué",
+      "joinRequestMember": "Adriel Le Pichon",
+      "joinRequestStatus": "VALIDATED",
+      "joinFileStatus": "PROCESSED",
+      "joinRequestDateStartJoin": "01/09/2025",
+      "joinRequestDateEndJoin": "01/09/2026",
+      "joinRequestProducts": [
+        {
+          "displayProductPrice": "Licence FFME jeune base (76.50€)"
+        },
+        {
+          "displayProductPrice": "Cours escalade 6-8ans confirmé 10h30-12h mercredi (245.00€)"
+        }
+      ],
+      "statusLabel": "Payé",
+      "cartId": 974525,
+      "cartTotalAmount": 671,
+      "cartUnpaidAmount": 0,
+      "nbRequestsToProcess": 0,
+      "nbRequestsValidated": 2,
+      "isAllJoinRequestRejected": false,
+      "stripeSubscription": null,
+      "remainingPayment": null,
+      "nbPayment": null,
+      "allJoinRequestRejected": false
+    },
+    {
+      "jfId": 626198,
+      "jrId": 676005,
+      "dateCreation": "19/11/2025, 10:56",
+      "dateUpdate": "19/11/2025, 10:59",
+      "joinFileId": "DA001084",
+      "joinFileMemo": null,
+      "promoCode": null,
+      "promoCodeDiscount": null,
+      "joinFileMemoWithoutHtml": null,
+      "ownerId": 1192636,
+      "owner": "Pascale Fourment",
+      "joinRequestMember": "Lily rose Bessous",
+      "joinRequestStatus": "VALIDATED",
+      "joinFileStatus": "PROCESSED",
+      "joinRequestDateStartJoin": "01/09/2025",
+      "joinRequestDateEndJoin": "01/09/2026",
+      "joinRequestProducts": [
+        {
+          "displayProductPrice": "Adhésion a l'association (28.00€)"
+        },
+        {
+          "displayProductPrice": "Licence FFME jeune base (76.50€)"
+        },
+        {
+          "displayProductPrice": "Cours escalade 6-8ans loisir 10h45-12h15 mercredi (245.00€)"
+        }
+      ],
+      "statusLabel": "Payé",
+      "cartId": 1047845,
+      "cartTotalAmount": 349.5,
+      "cartUnpaidAmount": 0,
+      "nbRequestsToProcess": 0,
+      "nbRequestsValidated": 1,
+      "isAllJoinRequestRejected": false,
+      "stripeSubscription": null,
+      "remainingPayment": null,
+      "nbPayment": null,
+      "allJoinRequestRejected": false
+    },
+    {
+      "jfId": 625929,
+      "jrId": 675721,
+      "dateCreation": "18/11/2025, 12:36",
+      "dateUpdate": "19/11/2025, 08:28",
+      "joinFileId": "DA001081",
+      "joinFileMemo": null,
+      "promoCode": null,
+      "promoCodeDiscount": null,
+      "joinFileMemoWithoutHtml": null,
+      "ownerId": 510445,
+      "owner": "Etienne Vouhé",
+      "joinRequestMember": "Etienne Vouhé",
+      "joinRequestStatus": "VALIDATED",
+      "joinFileStatus": "PAYING",
+      "joinRequestDateStartJoin": "01/09/2025",
+      "joinRequestDateEndJoin": "01/09/2026",
+      "joinRequestProducts": [
+        {
+          "displayProductPrice": "Adhésion a l'association (28.00€)"
+        },
+        {
+          "displayProductPrice": "Licence FFME adulte base (89.00€)"
+        },
+        {
+          "displayProductPrice": "Creneaux libres saison 4 mois (80.00€)"
+        }
+      ],
+      "statusLabel": "En cours de paiement",
+      "cartId": 1047704,
+      "cartTotalAmount": 197,
+      "cartUnpaidAmount": 65.68,
+      "nbRequestsToProcess": 0,
+      "nbRequestsValidated": 1,
+      "isAllJoinRequestRejected": false,
+      "stripeSubscription": "sub_1SWKogCsDakO7YegiEFkX7pT",
+      "remainingPayment": 1,
+      "nbPayment": 3,
+      "allJoinRequestRejected": false
+    },
+    {
+      "jfId": 660741,
+      "jrId": 711741,
+      "dateCreation": "22/01/2026, 18:55",
+      "dateUpdate": "22/01/2026, 18:59",
+      "joinFileId": "DA001127",
+      "joinFileMemo": null,
+      "promoCode": null,
+      "promoCodeDiscount": null,
+      "joinFileMemoWithoutHtml": null,
+      "ownerId": 1225694,
+      "owner": "Maxime Lamoureux",
+      "joinRequestMember": "Maxime Lamoureux",
+      "joinRequestStatus": "TO_PROCESS",
+      "joinFileStatus": "TO_PROCESS",
+      "joinRequestDateStartJoin": "01/09/2025",
+      "joinRequestDateEndJoin": "01/09/2026",
+      "joinRequestProducts": [
+        {
+          "displayProductPrice": "Adhésion a l'association (28.00€)"
+        },
+        {
+          "displayProductPrice": "Licence FFME adulte base (89.00€)"
+        }
+      ],
+      "statusLabel": "À traiter",
+      "cartId": null,
+      "cartTotalAmount": null,
+      "cartUnpaidAmount": null,
+      "nbRequestsToProcess": 1,
+      "nbRequestsValidated": 0,
+      "isAllJoinRequestRejected": false,
+      "stripeSubscription": null,
+      "remainingPayment": null,
+      "nbPayment": null,
+      "allJoinRequestRejected": false
+    },
+    {
+      "jfId": 659733,
+      "jrId": 710749,
+      "dateCreation": "20/01/2026, 16:03",
+      "dateUpdate": "22/01/2026, 11:59",
+      "joinFileId": "DA001126",
+      "joinFileMemo": null,
+      "promoCode": null,
+      "promoCodeDiscount": null,
+      "joinFileMemoWithoutHtml": null,
+      "ownerId": 1223274,
+      "owner": "Léo Orensanz",
+      "joinRequestMember": "Léo Orensanz",
+      "joinRequestStatus": "VALIDATED",
+      "joinFileStatus": "PAYING",
+      "joinRequestDateStartJoin": "01/09/2025",
+      "joinRequestDateEndJoin": "01/09/2026",
+      "joinRequestProducts": [
+        {
+          "displayProductPrice": "Adhésion a l'association (28.00€)"
+        },
+        {
+          "displayProductPrice": "Licence FFME adulte base++ (99.00€)"
+        },
+        {
+          "displayProductPrice": "Licence FFME option ski de piste (5.00€)"
+        }
+      ],
+      "statusLabel": "En cours de paiement",
+      "cartId": 1105837,
+      "cartTotalAmount": 132,
+      "cartUnpaidAmount": 66,
+      "nbRequestsToProcess": 0,
+      "nbRequestsValidated": 1,
+      "isAllJoinRequestRejected": false,
+      "stripeSubscription": "sub_1SsReRCsDakO7Yegh0eljUMR",
+      "remainingPayment": 1,
+      "nbPayment": 2,
+      "allJoinRequestRejected": false
+    },
+    {
+      "jfId": 585844,
+      "jrId": 635968,
+      "dateCreation": "11/09/2025, 17:21",
+      "dateUpdate": "13/09/2025, 15:26",
+      "joinFileId": "DA001018",
+      "joinFileMemo": null,
+      "promoCode": null,
+      "promoCodeDiscount": null,
+      "joinFileMemoWithoutHtml": null,
+      "ownerId": 944618,
+      "owner": "Thomas Beau",
+      "joinRequestMember": "Thomas Beau",
+      "joinRequestStatus": "VALIDATED",
+      "joinFileStatus": "PROCESSED",
+      "joinRequestDateStartJoin": "01/09/2025",
+      "joinRequestDateEndJoin": "01/09/2026",
+      "joinRequestProducts": [
+        {
+          "displayProductPrice": "Adhésion a l'association (28.00€)"
+        },
+        {
+          "displayProductPrice": "Creneaux libres adultes (160.00€)"
+        }
+      ],
+      "statusLabel": "Payé",
+      "cartId": 980477,
+      "cartTotalAmount": 188,
+      "cartUnpaidAmount": 0,
+      "nbRequestsToProcess": 0,
+      "nbRequestsValidated": 1,
+      "isAllJoinRequestRejected": false,
+      "stripeSubscription": null,
+      "remainingPayment": null,
+      "nbPayment": null,
+      "allJoinRequestRejected": false
+    },
+    {
+      "jfId": 652953,
+      "jrId": 703957,
+      "dateCreation": "09/01/2026, 07:52",
+      "dateUpdate": "21/01/2026, 12:01",
+      "joinFileId": "DA001116",
+      "joinFileMemo": null,
+      "promoCode": null,
+      "promoCodeDiscount": null,
+      "joinFileMemoWithoutHtml": null,
+      "ownerId": 796819,
+      "owner": "Eric Mir",
+      "joinRequestMember": "Eric Mir",
+      "joinRequestStatus": "VALIDATED",
+      "joinFileStatus": "PROCESSED",
+      "joinRequestDateStartJoin": "01/09/2025",
+      "joinRequestDateEndJoin": "01/09/2026",
+      "joinRequestProducts": [
+        {
+          "displayProductPrice": "Adhésion a l'association (28.00€)"
+        },
+        {
+          "displayProductPrice": "Adhesion aure verticale partenaire SNE (13.00€)"
+        },
+        {
+          "displayProductPrice": "Licence FFME adulte base++ (99.00€)"
+        },
+        {
+          "displayProductPrice": "Creneaux libres saison 4 mois (80.00€)"
+        }
+      ],
+      "statusLabel": "Payé",
+      "cartId": 1104707,
+      "cartTotalAmount": 220,
+      "cartUnpaidAmount": 0,
+      "nbRequestsToProcess": 0,
+      "nbRequestsValidated": 1,
+      "isAllJoinRequestRejected": false,
+      "stripeSubscription": null,
+      "remainingPayment": null,
+      "nbPayment": null,
+      "allJoinRequestRejected": false
+    },
+    {
+      "jfId": 655967,
+      "jrId": 707020,
+      "dateCreation": "12/01/2026, 23:08",
+      "dateUpdate": "21/01/2026, 12:05",
+      "joinFileId": "DA001121",
+      "joinFileMemo": null,
+      "promoCode": null,
+      "promoCodeDiscount": null,
+      "joinFileMemoWithoutHtml": null,
+      "ownerId": 912051,
+      "owner": "Vanessa Vella",
+      "joinRequestMember": "Vanessa Vella",
+      "joinRequestStatus": "VALIDATED",
+      "joinFileStatus": "TO_PAY",
+      "joinRequestDateStartJoin": "01/09/2025",
+      "joinRequestDateEndJoin": "01/09/2026",
+      "joinRequestProducts": [
+        {
+          "displayProductPrice": "Adhésion a l'association (28.00€)"
+        },
+        {
+          "displayProductPrice": "Adhesion aure verticale partenaire SNE (13.00€)"
+        },
+        {
+          "displayProductPrice": "Licence FFME adulte base (89.00€)"
+        },
+        {
+          "displayProductPrice": "Creneaux libres adultes (160.00€)"
+        },
+        {
+          "displayProductPrice": "Réduction habitant beyrede ou DE (-160.00€)"
+        }
+      ],
+      "statusLabel": "À payer",
+      "cartId": 1104712,
+      "cartTotalAmount": 130,
+      "cartUnpaidAmount": 130,
+      "nbRequestsToProcess": 0,
+      "nbRequestsValidated": 1,
+      "isAllJoinRequestRejected": false,
+      "stripeSubscription": null,
+      "remainingPayment": null,
+      "nbPayment": null,
+      "allJoinRequestRejected": false
+    },
+    {
+      "jfId": 655902,
+      "jrId": 706945,
+      "dateCreation": "12/01/2026, 19:04",
+      "dateUpdate": "21/01/2026, 12:05",
+      "joinFileId": "DA001120",
+      "joinFileMemo": null,
+      "promoCode": null,
+      "promoCodeDiscount": null,
+      "joinFileMemoWithoutHtml": null,
+      "ownerId": 926620,
+      "owner": "Alvaro Gonzalez",
+      "joinRequestMember": "Alvaro Gonzalez",
+      "joinRequestStatus": "VALIDATED",
+      "joinFileStatus": "TO_PAY",
+      "joinRequestDateStartJoin": "01/09/2025",
+      "joinRequestDateEndJoin": "01/09/2026",
+      "joinRequestProducts": [
+        {
+          "displayProductPrice": "Adhésion a l'association (28.00€)"
+        },
+        {
+          "displayProductPrice": "Licence FFME adulte base (89.00€)"
+        },
+        {
+          "displayProductPrice": "Creneaux libres adultes (160.00€)"
+        },
+        {
+          "displayProductPrice": "Réduction habitant beyrede ou DE (-160.00€)"
+        }
+      ],
+      "statusLabel": "À payer",
+      "cartId": 1104711,
+      "cartTotalAmount": 117,
+      "cartUnpaidAmount": 117,
+      "nbRequestsToProcess": 0,
+      "nbRequestsValidated": 1,
+      "isAllJoinRequestRejected": false,
+      "stripeSubscription": null,
+      "remainingPayment": null,
+      "nbPayment": null,
+      "allJoinRequestRejected": false
+    },
+    {
+      "jfId": 540909,
+      "jrId": 589996,
+      "dateCreation": "25/07/2025, 11:12",
+      "dateUpdate": "27/09/2025, 09:35",
+      "joinFileId": "DA000922",
+      "joinFileMemo": null,
+      "promoCode": null,
+      "promoCodeDiscount": null,
+      "joinFileMemoWithoutHtml": null,
+      "ownerId": 846088,
+      "owner": "raphael Elbaz",
+      "joinRequestMember": "raphael Elbaz",
+      "joinRequestStatus": "VALIDATED",
+      "joinFileStatus": "PROCESSED",
+      "joinRequestDateStartJoin": "01/09/2025",
+      "joinRequestDateEndJoin": "01/09/2026",
+      "joinRequestProducts": [
+        {
+          "displayProductPrice": "Adhésion a l'association (28.00€)"
+        },
+        {
+          "displayProductPrice": "Licence FFME jeune base (76.50€)"
+        },
+        {
+          "displayProductPrice": "Cours escalade U16-U20 18h30-20h30 vendredi (290.00€)"
+        },
+        {
+          "displayProductPrice": "Réduction pass sport (-70.00€)"
+        }
+      ],
+      "statusLabel": "Payé",
+      "cartId": 929463,
+      "cartTotalAmount": 324.5,
+      "cartUnpaidAmount": 0,
+      "nbRequestsToProcess": 0,
+      "nbRequestsValidated": 1,
+      "isAllJoinRequestRejected": false,
+      "stripeSubscription": null,
+      "remainingPayment": null,
+      "nbPayment": null,
+      "allJoinRequestRejected": false
+    },
+    {
+      "jfId": 585925,
+      "jrId": 636055,
+      "dateCreation": "11/09/2025, 18:05",
+      "dateUpdate": "13/09/2025, 15:25",
+      "joinFileId": "DA001020",
+      "joinFileMemo": null,
+      "promoCode": null,
+      "promoCodeDiscount": null,
+      "joinFileMemoWithoutHtml": null,
+      "ownerId": 1154552,
+      "owner": "Frédérique Mameri",
+      "joinRequestMember": "Louise BERGUA",
+      "joinRequestStatus": "VALIDATED",
+      "joinFileStatus": "PROCESSED",
+      "joinRequestDateStartJoin": "01/09/2025",
+      "joinRequestDateEndJoin": "01/09/2026",
+      "joinRequestProducts": [
+        {
+          "displayProductPrice": "Adhésion a l'association (28.00€)"
+        },
+        {
+          "displayProductPrice": "Licence FFME jeune base (76.50€)"
+        },
+        {
+          "displayProductPrice": "Cours escalade 9-12ans confirmé 14h00-16h00 mercredi (290.00€)"
+        }
+      ],
+      "statusLabel": "Payé",
+      "cartId": 980472,
+      "cartTotalAmount": 394.5,
+      "cartUnpaidAmount": 0,
+      "nbRequestsToProcess": 0,
+      "nbRequestsValidated": 1,
+      "isAllJoinRequestRejected": false,
+      "stripeSubscription": null,
+      "remainingPayment": null,
+      "nbPayment": null,
+      "allJoinRequestRejected": false
+    },
+    {
+      "jfId": 565657,
+      "jrId": 615333,
+      "dateCreation": "02/09/2025, 12:24",
+      "dateUpdate": "02/09/2025, 16:18",
+      "joinFileId": "DA000991",
+      "joinFileMemo": null,
+      "promoCode": null,
+      "promoCodeDiscount": null,
+      "joinFileMemoWithoutHtml": null,
+      "ownerId": 786174,
+      "owner": "Adrien Doutre",
+      "joinRequestMember": "Anita Doutre",
+      "joinRequestStatus": "VALIDATED",
+      "joinFileStatus": "PROCESSED",
+      "joinRequestDateStartJoin": "01/09/2025",
+      "joinRequestDateEndJoin": "01/09/2026",
+      "joinRequestProducts": [
+        {
+          "displayProductPrice": "Adhésion a l'association (28.00€)"
+        },
+        {
+          "displayProductPrice": "Adhesion aure verticale partenaire SNE (13.00€)"
+        },
+        {
+          "displayProductPrice": "Licence FFME jeune base+ (79.50€)"
+        },
+        {
+          "displayProductPrice": "Cours escalade 13-18ans 16h00-18h00 mercredi (290.00€)"
+        },
+        {
+          "displayProductPrice": "Réduction pass sport (-50.00€)"
+        }
+      ],
+      "statusLabel": "Payé",
+      "cartId": 957956,
+      "cartTotalAmount": 360.5,
+      "cartUnpaidAmount": 0,
+      "nbRequestsToProcess": 0,
+      "nbRequestsValidated": 1,
+      "isAllJoinRequestRejected": false,
+      "stripeSubscription": null,
+      "remainingPayment": null,
+      "nbPayment": null,
+      "allJoinRequestRejected": false
+    },
+    {
+      "jfId": 589306,
+      "jrId": 639444,
+      "dateCreation": "14/09/2025, 15:21",
+      "dateUpdate": "14/09/2025, 17:22",
+      "joinFileId": "DA001025",
+      "joinFileMemo": null,
+      "promoCode": null,
+      "promoCodeDiscount": null,
+      "joinFileMemoWithoutHtml": null,
+      "ownerId": 522845,
+      "owner": "Kilian Armandine Les Landes",
+      "joinRequestMember": "Kilian Armandine Les Landes",
+      "joinRequestStatus": "VALIDATED",
+      "joinFileStatus": "PROCESSED",
+      "joinRequestDateStartJoin": "01/09/2025",
+      "joinRequestDateEndJoin": "01/09/2026",
+      "joinRequestProducts": [
+        {
+          "displayProductPrice": "Adhésion a l'association (28.00€)"
+        },
+        {
+          "displayProductPrice": "Licence FFME adulte base (89.00€)"
+        },
+        {
+          "displayProductPrice": "Creneaux libres adultes (160.00€)"
+        }
+      ],
+      "statusLabel": "Payé",
+      "cartId": 981502,
+      "cartTotalAmount": 277,
+      "cartUnpaidAmount": 0,
+      "nbRequestsToProcess": 0,
+      "nbRequestsValidated": 1,
+      "isAllJoinRequestRejected": false,
+      "stripeSubscription": null,
+      "remainingPayment": null,
+      "nbPayment": null,
+      "allJoinRequestRejected": false
+    },
+    {
+      "jfId": 657342,
+      "jrId": 708368,
+      "dateCreation": "14/01/2026, 16:07",
+      "dateUpdate": "14/01/2026, 16:11",
+      "joinFileId": "DA001122",
+      "joinFileMemo": null,
+      "promoCode": null,
+      "promoCodeDiscount": null,
+      "joinFileMemoWithoutHtml": null,
+      "ownerId": 1215512,
+      "owner": "clément garnier",
+      "joinRequestMember": "clément garnier",
+      "joinRequestStatus": "TO_PROCESS",
+      "joinFileStatus": "CREATING",
+      "joinRequestDateStartJoin": "01/09/2025",
+      "joinRequestDateEndJoin": "01/09/2026",
+      "joinRequestProducts": [
+        {
+          "displayProductPrice": "Adhésion a l'association (28.00€)"
+        },
+        {
+          "displayProductPrice": "Licence FFME adulte base (89.00€)"
+        },
+        {
+          "displayProductPrice": "Creneaux libres adultes (160.00€)"
+        }
+      ],
+      "statusLabel": "En cours de création",
+      "cartId": null,
+      "cartTotalAmount": null,
+      "cartUnpaidAmount": null,
+      "nbRequestsToProcess": 1,
+      "nbRequestsValidated": 0,
+      "isAllJoinRequestRejected": false,
+      "stripeSubscription": null,
+      "remainingPayment": null,
+      "nbPayment": null,
+      "allJoinRequestRejected": false
+    }
+  ]
+}

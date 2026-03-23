@@ -1,44 +1,5 @@
 [
   {
-    "jfId": 655812,
-    "jrId": 706858,
-    "dateCreation": "12/01/2026, 17:46",
-    "dateUpdate": "12/01/2026, 18:43",
-    "joinFileId": "DA001119",
-    "joinFileMemo": null,
-    "promoCode": null,
-    "promoCodeDiscount": null,
-    "joinFileMemoWithoutHtml": null,
-    "ownerId": 1214051,
-    "owner": "Morgane Giraud",
-    "joinRequestMember": "Morgane Giraud",
-    "joinRequestStatus": "VALIDATED",
-    "joinFileStatus": "PAYING",
-    "joinRequestDateStartJoin": "01/09/2025",
-    "joinRequestDateEndJoin": "01/09/2026",
-    "joinRequestProducts": [
-      {
-        "displayProductPrice": "Adhésion a l'association (28.00€)"
-      },
-      {
-        "displayProductPrice": "Creneaux libres saison 4 mois (80.00€)"
-      }
-    ],
-    "statusLabel": "En cours de paiement",
-    "cartId": 1095789,
-    "cartTotalAmount": 108,
-    "cartUnpaidAmount": 36,
-    "nbRequestsToProcess": 0,
-    "nbRequestsValidated": 1,
-    "isAllJoinRequestRejected": false,
-    "stripeSubscription": "sub_1Sp3GjCsDakO7YegdqIKQ3Wi",
-    "remainingPayment": 1,
-    "nbPayment": 3,
-    "allJoinRequestRejected": false,
-    "firstname": "Morgane",
-    "lastname": "Giraud"
-  },
-  {
     "jfId": 769675,
     "jrId": 810383,
     "dateCreation": "10/03/2026, 16:47",
@@ -417,6 +378,45 @@
   },
   {
     "jfId": 625896,
+    "jrId": 675819,
+    "dateCreation": "18/11/2025, 17:49",
+    "dateUpdate": "19/11/2025, 08:24",
+    "joinFileId": "DA001080",
+    "joinFileMemo": null,
+    "promoCode": null,
+    "promoCodeDiscount": null,
+    "joinFileMemoWithoutHtml": null,
+    "ownerId": 519583,
+    "owner": "sebastien soulans",
+    "joinRequestMember": "clément soulans",
+    "joinRequestStatus": "VALIDATED",
+    "joinFileStatus": "PAYING",
+    "joinRequestDateStartJoin": "01/09/2025",
+    "joinRequestDateEndJoin": "01/09/2026",
+    "joinRequestProducts": [
+      {
+        "displayProductPrice": "Licence FFME jeune base (76.50€)"
+      },
+      {
+        "displayProductPrice": "Creneaux libres saison 4 mois (80.00€)"
+      }
+    ],
+    "statusLabel": "En cours de paiement",
+    "cartId": 1047703,
+    "cartTotalAmount": 353.5,
+    "cartUnpaidAmount": 117.84,
+    "nbRequestsToProcess": 0,
+    "nbRequestsValidated": 2,
+    "isAllJoinRequestRejected": false,
+    "stripeSubscription": "sub_1SjyYLCsDakO7YegfPZAffLl",
+    "remainingPayment": 1,
+    "nbPayment": 3,
+    "allJoinRequestRejected": false,
+    "firstname": "clément",
+    "lastname": "soulans"
+  },
+  {
+    "jfId": 625896,
     "jrId": 675687,
     "dateCreation": "18/11/2025, 11:08",
     "dateUpdate": "19/11/2025, 08:24",
@@ -455,45 +455,6 @@
     "nbPayment": 3,
     "allJoinRequestRejected": false,
     "firstname": "sebastien",
-    "lastname": "soulans"
-  },
-  {
-    "jfId": 625896,
-    "jrId": 675819,
-    "dateCreation": "18/11/2025, 17:49",
-    "dateUpdate": "19/11/2025, 08:24",
-    "joinFileId": "DA001080",
-    "joinFileMemo": null,
-    "promoCode": null,
-    "promoCodeDiscount": null,
-    "joinFileMemoWithoutHtml": null,
-    "ownerId": 519583,
-    "owner": "sebastien soulans",
-    "joinRequestMember": "clément soulans",
-    "joinRequestStatus": "VALIDATED",
-    "joinFileStatus": "PAYING",
-    "joinRequestDateStartJoin": "01/09/2025",
-    "joinRequestDateEndJoin": "01/09/2026",
-    "joinRequestProducts": [
-      {
-        "displayProductPrice": "Licence FFME jeune base (76.50€)"
-      },
-      {
-        "displayProductPrice": "Creneaux libres saison 4 mois (80.00€)"
-      }
-    ],
-    "statusLabel": "En cours de paiement",
-    "cartId": 1047703,
-    "cartTotalAmount": 353.5,
-    "cartUnpaidAmount": 117.84,
-    "nbRequestsToProcess": 0,
-    "nbRequestsValidated": 2,
-    "isAllJoinRequestRejected": false,
-    "stripeSubscription": "sub_1SjyYLCsDakO7YegfPZAffLl",
-    "remainingPayment": 1,
-    "nbPayment": 3,
-    "allJoinRequestRejected": false,
-    "firstname": "clément",
     "lastname": "soulans"
   },
   {
@@ -616,8 +577,8 @@
     "nbRequestsValidated": 1,
     "isAllJoinRequestRejected": false,
     "stripeSubscription": null,
-    "remainingPayment": 3,
-    "nbPayment": 3,
+    "remainingPayment": null,
+    "nbPayment": null,
     "allJoinRequestRejected": false,
     "firstname": "Dorya",
     "lastname": "Nobileau"
@@ -1072,7 +1033,7 @@
     "cartTotalAmount": 761,
     "cartUnpaidAmount": 0,
     "nbRequestsToProcess": 0,
-    "nbRequestsValidated": 2,
+    "nbRequestsValidated": 1,
     "isAllJoinRequestRejected": false,
     "stripeSubscription": null,
     "remainingPayment": null,
@@ -1114,7 +1075,7 @@
     "cartTotalAmount": 761,
     "cartUnpaidAmount": 0,
     "nbRequestsToProcess": 0,
-    "nbRequestsValidated": 2,
+    "nbRequestsValidated": 1,
     "isAllJoinRequestRejected": false,
     "stripeSubscription": null,
     "remainingPayment": null,
@@ -2193,6 +2154,45 @@
     "allJoinRequestRejected": false,
     "firstname": "David",
     "lastname": "Richard"
+  },
+  {
+    "jfId": 655812,
+    "jrId": 706858,
+    "dateCreation": "12/01/2026, 17:46",
+    "dateUpdate": "12/01/2026, 18:43",
+    "joinFileId": "DA001119",
+    "joinFileMemo": null,
+    "promoCode": null,
+    "promoCodeDiscount": null,
+    "joinFileMemoWithoutHtml": null,
+    "ownerId": 1214051,
+    "owner": "Morgane Giraud",
+    "joinRequestMember": "Morgane Giraud",
+    "joinRequestStatus": "VALIDATED",
+    "joinFileStatus": "PAYING",
+    "joinRequestDateStartJoin": "01/09/2025",
+    "joinRequestDateEndJoin": "01/09/2026",
+    "joinRequestProducts": [
+      {
+        "displayProductPrice": "Adhésion a l'association (28.00€)"
+      },
+      {
+        "displayProductPrice": "Creneaux libres saison 4 mois (80.00€)"
+      }
+    ],
+    "statusLabel": "En cours de paiement",
+    "cartId": 1095789,
+    "cartTotalAmount": 108,
+    "cartUnpaidAmount": 72,
+    "nbRequestsToProcess": 0,
+    "nbRequestsValidated": 1,
+    "isAllJoinRequestRejected": false,
+    "stripeSubscription": "sub_1Sp3GjCsDakO7YegdqIKQ3Wi",
+    "remainingPayment": 2,
+    "nbPayment": 3,
+    "allJoinRequestRejected": false,
+    "firstname": "Morgane",
+    "lastname": "Giraud"
   },
   {
     "jfId": 655659,
